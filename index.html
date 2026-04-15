@@ -283,7 +283,7 @@
     }
 
     @media (max-width: 768px) {
-      .hero-content { margin-top: 46vw; }
+      .hero-content { margin-top: 72vw; }
     }
 
     /* Breathing Orb */
@@ -2243,11 +2243,12 @@
         v.querySelector('source').src = pick;
         v.load();
         if (window.innerWidth <= 768) {
-          v.style.width     = '46vw';
-          v.style.height    = '46vw';
-          v.style.top       = '22%';
+          v.style.width     = '80vw';
+          v.style.height    = '80vw';
+          v.style.top       = '8%';
           v.style.left      = '50%';
           v.style.transform = 'translate(-50%, 0)';
+          v.style.objectFit = 'contain';
         } else {
           var base = 46.07;
           var scale = 0.4 + Math.random() * 0.8;
