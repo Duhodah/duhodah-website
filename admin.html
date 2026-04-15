@@ -1,5 +1,6 @@
 <!DOCTYPE html>
 <html lang="hr">
+
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
@@ -9,12 +10,20 @@
 
   <!-- Fonts -->
   <link rel="preconnect" href="https://fonts.googleapis.com">
-  <link href="https://fonts.googleapis.com/css2?family=Jura:wght@400;500;600;700&family=Inter:wght@300;400;500&display=swap" rel="stylesheet">
+  <link
+    href="https://fonts.googleapis.com/css2?family=Jura:wght@400;500;600;700&family=Inter:wght@300;400;500&display=swap"
+    rel="stylesheet">
 
   <link rel="stylesheet" href="css/calendar.css">
 
   <style>
-    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+    *,
+    *::before,
+    *::after {
+      box-sizing: border-box;
+      margin: 0;
+      padding: 0;
+    }
 
     body {
       background: #0d0d0d;
@@ -262,7 +271,9 @@
       white-space: nowrap;
     }
 
-    table.at tr:last-child td { border-bottom: none; }
+    table.at tr:last-child td {
+      border-bottom: none;
+    }
 
     table.at tr:hover td {
       background: rgba(255, 255, 255, 0.025);
@@ -285,11 +296,35 @@
       white-space: nowrap;
     }
 
-    .tag--cyan { color: rgba(4,255,255,0.9); background: rgba(4,255,255,0.1); border: 1px solid rgba(4,255,255,0.2); }
-    .tag--magenta { color: rgba(215,2,241,0.9); background: rgba(215,2,241,0.1); border: 1px solid rgba(215,2,241,0.2); }
-    .tag--green { color: rgba(80,255,150,0.9); background: rgba(80,255,150,0.08); border: 1px solid rgba(80,255,150,0.2); }
-    .tag--red { color: rgba(255,80,80,0.8); background: rgba(255,80,80,0.08); border: 1px solid rgba(255,80,80,0.2); }
-    .tag--grey { color: rgba(255,255,255,0.4); background: rgba(255,255,255,0.05); border: 1px solid rgba(255,255,255,0.1); }
+    .tag--cyan {
+      color: rgba(4, 255, 255, 0.9);
+      background: rgba(4, 255, 255, 0.1);
+      border: 1px solid rgba(4, 255, 255, 0.2);
+    }
+
+    .tag--magenta {
+      color: rgba(215, 2, 241, 0.9);
+      background: rgba(215, 2, 241, 0.1);
+      border: 1px solid rgba(215, 2, 241, 0.2);
+    }
+
+    .tag--green {
+      color: rgba(80, 255, 150, 0.9);
+      background: rgba(80, 255, 150, 0.08);
+      border: 1px solid rgba(80, 255, 150, 0.2);
+    }
+
+    .tag--red {
+      color: rgba(255, 80, 80, 0.8);
+      background: rgba(255, 80, 80, 0.08);
+      border: 1px solid rgba(255, 80, 80, 0.2);
+    }
+
+    .tag--grey {
+      color: rgba(255, 255, 255, 0.4);
+      background: rgba(255, 255, 255, 0.05);
+      border: 1px solid rgba(255, 255, 255, 0.1);
+    }
 
     /* Activity feed */
     .activity-feed {
@@ -306,7 +341,9 @@
       border-bottom: 1px solid rgba(255, 255, 255, 0.04);
     }
 
-    .activity-item:last-child { border-bottom: none; }
+    .activity-item:last-child {
+      border-bottom: none;
+    }
 
     .activity-dot {
       width: 7px;
@@ -316,21 +353,31 @@
       flex-shrink: 0;
     }
 
-    .activity-dot--cyan { background: rgba(4,255,255,0.7); }
-    .activity-dot--magenta { background: rgba(215,2,241,0.7); }
-    .activity-dot--grey { background: rgba(255,255,255,0.2); }
+    .activity-dot--cyan {
+      background: rgba(4, 255, 255, 0.7);
+    }
+
+    .activity-dot--magenta {
+      background: rgba(215, 2, 241, 0.7);
+    }
+
+    .activity-dot--grey {
+      background: rgba(255, 255, 255, 0.2);
+    }
 
     .activity-text {
       font-size: 0.78rem;
-      color: rgba(255,255,255,0.5);
+      color: rgba(255, 255, 255, 0.5);
       flex: 1;
     }
 
-    .activity-text strong { color: rgba(255,255,255,0.8); }
+    .activity-text strong {
+      color: rgba(255, 255, 255, 0.8);
+    }
 
     .activity-time {
       font-size: 0.65rem;
-      color: rgba(255,255,255,0.25);
+      color: rgba(255, 255, 255, 0.25);
       font-family: 'Jura', sans-serif;
       white-space: nowrap;
     }
@@ -339,17 +386,23 @@
     .admin-empty {
       padding: 40px;
       text-align: center;
-      color: rgba(255,255,255,0.25);
+      color: rgba(255, 255, 255, 0.25);
       font-family: 'Jura', sans-serif;
       font-size: 0.8rem;
     }
 
     @media (max-width: 768px) {
-      .admin-header { padding: 16px 20px; }
-      .admin-body { padding: 24px 20px; }
+      .admin-header {
+        padding: 16px 20px;
+      }
+
+      .admin-body {
+        padding: 24px 20px;
+      }
     }
   </style>
 </head>
+
 <body>
 
   <!-- LOGIN SCREEN -->
@@ -358,7 +411,8 @@
       <div class="admin-login__title">Duhodah HQ</div>
       <p class="admin-login__sub">Admin panel za Ernesta. Prijavi se s email adresom — dobit ćeš magični link.</p>
       <form id="admin-login-form">
-        <input type="email" class="admin-login__input" id="admin-email-input" placeholder="tvoj@email.com" required autocomplete="email">
+        <input type="email" class="admin-login__input" id="admin-email-input" placeholder="tvoj@email.com" required
+          autocomplete="email">
         <button type="submit" class="admin-login__btn">Pošalji magični link →</button>
       </form>
       <div id="admin-login-msg" class="admin-login__msg" style="display:none"></div>
@@ -421,7 +475,9 @@
               </tr>
             </thead>
             <tbody id="admin-events-body">
-              <tr><td colspan="6" class="admin-empty">Učitavam...</td></tr>
+              <tr>
+                <td colspan="6" class="admin-empty">Učitavam...</td>
+              </tr>
             </tbody>
           </table>
         </div>
@@ -447,7 +503,9 @@
               </tr>
             </thead>
             <tbody id="admin-clients-body">
-              <tr><td colspan="7" class="admin-empty">Učitavam...</td></tr>
+              <tr>
+                <td colspan="7" class="admin-empty">Učitavam...</td>
+              </tr>
             </tbody>
           </table>
         </div>
@@ -556,7 +614,7 @@
 
       tbody.innerHTML = events.map(ev => {
         const d = new Date(ev.datum);
-        const datum = `${String(d.getDate()).padStart(2,'0')}.${String(d.getMonth()+1).padStart(2,'0')}.${d.getFullYear()}. ${String(d.getHours()).padStart(2,'0')}:${String(d.getMinutes()).padStart(2,'0')}`;
+        const datum = `${String(d.getDate()).padStart(2, '0')}.${String(d.getMonth() + 1).padStart(2, '0')}.${d.getFullYear()}. ${String(d.getHours()).padStart(2, '0')}:${String(d.getMinutes()).padStart(2, '0')}`;
         const prijavljeni = ev.registracije?.[0]?.count || 0;
         const kapacitet = ev.kapacitet || 15;
         const posto = Math.round((prijavljeni / kapacitet) * 100);
@@ -587,7 +645,7 @@
 
       tbody.innerHTML = clients.map(c => {
         const d = new Date(c.created_at);
-        const datum = `${String(d.getDate()).padStart(2,'0')}.${String(d.getMonth()+1).padStart(2,'0')}.${d.getFullYear()}`;
+        const datum = `${String(d.getDate()).padStart(2, '0')}.${String(d.getMonth() + 1).padStart(2, '0')}.${d.getFullYear()}`;
         const pretplata = c.pretplate?.[0];
         const izvorColor = c.izvor === 'priručnik' ? 'cyan' : c.izvor === 'kviz' ? 'magenta' : 'grey';
 
@@ -624,7 +682,7 @@
       feed.innerHTML = interactions.map(i => {
         const cfg = tipLabels[i.tip] || { label: i.tip, dot: 'grey' };
         const d = new Date(i.created_at);
-        const when = `${String(d.getDate()).padStart(2,'0')}.${String(d.getMonth()+1).padStart(2,'0')}. ${String(d.getHours()).padStart(2,'0')}:${String(d.getMinutes()).padStart(2,'0')}`;
+        const when = `${String(d.getDate()).padStart(2, '0')}.${String(d.getMonth() + 1).padStart(2, '0')}. ${String(d.getHours()).padStart(2, '0')}:${String(d.getMinutes()).padStart(2, '0')}`;
         const who = i.email || 'Anonimni posjetitelj';
 
         let extra = '';
@@ -641,4 +699,5 @@
   </script>
 
 </body>
+
 </html>
