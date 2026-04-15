@@ -2237,19 +2237,26 @@
     </video>
     <script>
       (function(){
-        var clips = ['video/vortex-anim.mp4', 'video/vortex-anim-b.mp4', 'video/vortex-anim-c.mp4'];
-        var pick = clips[Math.floor(Math.random() * clips.length)];
         var v = document.getElementById('vortex-bg');
-        v.querySelector('source').src = pick;
-        v.load();
         if (window.innerWidth <= 768) {
-          v.style.width     = '80vw';
-          v.style.height    = '80vw';
-          v.style.top       = '8%';
+          v.querySelector('source').src = 'video/duhodah-brand.mp4';
+          v.load();
+          v.style.width     = '92vw';
+          v.style.height    = '52vw';
+          v.style.top       = '10%';
           v.style.left      = '50%';
           v.style.transform = 'translate(-50%, 0)';
           v.style.objectFit = 'contain';
         } else {
+          var clips = [
+            'video/vortex-anim.mp4',
+            'video/vortex-anim-b.mp4',
+            'video/vortex-anim-c.mp4',
+            'video/duhodah-brand.mp4'
+          ];
+          var pick = clips[Math.floor(Math.random() * clips.length)];
+          v.querySelector('source').src = pick;
+          v.load();
           var base = 46.07;
           var scale = 0.4 + Math.random() * 0.8;
           var size = (base * scale).toFixed(2);
