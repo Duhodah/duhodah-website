@@ -1,0 +1,703 @@
+<!DOCTYPE html>
+<html lang="hr">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Upravljanje Događajima — Duhodah</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link href="https://fonts.googleapis.com/css2?family=Jura:wght@400;600;700&family=Inter:wght@300;400;500&family=Montserrat:wght@400;500;600;700&display=swap" rel="stylesheet">
+  <style>
+    :root {
+      --black:    #08081a;
+      --dark:     #0d0d22;
+      --cyan:     #04ffff;
+      --magenta:  #d702f1;
+      --periwinkle:#9aabd8;
+      --steel:    #aad0e4;
+      --font-brand:'Montserrat', sans-serif;
+      --font-head: 'Jura', sans-serif;
+      --font-body: 'Inter', sans-serif;
+    }
+    *, *::before, *::after { margin:0; padding:0; box-sizing:border-box; }
+    html { font-size:16px; }
+    body { background:var(--black); color:rgba(255,255,255,0.88); font-family:var(--font-body); min-height:100vh; }
+
+    /* ── LOGIN ── */
+    #login-screen {
+      display:flex; flex-direction:column; align-items:center; justify-content:center;
+      min-height:100vh; padding:2rem;
+    }
+    .login-box {
+      background:rgba(255,255,255,0.03); border:1px solid rgba(4,255,255,0.15);
+      border-radius:12px; padding:3rem 2.5rem; width:100%; max-width:440px; text-align:center;
+    }
+    .login-logo { font-family:var(--font-head); font-size:1.4rem; letter-spacing:0.25em; color:rgba(255,255,255,0.9); margin-bottom:0.4rem; }
+    .login-sub  { font-size:0.78rem; color:rgba(255,255,255,0.35); letter-spacing:0.1em; text-transform:uppercase; font-family:var(--font-brand); margin-bottom:2.5rem; }
+    .login-label { display:block; font-size:0.75rem; color:rgba(255,255,255,0.4); letter-spacing:0.1em; text-transform:uppercase; margin-bottom:0.6rem; text-align:left; }
+    .login-input {
+      width:100%; background:rgba(255,255,255,0.04); border:1px solid rgba(255,255,255,0.1);
+      border-radius:7px; padding:0.85rem 1rem; color:rgba(255,255,255,0.88);
+      font-family:var(--font-body); font-size:0.9rem; outline:none; margin-bottom:1.2rem;
+      transition:border-color 0.2s;
+    }
+    .login-input:focus { border-color:rgba(4,255,255,0.4); }
+    .login-btn {
+      width:100%; padding:0.9rem; background:var(--cyan); color:#08081a;
+      font-family:var(--font-brand); font-size:0.78rem; font-weight:700;
+      letter-spacing:0.15em; text-transform:uppercase; border:none; border-radius:7px;
+      cursor:pointer; transition:opacity 0.2s;
+    }
+    .login-btn:hover { opacity:0.85; }
+    .login-msg { margin-top:1.2rem; font-size:0.82rem; color:rgba(4,255,255,0.7); min-height:1.2rem; }
+
+    /* ── APP SHELL ── */
+    #app { display:none; }
+
+    .app-header {
+      background:rgba(8,8,26,0.95); border-bottom:1px solid rgba(255,255,255,0.06);
+      padding:1rem 2rem; display:flex; align-items:center; justify-content:space-between;
+      position:sticky; top:0; z-index:50;
+    }
+    .app-header-title { font-family:var(--font-head); font-size:1rem; color:rgba(255,255,255,0.9); letter-spacing:0.1em; }
+    .app-header-right  { display:flex; align-items:center; gap:1.2rem; }
+    .app-user  { font-size:0.75rem; color:rgba(255,255,255,0.35); }
+    .app-logout {
+      font-family:var(--font-brand); font-size:0.7rem; letter-spacing:0.1em; text-transform:uppercase;
+      color:rgba(255,255,255,0.4); background:none; border:1px solid rgba(255,255,255,0.1);
+      padding:0.4rem 0.9rem; border-radius:5px; cursor:pointer; transition:all 0.2s;
+    }
+    .app-logout:hover { border-color:rgba(215,2,241,0.4); color:var(--magenta); }
+
+    .app-body { max-width:1200px; margin:0 auto; padding:2rem; }
+
+    /* ── STATS ── */
+    .stats-row { display:grid; grid-template-columns:repeat(auto-fit,minmax(160px,1fr)); gap:1rem; margin-bottom:2rem; }
+    .stat-card {
+      background:rgba(255,255,255,0.02); border:1px solid rgba(255,255,255,0.07);
+      border-radius:10px; padding:1.2rem 1.4rem;
+    }
+    .stat-label { font-family:var(--font-brand); font-size:0.6rem; letter-spacing:0.2em; text-transform:uppercase; color:rgba(255,255,255,0.35); margin-bottom:0.5rem; }
+    .stat-val   { font-family:var(--font-head); font-size:1.8rem; color:rgba(255,255,255,0.92); }
+    .stat-val.cyan    { color:var(--cyan); }
+    .stat-val.magenta { color:var(--magenta); }
+
+    /* ── CONTROLS ── */
+    .controls { display:flex; align-items:center; justify-content:space-between; flex-wrap:wrap; gap:1rem; margin-bottom:1.8rem; }
+    .filter-tabs { display:flex; gap:0.5rem; flex-wrap:wrap; }
+    .filter-tab {
+      background:transparent; border:1px solid rgba(255,255,255,0.1);
+      color:rgba(255,255,255,0.4); padding:0.4rem 1rem; border-radius:20px;
+      font-family:var(--font-brand); font-size:0.68rem; letter-spacing:0.06em;
+      cursor:pointer; transition:all 0.2s;
+    }
+    .filter-tab.active, .filter-tab:hover {
+      border-color:rgba(4,255,255,0.4); color:var(--cyan); background:rgba(4,255,255,0.06);
+    }
+    .btn-new {
+      background:var(--cyan); color:#08081a;
+      font-family:var(--font-brand); font-size:0.72rem; font-weight:700;
+      letter-spacing:0.12em; text-transform:uppercase;
+      border:none; padding:0.7rem 1.6rem; border-radius:7px; cursor:pointer;
+      transition:opacity 0.2s, box-shadow 0.2s;
+    }
+    .btn-new:hover { opacity:0.88; box-shadow:0 0 20px rgba(4,255,255,0.25); }
+
+    /* ── EVENTS GRID ── */
+    #events-list { display:grid; grid-template-columns:repeat(auto-fill,minmax(340px,1fr)); gap:1.2rem; }
+
+    .event-card {
+      background:rgba(255,255,255,0.02); border:1px solid rgba(255,255,255,0.07);
+      border-radius:10px; padding:1.4rem 1.6rem; transition:border-color 0.2s;
+      position:relative;
+    }
+    .event-card:hover { border-color:rgba(4,255,255,0.2); }
+    .event-card.inactive { opacity:0.45; }
+
+    .event-card-header { display:flex; align-items:flex-start; justify-content:space-between; gap:0.8rem; margin-bottom:0.8rem; }
+    .event-type-badge {
+      font-family:var(--font-brand); font-size:0.58rem; letter-spacing:0.15em;
+      text-transform:uppercase; padding:0.25rem 0.7rem; border-radius:12px;
+      white-space:nowrap; flex-shrink:0;
+    }
+    .badge-breathwork { background:rgba(4,255,255,0.1);  color:var(--cyan);     border:1px solid rgba(4,255,255,0.25); }
+    .badge-autoskola  { background:rgba(215,2,241,0.08); color:var(--magenta); border:1px solid rgba(215,2,241,0.25); }
+    .badge-individualno { background:rgba(154,171,216,0.08); color:var(--periwinkle); border:1px solid rgba(154,171,216,0.25); }
+
+    .event-card-name { font-family:var(--font-head); font-size:1rem; color:rgba(255,255,255,0.9); line-height:1.35; }
+    .event-card-meta { font-size:0.78rem; color:rgba(255,255,255,0.35); margin:0.5rem 0 1rem; line-height:1.6; }
+    .event-card-meta strong { color:rgba(255,255,255,0.55); }
+
+    .event-card-actions { display:flex; gap:0.6rem; align-items:center; }
+    .btn-edit, .btn-delete, .btn-toggle {
+      font-family:var(--font-brand); font-size:0.65rem; letter-spacing:0.08em;
+      text-transform:uppercase; border:none; padding:0.4rem 0.9rem;
+      border-radius:5px; cursor:pointer; transition:all 0.2s;
+    }
+    .btn-edit   { background:rgba(4,255,255,0.08); color:var(--cyan); border:1px solid rgba(4,255,255,0.2); }
+    .btn-edit:hover { background:rgba(4,255,255,0.15); }
+    .btn-delete { background:rgba(215,2,241,0.06); color:var(--magenta); border:1px solid rgba(215,2,241,0.2); }
+    .btn-delete:hover { background:rgba(215,2,241,0.14); }
+    .btn-toggle { background:rgba(255,255,255,0.04); color:rgba(255,255,255,0.4); border:1px solid rgba(255,255,255,0.1); margin-left:auto; }
+    .btn-toggle:hover { background:rgba(255,255,255,0.08); }
+    .btn-toggle.is-active { color:rgba(4,255,255,0.7); border-color:rgba(4,255,255,0.2); }
+
+    .empty-state { text-align:center; padding:5rem 2rem; color:rgba(255,255,255,0.25); font-family:var(--font-head); font-size:0.9rem; letter-spacing:0.1em; grid-column:1/-1; }
+
+    /* ── PANEL OVERLAY ── */
+    .panel-overlay {
+      display:none; position:fixed; inset:0; background:rgba(0,0,0,0.6);
+      backdrop-filter:blur(4px); z-index:100;
+    }
+    .panel-overlay.open { display:block; }
+
+    /* ── FORM PANEL ── */
+    #form-panel {
+      position:fixed; top:0; right:-100%; bottom:0; width:min(580px, 100vw);
+      background:#0d0d22; border-left:1px solid rgba(4,255,255,0.12);
+      z-index:101; overflow-y:auto; transition:right 0.35s cubic-bezier(0.4,0,0.2,1);
+      padding:2rem;
+    }
+    #form-panel.open { right:0; }
+
+    .panel-header { display:flex; align-items:center; justify-content:space-between; margin-bottom:2rem; }
+    .panel-title { font-family:var(--font-head); font-size:1.1rem; color:rgba(255,255,255,0.9); }
+    .panel-close {
+      background:none; border:1px solid rgba(255,255,255,0.1); color:rgba(255,255,255,0.5);
+      width:34px; height:34px; border-radius:6px; cursor:pointer; font-size:1rem;
+      display:flex; align-items:center; justify-content:center; transition:all 0.2s;
+    }
+    .panel-close:hover { border-color:rgba(215,2,241,0.4); color:var(--magenta); }
+
+    .form-section-title {
+      font-family:var(--font-brand); font-size:0.6rem; letter-spacing:0.2em; text-transform:uppercase;
+      color:rgba(4,255,255,0.5); margin:1.8rem 0 1rem; padding-bottom:0.5rem;
+      border-bottom:1px solid rgba(255,255,255,0.06);
+    }
+    .form-row { display:grid; grid-template-columns:1fr 1fr; gap:1rem; }
+    .form-row.single { grid-template-columns:1fr; }
+
+    .field { display:flex; flex-direction:column; gap:0.4rem; margin-bottom:1rem; }
+    .field label { font-size:0.72rem; color:rgba(255,255,255,0.4); letter-spacing:0.08em; text-transform:uppercase; }
+    .field input, .field select, .field textarea {
+      background:rgba(255,255,255,0.04); border:1px solid rgba(255,255,255,0.1);
+      border-radius:7px; padding:0.7rem 0.9rem; color:rgba(255,255,255,0.88);
+      font-family:var(--font-body); font-size:0.88rem; outline:none; transition:border-color 0.2s;
+      width:100%;
+    }
+    .field input:focus, .field select:focus, .field textarea:focus { border-color:rgba(4,255,255,0.4); }
+    .field textarea { resize:vertical; min-height:90px; line-height:1.6; }
+    .field select option { background:#0d0d22; }
+    .field .hint { font-size:0.68rem; color:rgba(255,255,255,0.25); }
+
+    .checkbox-group { display:flex; flex-wrap:wrap; gap:0.6rem; }
+    .checkbox-label { display:flex; align-items:center; gap:0.5rem; cursor:pointer; font-size:0.8rem; color:rgba(255,255,255,0.55); }
+    .checkbox-label input[type=checkbox] { accent-color:var(--cyan); width:14px; height:14px; }
+
+    .toggle-row { display:flex; align-items:center; justify-content:space-between; padding:0.8rem 0; border-bottom:1px solid rgba(255,255,255,0.04); }
+    .toggle-row label { font-size:0.82rem; color:rgba(255,255,255,0.6); }
+    .toggle-switch { position:relative; width:44px; height:24px; }
+    .toggle-switch input { opacity:0; width:0; height:0; }
+    .toggle-slider {
+      position:absolute; inset:0; background:rgba(255,255,255,0.1); border-radius:24px;
+      cursor:pointer; transition:0.3s;
+    }
+    .toggle-slider::before {
+      content:''; position:absolute; width:18px; height:18px; left:3px; bottom:3px;
+      background:rgba(255,255,255,0.5); border-radius:50%; transition:0.3s;
+    }
+    .toggle-switch input:checked + .toggle-slider { background:rgba(4,255,255,0.25); }
+    .toggle-switch input:checked + .toggle-slider::before { transform:translateX(20px); background:var(--cyan); }
+
+    .panel-footer { margin-top:2rem; padding-top:1.5rem; border-top:1px solid rgba(255,255,255,0.06); display:flex; flex-direction:column; gap:0.8rem; }
+    .btn-save {
+      width:100%; padding:1rem; background:var(--cyan); color:#08081a;
+      font-family:var(--font-brand); font-size:0.8rem; font-weight:700;
+      letter-spacing:0.15em; text-transform:uppercase; border:none; border-radius:8px;
+      cursor:pointer; transition:opacity 0.2s, box-shadow 0.2s;
+    }
+    .btn-save:hover { opacity:0.88; box-shadow:0 0 24px rgba(4,255,255,0.3); }
+    .btn-save:disabled { opacity:0.4; cursor:not-allowed; }
+    .save-status { text-align:center; font-size:0.78rem; min-height:1.2rem; }
+    .save-status.ok  { color:rgba(4,255,255,0.8); }
+    .save-status.err { color:var(--magenta); }
+
+    .loading-overlay { text-align:center; padding:4rem; color:rgba(255,255,255,0.3); font-family:var(--font-head); letter-spacing:0.1em; }
+  </style>
+</head>
+<body>
+
+<!-- ═══ LOGIN ═══ -->
+<div id="login-screen">
+  <div class="login-box">
+    <div class="login-logo">DUHODAH</div>
+    <div class="login-sub">Admin · Događaji</div>
+    <label class="login-label">Email adresa</label>
+    <input type="email" class="login-input" id="login-email" placeholder="duhodah@duhodah.com" autocomplete="email">
+    <button class="login-btn" id="login-btn">Pošalji magični link →</button>
+    <div class="login-msg" id="login-msg"></div>
+  </div>
+</div>
+
+<!-- ═══ APP ═══ -->
+<div id="app">
+
+  <header class="app-header">
+    <div class="app-header-title">Upravljanje Događajima</div>
+    <div class="app-header-right">
+      <span class="app-user" id="app-user-email"></span>
+      <button class="app-logout" id="btn-logout">Odjava</button>
+    </div>
+  </header>
+
+  <div class="app-body">
+
+    <!-- Stats -->
+    <div class="stats-row" id="stats-row">
+      <div class="stat-card"><div class="stat-label">Ukupno događaja</div><div class="stat-val cyan" id="stat-total">—</div></div>
+      <div class="stat-card"><div class="stat-label">Nadolazećih</div><div class="stat-val" id="stat-upcoming">—</div></div>
+      <div class="stat-card"><div class="stat-label">Aktivnih</div><div class="stat-val" id="stat-active">—</div></div>
+      <div class="stat-card"><div class="stat-label">Skrivenih</div><div class="stat-val magenta" id="stat-hidden">—</div></div>
+    </div>
+
+    <!-- Controls -->
+    <div class="controls">
+      <div class="filter-tabs">
+        <button class="filter-tab active" data-tip="sve">Svi</button>
+        <button class="filter-tab" data-tip="breathwork_journey">Breathwork</button>
+        <button class="filter-tab" data-tip="autoskola">Autoškola</button>
+        <button class="filter-tab" data-tip="individualno">Individualno</button>
+      </div>
+      <button class="btn-new" id="btn-new">+ Novi događaj</button>
+    </div>
+
+    <!-- Events list -->
+    <div id="events-list">
+      <div class="loading-overlay">Učitavam događaje...</div>
+    </div>
+
+  </div>
+</div>
+
+<!-- Panel overlay -->
+<div class="panel-overlay" id="panel-overlay"></div>
+
+<!-- ═══ FORM PANEL ═══ -->
+<aside id="form-panel">
+  <div class="panel-header">
+    <span class="panel-title" id="panel-title">Novi događaj</span>
+    <button class="panel-close" id="panel-close">✕</button>
+  </div>
+
+  <form id="event-form" autocomplete="off">
+    <input type="hidden" id="f-id">
+
+    <div class="form-section-title">Osnovni podaci</div>
+
+    <div class="field">
+      <label>Naziv *</label>
+      <input type="text" id="f-naziv" placeholder="Breathwork Journey — Lipanj" required>
+    </div>
+
+    <div class="form-row">
+      <div class="field">
+        <label>Tip *</label>
+        <select id="f-tip" required>
+          <option value="">— odaberi —</option>
+          <option value="breathwork_journey">Breathwork Journey</option>
+          <option value="autoskola_1">Autoškola — Susret 1</option>
+          <option value="autoskola_2">Autoškola — Susret 2</option>
+          <option value="autoskola_3">Autoškola — Susret 3</option>
+          <option value="autoskola_4">Autoškola — Susret 4</option>
+          <option value="individualno">Individualno</option>
+        </select>
+      </div>
+      <div class="field">
+        <label>Datum i vrijeme *</label>
+        <input type="datetime-local" id="f-datum" required>
+      </div>
+    </div>
+
+    <div class="form-row">
+      <div class="field">
+        <label>Trajanje (min)</label>
+        <input type="number" id="f-trajanje" value="120" min="30" max="480">
+      </div>
+      <div class="field">
+        <label>Kapacitet (mjesta)</label>
+        <input type="number" id="f-kapacitet" value="15" min="1" max="200">
+      </div>
+    </div>
+
+    <div class="field">
+      <label>Lokacija</label>
+      <input type="text" id="f-lokacija" placeholder="Livada &quot;Kod Zdenca&quot;, Šetalište kardinala Franje Šepera">
+    </div>
+
+    <div class="form-section-title">Opisi</div>
+
+    <div class="field">
+      <label>Kratki opis <span class="hint">(za karticu u kalendaru, 1-2 rečenice)</span></label>
+      <textarea id="f-opis-kratki" rows="2" placeholder="Vođeno svjesno disanje uz imerzivnu glazbu..."></textarea>
+    </div>
+
+    <div class="field">
+      <label>Puni opis <span class="hint">(za detail panel)</span></label>
+      <textarea id="f-opis" rows="5" placeholder="Detaljniji opis događaja..."></textarea>
+    </div>
+
+    <div class="form-section-title">Cijena i plaćanje</div>
+
+    <div class="form-row">
+      <div class="field">
+        <label>Cijena (€)</label>
+        <input type="number" id="f-cijena" min="0" step="0.01" placeholder="25">
+      </div>
+      <div class="field">
+        <label>Cijena za pretplatnike (€)</label>
+        <input type="number" id="f-cijena-pretplata" min="0" step="0.01" value="0">
+        <span class="hint">0 = besplatno</span>
+      </div>
+    </div>
+
+    <div class="field">
+      <label>Stripe Payment Link</label>
+      <input type="url" id="f-stripe" placeholder="https://buy.stripe.com/...">
+    </div>
+
+    <div class="field">
+      <label>Pokriva pretplatni plan</label>
+      <div class="checkbox-group">
+        <label class="checkbox-label"><input type="checkbox" id="f-plan-15" value="zajednica_15"> Zajednica 35€/mj</label>
+        <label class="checkbox-label"><input type="checkbox" id="f-plan-god" value="zajednica_120_god"> Zajednica 50€/mj</label>
+      </div>
+    </div>
+
+    <div class="form-section-title">Ostale postavke</div>
+
+    <div class="field">
+      <label>Slug <span class="hint">(auto-generiran, možeš ručno promijeniti)</span></label>
+      <input type="text" id="f-slug" placeholder="breathwork-journey-2026-06-14">
+    </div>
+
+    <div class="toggle-row">
+      <label for="f-aktivan">Vidljivo na stranici</label>
+      <label class="toggle-switch">
+        <input type="checkbox" id="f-aktivan" checked>
+        <span class="toggle-slider"></span>
+      </label>
+    </div>
+
+    <div class="panel-footer">
+      <button type="submit" class="btn-save" id="btn-save">Spremi i objavi na stranici →</button>
+      <div class="save-status" id="save-status"></div>
+    </div>
+  </form>
+</aside>
+
+<script type="module">
+  import { createClient } from 'https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2/+esm';
+  import { SUPABASE_URL, SUPABASE_ANON_KEY } from './js/supabase-config.js';
+
+  const supabase = createClient(SUPABASE_URL, SUPABASE_ANON_KEY);
+  const ADMIN_EMAIL = 'duhodah@duhodah.com';
+
+  let allEvents = [];
+  let currentFilter = 'sve';
+  let editingId = null;
+
+  // ── AUTH ──────────────────────────────────────────────
+  supabase.auth.onAuthStateChange(async (event, session) => {
+    if (session?.user) {
+      if (session.user.email !== ADMIN_EMAIL) {
+        showLoginMsg('Pristup dopušten samo za ' + ADMIN_EMAIL, true);
+        await supabase.auth.signOut();
+        return;
+      }
+      showApp(session.user);
+    } else {
+      showLogin();
+    }
+  });
+
+  document.getElementById('login-btn').addEventListener('click', async () => {
+    const email = document.getElementById('login-email').value.trim();
+    if (!email) return;
+    document.getElementById('login-btn').disabled = true;
+    const { error } = await supabase.auth.signInWithOtp({
+      email,
+      options: { emailRedirectTo: window.location.href }
+    });
+    if (error) {
+      showLoginMsg('Greška: ' + error.message, true);
+    } else {
+      showLoginMsg('✓ Link poslan na ' + email + ' — klikni ga za prijavu.');
+    }
+    document.getElementById('login-btn').disabled = false;
+  });
+
+  document.getElementById('btn-logout').addEventListener('click', async () => {
+    await supabase.auth.signOut();
+  });
+
+  function showLogin() {
+    document.getElementById('login-screen').style.display = 'flex';
+    document.getElementById('app').style.display = 'none';
+  }
+
+  function showApp(user) {
+    document.getElementById('login-screen').style.display = 'none';
+    document.getElementById('app').style.display = 'block';
+    document.getElementById('app-user-email').textContent = user.email;
+    loadEvents();
+  }
+
+  function showLoginMsg(msg, isErr = false) {
+    const el = document.getElementById('login-msg');
+    el.textContent = msg;
+    el.style.color = isErr ? 'var(--magenta)' : 'rgba(4,255,255,0.8)';
+  }
+
+  // ── LOAD EVENTS ───────────────────────────────────────
+  async function loadEvents() {
+    const { data, error } = await supabase
+      .from('dogadjaji')
+      .select('*')
+      .order('datum', { ascending: true });
+
+    if (error) { console.error(error); return; }
+    allEvents = data || [];
+    updateStats();
+    renderEvents();
+  }
+
+  function updateStats() {
+    const now = new Date();
+    document.getElementById('stat-total').textContent    = allEvents.length;
+    document.getElementById('stat-upcoming').textContent = allEvents.filter(e => new Date(e.datum) >= now).length;
+    document.getElementById('stat-active').textContent   = allEvents.filter(e => e.aktivan).length;
+    document.getElementById('stat-hidden').textContent   = allEvents.filter(e => !e.aktivan).length;
+  }
+
+  function renderEvents() {
+    const container = document.getElementById('events-list');
+    let filtered = allEvents;
+    if (currentFilter !== 'sve') {
+      if (currentFilter === 'autoskola') {
+        filtered = allEvents.filter(e => e.tip.startsWith('autoskola'));
+      } else {
+        filtered = allEvents.filter(e => e.tip === currentFilter);
+      }
+    }
+
+    if (filtered.length === 0) {
+      container.innerHTML = '<div class="empty-state">Nema događaja za ovaj filter.<br>Klikni "+ Novi događaj" za dodavanje.</div>';
+      return;
+    }
+
+    container.innerHTML = filtered.map(e => {
+      const d = new Date(e.datum);
+      const dateStr = d.toLocaleDateString('hr-HR', { weekday:'short', day:'numeric', month:'long', year:'numeric' });
+      const timeStr = d.toLocaleTimeString('hr-HR', { hour:'2-digit', minute:'2-digit' });
+      const isPast  = d < new Date();
+      const badge   = tipBadge(e.tip);
+      return `
+      <div class="event-card ${!e.aktivan ? 'inactive' : ''}" id="card-${e.id}">
+        <div class="event-card-header">
+          <span class="event-type-badge ${badge.cls}">${badge.label}</span>
+          ${isPast ? '<span style="font-size:0.62rem;color:rgba(255,255,255,0.25);font-family:var(--font-brand);letter-spacing:0.1em;text-transform:uppercase;">Prošlo</span>' : ''}
+        </div>
+        <div class="event-card-name">${e.naziv}</div>
+        <div class="event-card-meta">
+          <strong>${dateStr} · ${timeStr}</strong><br>
+          ${e.lokacija || '—'} · ${e.trajanje_min || 90} min
+          ${e.cijena_eur ? ' · <strong style="color:var(--cyan)">' + e.cijena_eur + '€</strong>' : ''}
+          ${e.kapacitet ? ' · ' + e.kapacitet + ' mjesta' : ''}
+        </div>
+        <div class="event-card-actions">
+          <button class="btn-edit"   onclick="openEdit('${e.id}')">Uredi</button>
+          <button class="btn-delete" onclick="deleteEvent('${e.id}', '${e.naziv.replace(/'/g,"\\'") }')">Izbriši</button>
+          <button class="btn-toggle ${e.aktivan ? 'is-active' : ''}" onclick="toggleActive('${e.id}', ${e.aktivan})">
+            ${e.aktivan ? '● Vidljivo' : '○ Skriveno'}
+          </button>
+        </div>
+      </div>`;
+    }).join('');
+  }
+
+  function tipBadge(tip) {
+    if (tip === 'breathwork_journey') return { cls:'badge-breathwork', label:'Breathwork Journey' };
+    if (tip.startsWith('autoskola'))  return { cls:'badge-autoskola',  label:'Autoškola' };
+    return { cls:'badge-individualno', label:'Individualno' };
+  }
+
+  // ── FILTER TABS ───────────────────────────────────────
+  document.querySelectorAll('.filter-tab').forEach(tab => {
+    tab.addEventListener('click', () => {
+      document.querySelectorAll('.filter-tab').forEach(t => t.classList.remove('active'));
+      tab.classList.add('active');
+      currentFilter = tab.dataset.tip;
+      renderEvents();
+    });
+  });
+
+  // ── PANEL OPEN/CLOSE ──────────────────────────────────
+  document.getElementById('btn-new').addEventListener('click', () => openNew());
+  document.getElementById('panel-close').addEventListener('click', closePanel);
+  document.getElementById('panel-overlay').addEventListener('click', closePanel);
+
+  function openNew() {
+    editingId = null;
+    document.getElementById('panel-title').textContent = 'Novi događaj';
+    document.getElementById('event-form').reset();
+    document.getElementById('f-id').value = '';
+    document.getElementById('f-aktivan').checked = true;
+    document.getElementById('f-trajanje').value  = '120';
+    document.getElementById('f-kapacitet').value = '15';
+    document.getElementById('f-cijena-pretplata').value = '0';
+    document.getElementById('f-lokacija').value = 'Livada "Kod Zdenca", Šetalište kardinala Franje Šepera, Osijek';
+    setSaveStatus('');
+    openPanel();
+  }
+
+  window.openEdit = function(id) {
+    const e = allEvents.find(x => x.id === id);
+    if (!e) return;
+    editingId = id;
+    document.getElementById('panel-title').textContent = 'Uredi događaj';
+    document.getElementById('f-id').value      = e.id;
+    document.getElementById('f-naziv').value   = e.naziv || '';
+    document.getElementById('f-tip').value     = e.tip || '';
+    document.getElementById('f-trajanje').value = e.trajanje_min || 120;
+    document.getElementById('f-kapacitet').value = e.kapacitet || 15;
+    document.getElementById('f-lokacija').value = e.lokacija || '';
+    document.getElementById('f-opis-kratki').value = e.opis_kratki || '';
+    document.getElementById('f-opis').value    = e.opis || '';
+    document.getElementById('f-cijena').value  = e.cijena_eur || '';
+    document.getElementById('f-cijena-pretplata').value = e.cijena_pretplatnik ?? 0;
+    document.getElementById('f-stripe').value  = e.stripe_link || '';
+    document.getElementById('f-slug').value    = e.slug || '';
+    document.getElementById('f-aktivan').checked = e.aktivan;
+    // Datum: convert to datetime-local format
+    if (e.datum) {
+      const d = new Date(e.datum);
+      const pad = n => String(n).padStart(2,'0');
+      document.getElementById('f-datum').value = `${d.getFullYear()}-${pad(d.getMonth()+1)}-${pad(d.getDate())}T${pad(d.getHours())}:${pad(d.getMinutes())}`;
+    }
+    // Plans
+    const plans = e.pokriva_plan || [];
+    document.getElementById('f-plan-15').checked  = plans.includes('zajednica_15');
+    document.getElementById('f-plan-god').checked = plans.includes('zajednica_120_god');
+    setSaveStatus('');
+    openPanel();
+  };
+
+  function openPanel() {
+    document.getElementById('form-panel').classList.add('open');
+    document.getElementById('panel-overlay').classList.add('open');
+  }
+
+  function closePanel() {
+    document.getElementById('form-panel').classList.remove('open');
+    document.getElementById('panel-overlay').classList.remove('open');
+  }
+
+  // ── AUTO SLUG ─────────────────────────────────────────
+  document.getElementById('f-naziv').addEventListener('input', autoSlug);
+  document.getElementById('f-datum').addEventListener('input', autoSlug);
+
+  function autoSlug() {
+    const naziv = document.getElementById('f-naziv').value;
+    const datum = document.getElementById('f-datum').value;
+    if (!naziv || editingId) return; // don't overwrite when editing
+    let base = naziv.toLowerCase()
+      .replace(/[čć]/g,'c').replace(/š/g,'s').replace(/đ/g,'d').replace(/ž/g,'z')
+      .replace(/[^a-z0-9\s-]/g,'').replace(/\s+/g,'-').replace(/-+/g,'-').trim();
+    let slug = base;
+    if (datum) {
+      const d = new Date(datum);
+      if (!isNaN(d)) {
+        const pad = n => String(n).padStart(2,'0');
+        slug += `-${d.getFullYear()}-${pad(d.getMonth()+1)}-${pad(d.getDate())}`;
+      }
+    }
+    document.getElementById('f-slug').value = slug;
+  }
+
+  // ── SAVE ──────────────────────────────────────────────
+  document.getElementById('event-form').addEventListener('submit', async (e) => {
+    e.preventDefault();
+    const btn = document.getElementById('btn-save');
+    btn.disabled = true;
+    btn.textContent = 'Spremam...';
+    setSaveStatus('');
+
+    const plans = [];
+    if (document.getElementById('f-plan-15').checked)  plans.push('zajednica_15');
+    if (document.getElementById('f-plan-god').checked) plans.push('zajednica_120_god');
+
+    // Convert datetime-local to ISO with timezone
+    const datumLocal = document.getElementById('f-datum').value;
+    const datumISO   = datumLocal ? new Date(datumLocal).toISOString() : null;
+
+    const payload = {
+      naziv:              document.getElementById('f-naziv').value.trim(),
+      tip:                document.getElementById('f-tip').value,
+      datum:              datumISO,
+      trajanje_min:       parseInt(document.getElementById('f-trajanje').value) || 120,
+      kapacitet:          parseInt(document.getElementById('f-kapacitet').value) || 15,
+      lokacija:           document.getElementById('f-lokacija').value.trim() || null,
+      opis_kratki:        document.getElementById('f-opis-kratki').value.trim() || null,
+      opis:               document.getElementById('f-opis').value.trim() || null,
+      cijena_eur:         parseFloat(document.getElementById('f-cijena').value) || null,
+      cijena_pretplatnik: parseFloat(document.getElementById('f-cijena-pretplata').value) ?? 0,
+      stripe_link:        document.getElementById('f-stripe').value.trim() || null,
+      pokriva_plan:       plans.length ? plans : null,
+      slug:               document.getElementById('f-slug').value.trim(),
+      aktivan:            document.getElementById('f-aktivan').checked,
+    };
+
+    let error;
+    if (editingId) {
+      ({ error } = await supabase.from('dogadjaji').update(payload).eq('id', editingId));
+    } else {
+      ({ error } = await supabase.from('dogadjaji').insert(payload));
+    }
+
+    if (error) {
+      setSaveStatus('Greška: ' + error.message, true);
+    } else {
+      setSaveStatus('✓ Objavljeno — vidljivo na duhodah.com odmah!');
+      await loadEvents();
+      if (!editingId) {
+        setTimeout(closePanel, 1800);
+      }
+    }
+
+    btn.disabled = false;
+    btn.textContent = 'Spremi i objavi na stranici →';
+  });
+
+  // ── DELETE ────────────────────────────────────────────
+  window.deleteEvent = async function(id, naziv) {
+    if (!confirm(`Izbrisati "${naziv}"?\n\nOva radnja je trajna.`)) return;
+    const { error } = await supabase.from('dogadjaji').delete().eq('id', id);
+    if (error) { alert('Greška: ' + error.message); return; }
+    await loadEvents();
+  };
+
+  // ── TOGGLE ACTIVE ─────────────────────────────────────
+  window.toggleActive = async function(id, current) {
+    const { error } = await supabase.from('dogadjaji').update({ aktivan: !current }).eq('id', id);
+    if (error) { alert('Greška: ' + error.message); return; }
+    await loadEvents();
+  };
+
+  function setSaveStatus(msg, isErr = false) {
+    const el = document.getElementById('save-status');
+    el.textContent = msg;
+    el.className = 'save-status ' + (isErr ? 'err' : (msg ? 'ok' : ''));
+  }
+</script>
+
+</body>
+</html>
