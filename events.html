@@ -1,0 +1,283 @@
+<!DOCTYPE html>
+<html lang="hr">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Termini i Događaji — Duhodah</title>
+  <meta name="description" content="Svi nadolazeći Breathwork Journey termini i Autoškola za živčani sustav. Rezerviraj svoje mjesto.">
+
+  <!-- Fonts -->
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Jura:wght@400;500;600;700&family=Inter:wght@300;400;500&family=Montserrat:wght@400;500;600;700;800;900&display=swap" rel="stylesheet">
+
+  <!-- Styles -->
+  <link rel="stylesheet" href="css/calendar.css">
+
+  <style>
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+    body {
+      background: #0a0a0a;
+      color: rgba(255, 255, 255, 0.9);
+      font-family: 'Inter', sans-serif;
+      line-height: 1.6;
+      overflow-x: hidden;
+    }
+
+    /* ---- NAV ---- */
+    .nav {
+      position: fixed;
+      top: 0;
+      left: 0;
+      right: 0;
+      z-index: 100;
+      padding: 18px 40px;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      background: rgba(10, 10, 10, 0.85);
+      backdrop-filter: blur(12px);
+      border-bottom: 1px solid rgba(255, 255, 255, 0.05);
+    }
+
+    .nav__logo {
+      height: 18px;
+      opacity: 0.9;
+    }
+
+    .nav__links {
+      display: flex;
+      align-items: center;
+      gap: 28px;
+      list-style: none;
+    }
+
+    .nav__links a {
+      color: rgba(255, 255, 255, 0.55);
+      text-decoration: none;
+      font-size: 0.8rem;
+      font-family: 'Jura', sans-serif;
+      letter-spacing: 0.06em;
+      text-transform: uppercase;
+      transition: color 0.2s;
+    }
+
+    .nav__links a:hover,
+    .nav__links a.active {
+      color: rgba(4, 255, 255, 0.9);
+    }
+
+    /* ---- HERO ---- */
+    .events-hero {
+      padding: 120px 40px 64px;
+      max-width: 1100px;
+      margin: 0 auto;
+    }
+
+    .events-hero__eyebrow {
+      font-family: 'Jura', sans-serif;
+      font-size: 0.7rem;
+      letter-spacing: 0.2em;
+      text-transform: uppercase;
+      color: rgba(4, 255, 255, 0.6);
+      margin-bottom: 16px;
+      display: block;
+    }
+
+    .events-hero__title {
+      font-family: 'Jura', sans-serif;
+      font-size: clamp(2.2rem, 5vw, 3.6rem);
+      font-weight: 700;
+      color: rgba(255, 255, 255, 0.95);
+      margin-bottom: 16px;
+      letter-spacing: 0.02em;
+      line-height: 1.15;
+    }
+
+    .events-hero__title span {
+      background: linear-gradient(135deg, rgba(4, 255, 255, 1), rgba(215, 2, 241, 1));
+      -webkit-background-clip: text;
+      -webkit-text-fill-color: transparent;
+      background-clip: text;
+    }
+
+    .events-hero__subtitle {
+      font-size: 1rem;
+      color: rgba(255, 255, 255, 0.5);
+      max-width: 520px;
+      line-height: 1.65;
+      margin-bottom: 40px;
+    }
+
+    /* ---- CONTROLS ---- */
+    .cal-page__body {
+      max-width: 1100px;
+      margin: 0 auto;
+      padding: 0 40px 100px;
+    }
+
+    .cal-controls {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      flex-wrap: wrap;
+      gap: 16px;
+      margin-bottom: 36px;
+    }
+
+    .cal-filter-tabs {
+      display: flex;
+      gap: 8px;
+      flex-wrap: wrap;
+    }
+
+    .cal-filter-tab {
+      background: transparent;
+      border: 1px solid rgba(255, 255, 255, 0.12);
+      color: rgba(255, 255, 255, 0.45);
+      padding: 6px 16px;
+      border-radius: 20px;
+      font-family: 'Jura', sans-serif;
+      font-size: 0.72rem;
+      letter-spacing: 0.06em;
+      cursor: pointer;
+      transition: all 0.2s;
+    }
+
+    .cal-filter-tab.active,
+    .cal-filter-tab:hover {
+      border-color: rgba(4, 255, 255, 0.4);
+      color: rgba(4, 255, 255, 0.9);
+      background: rgba(4, 255, 255, 0.08);
+    }
+
+    /* ---- FOOTER ---- */
+    .events-footer {
+      text-align: center;
+      padding: 60px 40px;
+      border-top: 1px solid rgba(255, 255, 255, 0.06);
+      font-size: 0.8rem;
+      color: rgba(255, 255, 255, 0.3);
+      font-family: 'Jura', sans-serif;
+    }
+
+    .events-footer a {
+      color: rgba(4, 255, 255, 0.5);
+      text-decoration: none;
+    }
+
+    @media (max-width: 768px) {
+      .nav { padding: 16px 20px; }
+      .nav__links { display: none; }
+      .events-hero { padding: 90px 20px 40px; }
+      .cal-page__body { padding: 0 20px 80px; }
+      .events-footer { padding: 40px 20px; }
+    }
+  </style>
+</head>
+<body>
+
+  <!-- NAV -->
+  <nav class="nav">
+    <a href="index.html">
+      <img src="images/Duhodah Wordbrand BW_3.2.2.jpg" alt="Duhodah" class="nav__logo">
+    </a>
+    <ul class="nav__links">
+      <li><a href="index.html">Početna</a></li>
+      <li><a href="events.html" class="active">Termini</a></li>
+      <li><a href="znanje.html">Znanje</a></li>
+      <li><a href="priručnik.html">Priručnik</a></li>
+    </ul>
+    <!-- Auth indicator -->
+    <div id="auth-indicator">
+      <span class="auth-dot" id="auth-dot"></span>
+      <a href="javascript:void(0)" id="auth-signout-btn">Odjava</a>
+    </div>
+  </nav>
+
+  <!-- HERO -->
+  <section class="events-hero">
+    <span class="events-hero__eyebrow">Breathwork · Autoškola za živčani sustav</span>
+    <h1 class="events-hero__title">Termini i <span>Događaji</span></h1>
+    <p class="events-hero__subtitle">Svi nadolazeći termini na jednom mjestu. Disajna putovanja online i uživo, Autoškola za živčani sustav, te posebni događaji.</p>
+  </section>
+
+  <!-- MAIN CONTENT -->
+  <main class="cal-page__body">
+
+    <!-- Controls -->
+    <div class="cal-controls">
+      <div class="cal-filter-tabs">
+        <button class="cal-filter-tab active" data-filter="sve">Sve</button>
+        <button class="cal-filter-tab" data-filter="breathwork_journey">Breathwork Journey</button>
+        <button class="cal-filter-tab" data-filter="autoskola">Autoškola</button>
+      </div>
+
+      <div class="cal-view-toggle">
+        <button id="cal-view-list" class="active">Lista</button>
+        <button id="cal-view-month">Kalendar</button>
+      </div>
+    </div>
+
+    <!-- Calendar output -->
+    <div id="cal-main">
+      <div class="cal-loading">Učitavam termine...</div>
+    </div>
+
+  </main>
+
+  <!-- EVENT DETAIL PANEL -->
+  <div class="cal-panel-overlay" onclick="closeEventPanel()"></div>
+  <aside id="cal-panel" class="cal-panel"></aside>
+
+  <!-- LOGIN MODAL -->
+  <div id="cal-login-modal" class="cal-modal">
+    <div class="cal-modal__box">
+      <button class="cal-modal__close" onclick="document.getElementById('cal-login-modal').classList.remove('cal-modal--open')">✕</button>
+      <h3 class="cal-modal__title">Prijava za pretplatnike</h3>
+      <p class="cal-modal__sub">Upiši svoju email adresu. Poslat ćemo ti magični link — klikni ga i automatski si prijavljen/a. Bez lozinke.</p>
+      <form id="cal-login-form">
+        <input type="email" class="cal-modal__input" placeholder="tvoj@email.com" required autocomplete="email">
+        <button type="submit" class="cal-modal__submit">Pošalji magični link →</button>
+      </form>
+      <div class="cal-modal__success"></div>
+    </div>
+  </div>
+
+  <!-- FOOTER -->
+  <footer class="events-footer">
+    <p>© 2025 Duhodah · <a href="index.html">Početna</a> · <a href="index.html#kontakt">Kontakt</a></p>
+  </footer>
+
+  <!-- Scripts (ESM modules) -->
+  <script type="module">
+    import { initFullCalendar } from './js/calendar.js';
+    import { initAuth, signOut } from './js/auth.js';
+
+    // Init auth listener
+    initAuth((event, session, user) => {
+      // Refresh calendar on auth change so buttons update
+      if (event === 'SIGNED_IN' || event === 'SIGNED_OUT') {
+        initFullCalendar();
+      }
+    });
+
+    // Sign out button
+    document.getElementById('auth-signout-btn')?.addEventListener('click', signOut);
+
+    // Init calendar
+    initFullCalendar();
+
+    // Filter tabs
+    document.querySelectorAll('.cal-filter-tab').forEach(tab => {
+      tab.addEventListener('click', () => {
+        document.querySelectorAll('.cal-filter-tab').forEach(t => t.classList.remove('active'));
+        tab.classList.add('active');
+        // TODO: implement filter by type
+      });
+    });
+  </script>
+
+</body>
+</html>

@@ -1,0 +1,4355 @@
+<!DOCTYPE html>
+<html lang="hr">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Duhodah — Svjesno Disanje | Osijek</title>
+  <meta name="description" content="Duhodah — Jedini dediciran breathwork studio u Osijeku i Slavoniji. Svjesno disanje za regulaciju živčanog sustava, smanjenje stresa i osobni razvoj.">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Jura:wght@300;400;500;600;700&family=Montserrat:wght@300;400;500;600;700&family=Inter:wght@300;400;500&display=swap" rel="stylesheet">
+  <style>
+    /* ═══════════════════════════════════════════════
+       BRAND COLORS
+    ═══════════════════════════════════════════════ */
+    :root {
+      --black:       #08081a;
+      --dark:        #0d0d22;
+      --dark2:       #15154d;
+      --purple-deep: #540280;
+      --navy:        #15154d;
+      --cyan:        #04ffff;
+      --cyan-soft:   #a5ffff;
+      --magenta:     #d702f1;
+      --pink:        #e488d1;
+      --periwinkle:  #9aabd8;
+      --steel:       #aad0e4;
+      --white:       #ffffff;
+      --white-soft:  #e8eeff;
+      --grey:        #c8cfe0;
+
+      --font-brand:  'Montserrat', sans-serif;
+      --font-head:   'Jura', sans-serif;
+      --font-body:   'Inter', sans-serif;
+
+      --glow-cyan:   0 0 30px rgba(4,255,255,0.4), 0 0 60px rgba(4,255,255,0.2);
+      --glow-mag:    0 0 30px rgba(215,2,241,0.4), 0 0 60px rgba(215,2,241,0.2);
+      --glow-purple: 0 0 40px rgba(84,2,128,0.5);
+    }
+
+    /* ═══════════════════════════════════════════════
+       RESET & BASE
+    ═══════════════════════════════════════════════ */
+    *, *::before, *::after { margin: 0; padding: 0; box-sizing: border-box; }
+
+    html { scroll-behavior: smooth; font-size: 16px; }
+
+    body {
+      background: var(--black);
+      color: var(--white-soft);
+      font-family: var(--font-body);
+      font-weight: 300;
+      line-height: 1.7;
+      overflow-x: hidden;
+    }
+
+    ::selection { background: var(--purple-deep); color: var(--cyan-soft); }
+
+    a { color: inherit; text-decoration: none; }
+
+    img { max-width: 100%; display: block; }
+
+    /* ═══════════════════════════════════════════════
+       SCROLL ANIMATIONS
+    ═══════════════════════════════════════════════ */
+    .reveal {
+      opacity: 0;
+      transform: translateY(40px);
+      transition: opacity 0.8s ease, transform 0.8s ease;
+    }
+    .reveal.visible {
+      opacity: 1;
+      transform: translateY(0);
+    }
+    .reveal-delay-1 { transition-delay: 0.15s; }
+    .reveal-delay-2 { transition-delay: 0.3s; }
+    .reveal-delay-3 { transition-delay: 0.45s; }
+    .reveal-delay-4 { transition-delay: 0.6s; }
+
+    /* ═══════════════════════════════════════════════
+       TYPOGRAPHY
+    ═══════════════════════════════════════════════ */
+    h1, h2, h3, h4 {
+      font-family: var(--font-head);
+      font-weight: 400;
+      letter-spacing: 0.08em;
+      line-height: 1.2;
+    }
+
+    button, label, input, select, textarea {
+      font-family: var(--font-brand);
+    }
+
+    .brand-text {
+      font-family: var(--font-brand);
+      font-weight: 700;
+      letter-spacing: 0.25em;
+      text-transform: uppercase;
+    }
+
+    .section-label {
+      font-family: var(--font-brand);
+      font-size: 0.7rem;
+      font-weight: 600;
+      letter-spacing: 0.35em;
+      text-transform: uppercase;
+      color: var(--cyan);
+      margin-bottom: 1rem;
+    }
+
+    .section-title {
+      font-family: var(--font-head);
+      font-size: clamp(1.8rem, 4vw, 3rem);
+      font-weight: 400;
+      letter-spacing: 0.06em;
+      color: var(--white);
+      margin-bottom: 1.5rem;
+    }
+
+    .section-subtitle {
+      font-size: 1.05rem;
+      font-weight: 300;
+      color: var(--steel);
+      max-width: 600px;
+      line-height: 1.8;
+    }
+
+    /* ═══════════════════════════════════════════════
+       LAYOUT HELPERS
+    ═══════════════════════════════════════════════ */
+    .container {
+      width: 90%;
+      max-width: 1200px;
+      margin: 0 auto;
+    }
+
+    section {
+      padding: 120px 0;
+    }
+
+    .divider {
+      width: 60px;
+      height: 1px;
+      background: linear-gradient(90deg, var(--cyan), var(--magenta));
+      margin: 1.5rem 0 2.5rem;
+    }
+
+    .divider-center { margin: 1.5rem auto 2.5rem; }
+
+    /* ═══════════════════════════════════════════════
+       NAVIGATION
+    ═══════════════════════════════════════════════ */
+    nav {
+      position: fixed;
+      top: 0;
+      left: 0;
+      right: 0;
+      z-index: 100;
+      padding: 1.5rem 5%;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      transition: background 0.4s ease, backdrop-filter 0.4s ease;
+    }
+
+    nav.scrolled {
+      background: rgba(8, 8, 26, 0.92);
+      backdrop-filter: blur(20px);
+      border-bottom: 1px solid rgba(4, 255, 255, 0.08);
+    }
+
+    .nav-logo {
+      display: flex;
+      align-items: center;
+    }
+
+    .nav-logo img {
+      height: 18px;
+      width: auto;
+      display: block;
+      position: relative;
+      top: -5px;
+    }
+
+    .nav-links {
+      display: flex;
+      gap: 2.5rem;
+      list-style: none;
+      align-items: center;
+    }
+
+    .nav-links a {
+      font-family: var(--font-brand);
+      font-size: 0.7rem;
+      font-weight: 500;
+      letter-spacing: 0.2em;
+      text-transform: uppercase;
+      color: var(--steel);
+      transition: color 0.3s;
+    }
+
+    .nav-links a:hover { color: var(--cyan); }
+
+    .nav-cta {
+      font-family: var(--font-brand) !important;
+      font-size: 0.7rem !important;
+      font-weight: 600 !important;
+      letter-spacing: 0.2em !important;
+      color: var(--black) !important;
+      background: var(--cyan);
+      padding: 0.6rem 1.5rem;
+      border-radius: 2px;
+      transition: box-shadow 0.3s, transform 0.3s !important;
+    }
+
+    .nav-cta:hover {
+      box-shadow: var(--glow-cyan);
+      transform: translateY(-1px);
+    }
+
+    .nav-hamburger {
+      display: none;
+      flex-direction: column;
+      gap: 5px;
+      cursor: pointer;
+      padding: 4px;
+    }
+
+    .nav-hamburger span {
+      width: 24px;
+      height: 1.5px;
+      background: var(--white-soft);
+      transition: 0.3s;
+    }
+
+    /* ═══════════════════════════════════════════════
+       HERO
+    ═══════════════════════════════════════════════ */
+    #hero {
+      position: relative;
+      height: 100vh;
+      min-height: 700px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      text-align: center;
+      overflow: hidden;
+      padding: 0;
+    }
+
+    #vortex-bg {
+      position: absolute;
+      width: 46.07vw;
+      height: 46.07vh;
+      top: 50%;
+      left: 50%;
+      transform: translate(-50%, calc(-50% - 225px));
+      object-fit: cover;
+      opacity: 1;
+      mix-blend-mode: screen;
+      z-index: 2;
+    }
+
+    @media (max-width: 768px) {
+      .nav-logo img { height: 7px; }
+    }
+
+    #stars-canvas {
+      position: absolute;
+      inset: 0;
+      width: 100%;
+      height: 100%;
+      z-index: 1;
+    }
+
+    .hero-content {
+      position: relative;
+      z-index: 3;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      gap: 1.8rem;
+      margin-top: 200px;
+    }
+
+    @media (max-width: 768px) {
+      .hero-content { margin-top: 46vw; }
+    }
+
+    /* Breathing Orb */
+    .orb-wrapper {
+      position: relative;
+      width: 220px;
+      height: 220px;
+      margin-bottom: 1rem;
+    }
+
+    .orb-ring {
+      position: absolute;
+      inset: 0;
+      border-radius: 50%;
+      border: 1.5px solid var(--cyan);
+      box-shadow: 0 0 20px rgba(4,255,255,0.6), 0 0 60px rgba(4,255,255,0.3), inset 0 0 30px rgba(4,255,255,0.1);
+      animation: breathe 5s ease-in-out infinite;
+    }
+
+    .orb-ring-inner {
+      position: absolute;
+      inset: 20px;
+      border-radius: 50%;
+      border: 1px solid rgba(215,2,241,0.5);
+      box-shadow: 0 0 20px rgba(215,2,241,0.3), inset 0 0 20px rgba(84,2,128,0.2);
+      animation: breathe 5s ease-in-out infinite 0.3s;
+    }
+
+    .orb-glow {
+      position: absolute;
+      inset: -30px;
+      border-radius: 50%;
+      background: radial-gradient(ellipse at center,
+        rgba(84,2,128,0.15) 0%,
+        rgba(4,255,255,0.05) 40%,
+        transparent 70%);
+      animation: breathe 5s ease-in-out infinite;
+    }
+
+    .orb-rays {
+      position: absolute;
+      inset: -10px;
+      border-radius: 50%;
+      background: conic-gradient(
+        from 0deg,
+        transparent 0deg, rgba(4,255,255,0.03) 5deg, transparent 10deg,
+        transparent 20deg, rgba(215,2,241,0.03) 25deg, transparent 30deg,
+        transparent 60deg, rgba(4,255,255,0.03) 65deg, transparent 70deg,
+        transparent 90deg, rgba(215,2,241,0.03) 95deg, transparent 100deg,
+        transparent 120deg, rgba(4,255,255,0.03) 125deg, transparent 130deg,
+        transparent 150deg, rgba(215,2,241,0.03) 155deg, transparent 160deg,
+        transparent 180deg, rgba(4,255,255,0.03) 185deg, transparent 190deg,
+        transparent 210deg, rgba(215,2,241,0.03) 215deg, transparent 220deg,
+        transparent 240deg, rgba(4,255,255,0.03) 245deg, transparent 250deg,
+        transparent 270deg, rgba(215,2,241,0.03) 275deg, transparent 280deg,
+        transparent 300deg, rgba(4,255,255,0.03) 305deg, transparent 310deg,
+        transparent 330deg, rgba(215,2,241,0.03) 335deg, transparent 340deg,
+        transparent 360deg
+      );
+      animation: rotate 20s linear infinite;
+    }
+
+    .orb-center {
+      position: absolute;
+      inset: 50px;
+      border-radius: 50%;
+      background: radial-gradient(ellipse at 40% 40%,
+        rgba(128,142,193,0.15),
+        rgba(21,21,77,0.4),
+        rgba(8,8,26,0.8));
+      border: 1px solid rgba(139,186,216,0.2);
+    }
+
+    @keyframes breathe {
+      0%, 100% {
+        transform: scale(1);
+        opacity: 0.75;
+      }
+      50% {
+        transform: scale(1.12);
+        opacity: 1;
+      }
+    }
+
+    @keyframes rotate {
+      from { transform: rotate(0deg); }
+      to { transform: rotate(360deg); }
+    }
+
+    /* Breathing indicator text */
+    .breath-indicator {
+      font-family: var(--font-brand);
+      font-size: 0.6rem;
+      letter-spacing: 0.3em;
+      color: var(--cyan);
+      opacity: 0.6;
+      animation: breathe-text 5s ease-in-out infinite;
+    }
+
+    @keyframes breathe-text {
+      0%, 100% { content: 'UDAH'; opacity: 0.4; }
+      50% { opacity: 0.9; }
+    }
+
+    /* ── Hero Video ─────────────────────────────────── */
+    .hero-video {
+      width: clamp(320px, 80vw, 780px);
+      border-radius: 12px;
+      display: block;
+    }
+
+    .hero-tagline {
+      font-family: var(--font-brand);
+      font-size: clamp(0.65rem, 1.5vw, 0.85rem);
+      font-weight: 400;
+      letter-spacing: 0.5em;
+      color: var(--periwinkle);
+      text-transform: uppercase;
+    }
+
+    .hero-tagline span { color: var(--pink); }
+
+    .hero-desc {
+      font-size: 1.1rem;
+      font-weight: 300;
+      color: var(--steel);
+      max-width: 500px;
+      margin: 0 auto;
+    }
+
+    .hero-actions {
+      display: flex;
+      gap: 1.2rem;
+      flex-wrap: wrap;
+      justify-content: center;
+      margin-top: 0.5rem;
+    }
+
+    .btn-primary {
+      font-family: var(--font-brand);
+      font-size: 0.75rem;
+      font-weight: 600;
+      letter-spacing: 0.2em;
+      text-transform: uppercase;
+      color: var(--black);
+      background: linear-gradient(135deg, var(--cyan), var(--steel));
+      padding: 1rem 2.5rem;
+      border-radius: 2px;
+      border: none;
+      cursor: pointer;
+      transition: box-shadow 0.3s, transform 0.3s;
+      display: inline-block;
+    }
+
+    .btn-primary:hover {
+      box-shadow: var(--glow-cyan);
+      transform: translateY(-2px);
+    }
+
+    .btn-secondary {
+      font-family: var(--font-brand);
+      font-size: 0.75rem;
+      font-weight: 500;
+      letter-spacing: 0.2em;
+      text-transform: uppercase;
+      color: var(--cyan-soft);
+      background: transparent;
+      padding: 1rem 2.5rem;
+      border-radius: 2px;
+      border: 1px solid rgba(4,255,255,0.3);
+      cursor: pointer;
+      transition: border-color 0.3s, box-shadow 0.3s, transform 0.3s;
+      display: inline-block;
+    }
+
+    .btn-secondary:hover {
+      border-color: var(--cyan);
+      box-shadow: var(--glow-cyan);
+      transform: translateY(-2px);
+    }
+
+    .scroll-indicator {
+      position: absolute;
+      bottom: 2.5rem;
+      left: 50%;
+      transform: translateX(-50%);
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      gap: 0.5rem;
+      opacity: 0.4;
+      animation: scroll-fade 3s ease-in-out infinite;
+    }
+
+    .scroll-indicator span {
+      font-family: var(--font-brand);
+      font-size: 0.6rem;
+      letter-spacing: 0.3em;
+      color: var(--periwinkle);
+    }
+
+    .scroll-line {
+      width: 1px;
+      height: 40px;
+      background: linear-gradient(var(--periwinkle), transparent);
+    }
+
+    @keyframes scroll-fade {
+      0%, 100% { opacity: 0.4; transform: translateX(-50%) translateY(0); }
+      50% { opacity: 0.8; transform: translateX(-50%) translateY(8px); }
+    }
+
+    /* ═══════════════════════════════════════════════
+       MANIFEST STRIP
+    ═══════════════════════════════════════════════ */
+    #manifest {
+      padding: 80px 0;
+      background: linear-gradient(135deg, rgba(21,21,77,0.6), rgba(84,2,128,0.2), rgba(21,21,77,0.6));
+      border-top: 1px solid rgba(4,255,255,0.08);
+      border-bottom: 1px solid rgba(4,255,255,0.08);
+    }
+
+    .manifest-inner {
+      text-align: center;
+    }
+
+    .manifest-quote {
+      font-family: var(--font-head);
+      font-size: clamp(1.3rem, 3vw, 2rem);
+      font-weight: 400;
+      letter-spacing: 0.05em;
+      color: var(--white);
+      line-height: 1.6;
+      max-width: 800px;
+      margin: 0 auto;
+    }
+
+    .manifest-quote em {
+      font-style: italic;
+      color: var(--cyan);
+    }
+
+    .manifest-author {
+      margin-top: 1.5rem;
+      font-family: var(--font-brand);
+      font-size: 0.7rem;
+      letter-spacing: 0.3em;
+      color: var(--periwinkle);
+      text-transform: uppercase;
+    }
+
+    /* ═══════════════════════════════════════════════
+       O ERNIJU
+    ═══════════════════════════════════════════════ */
+    #o-erniju {
+      background: var(--dark);
+    }
+
+    .about-grid {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 80px;
+      align-items: center;
+    }
+
+    .about-image-wrap {
+      position: relative;
+    }
+
+    .about-image-placeholder {
+      aspect-ratio: 3/4;
+      background: linear-gradient(160deg, var(--dark2) 0%, rgba(84,2,128,0.3) 50%, var(--dark2) 100%);
+      border: 1px solid rgba(4,255,255,0.12);
+      border-radius: 2px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      position: relative;
+      overflow: hidden;
+    }
+
+    .about-image-placeholder::before {
+      content: '';
+      position: absolute;
+      inset: 0;
+      background: radial-gradient(ellipse at 50% 30%, rgba(215,2,241,0.1), transparent 60%);
+    }
+
+    .about-image-icon {
+      font-size: 4rem;
+      opacity: 0.2;
+      color: var(--periwinkle);
+    }
+
+    .about-image-label {
+      position: absolute;
+      bottom: 1.5rem;
+      left: 50%;
+      transform: translateX(-50%);
+      font-family: var(--font-brand);
+      font-size: 0.65rem;
+      letter-spacing: 0.25em;
+      color: var(--periwinkle);
+      opacity: 0.6;
+      white-space: nowrap;
+    }
+
+    .about-corner {
+      position: absolute;
+      width: 30px;
+      height: 30px;
+    }
+
+    .about-corner.tl { top: -1px; left: -1px; border-top: 2px solid var(--cyan); border-left: 2px solid var(--cyan); }
+    .about-corner.br { bottom: -1px; right: -1px; border-bottom: 2px solid var(--magenta); border-right: 2px solid var(--magenta); }
+
+    .about-text .section-subtitle {
+      margin-bottom: 1.5rem;
+    }
+
+    .about-text p {
+      color: var(--steel);
+      font-size: 0.95rem;
+      line-height: 1.85;
+      margin-bottom: 1rem;
+    }
+
+    .about-text p strong {
+      color: var(--white-soft);
+      font-weight: 500;
+    }
+
+    .about-badges {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 0.75rem;
+      margin-top: 2rem;
+    }
+
+    .badge {
+      font-family: var(--font-brand);
+      font-size: 0.65rem;
+      font-weight: 500;
+      letter-spacing: 0.2em;
+      text-transform: uppercase;
+      color: var(--cyan-soft);
+      padding: 0.4rem 1rem;
+      border: 1px solid rgba(165,255,255,0.2);
+      border-radius: 2px;
+      background: rgba(4,255,255,0.04);
+    }
+
+    /* ═══════════════════════════════════════════════
+       USLUGE (SERVICES)
+    ═══════════════════════════════════════════════ */
+    #usluge {
+      background: var(--black);
+    }
+
+    .services-grid {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 2px;
+      margin-top: 4rem;
+    }
+
+    .service-card {
+      position: relative;
+      padding: 3.5rem;
+      background: var(--dark);
+      overflow: hidden;
+      transition: transform 0.4s ease;
+      cursor: default;
+    }
+
+    .service-card::before {
+      content: '';
+      position: absolute;
+      top: 0;
+      left: 0;
+      right: 0;
+      height: 2px;
+      background: linear-gradient(90deg, transparent, var(--cyan), transparent);
+      opacity: 0;
+      transition: opacity 0.4s;
+    }
+
+    .service-card:nth-child(2)::before {
+      background: linear-gradient(90deg, transparent, var(--magenta), transparent);
+    }
+
+    .service-card:hover::before { opacity: 1; }
+    .service-card:hover { transform: translateY(-4px); }
+
+    .service-card-bg {
+      position: absolute;
+      inset: 0;
+      opacity: 0;
+      transition: opacity 0.4s;
+    }
+
+    .service-card:nth-child(1) .service-card-bg {
+      background: radial-gradient(ellipse at 80% 20%, rgba(4,255,255,0.06), transparent 60%);
+    }
+
+    .service-card:nth-child(2) .service-card-bg {
+      background: radial-gradient(ellipse at 20% 80%, rgba(215,2,241,0.06), transparent 60%);
+    }
+
+    .service-card:hover .service-card-bg { opacity: 1; }
+
+    .service-number {
+      font-family: var(--font-brand);
+      font-size: 0.65rem;
+      letter-spacing: 0.3em;
+      color: var(--cyan);
+      margin-bottom: 1.5rem;
+      display: block;
+    }
+
+    .service-card:nth-child(2) .service-number { color: var(--magenta); }
+
+    .service-icon {
+      width: 60px;
+      height: 60px;
+      margin-bottom: 1.5rem;
+      position: relative;
+    }
+
+    .service-icon-ring {
+      width: 60px;
+      height: 60px;
+      border-radius: 50%;
+      border: 1px solid rgba(4,255,255,0.3);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+    }
+
+    .service-card:nth-child(2) .service-icon-ring {
+      border-color: rgba(215,2,241,0.3);
+    }
+
+    .service-title {
+      font-family: var(--font-head);
+      font-size: 1.5rem;
+      font-weight: 400;
+      letter-spacing: 0.05em;
+      color: var(--white);
+      margin-bottom: 1rem;
+    }
+
+    .service-desc {
+      color: var(--steel);
+      font-size: 0.9rem;
+      line-height: 1.8;
+      margin-bottom: 2rem;
+    }
+
+    .service-details {
+      display: flex;
+      flex-direction: column;
+      gap: 0.6rem;
+      margin-bottom: 2rem;
+    }
+
+    .service-detail {
+      display: flex;
+      align-items: center;
+      gap: 0.75rem;
+      font-family: var(--font-brand);
+      font-size: 0.7rem;
+      letter-spacing: 0.12em;
+      color: var(--periwinkle);
+    }
+
+    .service-detail::before {
+      content: '—';
+      color: var(--cyan);
+      flex-shrink: 0;
+    }
+
+    .service-card:nth-child(2) .service-detail::before { color: var(--magenta); }
+
+    .service-price {
+      font-family: var(--font-brand);
+      font-size: 0.7rem;
+      letter-spacing: 0.2em;
+      color: var(--cyan-soft);
+      padding: 0.5rem 1rem;
+      border: 1px solid rgba(4,255,255,0.15);
+      display: inline-block;
+      background: rgba(4,255,255,0.03);
+    }
+
+    .service-card:nth-child(2) .service-price {
+      color: var(--pink);
+      border-color: rgba(215,2,241,0.2);
+      background: rgba(215,2,241,0.03);
+    }
+
+    /* ═══════════════════════════════════════════════
+       AUTOŠKOLA DEEP DIVE
+    ═══════════════════════════════════════════════ */
+    #autoskola {
+      background: linear-gradient(180deg, var(--dark) 0%, rgba(21,21,77,0.5) 50%, var(--dark) 100%);
+    }
+
+    .autoskola-inner {
+      display: grid;
+      grid-template-columns: 1fr 1.4fr;
+      gap: 80px;
+      align-items: start;
+    }
+
+    .weeks-list {
+      list-style: none;
+      margin-top: 3rem;
+    }
+
+    .week-item {
+      display: flex;
+      gap: 1.5rem;
+      padding: 1.5rem 0;
+      border-bottom: 1px solid rgba(128,142,193,0.1);
+    }
+
+    .week-number {
+      flex-shrink: 0;
+      width: 40px;
+      height: 40px;
+      border-radius: 50%;
+      border: 1px solid rgba(215,2,241,0.3);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-family: var(--font-brand);
+      font-size: 0.7rem;
+      font-weight: 600;
+      letter-spacing: 0.1em;
+      color: var(--pink);
+      flex-direction: column;
+    }
+
+    .week-number small {
+      font-size: 0.45rem;
+      letter-spacing: 0.15em;
+      opacity: 0.7;
+      margin-top: -2px;
+    }
+
+    .week-content h4 {
+      font-family: var(--font-head);
+      font-size: 1.05rem;
+      font-weight: 400;
+      color: var(--white-soft);
+      margin-bottom: 0.4rem;
+    }
+
+    .week-content p {
+      font-size: 0.85rem;
+      color: var(--grey);
+      line-height: 1.7;
+    }
+
+    .autoskola-info {
+      background: rgba(8,8,26,0.7);
+      border: 1px solid rgba(4,255,255,0.08);
+      padding: 2.5rem;
+      margin-top: 3rem;
+    }
+
+    .info-row {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      padding: 0.8rem 0;
+      border-bottom: 1px solid rgba(128,142,193,0.08);
+      font-size: 0.85rem;
+    }
+
+    .info-row:last-child { border-bottom: none; }
+
+    .info-label {
+      font-family: var(--font-brand);
+      font-size: 0.65rem;
+      letter-spacing: 0.2em;
+      color: var(--grey);
+      text-transform: uppercase;
+    }
+
+    .info-value {
+      color: var(--white-soft);
+      font-weight: 400;
+    }
+
+    .info-value.highlight {
+      color: var(--cyan);
+      font-family: var(--font-brand);
+      font-size: 0.75rem;
+      letter-spacing: 0.1em;
+    }
+
+    /* ═══════════════════════════════════════════════
+       SCIENCE SECTION
+    ═══════════════════════════════════════════════ */
+    #znanosti {
+      background: var(--black);
+      text-align: center;
+    }
+
+    .science-intro {
+      max-width: 700px;
+      margin: 0 auto 5rem;
+    }
+
+    .science-grid {
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+      gap: 1px;
+    }
+
+    .science-card {
+      background: var(--dark);
+      padding: 3rem 2rem;
+      position: relative;
+      overflow: hidden;
+    }
+
+    .science-card::after {
+      content: '';
+      position: absolute;
+      bottom: 0;
+      left: 50%;
+      transform: translateX(-50%);
+      width: 40px;
+      height: 1px;
+      background: var(--cyan);
+      opacity: 0.5;
+      transition: width 0.4s;
+    }
+
+    .science-card:nth-child(2)::after { background: var(--magenta); }
+    .science-card:nth-child(3)::after { background: var(--pink); }
+
+    .science-card:hover::after { width: 100%; }
+
+    .science-stat {
+      font-family: var(--font-head);
+      font-size: 3rem;
+      font-weight: 400;
+      color: var(--cyan);
+      line-height: 1;
+      margin-bottom: 0.5rem;
+    }
+
+    .science-card:nth-child(2) .science-stat { color: var(--magenta); }
+    .science-card:nth-child(3) .science-stat { color: var(--pink); }
+
+    .science-label {
+      font-family: var(--font-brand);
+      font-size: 0.65rem;
+      letter-spacing: 0.25em;
+      color: var(--periwinkle);
+      text-transform: uppercase;
+      margin-bottom: 1rem;
+    }
+
+    .science-text {
+      font-size: 0.85rem;
+      color: var(--grey);
+      line-height: 1.7;
+    }
+
+    /* ═══════════════════════════════════════════════
+       CTA SECTION
+    ═══════════════════════════════════════════════ */
+    #cta {
+      background: linear-gradient(135deg, rgba(84,2,128,0.2), rgba(21,21,77,0.8), rgba(4,255,255,0.05));
+      border-top: 1px solid rgba(4,255,255,0.08);
+      border-bottom: 1px solid rgba(215,2,241,0.08);
+      text-align: center;
+      padding: 120px 0;
+    }
+
+    .cta-orb {
+      width: 100px;
+      height: 100px;
+      margin: 0 auto 2.5rem;
+      position: relative;
+    }
+
+    .cta-orb-ring {
+      width: 100%;
+      height: 100%;
+      border-radius: 50%;
+      border: 1px solid var(--cyan);
+      box-shadow: 0 0 15px rgba(4,255,255,0.5), 0 0 40px rgba(4,255,255,0.2);
+      animation: breathe 5s ease-in-out infinite;
+    }
+
+    .cta-orb-inner {
+      position: absolute;
+      inset: 15px;
+      border-radius: 50%;
+      border: 1px solid rgba(215,2,241,0.4);
+      box-shadow: 0 0 10px rgba(215,2,241,0.3);
+      animation: breathe 5s ease-in-out infinite 0.3s;
+    }
+
+    .cta-title {
+      font-family: var(--font-head);
+      font-size: clamp(1.8rem, 4vw, 3rem);
+      font-weight: 400;
+      color: var(--white);
+      margin-bottom: 1rem;
+    }
+
+    .cta-desc {
+      color: var(--steel);
+      font-size: 1.05rem;
+      max-width: 550px;
+      margin: 0 auto 2.5rem;
+    }
+
+    /* ═══════════════════════════════════════════════
+       TESTIMONIALS
+    ═══════════════════════════════════════════════ */
+    #svjedocanstva {
+      background: var(--dark);
+    }
+
+    .testimonials-grid {
+      display: grid;
+      grid-template-columns: repeat(2, 1fr);
+      gap: 1.5rem;
+      margin-top: 4rem;
+    }
+
+    .testimonial-card {
+      background: rgba(8,8,26,0.7);
+      border: 1px solid rgba(128,142,193,0.1);
+      padding: 2.5rem;
+      position: relative;
+      transition: border-color 0.3s;
+    }
+
+    .testimonial-card:hover {
+      border-color: rgba(4,255,255,0.2);
+    }
+
+    .testimonial-quote {
+      font-family: var(--font-head);
+      font-size: 2.5rem;
+      color: var(--cyan);
+      opacity: 0.3;
+      line-height: 0.5;
+      margin-bottom: 1.2rem;
+    }
+
+    .testimonial-text {
+      font-size: 0.9rem;
+      color: var(--steel);
+      line-height: 1.8;
+      font-style: italic;
+      margin-bottom: 1.5rem;
+    }
+
+    .testimonial-author {
+      font-family: var(--font-brand);
+      font-size: 0.65rem;
+      letter-spacing: 0.2em;
+      color: var(--periwinkle);
+      text-transform: uppercase;
+    }
+
+    /* ═══════════════════════════════════════════════
+       STUDIO
+    ═══════════════════════════════════════════════ */
+    #studio {
+      background: var(--black);
+    }
+
+    .studio-inner {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 80px;
+      align-items: center;
+    }
+
+    .studio-map {
+      aspect-ratio: 1;
+      background: var(--dark);
+      border: 1px solid rgba(128,142,193,0.1);
+      position: relative;
+      overflow: hidden;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+    }
+
+    .studio-map-pin {
+      text-align: center;
+    }
+
+    .studio-map-pin-dot {
+      width: 16px;
+      height: 16px;
+      border-radius: 50%;
+      background: var(--cyan);
+      box-shadow: var(--glow-cyan);
+      margin: 0 auto 0.5rem;
+      animation: pulse-pin 2s ease-in-out infinite;
+    }
+
+    @keyframes pulse-pin {
+      0%, 100% { box-shadow: 0 0 10px rgba(4,255,255,0.5); transform: scale(1); }
+      50% { box-shadow: 0 0 25px rgba(4,255,255,0.8), 0 0 50px rgba(4,255,255,0.3); transform: scale(1.2); }
+    }
+
+    .studio-map-label {
+      font-family: var(--font-brand);
+      font-size: 0.65rem;
+      letter-spacing: 0.2em;
+      color: var(--periwinkle);
+    }
+
+    .studio-details {
+      display: flex;
+      flex-direction: column;
+      gap: 1.5rem;
+      margin-top: 2.5rem;
+    }
+
+    .studio-detail-row {
+      display: flex;
+      gap: 1.5rem;
+      align-items: flex-start;
+    }
+
+    .studio-detail-icon {
+      flex-shrink: 0;
+      width: 36px;
+      height: 36px;
+      border: 1px solid rgba(4,255,255,0.2);
+      border-radius: 50%;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      margin-top: 2px;
+    }
+
+    .studio-detail-content h4 {
+      font-family: var(--font-brand);
+      font-size: 0.65rem;
+      letter-spacing: 0.2em;
+      color: var(--cyan);
+      text-transform: uppercase;
+      margin-bottom: 0.3rem;
+    }
+
+    .studio-detail-content p {
+      font-size: 0.9rem;
+      color: var(--steel);
+    }
+
+    /* ═══════════════════════════════════════════════
+       CONTACT
+    ═══════════════════════════════════════════════ */
+    #kontakt {
+      background: linear-gradient(180deg, var(--dark) 0%, var(--black) 100%);
+    }
+
+    .contact-inner {
+      display: grid;
+      grid-template-columns: 1fr 1.2fr;
+      gap: 80px;
+    }
+
+    .contact-form {
+      display: flex;
+      flex-direction: column;
+      gap: 1.2rem;
+    }
+
+    .form-group {
+      display: flex;
+      flex-direction: column;
+      gap: 0.5rem;
+    }
+
+    .form-label {
+      font-family: var(--font-brand);
+      font-size: 0.65rem;
+      letter-spacing: 0.2em;
+      color: var(--periwinkle);
+      text-transform: uppercase;
+    }
+
+    .form-input, .form-select, .form-textarea {
+      background: rgba(21,21,77,0.3);
+      border: 1px solid rgba(128,142,193,0.2);
+      border-radius: 2px;
+      padding: 0.9rem 1.2rem;
+      color: var(--white-soft);
+      font-family: var(--font-body);
+      font-size: 0.9rem;
+      font-weight: 300;
+      outline: none;
+      transition: border-color 0.3s, box-shadow 0.3s;
+      width: 100%;
+    }
+
+    .form-input:focus, .form-select:focus, .form-textarea:focus {
+      border-color: var(--cyan);
+      box-shadow: 0 0 0 2px rgba(4,255,255,0.08);
+    }
+
+    .form-select {
+      appearance: none;
+      cursor: pointer;
+    }
+
+    .form-textarea {
+      resize: vertical;
+      min-height: 130px;
+    }
+
+    .form-input::placeholder, .form-textarea::placeholder {
+      color: var(--grey);
+      opacity: 0.7;
+    }
+
+    .form-submit {
+      margin-top: 0.5rem;
+      align-self: flex-start;
+    }
+
+    .contact-info {
+      padding-top: 1rem;
+    }
+
+    .contact-social {
+      margin-top: 3rem;
+    }
+
+    .social-title {
+      font-family: var(--font-brand);
+      font-size: 0.65rem;
+      letter-spacing: 0.25em;
+      color: var(--grey);
+      text-transform: uppercase;
+      margin-bottom: 1.2rem;
+    }
+
+    .social-links {
+      display: flex;
+      gap: 1rem;
+      flex-wrap: wrap;
+    }
+
+    .social-link {
+      font-family: var(--font-brand);
+      font-size: 0.65rem;
+      font-weight: 500;
+      letter-spacing: 0.2em;
+      color: var(--periwinkle);
+      padding: 0.5rem 1.2rem;
+      border: 1px solid rgba(128,142,193,0.2);
+      border-radius: 2px;
+      transition: color 0.3s, border-color 0.3s;
+      text-transform: uppercase;
+    }
+
+    .social-link:hover {
+      color: var(--cyan);
+      border-color: rgba(4,255,255,0.3);
+    }
+
+    /* ═══════════════════════════════════════════════
+       FOOTER
+    ═══════════════════════════════════════════════ */
+    footer {
+      background: var(--black);
+      border-top: 1px solid rgba(128,142,193,0.08);
+      padding: 3rem 0;
+    }
+
+    .footer-inner {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      flex-wrap: wrap;
+      gap: 1.5rem;
+    }
+
+    .footer-logo img {
+      height: 18.91px;
+      width: auto;
+      display: block;
+      position: relative;
+      top: -5px;
+    }
+
+    .footer-tagline {
+      font-family: var(--font-brand);
+      font-size: 0.6rem;
+      letter-spacing: 0.3em;
+      color: var(--grey);
+      margin-top: 0.3rem;
+    }
+
+    .footer-copy {
+      font-size: 0.75rem;
+      color: var(--grey);
+      text-align: right;
+    }
+
+    .footer-copy a {
+      color: var(--periwinkle);
+      transition: color 0.3s;
+    }
+
+    .footer-copy a:hover { color: var(--cyan); }
+
+    /* ═══════════════════════════════════════════════
+       RESPONSIVE
+    ═══════════════════════════════════════════════ */
+    @media (max-width: 900px) {
+      .about-grid,
+      .autoskola-inner,
+      .studio-inner,
+      .contact-inner { grid-template-columns: 1fr; gap: 50px; }
+
+      .services-grid,
+      .science-grid { grid-template-columns: 1fr; }
+
+      .testimonials-grid { grid-template-columns: 1fr; }
+
+      .nav-links { display: none; }
+      .nav-hamburger { display: flex; }
+
+      .orb-wrapper { width: 160px; height: 160px; }
+    }
+
+    @media (max-width: 600px) {
+      section { padding: 80px 0; }
+      .service-card { padding: 2.5rem 2rem; }
+    }
+
+    /* ═══════════════════════════════════════════════
+       FORM SUCCESS STATE
+    ═══════════════════════════════════════════════ */
+    .form-success {
+      display: none;
+      text-align: center;
+      padding: 3rem;
+      background: rgba(4,255,255,0.03);
+      border: 1px solid rgba(4,255,255,0.15);
+    }
+
+    .form-success.show { display: block; }
+
+    .form-success p {
+      font-family: var(--font-head);
+      font-size: 1.3rem;
+      color: var(--cyan-soft);
+    }
+
+    /* ═══════════════════════════════════════════════
+       DISAJNA VJEŽBA — BREATHING VISUALIZER
+    ═══════════════════════════════════════════════ */
+    #vjezba {
+      background: linear-gradient(180deg, var(--black) 0%, var(--dark) 50%, var(--black) 100%);
+      text-align: center;
+    }
+
+    .breath-app {
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      gap: 3rem;
+      margin-top: 3rem;
+    }
+
+    /* ── Visualizer ── */
+    .breath-visual {
+      position: relative;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      gap: 1.5rem;
+    }
+
+    .breath-orb-wrap {
+      position: relative;
+      width: 260px;
+      height: 260px;
+    }
+
+    .bv-glow {
+      position: absolute;
+      inset: -40px;
+      border-radius: 50%;
+      background: radial-gradient(ellipse at center,
+        rgba(84,2,128,0.18) 0%, rgba(4,255,255,0.06) 45%, transparent 72%);
+      transition: opacity 0.4s;
+      pointer-events: none;
+    }
+
+    .bv-ring {
+      position: absolute;
+      inset: 0;
+      border-radius: 50%;
+      border: 1.5px solid var(--cyan);
+      box-shadow: 0 0 24px rgba(4,255,255,0.5), 0 0 60px rgba(4,255,255,0.2),
+                  inset 0 0 30px rgba(4,255,255,0.08);
+      will-change: transform;
+    }
+
+    .bv-ring-inner {
+      position: absolute;
+      inset: 22px;
+      border-radius: 50%;
+      border: 1px solid rgba(215,2,241,0.45);
+      box-shadow: 0 0 18px rgba(215,2,241,0.25), inset 0 0 18px rgba(84,2,128,0.15);
+      will-change: transform;
+    }
+
+    .bv-center {
+      position: absolute;
+      inset: 55px;
+      border-radius: 50%;
+      background: radial-gradient(ellipse at 40% 38%,
+        rgba(128,142,193,0.14), rgba(21,21,77,0.45), rgba(8,8,26,0.85));
+      border: 1px solid rgba(139,186,216,0.15);
+    }
+
+    /* Progress ring SVG */
+    .bv-progress-svg {
+      position: absolute;
+      inset: -8px;
+      width: calc(100% + 16px);
+      height: calc(100% + 16px);
+      transform: rotate(-90deg);
+      pointer-events: none;
+    }
+
+    .bv-progress-track {
+      fill: none;
+      stroke: rgba(4,255,255,0.06);
+      stroke-width: 2;
+    }
+
+    .bv-progress-fill {
+      fill: none;
+      stroke: var(--cyan);
+      stroke-width: 2;
+      stroke-linecap: round;
+      transition: stroke 0.3s;
+    }
+
+    .bv-phase-text {
+      font-family: var(--font-brand);
+      font-size: 0.65rem;
+      font-weight: 600;
+      letter-spacing: 0.45em;
+      color: var(--cyan);
+      text-transform: uppercase;
+      min-height: 1em;
+      transition: color 0.4s;
+    }
+
+    .bv-timer {
+      font-family: var(--font-head);
+      font-size: 3.5rem;
+      font-weight: 400;
+      color: var(--white);
+      line-height: 1;
+      min-width: 3rem;
+      text-align: center;
+      opacity: 0.9;
+    }
+
+    .bv-cycle-count {
+      font-family: var(--font-brand);
+      font-size: 0.6rem;
+      letter-spacing: 0.3em;
+      color: var(--grey);
+      text-transform: uppercase;
+    }
+
+    /* Start / stop button */
+    .bv-start-btn {
+      font-family: var(--font-brand);
+      font-size: 0.75rem;
+      font-weight: 600;
+      letter-spacing: 0.25em;
+      text-transform: uppercase;
+      color: var(--black);
+      background: linear-gradient(135deg, var(--cyan), var(--steel));
+      border: none;
+      padding: 1rem 3rem;
+      border-radius: 2px;
+      cursor: pointer;
+      transition: box-shadow 0.3s, transform 0.2s, background 0.4s;
+    }
+
+    .bv-start-btn:hover {
+      box-shadow: var(--glow-cyan);
+      transform: translateY(-2px);
+    }
+
+    .bv-start-btn.active {
+      background: linear-gradient(135deg, rgba(215,2,241,0.7), rgba(84,2,128,0.8));
+      color: var(--white-soft);
+    }
+
+    /* ── Settings panel ── */
+    .bv-settings-toggle {
+      font-family: var(--font-brand);
+      font-size: 0.65rem;
+      letter-spacing: 0.25em;
+      text-transform: uppercase;
+      color: var(--magenta);
+      background: none;
+      border: 1px solid rgba(215,2,241,0.35);
+      padding: 0.6rem 1.5rem;
+      border-radius: 2px;
+      cursor: pointer;
+      transition: color 0.3s, border-color 0.3s;
+    }
+
+    .bv-settings-toggle:hover { color: var(--pink); border-color: rgba(215,2,241,0.6); }
+
+    .bv-settings-panel {
+      width: 100%;
+      max-width: 680px;
+      background: rgba(13,13,34,0.8);
+      border: 1px solid rgba(128,142,193,0.1);
+      backdrop-filter: blur(10px);
+      padding: 2rem;
+      display: none;
+      flex-direction: column;
+      gap: 2.5rem;
+    }
+
+    .bv-settings-panel.open { display: flex; }
+
+    .bv-settings-group-title {
+      font-family: var(--font-brand);
+      font-size: 0.6rem;
+      letter-spacing: 0.3em;
+      text-transform: uppercase;
+      color: var(--cyan);
+      margin-bottom: 1.2rem;
+    }
+
+    /* Timing sliders */
+    .bv-timing-grid {
+      display: grid;
+      grid-template-columns: repeat(4, 1fr);
+      gap: 1rem;
+    }
+
+    .bv-timing-cell {
+      display: flex;
+      flex-direction: column;
+      gap: 0.5rem;
+      align-items: center;
+    }
+
+    .bv-cell-label {
+      font-family: var(--font-brand);
+      font-size: 0.55rem;
+      letter-spacing: 0.2em;
+      text-transform: uppercase;
+      color: var(--periwinkle);
+    }
+
+    .bv-cell-val {
+      font-family: var(--font-head);
+      font-size: 1.8rem;
+      color: var(--white);
+      line-height: 1;
+    }
+
+    .bv-cell-unit {
+      font-family: var(--font-brand);
+      font-size: 0.5rem;
+      letter-spacing: 0.2em;
+      color: var(--grey);
+    }
+
+    .bv-range {
+      -webkit-appearance: none;
+      appearance: none;
+      width: 100%;
+      height: 3px;
+      background: rgba(128,142,193,0.2);
+      border-radius: 2px;
+      outline: none;
+      cursor: pointer;
+    }
+
+    .bv-range::-webkit-slider-thumb {
+      -webkit-appearance: none;
+      appearance: none;
+      width: 14px;
+      height: 14px;
+      border-radius: 50%;
+      background: var(--cyan);
+      box-shadow: 0 0 8px rgba(4,255,255,0.6);
+      cursor: pointer;
+      border: none;
+    }
+
+    .bv-range::-moz-range-thumb {
+      width: 14px;
+      height: 14px;
+      border-radius: 50%;
+      background: var(--cyan);
+      box-shadow: 0 0 8px rgba(4,255,255,0.6);
+      cursor: pointer;
+      border: none;
+    }
+
+    /* Sound rows */
+    .bv-sound-rows {
+      display: flex;
+      flex-direction: column;
+      gap: 1rem;
+    }
+
+    .bv-sound-row {
+      display: grid;
+      grid-template-columns: 100px 1fr 180px 90px;
+      gap: 1rem;
+      align-items: center;
+    }
+
+    .bv-sound-phase-label {
+      font-family: var(--font-brand);
+      font-size: 0.55rem;
+      letter-spacing: 0.2em;
+      text-transform: uppercase;
+      color: var(--periwinkle);
+      text-align: left;
+    }
+
+    .bv-sound-toggle {
+      display: flex;
+      align-items: center;
+      gap: 0.5rem;
+      cursor: pointer;
+    }
+
+    .bv-toggle-track {
+      position: relative;
+      width: 32px;
+      height: 18px;
+      background: rgba(128,142,193,0.2);
+      border-radius: 9px;
+      border: 1px solid rgba(128,142,193,0.3);
+      cursor: pointer;
+      flex-shrink: 0;
+    }
+
+    .bv-toggle-track::after {
+      content: '';
+      position: absolute;
+      top: 2px;
+      left: 2px;
+      width: 12px;
+      height: 12px;
+      border-radius: 50%;
+      background: var(--grey);
+      transition: transform 0.25s, background 0.25s;
+    }
+
+    .bv-toggle-track.on::after {
+      transform: translateX(14px);
+      background: var(--cyan);
+    }
+
+    .bv-sound-select {
+      background: rgba(8,8,26,0.9);
+      border: 1px solid rgba(128,142,193,0.2);
+      color: var(--white-soft);
+      font-family: var(--font-brand);
+      font-size: 0.6rem;
+      letter-spacing: 0.1em;
+      padding: 0.4rem 0.6rem;
+      border-radius: 2px;
+      cursor: pointer;
+      outline: none;
+      width: 100%;
+    }
+
+    .bv-sound-select:focus { border-color: rgba(4,255,255,0.4); }
+
+    .bv-vol-wrap {
+      display: flex;
+      align-items: center;
+      gap: 0.4rem;
+    }
+
+    .bv-vol-icon {
+      font-size: 0.75rem;
+      color: var(--grey);
+      flex-shrink: 0;
+    }
+
+    /* Preset patterns */
+    .bv-patterns {
+      display: flex;
+      gap: 0.6rem;
+      flex-wrap: wrap;
+    }
+
+    .bv-pattern-btn {
+      font-family: var(--font-brand);
+      font-size: 0.55rem;
+      letter-spacing: 0.15em;
+      text-transform: uppercase;
+      color: var(--steel);
+      background: rgba(8,8,26,0.6);
+      border: 1px solid rgba(128,142,193,0.2);
+      padding: 0.4rem 0.9rem;
+      border-radius: 2px;
+      cursor: pointer;
+      transition: color 0.2s, border-color 0.2s;
+    }
+
+    .bv-pattern-btn:hover { color: var(--cyan); border-color: rgba(4,255,255,0.3); }
+    .bv-pattern-btn.active { color: var(--cyan); border-color: rgba(4,255,255,0.5); }
+
+    /* Phase colors */
+    .phase-inhale  { color: var(--cyan) !important; stroke: var(--cyan) !important; }
+    .phase-holdtop { color: var(--magenta) !important; stroke: var(--magenta) !important; }
+    .phase-exhale  { color: var(--pink) !important; stroke: var(--pink) !important; }
+    .phase-holdbot { color: var(--steel) !important; stroke: var(--steel) !important; }
+
+    @media (max-width: 700px) {
+      .bv-timing-grid { grid-template-columns: repeat(2, 1fr); }
+      .bv-sound-row { grid-template-columns: 90px 1fr; grid-template-rows: auto auto; }
+      .bv-vol-wrap, .bv-sound-select { grid-column: 1 / -1; }
+      .breath-orb-wrap { width: 200px; height: 200px; }
+    }
+
+    /* ═══════════════════════════════════════════════
+       GLAZBA — AUDIO PLAYER
+    ═══════════════════════════════════════════════ */
+    #glazba {
+      background: linear-gradient(180deg, var(--dark) 0%, var(--black) 100%);
+    }
+
+    .tracks-list {
+      margin-top: 2.5rem;
+      border: 1px solid rgba(128,142,193,0.1);
+      border-radius: 4px;
+      overflow: hidden;
+    }
+
+    .track-item {
+      display: grid;
+      grid-template-columns: 52px 1fr 76px 52px 38px;
+      align-items: center;
+      gap: 1.5rem;
+      padding: 1.1rem 1.5rem;
+      border-bottom: 1px solid rgba(128,142,193,0.06);
+      cursor: pointer;
+      position: relative;
+      transition: background 0.25s;
+      overflow: hidden;
+    }
+    .track-item:last-child { border-bottom: none; }
+    .track-item:hover { background: rgba(4,255,255,0.025); }
+    .track-item.playing { background: rgba(4,255,255,0.04); }
+    .track-item::before {
+      content: '';
+      position: absolute;
+      left: 0; top: 0; bottom: 0;
+      width: 2px;
+      background: linear-gradient(180deg, var(--cyan), var(--magenta));
+      box-shadow: 0 0 10px rgba(4,255,255,0.5);
+      transform: scaleY(0);
+      transition: transform 0.3s;
+      transform-origin: center;
+    }
+    .track-item.playing::before { transform: scaleY(1); }
+
+    .track-first-col {
+      position: relative;
+      width: 36px;
+      height: 36px;
+      margin: 0 auto;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+    }
+
+    .track-num {
+      font-family: var(--font-brand);
+      font-size: 0.65rem;
+      letter-spacing: 0.12em;
+      color: var(--grey);
+      transition: opacity 0.2s;
+      user-select: none;
+    }
+
+    .track-play-btn {
+      position: absolute;
+      inset: 0;
+      border: 1px solid rgba(4,255,255,0.25);
+      border-radius: 50%;
+      background: rgba(4,255,255,0.04);
+      color: var(--cyan);
+      cursor: pointer;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      opacity: 0;
+      transition: opacity 0.2s, background 0.2s, box-shadow 0.2s;
+    }
+    .track-item:hover .track-num,
+    .track-item.playing .track-num { opacity: 0; }
+    .track-item:hover .track-play-btn { opacity: 1; }
+    .track-item.playing .track-play-btn {
+      opacity: 1;
+      border-color: var(--cyan);
+      background: rgba(4,255,255,0.08);
+      box-shadow: 0 0 14px rgba(4,255,255,0.2);
+      padding-left: 0;
+    }
+    .track-play-btn:hover {
+      background: rgba(4,255,255,0.13) !important;
+      box-shadow: 0 0 20px rgba(4,255,255,0.3) !important;
+    }
+
+    .track-info { min-width: 0; }
+    .track-title {
+      font-family: var(--font-head);
+      font-size: 0.95rem;
+      letter-spacing: 0.04em;
+      color: var(--white-soft);
+      white-space: nowrap;
+      overflow: hidden;
+      text-overflow: ellipsis;
+      margin-bottom: 0.2rem;
+      transition: color 0.25s;
+    }
+    .track-item.playing .track-title { color: var(--cyan-soft); }
+    .track-desc {
+      font-family: var(--font-brand);
+      font-size: 0.58rem;
+      letter-spacing: 0.2em;
+      text-transform: uppercase;
+      color: var(--grey);
+    }
+
+    .track-waveform {
+      display: flex;
+      align-items: center;
+      gap: 2px;
+      height: 22px;
+      overflow: hidden;
+      opacity: 0.2;
+      transition: opacity 0.3s;
+    }
+    .track-item:hover .track-waveform { opacity: 0.4; }
+    .track-item.playing .track-waveform { opacity: 1; }
+
+    .wbar {
+      width: 2px;
+      border-radius: 1px;
+      background: var(--periwinkle);
+      transition: background 0.3s;
+      transform-origin: center bottom;
+      flex-shrink: 0;
+    }
+    .track-item.playing .wbar {
+      background: var(--cyan);
+      animation: wbar-anim 0.8s ease-in-out infinite alternate;
+    }
+    @keyframes wbar-anim {
+      from { opacity: 0.45; transform: scaleY(0.7); }
+      to   { opacity: 1;    transform: scaleY(1.3); }
+    }
+
+    .track-duration {
+      font-family: var(--font-brand);
+      font-size: 0.62rem;
+      letter-spacing: 0.08em;
+      color: var(--grey);
+      text-align: center;
+    }
+
+    .track-dl {
+      width: 30px;
+      height: 30px;
+      border: 1px solid rgba(128,142,193,0.15);
+      border-radius: 2px;
+      background: transparent;
+      color: var(--periwinkle);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      text-decoration: none;
+      font-size: 0.82rem;
+      transition: all 0.2s;
+      margin: 0 auto;
+    }
+    .track-dl:hover {
+      border-color: var(--pink);
+      color: var(--pink);
+      background: rgba(228,136,209,0.07);
+      box-shadow: 0 0 10px rgba(228,136,209,0.18);
+    }
+
+    .tracks-hint {
+      margin-top: 1.5rem;
+      padding: 1rem 1.5rem;
+      border: 1px dashed rgba(128,142,193,0.13);
+      border-radius: 4px;
+      display: flex;
+      align-items: flex-start;
+      gap: 1rem;
+    }
+    .tracks-hint-icon { opacity: 0.4; margin-top: 2px; flex-shrink: 0; }
+    .tracks-hint p {
+      font-family: var(--font-brand);
+      font-size: 0.6rem;
+      letter-spacing: 0.15em;
+      text-transform: uppercase;
+      color: var(--grey);
+      line-height: 1.9;
+    }
+    .tracks-hint code {
+      color: var(--cyan-soft);
+      background: rgba(4,255,255,0.07);
+      padding: 0.05em 0.3em;
+      border-radius: 2px;
+      font-size: 0.85em;
+      font-family: monospace;
+      letter-spacing: 0;
+      text-transform: none;
+    }
+
+    /* ─── NOW PLAYING BAR ─────────────────────── */
+    .np-bar {
+      position: fixed;
+      bottom: -80px;
+      left: 0; right: 0;
+      z-index: 500;
+      background: rgba(8,8,26,0.97);
+      backdrop-filter: blur(24px);
+      -webkit-backdrop-filter: blur(24px);
+      border-top: 1px solid rgba(4,255,255,0.1);
+      transition: bottom 0.4s cubic-bezier(0.4,0,0.2,1);
+    }
+    .np-bar.active { bottom: 0; }
+
+    .np-progress {
+      height: 2px;
+      background: rgba(128,142,193,0.1);
+      cursor: pointer;
+      position: relative;
+      transition: height 0.15s;
+    }
+    .np-progress:hover { height: 4px; }
+    .np-progress-fill {
+      height: 100%;
+      background: linear-gradient(90deg, var(--cyan), var(--magenta));
+      width: 0%;
+      transition: width 0.2s linear;
+      pointer-events: none;
+    }
+    .np-progress-thumb {
+      position: absolute;
+      top: 50%;
+      width: 11px; height: 11px;
+      border-radius: 50%;
+      background: var(--white);
+      transform: translate(-50%, -50%);
+      opacity: 0;
+      transition: opacity 0.15s;
+      pointer-events: none;
+      box-shadow: 0 0 6px rgba(4,255,255,0.6);
+    }
+    .np-progress:hover .np-progress-thumb { opacity: 1; }
+
+    .np-row {
+      display: flex;
+      align-items: center;
+      gap: 1.5rem;
+      padding: 0.75rem 2rem;
+      height: 66px;
+    }
+
+    .np-art {
+      width: 38px; height: 38px;
+      border-radius: 2px;
+      background: linear-gradient(135deg, rgba(84,2,128,0.7), rgba(4,255,255,0.08));
+      border: 1px solid rgba(4,255,255,0.1);
+      display: flex; align-items: center; justify-content: center;
+      font-size: 1rem;
+      flex-shrink: 0;
+    }
+
+    .np-info { flex: 1; min-width: 0; }
+    .np-song-title {
+      font-family: var(--font-head);
+      font-size: 0.82rem;
+      color: var(--white-soft);
+      white-space: nowrap;
+      overflow: hidden;
+      text-overflow: ellipsis;
+    }
+    .np-song-desc {
+      font-family: var(--font-brand);
+      font-size: 0.58rem;
+      letter-spacing: 0.18em;
+      text-transform: uppercase;
+      color: var(--grey);
+    }
+
+    .np-ctrls {
+      display: flex;
+      align-items: center;
+      gap: 0.6rem;
+      flex-shrink: 0;
+    }
+    .np-cbtn {
+      background: none;
+      border: none;
+      color: var(--steel);
+      cursor: pointer;
+      padding: 0.3rem;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      transition: color 0.2s, transform 0.15s;
+    }
+    .np-cbtn:hover { color: var(--white-soft); transform: scale(1.1); }
+    .np-cbtn-main {
+      width: 36px; height: 36px;
+      border-radius: 50%;
+      border: 1px solid rgba(4,255,255,0.3) !important;
+      background: rgba(4,255,255,0.06) !important;
+      color: var(--cyan) !important;
+      display: flex; align-items: center; justify-content: center;
+    }
+    .np-cbtn-main:hover {
+      background: rgba(4,255,255,0.12) !important;
+      box-shadow: 0 0 16px rgba(4,255,255,0.3) !important;
+    }
+
+    .np-time-display {
+      font-family: var(--font-brand);
+      font-size: 0.6rem;
+      letter-spacing: 0.08em;
+      color: var(--grey);
+      white-space: nowrap;
+      flex-shrink: 0;
+    }
+
+    .np-vol-wrap {
+      display: flex;
+      align-items: center;
+      gap: 0.5rem;
+      flex-shrink: 0;
+    }
+    .np-vol-btn {
+      background: none;
+      border: none;
+      color: var(--grey);
+      cursor: pointer;
+      padding: 0.25rem;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      transition: color 0.2s;
+    }
+    .np-vol-btn:hover { color: var(--steel); }
+    .np-vol-range {
+      -webkit-appearance: none;
+      appearance: none;
+      width: 68px; height: 2px;
+      background: rgba(128,142,193,0.2);
+      border-radius: 1px;
+      outline: none;
+      cursor: pointer;
+    }
+    .np-vol-range::-webkit-slider-thumb {
+      -webkit-appearance: none;
+      width: 10px; height: 10px;
+      border-radius: 50%;
+      background: var(--periwinkle);
+      cursor: pointer;
+    }
+    .np-vol-range::-moz-range-thumb {
+      width: 10px; height: 10px;
+      border-radius: 50%;
+      background: var(--periwinkle);
+      border: none;
+      cursor: pointer;
+    }
+
+    .np-close {
+      background: none;
+      border: none;
+      color: var(--grey);
+      cursor: pointer;
+      font-size: 0.85rem;
+      padding: 0.4rem;
+      opacity: 0.45;
+      transition: opacity 0.2s, color 0.2s;
+      line-height: 1;
+    }
+    .np-close:hover { opacity: 1; color: var(--white-soft); }
+
+    @media (max-width: 900px) {
+      .prir-inner-grid { grid-template-columns: 1fr !important; gap: 40px !important; }
+    }
+    @media (max-width: 900px) {
+      .track-item {
+        grid-template-columns: 44px 1fr 50px 32px;
+        gap: 0.8rem;
+        padding: 1rem 1rem;
+      }
+      .track-waveform { display: none; }
+      .np-vol-wrap { display: none; }
+      .np-row { gap: 0.8rem; padding: 0.75rem 1rem; }
+    }
+    @media (max-width: 600px) {
+      .track-item {
+        grid-template-columns: 40px 1fr 30px;
+        padding: 0.85rem 0.8rem;
+        gap: 0.5rem;
+      }
+      .track-duration { display: none; }
+      .np-time-display { display: none; }
+      .np-art { display: none; }
+    }
+
+    /* ═══════════════════════════════════════════════
+       SVG ICON SIZING
+    ═══════════════════════════════════════════════ */
+    .service-icon-ring svg { width: 26px; height: 26px; }
+    .studio-detail-icon svg { width: 16px; height: 16px; }
+    .about-image-icon svg { width: 64px; height: 64px; opacity: 0.25; }
+    .tracks-hint-icon { display: flex; align-items: center; }
+    .tracks-hint-icon svg { width: 16px; height: 16px; }
+    .np-art svg { width: 100%; height: 100%; padding: 8px; }
+    .np-cbtn svg { width: 13px; height: 13px; pointer-events: none; }
+    .np-cbtn-main svg { width: 13px; height: 13px; pointer-events: none; }
+    .np-vol-btn svg { width: 14px; height: 14px; pointer-events: none; }
+    .bv-vol-icon { display: flex; align-items: center; justify-content: center; }
+    .bv-vol-icon svg { width: 14px; height: 14px; }
+    .track-play-btn svg { width: 11px; height: 11px; pointer-events: none; }
+    .track-dl svg { width: 11px; height: 11px; pointer-events: none; }
+
+  </style>
+</head>
+<body>
+
+  <!-- ═══════════════════════════════════
+       NAVIGATION
+  ═══════════════════════════════════ -->
+  <nav id="navbar">
+    <a href="#hero" class="nav-logo">
+      <img src="images/duhodah-logo.jpg" alt="Duhodah">
+    </a>
+    <ul class="nav-links">
+      <li><a href="#o-erniju">O Meni</a></li>
+      <li><a href="#usluge">Usluge</a></li>
+      <li><a href="#autoskola">Autoškola</a></li>
+      <li><a href="#cijenik">Cijenik</a></li>
+      <li><a href="#termini">Termini</a></li>
+      <li><a href="#vjezba">Vježba</a></li>
+      <li><a href="#glazba">Glazba</a></li>
+      <li><a href="#studio">Studio</a></li>
+      <li><a href="quiz.html">Quiz</a></li>
+      <li><a href="znanje.html">Znanost</a></li>
+      <li><a href="#kontakt" class="nav-cta">Rezerviraj</a></li>
+    </ul>
+    <div class="nav-hamburger" id="hamburger">
+      <span></span><span></span><span></span>
+    </div>
+  </nav>
+
+  <!-- MOBILE NAV DRAWER -->
+  <div id="mobile-nav" style="
+    display: none;
+    position: fixed;
+    top: 0; left: 0; right: 0; bottom: 0;
+    background: rgba(8,8,26,0.97);
+    backdrop-filter: blur(20px);
+    z-index: 9999;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    gap: 2rem;
+  ">
+    <button id="mobile-nav-close" style="
+      position: absolute; top: 1.4rem; right: 1.4rem;
+      background: none; border: none; color: rgba(255,255,255,0.6);
+      font-size: 1.6rem; cursor: pointer; line-height: 1;
+    ">✕</button>
+    <a href="#o-erniju"   class="mnav-link" style="font-family:var(--font-brand); font-size:0.8rem; letter-spacing:0.25em; text-transform:uppercase; color:var(--steel);">O Meni</a>
+    <a href="#usluge"     class="mnav-link" style="font-family:var(--font-brand); font-size:0.8rem; letter-spacing:0.25em; text-transform:uppercase; color:var(--steel);">Usluge</a>
+    <a href="#autoskola"  class="mnav-link" style="font-family:var(--font-brand); font-size:0.8rem; letter-spacing:0.25em; text-transform:uppercase; color:var(--steel);">Autoškola</a>
+    <a href="#cijenik"    class="mnav-link" style="font-family:var(--font-brand); font-size:0.8rem; letter-spacing:0.25em; text-transform:uppercase; color:var(--steel);">Cijenik</a>
+    <a href="#vjezba"     class="mnav-link" style="font-family:var(--font-brand); font-size:0.8rem; letter-spacing:0.25em; text-transform:uppercase; color:var(--steel);">Vježba</a>
+    <a href="#glazba"     class="mnav-link" style="font-family:var(--font-brand); font-size:0.8rem; letter-spacing:0.25em; text-transform:uppercase; color:var(--steel);">Glazba</a>
+    <a href="#studio"     class="mnav-link" style="font-family:var(--font-brand); font-size:0.8rem; letter-spacing:0.25em; text-transform:uppercase; color:var(--steel);">Studio</a>
+    <a href="quiz.html"   class="mnav-link" style="font-family:var(--font-brand); font-size:0.8rem; letter-spacing:0.25em; text-transform:uppercase; color:var(--steel);">Quiz</a>
+    <a href="znanje.html" class="mnav-link" style="font-family:var(--font-brand); font-size:0.8rem; letter-spacing:0.25em; text-transform:uppercase; color:var(--steel);">Znanost</a>
+    <a href="events.html" class="mnav-link" style="font-family:var(--font-brand); font-size:0.8rem; letter-spacing:0.25em; text-transform:uppercase; color:var(--steel);">Termini</a>
+    <a href="#kontakt"    class="mnav-link" style="font-family:var(--font-brand); font-size:0.85rem; letter-spacing:0.2em; text-transform:uppercase; color:var(--black); background:var(--cyan); padding:0.8rem 2.5rem; border-radius:2px;">Rezerviraj</a>
+  </div>
+
+  <script>
+    document.addEventListener('DOMContentLoaded', function() {
+      var mnav     = document.getElementById('mobile-nav');
+      var burger   = document.getElementById('hamburger');
+      var closeBtn = document.getElementById('mobile-nav-close');
+
+      function openMenu()  { mnav.style.display = 'flex'; }
+      function closeMenu() { mnav.style.display = 'none'; }
+
+      burger.addEventListener('click',   openMenu);
+      burger.addEventListener('touchend', function(e){ e.preventDefault(); openMenu(); });
+
+      closeBtn.addEventListener('click',   closeMenu);
+      closeBtn.addEventListener('touchend', function(e){ e.preventDefault(); closeMenu(); });
+
+      document.querySelectorAll('.mnav-link').forEach(function(link) {
+        link.addEventListener('click', closeMenu);
+      });
+    });
+  </script>
+
+  <!-- ═══════════════════════════════════
+       HERO
+  ═══════════════════════════════════ -->
+  <section id="hero">
+    <video id="vortex-bg" autoplay loop muted playsinline>
+      <source src="video/vortex-anim.mp4" type="video/mp4">
+    </video>
+    <script>
+      (function(){
+        var clips = ['video/vortex-anim.mp4', 'video/vortex-anim-b.mp4', 'video/vortex-anim-c.mp4'];
+        var pick = clips[Math.floor(Math.random() * clips.length)];
+        var v = document.getElementById('vortex-bg');
+        v.querySelector('source').src = pick;
+        v.load();
+        if (window.innerWidth <= 768) {
+          v.style.width     = '46vw';
+          v.style.height    = '46vw';
+          v.style.top       = '22%';
+          v.style.left      = '50%';
+          v.style.transform = 'translate(-50%, 0)';
+        } else {
+          var base = 46.07;
+          var scale = 0.4 + Math.random() * 0.8;
+          var size = (base * scale).toFixed(2);
+          v.style.width  = size + 'vw';
+          v.style.height = size + 'vh';
+        }
+      })();
+    </script>
+    <canvas id="stars-canvas"></canvas>
+
+    <div class="hero-content">
+
+      <div class="hero-tagline">SPIRIT <span>·</span> BREATH</div>
+
+      <p class="hero-desc">
+        Breathwork · Bodywork · Mindwork<br>
+        <span style="color:var(--periwinkle); font-size:0.85em; letter-spacing:0.2em;">OSIJEK — SLAVONIJA</span>
+      </p>
+
+      <div class="hero-actions">
+        <a href="#kontakt" class="btn-primary">Rezerviraj Mjesto</a>
+        <a href="quiz.html" class="btn-secondary">Koji tip disača si? →</a>
+      </div>
+    </div>
+
+    <div class="scroll-indicator">
+      <span>SCROLL</span>
+      <div class="scroll-line"></div>
+    </div>
+  </section>
+
+  <!-- ═══════════════════════════════════
+       EVENTI
+  ═══════════════════════════════════ -->
+  <section id="events" style="
+    padding: 120px 0;
+    background: linear-gradient(180deg, var(--black) 0%, rgba(21,21,77,0.35) 50%, var(--black) 100%);
+    position: relative;
+    overflow: hidden;
+  ">
+    <!-- Ambient glow -->
+    <div style="position:absolute; top:50%; left:50%; transform:translate(-50%,-50%); width:800px; height:400px; background:radial-gradient(ellipse at center, rgba(84,2,128,0.18) 0%, transparent 70%); pointer-events:none;"></div>
+
+    <div class="container" style="position:relative; z-index:1;">
+
+      <!-- Header -->
+      <div style="text-align:center; margin-bottom:4rem;">
+        <p class="section-label reveal" style="text-align:center;">Nadolazeći događaji</p>
+        <h2 class="section-title reveal" style="font-size:clamp(2rem,5vw,3.8rem);">
+          Rezerviraj svoje<br>
+          <em style="font-style:normal; background: linear-gradient(90deg, var(--cyan), var(--magenta)); -webkit-background-clip:text; -webkit-text-fill-color:transparent; background-clip:text;">mjesto u dahu</em>
+        </h2>
+        <div class="divider divider-center reveal"></div>
+        <p class="section-subtitle reveal" style="max-width:600px; margin: 0 auto 0;">
+          Svjesno disanje je vještina — gradi se praksom, u prisutnosti. Svaki događaj je nova prilika da se vratiš sebi. Biramo online ili uživo — svaki put drugačija tema, ista namjera.
+        </p>
+      </div>
+
+      <!-- Badges -->
+      <div class="reveal" style="display:flex; gap:1rem; flex-wrap:wrap; justify-content:center; margin-bottom:3.5rem;">
+        <div style="display:flex; align-items:center; gap:0.6rem; padding:0.6rem 1.4rem; border:1px solid rgba(4,255,255,0.2); background:rgba(4,255,255,0.04);">
+          <span style="width:7px; height:7px; border-radius:50%; background:var(--cyan); display:inline-block; box-shadow:0 0 8px var(--cyan);"></span>
+          <span style="font-family:var(--font-brand); font-size:0.62rem; letter-spacing:0.2em; text-transform:uppercase; color:var(--cyan);">Online — svugdje</span>
+        </div>
+        <div style="display:flex; align-items:center; gap:0.6rem; padding:0.6rem 1.4rem; border:1px solid rgba(215,2,241,0.2); background:rgba(215,2,241,0.04);">
+          <span style="width:7px; height:7px; border-radius:50%; background:var(--magenta); display:inline-block; box-shadow:0 0 8px var(--magenta);"></span>
+          <span style="font-family:var(--font-brand); font-size:0.62rem; letter-spacing:0.2em; text-transform:uppercase; color:var(--magenta);">Uživo — Osijek</span>
+        </div>
+        <div style="display:flex; align-items:center; gap:0.6rem; padding:0.6rem 1.4rem; border:1px solid rgba(154,171,216,0.2); background:rgba(154,171,216,0.04);">
+          <span style="width:7px; height:7px; border-radius:50%; background:var(--periwinkle); display:inline-block; box-shadow:0 0 8px var(--periwinkle);"></span>
+          <span style="font-family:var(--font-brand); font-size:0.62rem; letter-spacing:0.2em; text-transform:uppercase; color:var(--periwinkle);">90 min · Mala grupa</span>
+        </div>
+      </div>
+
+      <!-- Eventi widget + side text -->
+      <div style="display:grid; grid-template-columns:1fr 480px; gap:60px; align-items:start;" class="events-grid">
+
+        <!-- Lijevo — kontekst -->
+        <div class="reveal">
+          <h3 style="font-family:var(--font-head); font-size:1.5rem; color:var(--white-soft); margin-bottom:1.5rem; line-height:1.4;">
+            Što te čeka na svakom putovanju?
+          </h3>
+          <div style="display:flex; flex-direction:column; gap:1.4rem; margin-bottom:2.5rem;">
+            <div style="display:flex; gap:1.2rem;">
+              <span style="color:var(--cyan); font-size:1.2rem; line-height:1; flex-shrink:0; margin-top:0.1rem;">◈</span>
+              <div>
+                <div style="font-family:var(--font-brand); font-size:0.7rem; letter-spacing:0.15em; text-transform:uppercase; color:var(--cyan); margin-bottom:0.3rem;">Uvod i namjera</div>
+                <div style="font-size:0.88rem; color:var(--steel); line-height:1.6;">Kratki zajednički prostor za pripremu — tijelo, um, namjera za to putovanje.</div>
+              </div>
+            </div>
+            <div style="display:flex; gap:1.2rem;">
+              <span style="color:var(--magenta); font-size:1.2rem; line-height:1; flex-shrink:0; margin-top:0.1rem;">◈</span>
+              <div>
+                <div style="font-family:var(--font-brand); font-size:0.7rem; letter-spacing:0.15em; text-transform:uppercase; color:var(--magenta); margin-bottom:0.3rem;">Vođeno disajno putovanje</div>
+                <div style="font-size:0.88rem; color:var(--steel); line-height:1.6;">Svjesno povezano disanje uz glazbu — duboka fiziološka i emocionalna obrada.</div>
+              </div>
+            </div>
+            <div style="display:flex; gap:1.2rem;">
+              <span style="color:var(--periwinkle); font-size:1.2rem; line-height:1; flex-shrink:0; margin-top:0.1rem;">◈</span>
+              <div>
+                <div style="font-family:var(--font-brand); font-size:0.7rem; letter-spacing:0.15em; text-transform:uppercase; color:var(--periwinkle); margin-bottom:0.3rem;">Integracija</div>
+                <div style="font-size:0.88rem; color:var(--steel); line-height:1.6;">Prostor za slijetanje, dijeljenje i zatvaranje kruga — da iskustvo ostane u tijelu.</div>
+              </div>
+            </div>
+          </div>
+
+          <div style="padding:1.5rem; border-left:2px solid var(--cyan); background:rgba(4,255,255,0.03);">
+            <p style="font-size:0.88rem; color:var(--grey); line-height:1.7; margin:0;">
+              "Svako putovanje ima svoju temu — ali dah uvijek zna put bolje od uma. Dođi bez očekivanja. Otiđi drugačiji."
+            </p>
+            <p style="font-family:var(--font-brand); font-size:0.6rem; letter-spacing:0.15em; text-transform:uppercase; color:var(--periwinkle); margin-top:0.8rem;">— Ernest, Duhodah</p>
+          </div>
+        </div>
+
+        <!-- Desno — nadolazeći eventi (vlastiti widget) -->
+        <div class="reveal reveal-delay-1" style="position:relative;">
+          <div style="position:absolute; inset:-15px; background:radial-gradient(ellipse at center, rgba(4,255,255,0.07) 0%, transparent 70%); pointer-events:none; z-index:-1;"></div>
+          <div style="font-family:var(--font-brand); font-size:0.6rem; letter-spacing:0.25em; text-transform:uppercase; color:var(--cyan); margin-bottom:1.2rem; display:flex; align-items:center; gap:0.6rem;">
+            <span style="width:6px; height:6px; border-radius:50%; background:var(--cyan); box-shadow:0 0 8px var(--cyan); animation: pulse-dot 2s infinite;"></span>
+            Nadolazeći termini
+          </div>
+          <!-- Calendar widget — učitava se iz Supabase -->
+          <div id="events-widget-container">
+            <div class="cal-loading">Učitavam termine...</div>
+          </div>
+        </div>
+
+      </div>
+
+    </div>
+  </section>
+  <style>
+    @media (max-width: 900px) {
+      .events-grid { grid-template-columns: 1fr !important; }
+    }
+    @keyframes pulse-dot {
+      0%, 100% { opacity: 1; box-shadow: 0 0 8px var(--cyan); }
+      50% { opacity: 0.5; box-shadow: 0 0 3px var(--cyan); }
+    }
+  </style>
+
+  <!-- ═══════════════════════════════════
+       ZNANOST — TEASER
+  ═══════════════════════════════════ -->
+  <section id="znanost" style="background: linear-gradient(180deg, transparent 0%, rgba(84,2,128,0.12) 40%, rgba(84,2,128,0.12) 60%, transparent 100%);">
+    <div class="container">
+      <p class="section-label reveal">Neuroznanost · Fiziologija · Dokazi</p>
+      <h2 class="section-title reveal">Zašto disanje mijenja sve</h2>
+      <div class="divider reveal"></div>
+      <p class="section-subtitle reveal" style="max-width:700px; margin-bottom:3.5rem;">
+        Svjesno disanje nije vjerovanje. To je biologija. Peer-reviewed istraživanja pokazuju što se zapravo dogodi u tijelu i mozgu — od imunološkog sustava do neurobiokemije stresa.
+      </p>
+
+      <div class="reveal" style="display:grid; grid-template-columns:repeat(auto-fit,minmax(200px,1fr)); gap:1.5rem; margin-bottom:3.5rem;">
+        <div style="padding:2rem 1.5rem; border:1px solid rgba(4,255,255,0.1); background:rgba(4,255,255,0.02);">
+          <div style="font-family:var(--font-head); font-size:2.5rem; color:var(--cyan); line-height:1; margin-bottom:0.8rem;">~50%</div>
+          <div style="font-family:var(--font-brand); font-size:0.65rem; letter-spacing:0.2em; text-transform:uppercase; color:var(--grey); line-height:1.6;">Smanjenje upalnih citokina disanjem<br><span style="color:var(--periwinkle);">Kox et al., PNAS 2014</span></div>
+        </div>
+        <div style="padding:2rem 1.5rem; border:1px solid rgba(215,2,241,0.12); background:rgba(215,2,241,0.02);">
+          <div style="font-family:var(--font-head); font-size:2.5rem; color:var(--pink); line-height:1; margin-bottom:0.8rem;">27%</div>
+          <div style="font-family:var(--font-brand); font-size:0.65rem; letter-spacing:0.2em; text-transform:uppercase; color:var(--grey); line-height:1.6;">Povećanje GABA (anti-anksioznost) u mozgu<br><span style="color:var(--periwinkle);">Streeter et al., 2010</span></div>
+        </div>
+        <div style="padding:2rem 1.5rem; border:1px solid rgba(4,255,255,0.1); background:rgba(4,255,255,0.02);">
+          <div style="font-family:var(--font-head); font-size:2.5rem; color:var(--cyan); line-height:1; margin-bottom:0.8rem;">60s</div>
+          <div style="font-family:var(--font-brand); font-size:0.65rem; letter-spacing:0.2em; text-transform:uppercase; color:var(--grey); line-height:1.6;">Do mjerljive promjene u ANS-u<br><span style="color:var(--periwinkle);">Gerritsen &amp; Band, 2018</span></div>
+        </div>
+        <div style="padding:2rem 1.5rem; border:1px solid rgba(154,171,216,0.15); background:rgba(154,171,216,0.02);">
+          <div style="font-family:var(--font-head); font-size:2.5rem; color:var(--periwinkle); line-height:1; margin-bottom:0.8rem;">14</div>
+          <div style="font-family:var(--font-brand); font-size:0.65rem; letter-spacing:0.2em; text-transform:uppercase; color:var(--grey); line-height:1.6;">Peer-reviewed referenci na stranici<br><span style="color:var(--periwinkle);">Sve klikabilne i otvorene</span></div>
+        </div>
+      </div>
+
+      <div class="reveal" style="text-align:center;">
+        <a href="znanje.html" style="display:inline-block; font-family:var(--font-brand); font-size:0.75rem; font-weight:600; letter-spacing:0.25em; text-transform:uppercase; color:var(--black); background:var(--cyan); padding:1.1rem 3rem; transition:box-shadow 0.3s, transform 0.3s;" onmouseover="this.style.boxShadow='0 0 30px rgba(4,255,255,0.4)'; this.style.transform='translateY(-2px)';" onmouseout="this.style.boxShadow=''; this.style.transform='';">
+          15 znanstveno dokazanih DobroBiti →
+        </a>
+      </div>
+    </div>
+  </section>
+
+  <!-- ═══════════════════════════════════
+       LEAD MAGNET — PRIRUČNIK ANS
+  ═══════════════════════════════════ -->
+  <section id="priručnik" style="padding: 100px 0; border-top: 1px solid rgba(4,255,255,0.06);">
+    <div class="container">
+      <div style="display:grid; grid-template-columns:1fr 1fr; gap:80px; align-items:center;" class="prir-inner-grid">
+
+        <!-- Lijeva strana — tekst -->
+        <div>
+          <p class="section-label reveal">Besplatni priručnik</p>
+          <h2 class="section-title reveal">Komparativna analiza živčanog sustava</h2>
+          <div class="divider reveal"></div>
+          <p class="section-subtitle reveal" style="margin-bottom:2rem;">
+            Počni učiti govor tijela i živaca. Nauči identificirati svoja i tuđa neuro-stanja: Simpatikus vs. parasimpatikus — 8 tjelesnih sustava, 40+ parametara. Imunitet, hormoni, kognicija, moždane mreže. Sve puno destilirane vrijednosti na jednom mjestu, besplatno. Pa ti vidi.
+          </p>
+          <ul class="reveal" style="list-style:none; margin-bottom:2.5rem; display:flex; flex-direction:column; gap:0.7rem;">
+            <li style="display:flex; gap:0.8rem; align-items:flex-start; font-size:0.88rem; color:var(--steel);">
+              <span style="color:var(--cyan); flex-shrink:0;">✦</span>Dvije infografike u visokoj rezoluciji
+            </li>
+            <li style="display:flex; gap:0.8rem; align-items:flex-start; font-size:0.88rem; color:var(--steel);">
+              <span style="color:var(--cyan); flex-shrink:0;">✦</span>Interaktivna online tablica s čitavom analizom
+            </li>
+            <li style="display:flex; gap:0.8rem; align-items:flex-start; font-size:0.88rem; color:var(--steel);">
+              <span style="color:var(--cyan); flex-shrink:0;">✦</span>Otključaj samo e-mailom — besplatno zauvijek
+            </li>
+          </ul>
+          <a href="priručnik.html" class="reveal" style="display:inline-block; font-family:var(--font-brand); font-size:0.72rem; font-weight:600; letter-spacing:0.22em; text-transform:uppercase; color:var(--black); background:var(--cyan); padding:1rem 2.5rem; transition:box-shadow 0.3s, transform 0.3s;" onmouseover="this.style.boxShadow='0 0 30px rgba(4,255,255,0.4)'; this.style.transform='translateY(-2px)';" onmouseout="this.style.boxShadow=''; this.style.transform='';">
+            Preuzmi besplatno →
+          </a>
+        </div>
+
+        <!-- Desna strana — preview infografike -->
+        <div class="reveal reveal-delay-2" style="position:relative;">
+          <div style="position:relative; border:1px solid rgba(4,255,255,0.1); border-radius:4px; overflow:hidden;">
+            <img src="images/infografika-ans-2.png" alt="ANS Priručnik preview" style="width:100%; display:block; filter: brightness(0.75);">
+            <!-- Blur overlay na dnu -->
+            <div style="position:absolute; bottom:0; left:0; right:0; height:55%; background:linear-gradient(180deg, transparent 0%, rgba(8,8,26,0.96) 100%); display:flex; flex-direction:column; align-items:center; justify-content:flex-end; padding-bottom:2rem;">
+              <div style="font-family:var(--font-brand); font-size:0.62rem; font-weight:600; letter-spacing:0.3em; text-transform:uppercase; color:var(--cyan); margin-bottom:0.6rem;">Otključaj besplatno</div>
+              <div style="font-family:var(--font-head); font-size:1.2rem; letter-spacing:0.06em; color:var(--white); text-align:center; line-height:1.4;">Cijela analiza dostupna<br>s tvojim emailom</div>
+            </div>
+          </div>
+          <!-- Glow efekt -->
+          <div style="position:absolute; inset:-20px; background:radial-gradient(ellipse at center, rgba(4,255,255,0.06) 0%, transparent 70%); pointer-events:none; z-index:-1;"></div>
+        </div>
+
+      </div>
+    </div>
+  </section>
+
+  <!-- ═══════════════════════════════════
+       DISAJNA VJEŽBA
+  ═══════════════════════════════════ -->
+  <section id="vjezba">
+    <div class="container">
+      <p class="section-label reveal">Vježba</p>
+      <h2 class="section-title reveal">Podesivi Ritam Disanja</h2>
+      <div class="divider divider-center reveal"></div>
+      <p class="section-subtitle reveal" style="margin:0 auto 0.5rem; text-align:center;">
+        Vođena vježba svjesnog disanja. Podesi trajanje svake faze i odaberi zvukove koji ti odgovaraju.
+      </p>
+
+      <div class="breath-app">
+
+        <!-- Visualizer -->
+        <div class="breath-visual">
+          <div class="breath-orb-wrap" id="bv-orb-wrap">
+            <svg class="bv-progress-svg" viewBox="0 0 292 292" id="bv-svg">
+              <circle class="bv-progress-track" cx="146" cy="146" r="140"/>
+              <circle class="bv-progress-fill" cx="146" cy="146" r="140"
+                      id="bv-prog-fill"
+                      stroke-dasharray="879.6" stroke-dashoffset="879.6"/>
+            </svg>
+            <div class="bv-glow"    id="bv-glow"></div>
+            <div class="bv-ring"    id="bv-ring"></div>
+            <div class="bv-ring-inner" id="bv-ring-inner"></div>
+            <div class="bv-center"></div>
+          </div>
+          <div class="bv-phase-text" id="bv-phase-text">— PRITISNITE POKRENI —</div>
+          <div class="bv-timer"      id="bv-timer">&nbsp;</div>
+          <div class="bv-cycle-count" id="bv-cycle-count">&nbsp;</div>
+        </div>
+
+        <!-- Action buttons -->
+        <div style="display:flex; gap:1rem; flex-wrap:wrap; justify-content:center;">
+          <button class="bv-start-btn" id="bv-start-btn">POKRENI</button>
+          <button class="bv-settings-toggle" id="bv-settings-toggle"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" style="width:13px;height:13px;vertical-align:middle;margin-right:6px"><circle cx="12" cy="12" r="3"/><path d="M19.4 15a1.65 1.65 0 00.33 1.82l.06.06a2 2 0 010 2.83 2 2 0 01-2.83 0l-.06-.06a1.65 1.65 0 00-1.82-.33 1.65 1.65 0 00-1 1.51V21a2 2 0 01-4 0v-.09A1.65 1.65 0 009 19.4a1.65 1.65 0 00-1.82.33l-.06.06a2 2 0 01-2.83-2.83l.06-.06A1.65 1.65 0 004.68 15a1.65 1.65 0 00-1.51-1H3a2 2 0 010-4h.09A1.65 1.65 0 004.6 9a1.65 1.65 0 00-.33-1.82l-.06-.06a2 2 0 012.83-2.83l.06.06A1.65 1.65 0 009 4.68a1.65 1.65 0 001-1.51V3a2 2 0 014 0v.09a1.65 1.65 0 001 1.51 1.65 1.65 0 001.82-.33l.06-.06a2 2 0 012.83 2.83l-.06.06A1.65 1.65 0 0019.4 9a1.65 1.65 0 001.51 1H21a2 2 0 010 4h-.09a1.65 1.65 0 00-1.51 1z"/></svg>POSTAVKE</button>
+        </div>
+
+        <!-- Settings panel -->
+        <div class="bv-settings-panel" id="bv-settings-panel">
+
+          <!-- Timing -->
+          <div>
+            <div class="bv-settings-group-title">Trajanje faza</div>
+            <!-- Presets -->
+            <div class="bv-patterns" style="margin-bottom:1.5rem;" id="bv-patterns">
+              <button class="bv-pattern-btn active" data-p="4-2-6-2">4·2·6·2 — Relaks</button>
+              <button class="bv-pattern-btn" data-p="4-4-4-4">4·4·4·4 — Box</button>
+              <button class="bv-pattern-btn" data-p="4-7-8-0">4·7·8·0 — 4-7-8</button>
+              <button class="bv-pattern-btn" data-p="6-0-6-0">6·0·6·0 — Koherentno</button>
+              <button class="bv-pattern-btn" data-p="2-0-2-0">2·0·2·0 — Aktivacija</button>
+              <button class="bv-pattern-btn" data-p="5-0-5-0">5·0·5·0 — Koherentno</button>
+              <button class="bv-pattern-btn" data-p="4-0-8-0">4·0·8·0 — Smiraj</button>
+              <button class="bv-pattern-btn" data-p="4-2-12-0">4·2·12·0 — Spokoj</button>
+            </div>
+            <div class="bv-timing-grid">
+              <div class="bv-timing-cell">
+                <div class="bv-cell-label" style="color:var(--cyan)">Udah</div>
+                <div class="bv-cell-val phase-inhale" id="lbl-inhale">4</div>
+                <div class="bv-cell-unit">sekunde</div>
+                <input type="range" class="bv-range" id="rng-inhale" min="1" max="12" value="4" step="1">
+              </div>
+              <div class="bv-timing-cell">
+                <div class="bv-cell-label" style="color:var(--magenta)">Pauza gore</div>
+                <div class="bv-cell-val phase-holdtop" id="lbl-holdtop">2</div>
+                <div class="bv-cell-unit">sekunde</div>
+                <input type="range" class="bv-range" id="rng-holdtop" min="0" max="12" value="2" step="1">
+              </div>
+              <div class="bv-timing-cell">
+                <div class="bv-cell-label" style="color:var(--pink)">Izdah</div>
+                <div class="bv-cell-val phase-exhale" id="lbl-exhale">6</div>
+                <div class="bv-cell-unit">sekunde</div>
+                <input type="range" class="bv-range" id="rng-exhale" min="1" max="16" value="6" step="1">
+              </div>
+              <div class="bv-timing-cell">
+                <div class="bv-cell-label" style="color:var(--steel)">Pauza dolje</div>
+                <div class="bv-cell-val phase-holdbot" id="lbl-holdbot">2</div>
+                <div class="bv-cell-unit">sekunde</div>
+                <input type="range" class="bv-range" id="rng-holdbot" min="0" max="12" value="2" step="1">
+              </div>
+            </div>
+          </div>
+
+          <!-- Sounds -->
+          <div>
+            <div class="bv-settings-group-title">Zvukovi</div>
+            <div class="bv-sound-rows">
+              <!-- Row: Udah -->
+              <div class="bv-sound-row">
+                <div class="bv-sound-phase-label" style="color:var(--cyan)">Udah</div>
+                <label class="bv-sound-toggle" id="tog-inhale">
+                  <div class="bv-toggle-track on" id="track-inhale"></div>
+                  <span style="font-family:var(--font-brand);font-size:0.55rem;letter-spacing:0.15em;color:var(--grey)">Zvuk</span>
+                </label>
+                <select class="bv-sound-select" id="sel-inhale">
+                  <option value="0">Tibetska posuda — udah</option>
+                  <option value="1">Voda — usisavanje</option>
+                  <option value="2">Kozmički dron — rast</option>
+                  <option value="3">Kristal — udar</option>
+                  <option value="4">Dah — uvlačenje</option>
+                  <option value="5">Bubanj — izgradnja</option>
+                  <option value="6">Šuma — jutro</option>
+                </select>
+                <div class="bv-vol-wrap">
+                  <span class="bv-vol-icon"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round"><path d="M11 5L6 9H2v6h4l5 4V5z"/><path d="M15.54 8.46a5 5 0 010 7.07"/></svg></span>
+                  <input type="range" class="bv-range" id="vol-inhale" min="0" max="1" step="0.05" value="0.6">
+                </div>
+              </div>
+              <!-- Row: Pauza gore -->
+              <div class="bv-sound-row">
+                <div class="bv-sound-phase-label" style="color:var(--magenta)">Pauza gore</div>
+                <label class="bv-sound-toggle" id="tog-holdtop">
+                  <div class="bv-toggle-track on" id="track-holdtop"></div>
+                  <span style="font-family:var(--font-brand);font-size:0.55rem;letter-spacing:0.15em;color:var(--grey)">Zvuk</span>
+                </label>
+                <select class="bv-sound-select" id="sel-holdtop">
+                  <option value="0">Tibetska posuda — vrhunac</option>
+                  <option value="1">Voda — mirovanje</option>
+                  <option value="2">Kozmički dron — lebdenje</option>
+                  <option value="3">Kristal — zvonjava</option>
+                  <option value="4">Dah — tišina</option>
+                  <option value="5">Bubanj — udarac</option>
+                  <option value="6">Šuma — cvrkut</option>
+                </select>
+                <div class="bv-vol-wrap">
+                  <span class="bv-vol-icon"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round"><path d="M11 5L6 9H2v6h4l5 4V5z"/><path d="M15.54 8.46a5 5 0 010 7.07"/></svg></span>
+                  <input type="range" class="bv-range" id="vol-holdtop" min="0" max="1" step="0.05" value="0.5">
+                </div>
+              </div>
+              <!-- Row: Izdah -->
+              <div class="bv-sound-row">
+                <div class="bv-sound-phase-label" style="color:var(--pink)">Izdah</div>
+                <label class="bv-sound-toggle" id="tog-exhale">
+                  <div class="bv-toggle-track on" id="track-exhale"></div>
+                  <span style="font-family:var(--font-brand);font-size:0.55rem;letter-spacing:0.15em;color:var(--grey)">Zvuk</span>
+                </label>
+                <select class="bv-sound-select" id="sel-exhale">
+                  <option value="0">Tibetska posuda — spust</option>
+                  <option value="1">Voda — izlijevanje</option>
+                  <option value="2">Kozmički dron — pad</option>
+                  <option value="3">Kristal — rezonancija</option>
+                  <option value="4">Dah — izdisaj</option>
+                  <option value="5">Bubanj — odmor</option>
+                  <option value="6">Šuma — vjetar</option>
+                </select>
+                <div class="bv-vol-wrap">
+                  <span class="bv-vol-icon"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round"><path d="M11 5L6 9H2v6h4l5 4V5z"/><path d="M15.54 8.46a5 5 0 010 7.07"/></svg></span>
+                  <input type="range" class="bv-range" id="vol-exhale" min="0" max="1" step="0.05" value="0.6">
+                </div>
+              </div>
+              <!-- Row: Pauza dolje -->
+              <div class="bv-sound-row">
+                <div class="bv-sound-phase-label" style="color:var(--steel)">Pauza dolje</div>
+                <label class="bv-sound-toggle" id="tog-holdbot">
+                  <div class="bv-toggle-track" id="track-holdbot"></div>
+                  <span style="font-family:var(--font-brand);font-size:0.55rem;letter-spacing:0.15em;color:var(--grey)">Zvuk</span>
+                </label>
+                <select class="bv-sound-select" id="sel-holdbot">
+                  <option value="0">Tibetska posuda — tišina</option>
+                  <option value="1">Voda — tama</option>
+                  <option value="2">Kozmički dron — pod</option>
+                  <option value="3">Kristal — bez zvuka</option>
+                  <option value="4">Dah — praznina</option>
+                  <option value="5">Bubanj — puls</option>
+                  <option value="6">Šuma — noć</option>
+                </select>
+                <div class="bv-vol-wrap">
+                  <span class="bv-vol-icon"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round"><path d="M11 5L6 9H2v6h4l5 4V5z"/><path d="M15.54 8.46a5 5 0 010 7.07"/></svg></span>
+                  <input type="range" class="bv-range" id="vol-holdbot" min="0" max="1" step="0.05" value="0.3">
+                </div>
+              </div>
+            </div>
+          </div>
+
+        </div><!-- /settings panel -->
+
+      </div><!-- /breath-app -->
+    </div>
+  </section>
+
+  <!-- ═══════════════════════════════════
+       O ERNIJU
+  ═══════════════════════════════════ -->
+  <section id="o-erniju">
+    <div class="container">
+      <div class="about-grid">
+        <div class="about-image-wrap reveal">
+          <div class="about-image-placeholder">
+            <div class="about-image-icon"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1" stroke-linecap="round"><circle cx="12" cy="7" r="4"/><path d="M4 21c0-4.4 3.6-8 8-8s8 3.6 8 8"/></svg></div>
+            <div class="about-image-label">TON I SLIKA UGLAVNOM UŽIVO</div>
+          </div>
+          <div class="about-corner tl"></div>
+          <div class="about-corner br"></div>
+        </div>
+
+        <div class="about-text">
+          <p class="section-label reveal">Instruktor</p>
+          <h2 class="section-title reveal">Ernest —<br>Pionir Breathworka<br>u Slavoniji</h2>
+          <div class="divider reveal"></div>
+          <div class="reveal reveal-delay-1">
+            <p>Duhodah nije studio koji je nastao slučajno. Nastao je iz osobnog iskustva — <strong>godina traženja alata za regulaciju živčanog sustava</strong> koji zaista funkcioniraju u svakodnevnom životu.</p>
+            <p>Svjesno disanje nije trend. To je evolucijski mehanizam koji smo, u ubrzanom modernom životu, gotovo potpuno zaboravili koristiti. Moj zadatak je da vas podsjetim.</p>
+            <p>Kao <strong>jedini dediciran breathwork instruktor u Osijeku i Slavoniji</strong>, gradim zajednicu koja razumije vezu između daha, živčanog sustava i kvalitete života.</p>
+          </div>
+          <div class="about-badges reveal reveal-delay-2">
+            <span class="badge">Breathwork Instruktor</span>
+            <span class="badge">Živčani Sustav</span>
+            <span class="badge">Osijek, Hrvatska</span>
+            <span class="badge">Studio Shine</span>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ═══════════════════════════════════
+       USLUGE
+  ═══════════════════════════════════ -->
+  <section id="usluge">
+    <div class="container">
+      <div style="text-align:center; max-width:600px; margin:0 auto;">
+        <p class="section-label reveal">Programi</p>
+        <h2 class="section-title reveal">Dva puta prema<br>unutarnjoj ravnoteži</h2>
+        <div class="divider divider-center reveal"></div>
+      </div>
+
+      <div class="services-grid">
+        <!-- Breathwork Journey -->
+        <div class="service-card reveal">
+          <div class="service-card-bg"></div>
+          <span class="service-number">01 — GRUPNO</span>
+          <div class="service-icon">
+            <div class="service-icon-ring"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round"><path d="M2 12C5 6 7 6 9 12s4 6 6 0 4-6 7 0"/></svg></div>
+          </div>
+          <h3 class="service-title">Disajna Putovanja</h3>
+          <p class="service-desc">
+            Grupne sesije svjesnog disanja koje vode prema dubokom unutarnjem iskustvu. Svako putovanje je jedinstveno — vođeno glazbom, namjerom i dahom.
+          </p>
+          <div class="service-details">
+            <div class="service-detail">Grupna sesija do 15 sudionika</div>
+            <div class="service-detail">Studio Shine, Gundulića 5, Osijek</div>
+            <div class="service-detail">Uvodna integracija + vođeno putovanje</div>
+            <div class="service-detail">Zatvoreni prostor, puna privatnost</div>
+          </div>
+          <span class="service-price">UPITAJ ZA TERMINE →</span>
+        </div>
+
+        <!-- Autoškola -->
+        <div class="service-card reveal reveal-delay-1">
+          <div class="service-card-bg"></div>
+          <span class="service-number">02 — TEČAJ</span>
+          <div class="service-icon">
+            <div class="service-icon-ring"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round"><circle cx="12" cy="12" r="9"/><circle cx="12" cy="12" r="3"/><line x1="12" y1="9" x2="12" y2="3"/><line x1="7.8" y1="10.5" x2="3.4" y2="17.4"/><line x1="16.2" y1="10.5" x2="20.6" y2="17.4"/></svg></div>
+          </div>
+          <h3 class="service-title">Autoškola za<br>Živčani Sustav</h3>
+          <p class="service-desc">
+            Temeljni tečaj koji mijenja odnos prema stresu zauvijek. Kroz 4 tjedna učite jezik svog autonomnog živčanog sustava i kako njime upravljati disanjem.
+          </p>
+          <div class="service-details">
+            <div class="service-detail">4 susreta × 120 minuta</div>
+            <div class="service-detail">Jednom tjedno, kroz 4 tjedna</div>
+            <div class="service-detail">Teorija + praktični rad s dahom</div>
+            <div class="service-detail">Online ili Studio Shine opcija</div>
+          </div>
+          <span class="service-price">NOVA GRUPA USKORO →</span>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ═══════════════════════════════════
+       AUTOŠKOLA DEEP DIVE
+  ═══════════════════════════════════ -->
+  <section id="autoskola">
+    <div class="container">
+      <div class="autoskola-inner">
+        <div>
+          <p class="section-label reveal">Program</p>
+          <h2 class="section-title reveal">Autoškola za<br>Živčani Sustav</h2>
+          <div class="divider reveal"></div>
+          <p class="section-subtitle reveal">
+            Zamislite da imate priručnik za najsloženiji sustav koji posjedujete — vlastito tijelo. Autoškola vam daje upravo to.
+          </p>
+
+          <div class="autoskola-info reveal reveal-delay-1">
+            <div class="info-row">
+              <span class="info-label">Format</span>
+              <span class="info-value">4 × 120 min</span>
+            </div>
+            <div class="info-row">
+              <span class="info-label">Trajanje</span>
+              <span class="info-value">4 tjedna</span>
+            </div>
+            <div class="info-row">
+              <span class="info-label">Lokacija</span>
+              <span class="info-value">Studio Shine / Online</span>
+            </div>
+            <div class="info-row">
+              <span class="info-label">Veličina grupe</span>
+              <span class="info-value">Max 10 polaznika</span>
+            </div>
+            <div class="info-row">
+              <span class="info-label">Sljedeća grupa</span>
+              <span class="info-value highlight">UPITAJ ZA TERMINE</span>
+            </div>
+          </div>
+        </div>
+
+        <div>
+          <ul class="weeks-list">
+            <li class="week-item reveal">
+              <div class="week-number">1<small>TJ</small></div>
+              <div class="week-content">
+                <h4>Kočnica</h4>
+                <p>Upoznajete parasimpatikus — biološku kočnicu tijela. Kako prepoznati kada ste zaglavili u overdriveu, što se tada događa u živčanom sustavu i kako aktivirati prirodni mehanizam za zaustavljanje.</p>
+              </div>
+            </li>
+            <li class="week-item reveal reveal-delay-1">
+              <div class="week-number">2<small>TJ</small></div>
+              <div class="week-content">
+                <h4>Gas</h4>
+                <p>Upoznajete simpatikus — unutarnji motor koji drži tijelo u pripravnosti. Razumijete zašto kortizol i adrenalin nisu neprijatelji te kako disanjem namjerno ubrzati ili usporiti fiziološku aktivaciju.</p>
+              </div>
+            </li>
+            <li class="week-item reveal reveal-delay-2">
+              <div class="week-number">3<small>TJ</small></div>
+              <div class="week-content">
+                <h4>Mjenjač</h4>
+                <p>Jačate toleranciju na CO2 i fleksibilnost živčanog sustava. Vježbate glatki prelazak između stanja — bez trzanja, bez zaglavljivanja. Tijelo uči mijenjati brzine onako kako situacija zahtijeva.</p>
+              </div>
+            </li>
+            <li class="week-item reveal reveal-delay-3">
+              <div class="week-number">4<small>TJ</small></div>
+              <div class="week-content">
+                <h4>Tempomat</h4>
+                <p>Podešavate unutarnji tempomat na optimalnu frekvenciju. Koherentno disanje, pojačan fokus i stanje toka — miran, budan, prisutan. Živčani sustav koji zna sam sebe regulirati i bez svjesnog napora.</p>
+              </div>
+            </li>
+          </ul>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ═══════════════════════════════════
+       SCIENCE
+  ═══════════════════════════════════ -->
+  <section id="znanosti">
+    <div class="container">
+      <div class="science-intro">
+        <p class="section-label reveal">Neuroznanost</p>
+        <h2 class="section-title reveal">Disanje mijenja mozak.<br>Doslovno.</h2>
+        <div class="divider divider-center reveal"></div>
+        <p class="section-subtitle reveal" style="margin: 0 auto;">
+          Svjesno disanje nije meditacija ni relaksacija. To je direktna manipulacija autonomnim živčanim sustavom kroz mehanizme koje moderna neuroznanost tek počinje razumijevati.
+        </p>
+      </div>
+
+      <div class="science-grid">
+        <div class="science-card reveal">
+          <div class="science-stat">6 min</div>
+          <div class="science-label">Do aktivacije parasimpatikusa</div>
+          <p class="science-text">Sporim, produženim izdisajem aktiviramo vagusni živac i prebacujemo tijelo iz reaktivnog u regenerativni mod.</p>
+        </div>
+        <div class="science-card reveal reveal-delay-1">
+          <div class="science-stat">80%</div>
+          <div class="science-label">Smanjenje kortizola</div>
+          <p class="science-text">Studije pokazuju do 80% smanjenje razine kortizola — primarnog hormona stresa — nakon redovite prakse svjesnog disanja.</p>
+        </div>
+        <div class="science-card reveal reveal-delay-2">
+          <div class="science-stat">21 dan</div>
+          <div class="science-label">Do neuroplastičnih promjena</div>
+          <p class="science-text">Konzistentna praksa od 3 tjedna dovoljna je za mjerljive promjene u prefrontalnom korteksu — centru za regulaciju emocija.</p>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ═══════════════════════════════════
+       CIJENIK
+  ═══════════════════════════════════ -->
+  <section id="cijenik" style="padding: 130px 0; position: relative; overflow: hidden;">
+
+    <!-- Ambient background -->
+    <div style="position:absolute; top:0; left:0; right:0; bottom:0; background: linear-gradient(180deg, transparent 0%, rgba(4,255,255,0.03) 30%, rgba(215,2,241,0.05) 70%, transparent 100%); pointer-events:none;"></div>
+    <div style="position:absolute; top:50%; left:50%; transform:translate(-50%,-50%); width:900px; height:600px; background:radial-gradient(ellipse at center, rgba(84,2,128,0.15) 0%, transparent 70%); pointer-events:none;"></div>
+
+    <div class="container" style="position:relative; z-index:1;">
+
+      <!-- Header -->
+      <div style="text-align:center; margin-bottom:1.5rem;">
+        <p class="section-label reveal" style="text-align:center;">Investicija u sebe</p>
+        <h2 class="section-title reveal" style="font-size:clamp(2rem,5vw,3.6rem); margin-bottom:1rem;">
+          Odaberi svoju<br>
+          <em style="font-style:normal; background: linear-gradient(90deg, var(--cyan), var(--magenta)); -webkit-background-clip:text; -webkit-text-fill-color:transparent; background-clip:text;">razinu prakse</em>
+        </h2>
+        <div class="divider divider-center reveal"></div>
+        <p class="section-subtitle reveal" style="max-width:560px; margin: 0 auto 1rem;">
+          Svaki dah je korak. Svaki korak gradi sustav. Odaberi format koji ti odgovara — i počni danas.
+        </p>
+      </div>
+
+      <!-- Provokativna izjava -->
+      <div class="reveal" style="max-width:700px; margin: 0 auto 5rem; text-align:center; padding:1.5rem 2rem; border-left:2px solid var(--cyan); border-right:2px solid var(--magenta); background:rgba(255,255,255,0.02);">
+        <p style="font-size:0.95rem; color:rgba(255,255,255,0.55); line-height:1.8; font-style:italic;">
+          "Jedno grupno jutarnje disanje košta manje od večere za dvoje.<br>
+          A duže ostaje u tijelu."
+        </p>
+      </div>
+
+      <!-- ── JEDNOKRATNO ── -->
+      <div style="margin-bottom:2rem;">
+        <div class="reveal" style="display:flex; align-items:center; gap:1rem; margin-bottom:1.8rem;">
+          <span style="font-family:var(--font-brand); font-size:0.6rem; letter-spacing:0.25em; text-transform:uppercase; color:var(--cyan); white-space:nowrap;">Jednokratno</span>
+          <div style="flex:1; height:1px; background:linear-gradient(90deg, rgba(4,255,255,0.3), transparent);"></div>
+        </div>
+        <div style="display:grid; grid-template-columns:repeat(auto-fit, minmax(280px, 1fr)); gap:16px;">
+
+          <!-- Online Journey -->
+          <div class="reveal pricing-card" style="
+            background: rgba(4,255,255,0.03);
+            border: 1px solid rgba(4,255,255,0.15);
+            border-radius: 12px;
+            padding: 32px 28px;
+            position: relative;
+            transition: all 0.3s;
+          " onmouseover="this.style.borderColor='rgba(4,255,255,0.4)'; this.style.background='rgba(4,255,255,0.06)'; this.style.transform='translateY(-4px)'; this.style.boxShadow='0 12px 40px rgba(4,255,255,0.1)'" onmouseout="this.style.borderColor='rgba(4,255,255,0.15)'; this.style.background='rgba(4,255,255,0.03)'; this.style.transform=''; this.style.boxShadow=''">
+            <div style="display:flex; align-items:center; gap:0.6rem; margin-bottom:1.4rem;">
+              <span style="width:7px; height:7px; border-radius:50%; background:var(--cyan); box-shadow:0 0 8px var(--cyan); flex-shrink:0;"></span>
+              <span style="font-family:var(--font-brand); font-size:0.6rem; letter-spacing:0.2em; text-transform:uppercase; color:var(--cyan);">Online · Svugdje</span>
+            </div>
+            <h3 style="font-family:var(--font-head); font-size:1.25rem; color:rgba(255,255,255,0.92); margin-bottom:0.6rem; line-height:1.3;">Disajno putovanje<br><span style="color:var(--cyan);">Online</span></h3>
+            <p style="font-size:0.82rem; color:rgba(255,255,255,0.45); line-height:1.6; margin-bottom:1.6rem; min-height:60px;">120 minuta sesija, od čega 60-90 min vođenog svjesnog disanja uz duboko imerzivnu neuro-akustičnu tematsku autorsku glazbu. Dođeš sa trenutnim stanjem - dišeš, osjećaš, otpuštaš, putuješ - odeš s bitno unaprijeđenim stanjem!</p>
+            <div style="display:flex; align-items:baseline; gap:0.4rem; margin-bottom:1.8rem;">
+              <span style="font-family:var(--font-head); font-size:2.4rem; font-weight:700; color:var(--cyan); line-height:1;">20€</span>
+              <span style="font-size:0.75rem; color:rgba(255,255,255,0.3); font-family:var(--font-brand);">/ sesija</span>
+            </div>
+            <a href="STRIPE_LINK_ONLINE_JEDNOKRATNO" target="_blank" rel="noopener" style="
+              display:block; text-align:center;
+              padding:11px 20px;
+              border:1px solid rgba(4,255,255,0.4);
+              color:var(--cyan);
+              font-family:var(--font-brand);
+              font-size:0.78rem;
+              letter-spacing:0.06em;
+              text-decoration:none;
+              border-radius:7px;
+              transition:all 0.2s;
+            " onmouseover="this.style.background='rgba(4,255,255,0.1)'; this.style.boxShadow='0 0 20px rgba(4,255,255,0.15)'" onmouseout="this.style.background=''; this.style.boxShadow=''">Rezerviraj mjesto →</a>
+          </div>
+
+          <!-- Uživo Journey -->
+          <div class="reveal pricing-card" style="
+            background: rgba(215,2,241,0.03);
+            border: 1px solid rgba(215,2,241,0.2);
+            border-radius: 12px;
+            padding: 32px 28px;
+            position: relative;
+            transition: all 0.3s;
+          " onmouseover="this.style.borderColor='rgba(215,2,241,0.5)'; this.style.background='rgba(215,2,241,0.07)'; this.style.transform='translateY(-4px)'; this.style.boxShadow='0 12px 40px rgba(215,2,241,0.12)'" onmouseout="this.style.borderColor='rgba(215,2,241,0.2)'; this.style.background='rgba(215,2,241,0.03)'; this.style.transform=''; this.style.boxShadow=''">
+            <div style="display:flex; align-items:center; gap:0.6rem; margin-bottom:1.4rem;">
+              <span style="width:7px; height:7px; border-radius:50%; background:var(--magenta); box-shadow:0 0 8px var(--magenta); flex-shrink:0;"></span>
+              <span style="font-family:var(--font-brand); font-size:0.6rem; letter-spacing:0.2em; text-transform:uppercase; color:var(--magenta);">Uživo · Osijek</span>
+            </div>
+            <h3 style="font-family:var(--font-head); font-size:1.25rem; color:rgba(255,255,255,0.92); margin-bottom:0.6rem; line-height:1.3;">Disajno putovanje<br><span style="color:var(--magenta);">Uživo</span></h3>
+            <p style="font-size:0.82rem; color:rgba(255,255,255,0.45); line-height:1.6; margin-bottom:1.6rem; min-height:60px;">Livada "Kod Zdenca", kraj promenade, Šetalište kardinala Franje Šepera, Osijek. Zemlja pod leđima, sunce na licu, čisti zrak u plućima. Kad grupa diše zajedno, nastaje nešto što solo sesija ne može — zajednički energetski val koji nosi svakog pojedinca dublje nego što bi sam otišao. A priroda dodatno pojačava sve.</p>
+            <div style="display:flex; align-items:baseline; gap:0.4rem; margin-bottom:1.8rem;">
+              <span style="font-family:var(--font-head); font-size:2.4rem; font-weight:700; color:var(--magenta); line-height:1;">30€</span>
+              <span style="font-size:0.75rem; color:rgba(255,255,255,0.3); font-family:var(--font-brand);">/ sesija</span>
+            </div>
+            <a href="STRIPE_LINK_UZIVO_JEDNOKRATNO" target="_blank" rel="noopener" style="
+              display:block; text-align:center;
+              padding:11px 20px;
+              border:1px solid rgba(215,2,241,0.4);
+              color:var(--magenta);
+              font-family:var(--font-brand);
+              font-size:0.78rem;
+              letter-spacing:0.06em;
+              text-decoration:none;
+              border-radius:7px;
+              transition:all 0.2s;
+            " onmouseover="this.style.background='rgba(215,2,241,0.1)'; this.style.boxShadow='0 0 20px rgba(215,2,241,0.15)'" onmouseout="this.style.background=''; this.style.boxShadow=''">Rezerviraj mjesto →</a>
+          </div>
+
+        </div>
+      </div>
+
+      <!-- ── PRETPLATE ── -->
+      <div style="margin-bottom:2rem;">
+        <div class="reveal" style="display:flex; align-items:center; gap:1rem; margin-bottom:1.8rem;">
+          <span style="font-family:var(--font-brand); font-size:0.6rem; letter-spacing:0.25em; text-transform:uppercase; color:var(--magenta); white-space:nowrap;">Pretplata · Mjesečno</span>
+          <div style="flex:1; height:1px; background:linear-gradient(90deg, rgba(215,2,241,0.3), transparent);"></div>
+          <span style="font-family:var(--font-brand); font-size:0.6rem; letter-spacing:0.1em; color:rgba(255,255,255,0.3);">otkaži kad god</span>
+        </div>
+
+        <div style="display:grid; grid-template-columns:repeat(auto-fit, minmax(280px, 1fr)); gap:16px;">
+
+          <!-- Pretplata Online -->
+          <div class="reveal pricing-card" style="
+            background: rgba(255,255,255,0.03);
+            border: 1px solid rgba(4,255,255,0.12);
+            border-radius: 12px;
+            padding: 32px 28px;
+            transition: all 0.3s;
+          " onmouseover="this.style.borderColor='rgba(4,255,255,0.35)'; this.style.background='rgba(4,255,255,0.05)'; this.style.transform='translateY(-4px)'" onmouseout="this.style.borderColor='rgba(4,255,255,0.12)'; this.style.background='rgba(255,255,255,0.03)'; this.style.transform=''">
+            <div style="display:flex; align-items:center; gap:0.6rem; margin-bottom:1.4rem;">
+              <span style="font-family:var(--font-brand); font-size:0.6rem; letter-spacing:0.2em; text-transform:uppercase; color:var(--cyan);">Starter</span>
+            </div>
+            <h3 style="font-family:var(--font-head); font-size:1.2rem; color:rgba(255,255,255,0.92); margin-bottom:0.6rem; line-height:1.3;">Sva online disajna putovanja</h3>
+            <p style="font-size:0.82rem; color:rgba(255,255,255,0.45); line-height:1.6; margin-bottom:1.6rem; min-height:60px;">Neograničen pristup svim online sesijama u mjesecu. Bez ograničenja, bez izgovora.</p>
+            <div style="display:flex; align-items:baseline; gap:0.4rem; margin-bottom:0.5rem;">
+              <span style="font-family:var(--font-head); font-size:2.4rem; font-weight:700; color:var(--cyan); line-height:1;">35€</span>
+              <span style="font-size:0.75rem; color:rgba(255,255,255,0.3); font-family:var(--font-brand);">/ mj</span>
+            </div>
+            <p style="font-size:0.7rem; color:rgba(4,255,255,0.5); margin-bottom:1.8rem; font-family:var(--font-brand); letter-spacing:0.05em;">≈ 8.75€ po sesiji · ušteda 60%</p>
+            <a href="STRIPE_LINK_PRETPLATA_ONLINE" target="_blank" rel="noopener" style="
+              display:block; text-align:center;
+              padding:11px 20px;
+              border:1px solid rgba(4,255,255,0.35);
+              color:var(--cyan);
+              font-family:var(--font-brand);
+              font-size:0.78rem;
+              letter-spacing:0.06em;
+              text-decoration:none;
+              border-radius:7px;
+              transition:all 0.2s;
+            " onmouseover="this.style.background='rgba(4,255,255,0.1)'" onmouseout="this.style.background=''">Pretplati se →</a>
+          </div>
+
+          <!-- Pretplata Online + 1 Uživo — FEATURED -->
+          <div class="reveal pricing-card" style="
+            background: linear-gradient(135deg, rgba(4,255,255,0.07) 0%, rgba(215,2,241,0.07) 100%);
+            border: 1px solid rgba(4,255,255,0.3);
+            border-radius: 12px;
+            padding: 32px 28px;
+            position: relative;
+            transition: all 0.3s;
+            box-shadow: 0 0 40px rgba(4,255,255,0.08), 0 0 40px rgba(215,2,241,0.06);
+          " onmouseover="this.style.transform='translateY(-6px)'; this.style.boxShadow='0 16px 60px rgba(4,255,255,0.15), 0 16px 60px rgba(215,2,241,0.1)'" onmouseout="this.style.transform=''; this.style.boxShadow='0 0 40px rgba(4,255,255,0.08), 0 0 40px rgba(215,2,241,0.06)'">
+            <!-- Popular badge -->
+            <div style="position:absolute; top:-12px; left:50%; transform:translateX(-50%); background:linear-gradient(90deg, var(--cyan), var(--magenta)); padding:4px 16px; border-radius:20px; font-family:var(--font-brand); font-size:0.58rem; letter-spacing:0.15em; text-transform:uppercase; color:#000; font-weight:700; white-space:nowrap;">Najpopularnije</div>
+            <div style="display:flex; align-items:center; gap:0.6rem; margin-bottom:1.4rem; margin-top:0.4rem;">
+              <span style="font-family:var(--font-brand); font-size:0.6rem; letter-spacing:0.2em; text-transform:uppercase; background: linear-gradient(90deg, var(--cyan), var(--magenta)); -webkit-background-clip:text; -webkit-text-fill-color:transparent; background-clip:text;">Most Popular</span>
+            </div>
+            <h3 style="font-family:var(--font-head); font-size:1.2rem; color:rgba(255,255,255,0.95); margin-bottom:0.6rem; line-height:1.3;">Online + 1 uživo<br><span style="font-size:0.85em; color:rgba(255,255,255,0.6);">u Osijeku</span></h3>
+            <p style="font-size:0.82rem; color:rgba(255,255,255,0.5); line-height:1.6; margin-bottom:1.6rem; min-height:60px;">Sva online putovanja + jedno uživo iskustvo svaki mjesec. Online za disciplinu, uživo za dubinu.</p>
+            <div style="display:flex; align-items:baseline; gap:0.4rem; margin-bottom:0.5rem;">
+              <span style="font-family:var(--font-head); font-size:2.4rem; font-weight:700; background: linear-gradient(90deg, var(--cyan), var(--magenta)); -webkit-background-clip:text; -webkit-text-fill-color:transparent; background-clip:text; line-height:1;">50€</span>
+              <span style="font-size:0.75rem; color:rgba(255,255,255,0.3); font-family:var(--font-brand);">/ mj</span>
+            </div>
+            <p style="font-size:0.7rem; color:rgba(4,255,255,0.5); margin-bottom:1.8rem; font-family:var(--font-brand); letter-spacing:0.05em;">vrijednost 110€ · ušteda 55%</p>
+            <a href="STRIPE_LINK_PRETPLATA_ONLINE_1UZIVO" target="_blank" rel="noopener" style="
+              display:block; text-align:center;
+              padding:12px 20px;
+              background: linear-gradient(90deg, rgba(4,255,255,0.2), rgba(215,2,241,0.2));
+              border:1px solid rgba(4,255,255,0.4);
+              color:#fff;
+              font-family:var(--font-brand);
+              font-size:0.78rem;
+              letter-spacing:0.06em;
+              text-decoration:none;
+              border-radius:7px;
+              transition:all 0.2s;
+            " onmouseover="this.style.background='linear-gradient(90deg, rgba(4,255,255,0.3), rgba(215,2,241,0.3))'; this.style.boxShadow='0 0 24px rgba(4,255,255,0.2)'" onmouseout="this.style.background='linear-gradient(90deg, rgba(4,255,255,0.2), rgba(215,2,241,0.2))'; this.style.boxShadow=''">Pretplati se →</a>
+          </div>
+
+          <!-- Pretplata Online + 2 Uživo -->
+          <div class="reveal pricing-card" style="
+            background: rgba(215,2,241,0.03);
+            border: 1px solid rgba(215,2,241,0.15);
+            border-radius: 12px;
+            padding: 32px 28px;
+            transition: all 0.3s;
+          " onmouseover="this.style.borderColor='rgba(215,2,241,0.4)'; this.style.background='rgba(215,2,241,0.07)'; this.style.transform='translateY(-4px)'" onmouseout="this.style.borderColor='rgba(215,2,241,0.15)'; this.style.background='rgba(215,2,241,0.03)'; this.style.transform=''">
+            <div style="display:flex; align-items:center; gap:0.6rem; margin-bottom:1.4rem;">
+              <span style="font-family:var(--font-brand); font-size:0.6rem; letter-spacing:0.2em; text-transform:uppercase; color:var(--magenta);">Premium</span>
+            </div>
+            <h3 style="font-family:var(--font-head); font-size:1.2rem; color:rgba(255,255,255,0.92); margin-bottom:0.6rem; line-height:1.3;">Online + 2 uživo<br><span style="font-size:0.85em; color:rgba(255,255,255,0.6);">u Osijeku</span></h3>
+            <p style="font-size:0.82rem; color:rgba(255,255,255,0.45); line-height:1.6; margin-bottom:1.6rem; min-height:60px;">Maksimalna redovitost. Dva fizička kontakta u grupi svaki mjesec — za one koji su ozbiljni u praksi.</p>
+            <div style="display:flex; align-items:baseline; gap:0.4rem; margin-bottom:0.5rem;">
+              <span style="font-family:var(--font-head); font-size:2.4rem; font-weight:700; color:var(--magenta); line-height:1;">60€</span>
+              <span style="font-size:0.75rem; color:rgba(255,255,255,0.3); font-family:var(--font-brand);">/ mj</span>
+            </div>
+            <p style="font-size:0.7rem; color:rgba(215,2,241,0.6); margin-bottom:1.8rem; font-family:var(--font-brand); letter-spacing:0.05em;">vrijednost 140€ · ušteda 57%</p>
+            <a href="STRIPE_LINK_PRETPLATA_ONLINE_2UZIVO" target="_blank" rel="noopener" style="
+              display:block; text-align:center;
+              padding:11px 20px;
+              border:1px solid rgba(215,2,241,0.4);
+              color:var(--magenta);
+              font-family:var(--font-brand);
+              font-size:0.78rem;
+              letter-spacing:0.06em;
+              text-decoration:none;
+              border-radius:7px;
+              transition:all 0.2s;
+            " onmouseover="this.style.background='rgba(215,2,241,0.1)'" onmouseout="this.style.background=''">Pretplati se →</a>
+          </div>
+
+        </div>
+      </div>
+
+      <!-- ── AUTOŠKOLA ── -->
+      <div>
+        <div class="reveal" style="display:flex; align-items:center; gap:1rem; margin-bottom:1.8rem;">
+          <span style="font-family:var(--font-brand); font-size:0.6rem; letter-spacing:0.25em; text-transform:uppercase; color:rgba(154,171,216,0.8); white-space:nowrap;">Autoškola za živčani sustav</span>
+          <div style="flex:1; height:1px; background:linear-gradient(90deg, rgba(154,171,216,0.3), transparent);"></div>
+        </div>
+
+        <div style="display:grid; grid-template-columns:repeat(auto-fit, minmax(300px, 1fr)); gap:20px;">
+
+          <!-- Temelji -->
+          <div class="reveal pricing-card" style="
+            background: rgba(154,171,216,0.03);
+            border: 1px solid rgba(154,171,216,0.15);
+            border-radius: 12px;
+            padding: 36px 32px;
+            transition: all 0.3s;
+          " onmouseover="this.style.borderColor='rgba(154,171,216,0.4)'; this.style.background='rgba(154,171,216,0.07)'; this.style.transform='translateY(-4px)'; this.style.boxShadow='0 12px 40px rgba(154,171,216,0.08)'" onmouseout="this.style.borderColor='rgba(154,171,216,0.15)'; this.style.background='rgba(154,171,216,0.03)'; this.style.transform=''; this.style.boxShadow=''">
+            <div style="display:flex; align-items:center; justify-content:space-between; margin-bottom:1.6rem;">
+              <span style="font-family:var(--font-brand); font-size:0.6rem; letter-spacing:0.2em; text-transform:uppercase; color:var(--periwinkle);">Temelji</span>
+              <span style="font-family:var(--font-brand); font-size:0.58rem; color:rgba(154,171,216,0.5); letter-spacing:0.1em;">4 susreta · 8h</span>
+            </div>
+            <h3 style="font-family:var(--font-head); font-size:1.35rem; color:rgba(255,255,255,0.92); margin-bottom:0.8rem; line-height:1.3;">Autoškola<br><span style="color:var(--periwinkle);">Temelji</span></h3>
+            <p style="font-size:0.84rem; color:rgba(255,255,255,0.45); line-height:1.7; margin-bottom:1.8rem;">
+              Razumiješ zašto si gdje jesi. Naučiš anatomiju stresa, disanje kao alat, i dobiješ protokole koje možeš koristiti odmah — i zauvijek.
+            </p>
+            <ul style="list-style:none; margin-bottom:2rem; display:flex; flex-direction:column; gap:10px;">
+              <li style="font-size:0.8rem; color:rgba(255,255,255,0.5); display:flex; gap:10px; align-items:flex-start;"><span style="color:var(--periwinkle); flex-shrink:0;">◈</span> Autonomni živčani sustav — razumijevanje</li>
+              <li style="font-size:0.8rem; color:rgba(255,255,255,0.5); display:flex; gap:10px; align-items:flex-start;"><span style="color:var(--periwinkle); flex-shrink:0;">◈</span> Disanje za aktivaciju i smirivanje</li>
+              <li style="font-size:0.8rem; color:rgba(255,255,255,0.5); display:flex; gap:10px; align-items:flex-start;"><span style="color:var(--periwinkle); flex-shrink:0;">◈</span> Osobni disajni protokol</li>
+              <li style="font-size:0.8rem; color:rgba(255,255,255,0.5); display:flex; gap:10px; align-items:flex-start;"><span style="color:var(--periwinkle); flex-shrink:0;">◈</span> Jedno vođeno disajno putovanje</li>
+            </ul>
+            <div style="display:flex; align-items:baseline; gap:0.5rem; margin-bottom:1.8rem;">
+              <span style="font-family:var(--font-head); font-size:2.8rem; font-weight:700; color:var(--periwinkle); line-height:1;">149€</span>
+              <span style="font-size:0.75rem; color:rgba(255,255,255,0.3); font-family:var(--font-brand);">jednokratno</span>
+            </div>
+            <a href="STRIPE_LINK_AUTOSKOLA_TEMELJI" target="_blank" rel="noopener" style="
+              display:block; text-align:center;
+              padding:13px 20px;
+              border:1px solid rgba(154,171,216,0.4);
+              color:var(--periwinkle);
+              font-family:var(--font-brand);
+              font-size:0.78rem;
+              letter-spacing:0.06em;
+              text-decoration:none;
+              border-radius:7px;
+              transition:all 0.2s;
+            " onmouseover="this.style.background='rgba(154,171,216,0.1)'; this.style.boxShadow='0 0 20px rgba(154,171,216,0.12)'" onmouseout="this.style.background=''; this.style.boxShadow=''">Upiši se →</a>
+          </div>
+
+          <!-- Napredno -->
+          <div class="reveal pricing-card" style="
+            background: linear-gradient(135deg, rgba(154,171,216,0.05) 0%, rgba(215,2,241,0.05) 100%);
+            border: 1px solid rgba(154,171,216,0.25);
+            border-radius: 12px;
+            padding: 36px 32px;
+            position: relative;
+            transition: all 0.3s;
+            box-shadow: 0 0 40px rgba(154,171,216,0.06);
+          " onmouseover="this.style.transform='translateY(-6px)'; this.style.boxShadow='0 16px 60px rgba(154,171,216,0.12)'; this.style.borderColor='rgba(154,171,216,0.5)'" onmouseout="this.style.transform=''; this.style.boxShadow='0 0 40px rgba(154,171,216,0.06)'; this.style.borderColor='rgba(154,171,216,0.25)'">
+            <div style="display:flex; align-items:center; justify-content:space-between; margin-bottom:1.6rem;">
+              <span style="font-family:var(--font-brand); font-size:0.6rem; letter-spacing:0.2em; text-transform:uppercase; color:var(--periwinkle);">Napredno</span>
+              <span style="font-family:var(--font-brand); font-size:0.58rem; color:rgba(154,171,216,0.5); letter-spacing:0.1em;">8 susreta · 16h</span>
+            </div>
+            <h3 style="font-family:var(--font-head); font-size:1.35rem; color:rgba(255,255,255,0.95); margin-bottom:0.8rem; line-height:1.3;">Autoškola<br><span style="color:var(--periwinkle);">Napredno</span></h3>
+            <p style="font-size:0.84rem; color:rgba(255,255,255,0.5); line-height:1.7; margin-bottom:1.8rem;">
+              Za one koji su prošli Temelje ili su već u praksi. Idemo dublje — trauma, freeze response, napredne disajne tehnike i integracija u svakodnevni život.
+            </p>
+            <ul style="list-style:none; margin-bottom:2rem; display:flex; flex-direction:column; gap:10px;">
+              <li style="font-size:0.8rem; color:rgba(255,255,255,0.55); display:flex; gap:10px; align-items:flex-start;"><span style="color:var(--periwinkle); flex-shrink:0;">◈</span> Sve iz Temelja + nastavak</li>
+              <li style="font-size:0.8rem; color:rgba(255,255,255,0.55); display:flex; gap:10px; align-items:flex-start;"><span style="color:var(--periwinkle); flex-shrink:0;">◈</span> Trauma-informed pristup</li>
+              <li style="font-size:0.8rem; color:rgba(255,255,255,0.55); display:flex; gap:10px; align-items:flex-start;"><span style="color:var(--periwinkle); flex-shrink:0;">◈</span> Napredne disajne prakse</li>
+              <li style="font-size:0.8rem; color:rgba(255,255,255,0.55); display:flex; gap:10px; align-items:flex-start;"><span style="color:var(--periwinkle); flex-shrink:0;">◈</span> Dva vođena disajna putovanja</li>
+              <li style="font-size:0.8rem; color:rgba(255,255,255,0.55); display:flex; gap:10px; align-items:flex-start;"><span style="color:var(--periwinkle); flex-shrink:0;">◈</span> Individualna sesija s Ernestom</li>
+            </ul>
+            <div style="display:flex; align-items:baseline; gap:0.5rem; margin-bottom:0.5rem;">
+              <span style="font-family:var(--font-head); font-size:2.8rem; font-weight:700; color:var(--periwinkle); line-height:1;">299€</span>
+              <span style="font-size:0.75rem; color:rgba(255,255,255,0.3); font-family:var(--font-brand);">jednokratno</span>
+            </div>
+            <p style="font-size:0.7rem; color:rgba(154,171,216,0.5); margin-bottom:1.8rem; font-family:var(--font-brand); letter-spacing:0.05em;">Temelji uključeni — upitaj za bundle</p>
+            <a href="STRIPE_LINK_AUTOSKOLA_NAPREDNO" target="_blank" rel="noopener" style="
+              display:block; text-align:center;
+              padding:13px 20px;
+              background: rgba(154,171,216,0.08);
+              border:1px solid rgba(154,171,216,0.5);
+              color:var(--periwinkle);
+              font-family:var(--font-brand);
+              font-size:0.78rem;
+              letter-spacing:0.06em;
+              text-decoration:none;
+              border-radius:7px;
+              transition:all 0.2s;
+            " onmouseover="this.style.background='rgba(154,171,216,0.16)'; this.style.boxShadow='0 0 24px rgba(154,171,216,0.15)'" onmouseout="this.style.background='rgba(154,171,216,0.08)'; this.style.boxShadow=''">Upiši se →</a>
+          </div>
+
+        </div>
+      </div>
+
+      <!-- ── INDIVIDUALNO ── -->
+      <div style="margin-top:3.5rem;">
+        <div class="reveal" style="display:flex; align-items:center; gap:1rem; margin-bottom:1.8rem;">
+          <span style="font-family:var(--font-brand); font-size:0.6rem; letter-spacing:0.25em; text-transform:uppercase; color:rgba(4,255,255,0.7); white-space:nowrap;">Individualna sesija</span>
+          <div style="flex:1; height:1px; background:linear-gradient(90deg, rgba(4,255,255,0.25), transparent);"></div>
+        </div>
+
+        <div style="display:grid; grid-template-columns:repeat(auto-fit, minmax(300px, 1fr)); gap:20px;">
+
+          <!-- 1on1 -->
+          <div class="reveal pricing-card" style="
+            background: rgba(4,255,255,0.02);
+            border: 1px solid rgba(4,255,255,0.18);
+            border-radius: 12px;
+            padding: 36px 32px;
+            transition: border-color 0.3s, box-shadow 0.3s;
+          " onmouseover="this.style.borderColor='rgba(4,255,255,0.45)'; this.style.boxShadow='0 0 40px rgba(4,255,255,0.08)'" onmouseout="this.style.borderColor='rgba(4,255,255,0.18)'; this.style.boxShadow=''">
+            <div style="display:flex; align-items:center; justify-content:space-between; margin-bottom:1rem;">
+              <span style="font-family:var(--font-brand); font-size:0.6rem; letter-spacing:0.2em; text-transform:uppercase; color:rgba(4,255,255,0.6);">1 na 1 · Personalizirano</span>
+            </div>
+            <h3 style="font-family:var(--font-head); font-size:1.25rem; color:rgba(255,255,255,0.92); margin-bottom:0.6rem; line-height:1.3;">Individualno<br><span style="color:var(--cyan);">Disajno Putovanje</span></h3>
+            <p style="font-size:0.82rem; color:rgba(255,255,255,0.45); line-height:1.6; margin-bottom:1.6rem;">Tvoj dah. Tvoj tempo. Tvoje iskustvo. Kreće s osobnom procjenom — razgovorom o tvojem stanju, navikama i ciljevima — nakon čega sesija postaje precizno skrojena alatka, ne generički protokol. Bilo da se radi o prvim koracima, produbljivanju prakse, treningu Autoškole ili rješavanju specifičnog ustrajnog osobnog izazova. 120 minuta potpune prisutnosti, jedan na jedan. Za veću posvećenost — serija 3+ sesija po dogovorenom popustu. Za ozbiljne projekte osobne transformacije — dostupna i mogućnost svakodnevne osobne podrške.</p>
+            <div style="display:flex; align-items:baseline; gap:0.4rem; margin-bottom:1.8rem;">
+              <span style="font-family:var(--font-head); font-size:2.2rem; color:rgba(255,255,255,0.95);">70€</span>
+              <span style="font-size:0.8rem; color:rgba(255,255,255,0.3);">/ 120 min</span>
+            </div>
+            <ul style="list-style:none; padding:0; margin:0 0 2rem; display:flex; flex-direction:column; gap:0.6rem;">
+              <li style="font-size:0.82rem; color:rgba(255,255,255,0.55); display:flex; gap:0.6rem;"><span style="color:var(--cyan);">✓</span> Personaliziran pristup i protokol</li>
+              <li style="font-size:0.82rem; color:rgba(255,255,255,0.55); display:flex; gap:0.6rem;"><span style="color:var(--cyan);">✓</span> Trening tehnika Autoškole za živčani sustav</li>
+              <li style="font-size:0.82rem; color:rgba(255,255,255,0.55); display:flex; gap:0.6rem;"><span style="color:var(--cyan);">✓</span> Rad na specifičnim ustrajnim osobnim izazovima</li>
+              <li style="font-size:0.82rem; color:rgba(255,255,255,0.55); display:flex; gap:0.6rem;"><span style="color:var(--cyan);">✓</span> Online ili uživo · 120 minuta</li>
+            </ul>
+            <a href="STRIPE_LINK_INDIVIDUALNO" target="_blank" rel="noopener" style="
+              display:block; text-align:center;
+              padding:13px 20px;
+              background: rgba(4,255,255,0.08);
+              border:1px solid rgba(4,255,255,0.4);
+              color:var(--cyan);
+              font-family:var(--font-brand);
+              font-size:0.78rem;
+              letter-spacing:0.06em;
+              text-decoration:none;
+              border-radius:7px;
+              transition:all 0.2s;
+            " onmouseover="this.style.background='rgba(4,255,255,0.16)'; this.style.boxShadow='0 0 24px rgba(4,255,255,0.15)'" onmouseout="this.style.background='rgba(4,255,255,0.08)'; this.style.boxShadow=''">Rezerviraj termin →</a>
+          </div>
+
+        </div>
+      </div>
+
+      <!-- Garantska bilješka -->
+      <div class="reveal" style="margin-top:4rem; text-align:center; padding:1.5rem; border:1px solid rgba(255,255,255,0.06); border-radius:10px; max-width:600px; margin-left:auto; margin-right:auto; margin-top:4rem;">
+        <p style="font-size:0.8rem; color:rgba(255,255,255,0.35); line-height:1.7;">
+          Plaćanje je sigurno putem Stripe-a. Otkazivanje pretplate u bilo kojem trenutku bez objašnjavanja. Ako nisi zadovoljan/a prvom sesijom — refund bez pitanja.
+        </p>
+      </div>
+
+    </div>
+  </section>
+
+  <!-- ═══════════════════════════════════
+       CTA
+  ═══════════════════════════════════ -->
+  <section id="cta">
+    <div class="container">
+      <div class="cta-orb reveal">
+        <div class="cta-orb-ring"></div>
+        <div class="cta-orb-inner"></div>
+      </div>
+      <h2 class="cta-title reveal">Spreman/a za<br>prvi dah?</h2>
+      <p class="cta-desc reveal">
+        Jedno iskustvo može promijeniti razumijevanje vlastite sposobnosti za samoregulaciju. Rezerviraj svoje mjesto.
+      </p>
+      <div class="reveal reveal-delay-1">
+        <a href="#kontakt" class="btn-primary">Rezerviraj Besplatni Razgovor</a>
+      </div>
+    </div>
+  </section>
+
+
+  <!-- ═══════════════════════════════════
+       TESTIMONIALS
+  ═══════════════════════════════════ -->
+  <section id="svjedocanstva">
+    <div class="container">
+      <p class="section-label reveal">Iskustva</p>
+      <h2 class="section-title reveal">Svjedočanstva polaznika<br>Autoškole za Živčani Sustav</h2>
+      <div class="divider reveal"></div>
+
+      <div class="testimonials-grid">
+        <div class="testimonial-card reveal">
+          <div class="testimonial-quote">"</div>
+          <p class="testimonial-text">Hvala ti Erni za poučnu i stručnu, a opet na tako jednostavan i zanimljiv način predstavljenu i s lakoćom prihvaćenu radionicu. U ovih mjesec dana sam naučila kako primijeniti disanje na razne situacije u kojima se zateknem — "podizanje" energije kad mi nedostaje, "spuštanje" kad me preuzme simpatikus i kako biti prisutna i fokusirana. Dobrobit se već osjeti jer uz našeg krokodila spavam kao beba. Veselija sam, smirenija i poletnija. Konačno dišem punim stomakom! Hvala za praktičan rad, naše domaće zadaće na koje si nas šaljivo podsjećao. Sve u svemu jako zadovoljna i s nestrpljenjem čekam nastavak!</p>
+          <p class="testimonial-author">— Renata Štern, polaznica Autoškole</p>
+        </div>
+
+        <div class="testimonial-card reveal reveal-delay-1">
+          <div class="testimonial-quote">"</div>
+          <p class="testimonial-text">Autoškola me praktično naučila kako da svjesnim disanjem prođem kroz napad panike, kako da prepoznam rane simptome i primjenim tehniku disanja koja mi pomaže da rasteretim živčani sustav instantno. Kao osoba koja živi sa astmom cijeli život, mogu reći da sam zbog svjesnog disanja smanjila korištenje kortikosteroidne terapije za više od pola. Po prvi put u zadnje 3 godine da sam kroz prehladu prošla bez antibiotika. Ovo su stvari koje kad jednom naučiš, definitivno se ne vraćaš na staro. Vrijedi uloženih novaca, vremena, truda i energije jer ovo je praktično znanje koje ostaje za cijeli život.</p>
+          <p class="testimonial-author">— Vesna Saplaić, polaznica Autoškole</p>
+        </div>
+
+        <div class="testimonial-card reveal reveal-delay-2">
+          <div class="testimonial-quote">"</div>
+          <p class="testimonial-text">Uletjelo u moj život u jednom jako stresnom periodu — simptomi koje sam imala imaju naziv Burnout. Kad sam dobila poziv za prvo probno disanje, mislila sam samo: zašto ne? U Autoškoli sam na jednostavan način dobila uvid u to što se događa u našem tijelu, o simpatikusu i parasimpatikusu, vagus živcu i ono najbitnije — kako se brzo izbaciti iz stanja stresa samo sa svjesnim disanjem. Naučila sam disanje s kojim mogu pojačati fokus, ali i utonuti u san. Hvala ti, Erni, za ljubav prema znanju o dahu i volju da nam to znanje preneseš. Nadam se da nastavak slijedi — level 2!</p>
+          <p class="testimonial-author">— Tihana Kovačić, polaznica Autoškole</p>
+        </div>
+
+        <div class="testimonial-card reveal reveal-delay-3">
+          <div class="testimonial-quote">"</div>
+          <p class="testimonial-text">Tu sam naučila ono što bi svi trebali znati, a ne znamo. Imamo dah, to nam je život, a mi tako malo znamo o njemu. Potencijal koji nam daje, a ne koristimo ga. Kada naucimo nesto o njemu i počnemo primjenjivati, ulazimo u sasvim novi svijet. Svjesno disanje sad primjenjujem svakodnevno — kada se zelim opustiti dok vozim auto, kada mi nesto "digne živac", sada se znam smiriti vrlo brzo. Kada se zelim napuniti energijom, svom tijelu to omogucim lako. Presretna sam što sam upisala Autoškolu. Bez Ernija to ne bi bilo moguće i zato sam ti zahvalna do neba!</p>
+          <p class="testimonial-author">— Iva Zavagni, polaznica Autoškole</p>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ═══════════════════════════════════
+       GLAZBA — AUDIO PLAYER
+  ═══════════════════════════════════ -->
+  <section id="glazba">
+    <div class="container">
+      <p class="section-label reveal">Zvučni Prostori</p>
+      <h2 class="section-title reveal">Glazba za Disanje</h2>
+      <div class="divider reveal"></div>
+      <p class="section-subtitle reveal" style="margin-bottom:3rem;">
+        Glazba kreirana posebno za breathwork sesije i svjesno disanje.
+        Suno AI kompozicije s Duhodah energetskim potpisom — streamaj besplatno ili preuzmi za vlastitu praksu.
+      </p>
+
+      <div id="tracks-list" class="tracks-list reveal">
+        <!-- Dinamički generirano putem JS -->
+      </div>
+
+      <div class="tracks-hint reveal reveal-delay-1">
+        <span class="tracks-hint-icon"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round"><path d="M22 19a2 2 0 01-2 2H4a2 2 0 01-2-2V5a2 2 0 012-2h5l2 3h9a2 2 0 012 2z"/></svg></span>
+        <p>
+          Dodaj novu pjesmu: spremi MP3 datoteku u <code>website/audio/</code>
+          i dodaj unos u <code>TRACKS</code> niz u JavaScript sekciji stranice.
+        </p>
+      </div>
+    </div>
+  </section>
+
+  <!-- ─── NOW PLAYING BAR ────────────────── -->
+  <div class="np-bar" id="np-bar">
+    <div class="np-progress" id="np-progress">
+      <div class="np-progress-fill" id="np-fill"></div>
+      <div class="np-progress-thumb" id="np-thumb"></div>
+    </div>
+    <div class="np-row">
+      <div class="np-art" id="np-art"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round"><path d="M9 18V5l12-2v13"/><circle cx="6" cy="18" r="3"/><circle cx="18" cy="16" r="3"/></svg></div>
+      <div class="np-info">
+        <div class="np-song-title" id="np-stitle">—</div>
+        <div class="np-song-desc" id="np-sdesc">Duhodah</div>
+      </div>
+      <div class="np-ctrls">
+        <button class="np-cbtn" id="np-prev" title="Prethodna"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><polygon points="19 20 9 12 19 4 19 20"/><line x1="5" y1="19" x2="5" y2="5"/></svg></button>
+        <button class="np-cbtn np-cbtn-main" id="np-main" title="Reproduciraj / Pauziraj"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><polygon points="5 3 19 12 5 21 5 3"/></svg></button>
+        <button class="np-cbtn" id="np-next" title="Sljedeća"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><polygon points="5 4 15 12 5 20 5 4"/><line x1="19" y1="5" x2="19" y2="19"/></svg></button>
+      </div>
+      <div class="np-time-display">
+        <span id="np-cur">0:00</span>&nbsp;/&nbsp;<span id="np-tot">—</span>
+      </div>
+      <div class="np-vol-wrap">
+        <button class="np-vol-btn" id="np-vol-btn"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round"><path d="M11 5L6 9H2v6h4l5 4V5z"/><path d="M19.07 4.93a10 10 0 010 14.14"/><path d="M15.54 8.46a5 5 0 010 7.07"/></svg></button>
+        <input type="range" class="np-vol-range" id="np-vol-range" min="0" max="1" step="0.02" value="0.8">
+      </div>
+      <button class="np-close" id="np-close" title="Zatvori">✕</button>
+    </div>
+  </div>
+
+  <!-- ═══════════════════════════════════
+       STUDIO
+  ═══════════════════════════════════ -->
+  <section id="studio">
+    <div class="container">
+      <div class="studio-inner">
+        <div>
+          <p class="section-label reveal">Lokacija</p>
+          <h2 class="section-title reveal">Studio Shine<br>Osijek</h2>
+          <div class="divider reveal"></div>
+          <p class="section-subtitle reveal">
+            Sesije se odvijaju u ugodnom, urednom i privatnom prostoru u samom srcu Osijeka.
+          </p>
+
+          <div class="studio-details">
+            <div class="studio-detail-row reveal">
+              <div class="studio-detail-icon"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round"><path d="M21 10c0 7-9 13-9 13S3 17 3 10a9 9 0 0118 0z"/><circle cx="12" cy="10" r="3"/></svg></div>
+              <div class="studio-detail-content">
+                <h4>Adresa</h4>
+                <p>Ivana Gundulića 5, 3. kat<br>31000 Osijek</p>
+              </div>
+            </div>
+            <div class="studio-detail-row reveal reveal-delay-1">
+              <div class="studio-detail-icon"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><path d="M5 17H3v-5l2.5-5h13l2.5 5v5h-2"/><circle cx="7.5" cy="17.5" r="1.5"/><circle cx="16.5" cy="17.5" r="1.5"/><line x1="5" y1="12" x2="19" y2="12"/></svg></div>
+              <div class="studio-detail-content">
+                <h4>Parking</h4>
+                <p>Javni parking dostupan u blizini</p>
+              </div>
+            </div>
+            <div class="studio-detail-row reveal reveal-delay-2">
+              <div class="studio-detail-icon"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round"><rect x="2" y="3" width="20" height="14" rx="2"/><line x1="8" y1="21" x2="16" y2="21"/><line x1="12" y1="17" x2="12" y2="21"/></svg></div>
+              <div class="studio-detail-content">
+                <h4>Online opcija</h4>
+                <p>Autoškola dostupna i online — za polaznike van Osijeka</p>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <div class="studio-map reveal">
+          <div class="studio-map-pin">
+            <div class="studio-map-pin-dot"></div>
+            <div class="studio-map-label">STUDIO SHINE<br>OSIJEK</div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ═══════════════════════════════════
+       KONTAKT
+  ═══════════════════════════════════ -->
+  <section id="kontakt">
+    <div class="container">
+      <div class="contact-inner">
+        <div>
+          <p class="section-label reveal">Kontakt</p>
+          <h2 class="section-title reveal">Pošalji Upit</h2>
+          <div class="divider reveal"></div>
+          <p class="section-subtitle reveal">
+            Imaš pitanje o programu ili želiš rezervirati mjesto? Javi se — odgovorim svima osobno.
+          </p>
+
+          <div class="contact-social reveal reveal-delay-1">
+            <p class="social-title">Prati Duhodah</p>
+            <div class="social-links">
+<a href="#" class="social-link">Instagram</a>
+              <a href="#" class="social-link">YouTube</a>
+              <a href="#" class="social-link">Facebook</a>
+            </div>
+          </div>
+        </div>
+
+        <div>
+          <form class="contact-form reveal" id="contact-form" onsubmit="handleSubmit(event)">
+            <div class="form-group">
+              <label class="form-label">Ime i Prezime</label>
+              <input type="text" class="form-input" placeholder="Ana Horvat" required>
+            </div>
+            <div class="form-group">
+              <label class="form-label">Email</label>
+              <input type="email" class="form-input" placeholder="ana@example.com" required>
+            </div>
+            <div class="form-group">
+              <label class="form-label">Zanima me</label>
+              <select class="form-select">
+                <option value="">— odaberi —</option>
+                <option value="breathwork">Disajna Putovanja (grupna sesija)</option>
+                <option value="autoskola">Autoškola za Živčani Sustav</option>
+                <option value="individualno">Individualni rad</option>
+                <option value="ostalo">Ostalo / Upit</option>
+              </select>
+            </div>
+            <div class="form-group">
+              <label class="form-label">Poruka</label>
+              <textarea class="form-textarea" placeholder="Napiši što te zanima ili što te dovodi ovdje..."></textarea>
+            </div>
+            <div class="form-submit">
+              <button type="submit" class="btn-primary">Pošalji Upit →</button>
+            </div>
+          </form>
+
+          <div class="form-success" id="form-success">
+            <p>Hvala — javit ću se uskoro.</p>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ═══════════════════════════════════
+       FOOTER
+  ═══════════════════════════════════ -->
+  <footer>
+    <div class="container">
+      <div class="footer-inner">
+        <div>
+          <div class="footer-logo">
+            <img src="images/duhodah-logo.jpg" alt="Duhodah">
+          </div>
+          <div class="footer-tagline">SPIRIT · BREATH · OSIJEK</div>
+        </div>
+        <div class="footer-copy">
+          <p>© 2025 Duhodah. Sva prava pridržana.</p>
+          <p style="margin-top:0.3rem;">Ivana Gundulića 5, Osijek &nbsp;·&nbsp; <a href="mailto:duhodahos@gmail.com">duhodahos@gmail.com</a></p>
+        </div>
+      </div>
+    </div>
+  </footer>
+
+  <!-- ═══════════════════════════════════
+       JAVASCRIPT
+  ═══════════════════════════════════ -->
+  <script>
+    // ─── STARFIELD ───────────────────────────────
+    const canvas = document.getElementById('stars-canvas');
+    const ctx = canvas.getContext('2d');
+    let stars = [];
+    let W, H;
+
+    function resize() {
+      W = canvas.width = window.innerWidth;
+      H = canvas.height = window.innerHeight;
+    }
+
+    function createStars(n = 180) {
+      stars = [];
+      for (let i = 0; i < n; i++) {
+        stars.push({
+          x: Math.random() * W,
+          y: Math.random() * H,
+          r: Math.random() * 1.2 + 0.2,
+          o: Math.random() * 0.6 + 0.1,
+          speed: Math.random() * 0.15 + 0.02,
+          // Color from brand palette
+          color: ['#a5ffff','#04ffff','#8bbad8','#808ec1','#e488d1'][Math.floor(Math.random() * 5)]
+        });
+      }
+    }
+
+    function drawStars() {
+      ctx.clearRect(0, 0, W, H);
+
+      // Deep space gradient
+      const grad = ctx.createRadialGradient(W/2, H/2, 0, W/2, H/2, Math.max(W, H) * 0.7);
+      grad.addColorStop(0, 'rgba(21,21,77,0.4)');
+      grad.addColorStop(0.5, 'rgba(13,13,34,0.6)');
+      grad.addColorStop(1, 'rgba(8,8,26,0.8)');
+      ctx.fillStyle = grad;
+      ctx.fillRect(0, 0, W, H);
+
+      stars.forEach(s => {
+        ctx.beginPath();
+        ctx.arc(s.x, s.y, s.r, 0, Math.PI * 2);
+        ctx.fillStyle = s.color;
+        ctx.globalAlpha = s.o;
+        ctx.fill();
+
+        // Slow twinkle
+        s.o += Math.sin(Date.now() * 0.001 * s.speed) * 0.003;
+        s.o = Math.max(0.05, Math.min(0.7, s.o));
+      });
+
+      ctx.globalAlpha = 1;
+      requestAnimationFrame(drawStars);
+    }
+
+    window.addEventListener('resize', () => { resize(); createStars(); });
+    resize();
+    createStars();
+    drawStars();
+
+    // ─── NAVBAR SCROLL ───────────────────────────
+    const navbar = document.getElementById('navbar');
+    window.addEventListener('scroll', () => {
+      if (window.scrollY > 60) navbar.classList.add('scrolled');
+      else navbar.classList.remove('scrolled');
+    });
+
+    // ─── SCROLL REVEAL ───────────────────────────
+    const revealObserver = new IntersectionObserver((entries) => {
+      entries.forEach(e => {
+        if (e.isIntersecting) {
+          e.target.classList.add('visible');
+          revealObserver.unobserve(e.target);
+        }
+      });
+    }, { threshold: 0.12 });
+
+    document.querySelectorAll('.reveal').forEach(el => revealObserver.observe(el));
+
+    // ─── BREATHING TEXT CYCLE ────────────────────
+    const breathTexts = ['UDAHNI', 'ZADRŽI', 'IZDAHNI', 'PAUZA'];
+    let breathIdx = 0;
+    const breathDurations = [4000, 2000, 6000, 2000];
+
+    // ─── FORM SUBMIT ────────────────────────────
+    // Inicijalizirano iz ESM modula ispod — placeholder ovdje radi backward compat
+    function handleSubmit(e) {
+      e.preventDefault();
+      if (window._duhodahContactSubmit) {
+        window._duhodahContactSubmit(e);
+      } else {
+        document.getElementById('contact-form').style.display = 'none';
+        document.getElementById('form-success').classList.add('show');
+      }
+    }
+
+    // ─── SMOOTH ANCHOR SCROLL ────────────────────
+    document.querySelectorAll('a[href^="#"]').forEach(a => {
+      a.addEventListener('click', e => {
+        const target = document.querySelector(a.getAttribute('href'));
+        if (target) {
+          e.preventDefault();
+          target.scrollIntoView({ behavior: 'smooth' });
+        }
+      });
+    });
+
+    // ─── PARALLAX ORB (subtle) ───────────────────
+    document.addEventListener('mousemove', e => {
+      const orb = document.querySelector('.orb-wrapper');
+      if (!orb) return;
+      const x = (e.clientX / window.innerWidth - 0.5) * 12;
+      const y = (e.clientY / window.innerHeight - 0.5) * 12;
+      orb.style.transform = `translate(${x}px, ${y}px)`;
+    });
+
+    // ─── AUDIO PLAYER ────────────────────────────
+    // Da dodaš novu pjesmu: dodaj objekt u TRACKS niz i spremi MP3 u website/audio/
+    const TRACKS = [
+  {
+    "title": "++++Doma 1e",
+    "desc": "Duhodah · Breathwork",
+    "file": "audio/++++Doma 1e.mp3",
+    "dur": "6:00",
+    "art": "<svg viewBox=\"0 0 24 24\" fill=\"none\" stroke=\"currentColor\" stroke-width=\"1.5\" stroke-linecap=\"round\"><path d=\"M9 18V5l12-2v13\"/><circle cx=\"6\" cy=\"18\" r=\"3\"/><circle cx=\"18\" cy=\"16\" r=\"3\"/></svg>"
+  },
+  {
+    "title": "++++I Let It Go 1a",
+    "desc": "Duhodah · Breathwork",
+    "file": "audio/++++I Let It Go 1a.mp3",
+    "dur": "5:02",
+    "art": "<svg viewBox=\"0 0 24 24\" fill=\"none\" stroke=\"currentColor\" stroke-width=\"1.5\" stroke-linecap=\"round\"><path d=\"M9 18V5l12-2v13\"/><circle cx=\"6\" cy=\"18\" r=\"3\"/><circle cx=\"18\" cy=\"16\" r=\"3\"/></svg>"
+  },
+  {
+    "title": "+++I Let It Go 1c",
+    "desc": "Duhodah · Breathwork",
+    "file": "audio/+++I Let It Go 1c.mp3",
+    "dur": "5:19",
+    "art": "<svg viewBox=\"0 0 24 24\" fill=\"none\" stroke=\"currentColor\" stroke-width=\"1.5\" stroke-linecap=\"round\"><path d=\"M9 18V5l12-2v13\"/><circle cx=\"6\" cy=\"18\" r=\"3\"/><circle cx=\"18\" cy=\"16\" r=\"3\"/></svg>"
+  },
+  {
+    "title": "+++Vraćam se u tijelo 4a",
+    "desc": "Duhodah · Breathwork",
+    "file": "audio/+++Vraćam se u tijelo 4a.mp3",
+    "dur": "5:27",
+    "art": "<svg viewBox=\"0 0 24 24\" fill=\"none\" stroke=\"currentColor\" stroke-width=\"1.5\" stroke-linecap=\"round\"><path d=\"M9 18V5l12-2v13\"/><circle cx=\"6\" cy=\"18\" r=\"3\"/><circle cx=\"18\" cy=\"16\" r=\"3\"/></svg>"
+  }
+];
+
+    const ICO_PLAY  = `<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><polygon points="5 3 19 12 5 21 5 3"/></svg>`;
+    const ICO_PAUSE = `<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round"><rect x="6" y="4" width="4" height="16" rx="1"/><rect x="14" y="4" width="4" height="16" rx="1"/></svg>`;
+    const ICO_VOL_HI   = `<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round"><path d="M11 5L6 9H2v6h4l5 4V5z"/><path d="M19.07 4.93a10 10 0 010 14.14"/><path d="M15.54 8.46a5 5 0 010 7.07"/></svg>`;
+    const ICO_VOL_LO   = `<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round"><path d="M11 5L6 9H2v6h4l5 4V5z"/><path d="M15.54 8.46a5 5 0 010 7.07"/></svg>`;
+    const ICO_VOL_MUTE = `<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round"><path d="M11 5L6 9H2v6h4l5 4V5z"/><line x1="23" y1="9" x2="17" y2="15"/><line x1="17" y1="9" x2="23" y2="15"/></svg>`;
+    const ICO_DOWN     = `<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><line x1="12" y1="5" x2="12" y2="19"/><polyline points="19 12 12 19 5 12"/></svg>`;
+
+    let npIdx    = -1;
+    let npActive = false;
+    const npAudio = new Audio();
+    npAudio.volume = 0.8;
+
+    function npFmt(s) {
+      if (!isFinite(s) || isNaN(s)) return '0:00';
+      const m = Math.floor(s / 60), sec = Math.floor(s % 60);
+      return `${m}:${String(sec).padStart(2, '0')}`;
+    }
+
+    const WAVEFORM_H = [25,45,65,80,90,70,55,85,95,75,60,80,70,50,85,60,40,25];
+
+    function buildWaveform() {
+      return WAVEFORM_H.map((h, i) =>
+        `<span class="wbar" style="height:${h}%;animation-delay:${(i * 0.055).toFixed(3)}s"></span>`
+      ).join('');
+    }
+
+    function npRenderList() {
+      const el = document.getElementById('tracks-list');
+      if (!el) return;
+      el.innerHTML = TRACKS.map((t, i) => `
+        <div class="track-item" id="trow-${i}" data-i="${i}">
+          <div class="track-first-col">
+            <span class="track-num">${String(i + 1).padStart(2, '0')}</span>
+            <button class="track-play-btn" data-i="${i}" aria-label="Reproduciraj ${t.title}">${ICO_PLAY}</button>
+          </div>
+          <div class="track-info">
+            <div class="track-title">${t.title}</div>
+            <div class="track-desc">${t.desc}</div>
+          </div>
+          <div class="track-waveform">${buildWaveform()}</div>
+          <div class="track-duration" id="tdur-${i}">${t.dur}</div>
+          <a class="track-dl" href="${t.file}" download="${t.title}.mp3"
+             title="Preuzmi ${t.title}" aria-label="Preuzmi ${t.title}"
+             onclick="event.stopPropagation()">${ICO_DOWN}</a>
+        </div>
+      `).join('');
+
+      el.querySelectorAll('.track-item').forEach(row => {
+        row.addEventListener('click', e => {
+          if (e.target.closest('.track-dl')) return;
+          npToggle(+row.dataset.i);
+        });
+      });
+      el.querySelectorAll('.track-play-btn').forEach(btn => {
+        btn.addEventListener('click', e => {
+          e.stopPropagation();
+          npToggle(+btn.dataset.i);
+        });
+      });
+    }
+
+    function npSetVisuals(idx) {
+      document.querySelectorAll('.track-item').forEach((r, i) => {
+        r.classList.toggle('playing', i === idx);
+        const btn = r.querySelector('.track-play-btn');
+        if (btn) btn.innerHTML = (i === idx && npActive) ? ICO_PAUSE : ICO_PLAY;
+      });
+      const t = TRACKS[idx];
+      document.getElementById('np-stitle').textContent = t.title;
+      document.getElementById('np-sdesc').textContent  = t.desc;
+      document.getElementById('np-tot').textContent    = t.dur;
+      document.getElementById('np-art').innerHTML      = t.art;
+    }
+
+    function npLoad(idx) {
+      npIdx = idx;
+      npAudio.src = TRACKS[idx].file;
+      npAudio.load();
+      npSetVisuals(idx);
+    }
+
+    function npPlay() {
+      npAudio.play()
+        .then(() => {
+          npActive = true;
+          const mainBtn = document.getElementById('np-main');
+          mainBtn.innerHTML = ICO_PAUSE;
+          mainBtn.classList.add('is-playing');
+          document.getElementById('np-bar').classList.add('active');
+          document.body.style.paddingBottom = '70px';
+          const btn = document.querySelector(`.track-play-btn[data-i="${npIdx}"]`);
+          if (btn) btn.innerHTML = ICO_PAUSE;
+        })
+        .catch(() => {
+          // Datoteka nije dostupna — kratki vizualni feedback
+          const row = document.getElementById(`trow-${npIdx}`);
+          if (row) {
+            row.style.transition = 'opacity 0.3s';
+            row.style.opacity = '0.4';
+            setTimeout(() => { row.style.opacity = ''; }, 900);
+          }
+        });
+    }
+
+    function npPause() {
+      npAudio.pause();
+      npActive = false;
+      const mainBtn = document.getElementById('np-main');
+      mainBtn.innerHTML = ICO_PLAY;
+      mainBtn.classList.remove('is-playing');
+      const btn = document.querySelector(`.track-play-btn[data-i="${npIdx}"]`);
+      if (btn) btn.innerHTML = ICO_PLAY;
+    }
+
+    function npToggle(idx) {
+      if (npIdx === idx) {
+        npActive ? npPause() : npPlay();
+      } else {
+        npLoad(idx);
+        npPlay();
+      }
+    }
+
+    // Audio events
+    npAudio.addEventListener('loadedmetadata', () => {
+      const dur = npFmt(npAudio.duration);
+      document.getElementById('np-tot').textContent = dur;
+      if (npIdx >= 0) {
+        const durEl = document.getElementById(`tdur-${npIdx}`);
+        if (durEl) durEl.textContent = dur;
+      }
+    });
+
+    npAudio.addEventListener('timeupdate', () => {
+      if (!npAudio.duration) return;
+      const pct = (npAudio.currentTime / npAudio.duration) * 100;
+      document.getElementById('np-fill').style.width  = pct + '%';
+      document.getElementById('np-thumb').style.left  = pct + '%';
+      document.getElementById('np-cur').textContent   = npFmt(npAudio.currentTime);
+    });
+
+    npAudio.addEventListener('ended', () => {
+      const next = (npIdx + 1) % TRACKS.length;
+      npLoad(next);
+      npPlay();
+    });
+
+    // Kontrole
+    document.getElementById('np-main').addEventListener('click', () => {
+      if (npIdx < 0) { npLoad(0); npPlay(); return; }
+      npActive ? npPause() : npPlay();
+    });
+
+    document.getElementById('np-prev').addEventListener('click', () => {
+      if (npAudio.currentTime > 3) { npAudio.currentTime = 0; return; }
+      const prev = (npIdx - 1 + TRACKS.length) % TRACKS.length;
+      npLoad(prev); npPlay();
+    });
+
+    document.getElementById('np-next').addEventListener('click', () => {
+      const next = (npIdx + 1) % TRACKS.length;
+      npLoad(next); npPlay();
+    });
+
+    // Seek (klik na progress traku)
+    document.getElementById('np-progress').addEventListener('click', e => {
+      if (!npAudio.duration) return;
+      const rect = e.currentTarget.getBoundingClientRect();
+      npAudio.currentTime = ((e.clientX - rect.left) / rect.width) * npAudio.duration;
+    });
+
+    // Glasnoća
+    document.getElementById('np-vol-range').addEventListener('input', e => {
+      const v = +e.target.value;
+      npAudio.volume = v;
+      document.getElementById('np-vol-btn').innerHTML = v === 0 ? ICO_VOL_MUTE : v < 0.5 ? ICO_VOL_LO : ICO_VOL_HI;
+    });
+
+    document.getElementById('np-vol-btn').addEventListener('click', () => {
+      if (npAudio.volume > 0) {
+        npAudio.volume = 0;
+        document.getElementById('np-vol-range').value = 0;
+        document.getElementById('np-vol-btn').innerHTML = ICO_VOL_MUTE;
+      } else {
+        npAudio.volume = 0.8;
+        document.getElementById('np-vol-range').value = 0.8;
+        document.getElementById('np-vol-btn').innerHTML = ICO_VOL_HI;
+      }
+    });
+
+    // Zatvori
+    document.getElementById('np-close').addEventListener('click', () => {
+      npPause();
+      document.getElementById('np-bar').classList.remove('active');
+      document.body.style.paddingBottom = '';
+      document.querySelectorAll('.track-item').forEach(r => r.classList.remove('playing'));
+      document.querySelectorAll('.track-play-btn').forEach(b => { b.innerHTML = ICO_PLAY; });
+      npIdx = -1;
+    });
+
+    // Tipkovnica: Razmaknica = play/pause
+    document.addEventListener('keydown', e => {
+      if (e.code !== 'Space') return;
+      const tag = document.activeElement.tagName;
+      if (tag === 'INPUT' || tag === 'TEXTAREA' || tag === 'BUTTON' || tag === 'A') return;
+      if (npIdx < 0) return;
+      e.preventDefault();
+      npActive ? npPause() : npPlay();
+    });
+
+    npRenderList();
+
+    // ═══════════════════════════════════════════════════
+    //  BREATHING VISUALIZER ENGINE
+    // ═══════════════════════════════════════════════════
+
+    // ── Web Audio context (lazy) ──────────────────────
+    let bvAC = null;
+    function getAC() {
+      if (!bvAC) bvAC = new (window.AudioContext || window.webkitAudioContext)();
+      if (bvAC.state === 'suspended') bvAC.resume();
+      return bvAC;
+    }
+
+    // ── Helper: create white-noise buffer ────────────
+    function noiseBuffer(ac, secs) {
+      const len = Math.ceil(ac.sampleRate * secs);
+      const buf = ac.createBuffer(1, len, ac.sampleRate);
+      const d = buf.getChannelData(0);
+      for (let i = 0; i < len; i++) d[i] = Math.random() * 2 - 1;
+      return buf;
+    }
+
+    // ── 7 Sound Set synthesizers ─────────────────────
+    // Each entry: { name, phases: [inhale, holdTop, exhale, holdBot] }
+    // Each phase function: (ac, vol, dur) -> AudioNode (already connected to dest, playing/scheduled)
+
+    function playTibetanBowl(ac, vol, dur, freqStart, freqEnd) {
+      const g = ac.createGain();
+      g.connect(ac.destination);
+      const osc = ac.createOscillator();
+      osc.type = 'sine';
+      osc.frequency.setValueAtTime(freqStart, ac.currentTime);
+      osc.frequency.linearRampToValueAtTime(freqEnd, ac.currentTime + dur * 0.7);
+      // Harmonics
+      const osc2 = ac.createOscillator();
+      osc2.type = 'sine';
+      osc2.frequency.setValueAtTime(freqStart * 2.01, ac.currentTime);
+      osc2.frequency.linearRampToValueAtTime(freqEnd * 2.01, ac.currentTime + dur * 0.7);
+      const g2 = ac.createGain();
+      g2.gain.setValueAtTime(vol * 0.25, ac.currentTime);
+      g2.gain.linearRampToValueAtTime(0, ac.currentTime + dur);
+      osc2.connect(g2); g2.connect(ac.destination);
+      g.gain.setValueAtTime(0, ac.currentTime);
+      g.gain.linearRampToValueAtTime(vol * 0.7, ac.currentTime + 0.06);
+      g.gain.linearRampToValueAtTime(vol * 0.5, ac.currentTime + dur * 0.5);
+      g.gain.linearRampToValueAtTime(0, ac.currentTime + dur);
+      osc.connect(g);
+      osc.start(); osc.stop(ac.currentTime + dur + 0.1);
+      osc2.start(); osc2.stop(ac.currentTime + dur + 0.1);
+    }
+
+    function playWater(ac, vol, dur, freqLow, freqHigh) {
+      const buf = noiseBuffer(ac, dur + 0.2);
+      const src = ac.createBufferSource();
+      src.buffer = buf;
+      src.loop = true;
+      const filt = ac.createBiquadFilter();
+      filt.type = 'bandpass';
+      filt.frequency.setValueAtTime(freqLow, ac.currentTime);
+      filt.frequency.linearRampToValueAtTime(freqHigh, ac.currentTime + dur * 0.6);
+      filt.Q.value = 3;
+      const g = ac.createGain();
+      g.gain.setValueAtTime(0, ac.currentTime);
+      g.gain.linearRampToValueAtTime(vol, ac.currentTime + 0.15);
+      g.gain.linearRampToValueAtTime(vol * 0.8, ac.currentTime + dur * 0.5);
+      g.gain.linearRampToValueAtTime(0, ac.currentTime + dur);
+      src.connect(filt); filt.connect(g); g.connect(ac.destination);
+      src.start(); src.stop(ac.currentTime + dur + 0.1);
+    }
+
+    function playCosmic(ac, vol, dur, freqStart, freqEnd) {
+      const freqs = [freqStart, freqStart * 1.501, freqStart * 2.002];
+      const fEnds = [freqEnd,   freqEnd  * 1.501,  freqEnd  * 2.002];
+      freqs.forEach((f, i) => {
+        const osc = ac.createOscillator();
+        osc.type = 'sine';
+        osc.frequency.setValueAtTime(f, ac.currentTime);
+        osc.frequency.linearRampToValueAtTime(fEnds[i], ac.currentTime + dur);
+        const g = ac.createGain();
+        const v = vol * (i === 0 ? 0.5 : i === 1 ? 0.25 : 0.15);
+        g.gain.setValueAtTime(0, ac.currentTime);
+        g.gain.linearRampToValueAtTime(v, ac.currentTime + dur * 0.3);
+        g.gain.linearRampToValueAtTime(v * 0.9, ac.currentTime + dur * 0.7);
+        g.gain.linearRampToValueAtTime(0, ac.currentTime + dur);
+        osc.connect(g); g.connect(ac.destination);
+        osc.start(); osc.stop(ac.currentTime + dur + 0.1);
+      });
+    }
+
+    function playCrystal(ac, vol, dur, freq) {
+      const osc = ac.createOscillator();
+      osc.type = 'sine';
+      osc.frequency.value = freq;
+      const osc2 = ac.createOscillator();
+      osc2.type = 'triangle';
+      osc2.frequency.value = freq * 3.01;
+      const g = ac.createGain();
+      const g2 = ac.createGain();
+      g.gain.setValueAtTime(vol, ac.currentTime);
+      g.gain.exponentialRampToValueAtTime(0.001, ac.currentTime + Math.min(dur, 2.5));
+      g2.gain.setValueAtTime(vol * 0.3, ac.currentTime);
+      g2.gain.exponentialRampToValueAtTime(0.001, ac.currentTime + Math.min(dur * 0.6, 1.5));
+      osc.connect(g); g.connect(ac.destination);
+      osc2.connect(g2); g2.connect(ac.destination);
+      osc.start(); osc.stop(ac.currentTime + dur + 0.1);
+      osc2.start(); osc2.stop(ac.currentTime + dur + 0.1);
+    }
+
+    function playBreath(ac, vol, dur, freqLow, freqHigh, attackRatio, decayRatio) {
+      const buf = noiseBuffer(ac, dur + 0.2);
+      const src = ac.createBufferSource();
+      src.buffer = buf;
+      src.loop = true;
+      const filt = ac.createBiquadFilter();
+      filt.type = 'bandpass';
+      filt.frequency.setValueAtTime(freqLow, ac.currentTime);
+      filt.frequency.linearRampToValueAtTime(freqHigh, ac.currentTime + dur * attackRatio);
+      filt.frequency.linearRampToValueAtTime(freqLow * 0.8, ac.currentTime + dur);
+      filt.Q.value = 5;
+      const g = ac.createGain();
+      g.gain.setValueAtTime(0, ac.currentTime);
+      g.gain.linearRampToValueAtTime(vol * 0.9, ac.currentTime + dur * attackRatio);
+      g.gain.linearRampToValueAtTime(0, ac.currentTime + dur * (attackRatio + decayRatio));
+      src.connect(filt); filt.connect(g); g.connect(ac.destination);
+      src.start(); src.stop(ac.currentTime + dur + 0.1);
+    }
+
+    function playDrum(ac, vol, dur, pitchStart) {
+      const osc = ac.createOscillator();
+      osc.type = 'sine';
+      osc.frequency.setValueAtTime(pitchStart, ac.currentTime);
+      osc.frequency.exponentialRampToValueAtTime(20, ac.currentTime + 0.4);
+      const g = ac.createGain();
+      g.gain.setValueAtTime(vol, ac.currentTime);
+      g.gain.exponentialRampToValueAtTime(0.001, ac.currentTime + Math.min(0.8, dur));
+      osc.connect(g); g.connect(ac.destination);
+      osc.start(); osc.stop(ac.currentTime + dur + 0.1);
+    }
+
+    function playForest(ac, vol, dur, freqCenter, chirp) {
+      const buf = noiseBuffer(ac, dur + 0.2);
+      const src = ac.createBufferSource();
+      src.buffer = buf; src.loop = true;
+      const filt = ac.createBiquadFilter();
+      filt.type = 'bandpass';
+      filt.frequency.value = freqCenter;
+      filt.Q.value = 1.5;
+      const g = ac.createGain();
+      g.gain.setValueAtTime(0, ac.currentTime);
+      g.gain.linearRampToValueAtTime(vol * 0.4, ac.currentTime + dur * 0.4);
+      g.gain.linearRampToValueAtTime(0, ac.currentTime + dur);
+      src.connect(filt); filt.connect(g); g.connect(ac.destination);
+      src.start(); src.stop(ac.currentTime + dur + 0.1);
+      if (chirp) {
+        for (let i = 0; i < 3; i++) {
+          const co = ac.createOscillator(); co.type = 'sine';
+          const cStart = 1200 + i * 300;
+          co.frequency.setValueAtTime(cStart, ac.currentTime + i * dur * 0.25);
+          co.frequency.linearRampToValueAtTime(cStart * 1.4, ac.currentTime + i * dur * 0.25 + 0.15);
+          const cg = ac.createGain();
+          cg.gain.setValueAtTime(vol * 0.18, ac.currentTime + i * dur * 0.25);
+          cg.gain.linearRampToValueAtTime(0, ac.currentTime + i * dur * 0.25 + 0.25);
+          co.connect(cg); cg.connect(ac.destination);
+          co.start(ac.currentTime + i * dur * 0.25);
+          co.stop(ac.currentTime + i * dur * 0.25 + 0.35);
+        }
+      }
+    }
+
+    // Sound dispatch: SOUND_MAP[setIdx][phaseKey](ac, vol, dur)
+    const SOUND_MAP = {
+      // Set 0: Tibetska posuda
+      0: {
+        inhale:  (ac, v, d) => playTibetanBowl(ac, v, d, 220, 330),
+        holdtop: (ac, v, d) => playTibetanBowl(ac, v, d, 330, 330),
+        exhale:  (ac, v, d) => playTibetanBowl(ac, v, d, 330, 196),
+        holdbot: (ac, v, d) => playTibetanBowl(ac, v * 0.4, d, 196, 196),
+      },
+      // Set 1: Voda
+      1: {
+        inhale:  (ac, v, d) => playWater(ac, v, d, 300, 1200),
+        holdtop: (ac, v, d) => playWater(ac, v * 0.7, d, 800, 900),
+        exhale:  (ac, v, d) => playWater(ac, v, d, 1200, 250),
+        holdbot: (ac, v, d) => playWater(ac, v * 0.3, d, 150, 200),
+      },
+      // Set 2: Kozmički dron
+      2: {
+        inhale:  (ac, v, d) => playCosmic(ac, v, d, 55, 110),
+        holdtop: (ac, v, d) => playCosmic(ac, v, d, 110, 110),
+        exhale:  (ac, v, d) => playCosmic(ac, v, d, 110, 55),
+        holdbot: (ac, v, d) => playCosmic(ac, v * 0.5, d, 40, 40),
+      },
+      // Set 3: Kristal
+      3: {
+        inhale:  (ac, v, d) => { playCrystal(ac, v, d, 523); },
+        holdtop: (ac, v, d) => { playCrystal(ac, v, d, 784); },
+        exhale:  (ac, v, d) => { playCrystal(ac, v, d, 392); },
+        holdbot: (ac, v, d) => { /* silence */ },
+      },
+      // Set 4: Dah
+      4: {
+        inhale:  (ac, v, d) => playBreath(ac, v, d, 200, 600, 0.7, 0.3),
+        holdtop: (ac, v, d) => playBreath(ac, v * 0.3, d, 400, 450, 0.1, 0.8),
+        exhale:  (ac, v, d) => playBreath(ac, v, d, 600, 150, 0.2, 0.7),
+        holdbot: (ac, v, d) => { /* silence */ },
+      },
+      // Set 5: Bubanj
+      5: {
+        inhale:  (ac, v, d) => {
+          const steps = Math.max(2, Math.floor(d * 2));
+          for (let i = 0; i < steps; i++)
+            setTimeout(() => { try { playDrum(getAC(), v * (0.4 + i / steps * 0.6), 0.5, 60 + i * 8); } catch(e){} }, i * (d * 1000 / steps));
+        },
+        holdtop: (ac, v, d) => playDrum(ac, v, d, 80),
+        exhale:  (ac, v, d) => {
+          const steps = Math.max(2, Math.floor(d * 1.5));
+          for (let i = 0; i < steps; i++)
+            setTimeout(() => { try { playDrum(getAC(), v * (1 - i / steps * 0.5), 0.5, 55 - i * 3); } catch(e){} }, i * (d * 1000 / steps));
+        },
+        holdbot: (ac, v, d) => playDrum(ac, v * 0.3, d, 40),
+      },
+      // Set 6: Šuma
+      6: {
+        inhale:  (ac, v, d) => playForest(ac, v, d, 800, true),
+        holdtop: (ac, v, d) => playForest(ac, v * 0.6, d, 600, true),
+        exhale:  (ac, v, d) => playForest(ac, v, d, 400, false),
+        holdbot: (ac, v, d) => playForest(ac, v * 0.25, d, 200, false),
+      },
+    };
+
+    // ── Breathing state machine ───────────────────────
+    const PHASES = ['inhale', 'holdtop', 'exhale', 'holdbot'];
+    const PHASE_LABELS = { inhale: 'UDAHNI', holdtop: 'ZADRŽI', exhale: 'IZDAHNI', holdbot: 'PAUZA' };
+    const PHASE_CLASSES = { inhale: 'phase-inhale', holdtop: 'phase-holdtop', exhale: 'phase-exhale', holdbot: 'phase-holdbot' };
+    const PHASE_COLORS  = { inhale: 'rgba(4,255,255,', holdtop: 'rgba(215,2,241,', exhale: 'rgba(228,136,209,', holdbot: 'rgba(139,186,216,' };
+
+    let bvRunning   = false;
+    let bvPhaseIdx  = 0;
+    let bvCycleNum  = 0;
+    let bvPhaseStart = 0;
+    let bvPhaseDur  = 0;
+    let bvRafId     = null;
+    let bvTimerTimeout = null;
+
+    function bvGetTimings() {
+      return {
+        inhale:  +document.getElementById('rng-inhale').value,
+        holdtop: +document.getElementById('rng-holdtop').value,
+        exhale:  +document.getElementById('rng-exhale').value,
+        holdbot: +document.getElementById('rng-holdbot').value,
+      };
+    }
+
+    function bvGetSoundEnabled(phase) {
+      return document.getElementById('track-' + phase).classList.contains('on');
+    }
+
+    function bvGetSoundSet(phase)  { return +document.getElementById('sel-' + phase).value; }
+    function bvGetSoundVol(phase)  { return +document.getElementById('vol-' + phase).value; }
+
+    function bvPlayPhaseSound(phase, dur) {
+      if (!bvGetSoundEnabled(phase)) return;
+      const setIdx = bvGetSoundSet(phase);
+      const vol    = bvGetSoundVol(phase);
+      if (vol <= 0) return;
+      try {
+        const ac = getAC();
+        SOUND_MAP[setIdx][phase](ac, vol, dur);
+      } catch(e) { /* ignore synthesis errors */ }
+    }
+
+    // Orb scale range
+    const ORB_MIN = 0.88, ORB_MAX = 1.18;
+    const CIRC = 2 * Math.PI * 140; // 879.6
+
+    function easeInOut(t) { return t < 0.5 ? 2*t*t : -1+(4-2*t)*t; }
+
+    function bvSetOrb(scale, phaseClass) {
+      const ring = document.getElementById('bv-ring');
+      const ri   = document.getElementById('bv-ring-inner');
+      const glow = document.getElementById('bv-glow');
+      if (!ring) return;
+      ring.style.transform = `scale(${scale})`;
+      ri.style.transform   = `scale(${scale * 0.97})`;
+      // glow intensity
+      const t = (scale - ORB_MIN) / (ORB_MAX - ORB_MIN);
+      glow.style.opacity = 0.4 + t * 0.6;
+    }
+
+    function bvSetProgress(fraction, phaseKey) {
+      const fill = document.getElementById('bv-prog-fill');
+      if (!fill) return;
+      const offset = CIRC * (1 - fraction);
+      fill.style.strokeDashoffset = offset;
+      fill.className.baseVal = 'bv-progress-fill ' + PHASE_CLASSES[phaseKey];
+    }
+
+    function bvSetLabel(phaseKey) {
+      const el = document.getElementById('bv-phase-text');
+      el.textContent = PHASE_LABELS[phaseKey];
+      el.className = 'bv-phase-text ' + PHASE_CLASSES[phaseKey];
+    }
+
+    function bvSetTimer(secs) {
+      document.getElementById('bv-timer').textContent = Math.ceil(secs);
+    }
+
+    function bvAnimate(now) {
+      if (!bvRunning) return;
+      const elapsed  = (now - bvPhaseStart) / 1000;
+      const fraction = Math.min(elapsed / bvPhaseDur, 1);
+      const phase    = PHASES[bvPhaseIdx];
+
+      // Update progress ring
+      bvSetProgress(fraction, phase);
+
+      // Update timer
+      const remaining = Math.max(0, bvPhaseDur - elapsed);
+      bvSetTimer(remaining);
+
+      // Update orb scale based on phase
+      let scale;
+      if (phase === 'inhale') {
+        scale = ORB_MIN + (ORB_MAX - ORB_MIN) * easeInOut(fraction);
+      } else if (phase === 'holdtop') {
+        scale = ORB_MAX;
+      } else if (phase === 'exhale') {
+        scale = ORB_MAX - (ORB_MAX - ORB_MIN) * easeInOut(fraction);
+      } else { // holdbot
+        scale = ORB_MIN;
+      }
+      bvSetOrb(scale, phase);
+
+      if (fraction < 1) {
+        bvRafId = requestAnimationFrame(bvAnimate);
+      }
+    }
+
+    function bvStartPhase(idx) {
+      bvPhaseIdx = idx % PHASES.length;
+      if (bvPhaseIdx === 0) bvCycleNum++;
+      const phase   = PHASES[bvPhaseIdx];
+      const timings = bvGetTimings();
+      bvPhaseDur    = timings[phase];
+
+      // Skip 0-second phases
+      if (bvPhaseDur === 0) {
+        bvStartPhase(bvPhaseIdx + 1);
+        return;
+      }
+
+      bvPhaseStart = performance.now();
+      bvSetLabel(phase);
+      bvSetTimer(bvPhaseDur);
+      bvPlayPhaseSound(phase, bvPhaseDur);
+
+      const cycleEl = document.getElementById('bv-cycle-count');
+      cycleEl.textContent = `CIKLUS ${bvCycleNum}`;
+
+      bvRafId = requestAnimationFrame(bvAnimate);
+      bvTimerTimeout = setTimeout(() => {
+        if (bvRunning) bvStartPhase(bvPhaseIdx + 1);
+      }, bvPhaseDur * 1000);
+    }
+
+    function bvStart() {
+      bvRunning  = true;
+      bvCycleNum = 0;
+      bvPhaseIdx = -1;
+      bvStartPhase(0);
+      const btn = document.getElementById('bv-start-btn');
+      btn.textContent = 'ZAUSTAVI';
+      btn.classList.add('active');
+    }
+
+    function bvStop() {
+      bvRunning = false;
+      if (bvRafId) cancelAnimationFrame(bvRafId);
+      if (bvTimerTimeout) clearTimeout(bvTimerTimeout);
+      const btn = document.getElementById('bv-start-btn');
+      btn.textContent = 'POKRENI';
+      btn.classList.remove('active');
+      // Reset orb
+      bvSetOrb(1.0, 'inhale');
+      bvSetProgress(0, 'inhale');
+      document.getElementById('bv-phase-text').textContent = '— PRITISNITE POKRENI —';
+      document.getElementById('bv-phase-text').className = 'bv-phase-text';
+      document.getElementById('bv-timer').innerHTML = '&nbsp;';
+      document.getElementById('bv-cycle-count').innerHTML = '&nbsp;';
+    }
+
+    document.getElementById('bv-start-btn').addEventListener('click', () => {
+      if (bvRunning) bvStop(); else bvStart();
+    });
+
+    // ── Settings toggle ───────────────────────────────
+    document.getElementById('bv-settings-toggle').addEventListener('click', () => {
+      const panel = document.getElementById('bv-settings-panel');
+      panel.classList.toggle('open');
+      const btn = document.getElementById('bv-settings-toggle');
+      btn.innerHTML = panel.classList.contains('open')
+        ? `<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" style="width:13px;height:13px;vertical-align:middle;margin-right:6px"><line x1="18" y1="6" x2="6" y2="18"/><line x1="6" y1="6" x2="18" y2="18"/></svg>ZATVORI`
+        : `<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" style="width:13px;height:13px;vertical-align:middle;margin-right:6px"><circle cx="12" cy="12" r="3"/><path d="M19.4 15a1.65 1.65 0 00.33 1.82l.06.06a2 2 0 010 2.83 2 2 0 01-2.83 0l-.06-.06a1.65 1.65 0 00-1.82-.33 1.65 1.65 0 00-1 1.51V21a2 2 0 01-4 0v-.09A1.65 1.65 0 009 19.4a1.65 1.65 0 00-1.82.33l-.06.06a2 2 0 01-2.83-2.83l.06-.06A1.65 1.65 0 004.68 15a1.65 1.65 0 00-1.51-1H3a2 2 0 010-4h.09A1.65 1.65 0 004.6 9a1.65 1.65 0 00-.33-1.82l-.06-.06a2 2 0 012.83-2.83l.06.06A1.65 1.65 0 009 4.68a1.65 1.65 0 001-1.51V3a2 2 0 014 0v.09a1.65 1.65 0 001 1.51 1.65 1.65 0 001.82-.33l.06-.06a2 2 0 012.83 2.83l-.06.06A1.65 1.65 0 0019.4 9a1.65 1.65 0 001.51 1H21a2 2 0 010 4h-.09a1.65 1.65 0 00-1.51 1z"/></svg>POSTAVKE`;
+    });
+
+    // ── Timing sliders → live label update ───────────
+    ['inhale','holdtop','exhale','holdbot'].forEach(p => {
+      const rng = document.getElementById('rng-' + p);
+      const lbl = document.getElementById('lbl-' + p);
+      rng.addEventListener('input', () => { lbl.textContent = rng.value; });
+    });
+
+    // ── Sound toggles ─────────────────────────────────
+    ['inhale','holdtop','exhale','holdbot'].forEach(phase => {
+      document.getElementById('tog-' + phase).addEventListener('click', () => {
+        const track = document.getElementById('track-' + phase);
+        track.classList.toggle('on');
+      });
+    });
+
+    // ── Preset patterns ───────────────────────────────
+    document.querySelectorAll('.bv-pattern-btn').forEach(btn => {
+      btn.addEventListener('click', () => {
+        document.querySelectorAll('.bv-pattern-btn').forEach(b => b.classList.remove('active'));
+        btn.classList.add('active');
+        const [i, ht, e, hb] = btn.dataset.p.split('-').map(Number);
+        document.getElementById('rng-inhale').value  = i;
+        document.getElementById('rng-holdtop').value = ht;
+        document.getElementById('rng-exhale').value  = e;
+        document.getElementById('rng-holdbot').value = hb;
+        document.getElementById('lbl-inhale').textContent  = i;
+        document.getElementById('lbl-holdtop').textContent = ht;
+        document.getElementById('lbl-exhale').textContent  = e;
+        document.getElementById('lbl-holdbot').textContent = hb;
+        if (bvRunning) { bvStop(); bvStart(); }
+      });
+    });
+
+
+
+  </script>
+
+  <!-- ═══════════════════════════════════
+       SUPABASE — Calendar widget + kontakt forma
+  ═══════════════════════════════════ -->
+  <link rel="stylesheet" href="css/calendar.css">
+  <script type="module">
+    import { renderEventsWidget } from './js/calendar.js';
+    import { initAuth, signOut } from './js/auth.js';
+    import { trackInteraction } from './js/db.js';
+    import { getCurrentUser } from './js/auth.js';
+
+    // Auth listener
+    initAuth((event, session, user) => {
+      if (event === 'SIGNED_IN' || event === 'SIGNED_OUT') {
+        // Refresh widget na promjenu auth stanja
+        renderEventsWidget('events-widget-container');
+      }
+    });
+
+    // Render events widget
+    renderEventsWidget('events-widget-container');
+
+    // ── Kontakt forma — stvarno šalje u Supabase ──────────────
+    window._duhodahContactSubmit = async function(e) {
+      e.preventDefault();
+      const form = document.getElementById('contact-form');
+      const inputs = form.querySelectorAll('input, select, textarea');
+      const ime = inputs[0].value;
+      const email = inputs[1].value;
+      const interes = inputs[2].value;
+      const poruka = inputs[3].value;
+
+      try {
+        const user = await getCurrentUser();
+        await trackInteraction(user?.id || null, email, 'kontakt_forma', {
+          ime,
+          interes,
+          poruka: poruka.slice(0, 500)
+        });
+      } catch (err) {
+        // Silent — forma se prikazuje success bez obzira
+        console.warn('[Kontakt forma]', err);
+      }
+
+      form.style.display = 'none';
+      document.getElementById('form-success').classList.add('show');
+    };
+
+    // Auth signout link u nav (ako postoji)
+    document.getElementById('auth-signout-btn')?.addEventListener('click', signOut);
+  </script>
+
+  <!-- Login modal za events widget -->
+  <div id="cal-login-modal" class="cal-modal">
+    <div class="cal-modal__box">
+      <button class="cal-modal__close" onclick="document.getElementById('cal-login-modal').classList.remove('cal-modal--open')">✕</button>
+      <h3 class="cal-modal__title">Prijava za pretplatnike</h3>
+      <p class="cal-modal__sub">Upiši svoju email adresu. Poslat ćemo ti magični link — klikni ga i automatski si prijavljen/a.</p>
+      <form id="cal-login-form">
+        <input type="email" class="cal-modal__input" placeholder="tvoj@email.com" required autocomplete="email">
+        <button type="submit" class="cal-modal__submit">Pošalji magični link →</button>
+      </form>
+      <div class="cal-modal__success"></div>
+    </div>
+  </div>
+  <!-- Event panel (za widget na index.html) -->
+  <div class="cal-panel-overlay" onclick="if(window.closeEventPanel)window.closeEventPanel()"></div>
+  <aside id="cal-panel" class="cal-panel"></aside>
+
+</body>
+</html>

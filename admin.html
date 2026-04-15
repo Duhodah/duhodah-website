@@ -1,0 +1,644 @@
+<!DOCTYPE html>
+<html lang="hr">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Admin — Duhodah HQ</title>
+  <!-- NE indexirati -->
+  <meta name="robots" content="noindex, nofollow">
+
+  <!-- Fonts -->
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link href="https://fonts.googleapis.com/css2?family=Jura:wght@400;500;600;700&family=Inter:wght@300;400;500&display=swap" rel="stylesheet">
+
+  <link rel="stylesheet" href="css/calendar.css">
+
+  <style>
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+    body {
+      background: #0d0d0d;
+      color: rgba(255, 255, 255, 0.85);
+      font-family: 'Inter', sans-serif;
+      line-height: 1.6;
+    }
+
+    /* Login screen */
+    .admin-login {
+      min-height: 100vh;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      padding: 40px;
+    }
+
+    .admin-login__box {
+      background: rgba(255, 255, 255, 0.03);
+      border: 1px solid rgba(255, 255, 255, 0.08);
+      border-radius: 16px;
+      padding: 48px;
+      max-width: 400px;
+      width: 100%;
+    }
+
+    .admin-login__title {
+      font-family: 'Jura', sans-serif;
+      font-size: 1.4rem;
+      font-weight: 700;
+      margin-bottom: 8px;
+      color: rgba(255, 255, 255, 0.9);
+    }
+
+    .admin-login__sub {
+      font-size: 0.82rem;
+      color: rgba(255, 255, 255, 0.4);
+      margin-bottom: 28px;
+      line-height: 1.5;
+    }
+
+    .admin-login__input {
+      width: 100%;
+      background: rgba(255, 255, 255, 0.04);
+      border: 1px solid rgba(255, 255, 255, 0.1);
+      border-radius: 8px;
+      padding: 12px 16px;
+      color: rgba(255, 255, 255, 0.9);
+      font-size: 0.88rem;
+      font-family: 'Inter', sans-serif;
+      margin-bottom: 12px;
+      outline: none;
+      transition: border-color 0.2s;
+    }
+
+    .admin-login__input:focus {
+      border-color: rgba(4, 255, 255, 0.5);
+    }
+
+    .admin-login__btn {
+      width: 100%;
+      background: transparent;
+      color: rgba(4, 255, 255, 0.9);
+      border: 1px solid rgba(4, 255, 255, 0.4);
+      border-radius: 8px;
+      padding: 12px;
+      font-family: 'Jura', sans-serif;
+      font-size: 0.85rem;
+      font-weight: 600;
+      letter-spacing: 0.05em;
+      cursor: pointer;
+      transition: all 0.2s;
+    }
+
+    .admin-login__btn:hover {
+      background: rgba(4, 255, 255, 0.1);
+    }
+
+    .admin-login__msg {
+      margin-top: 14px;
+      font-size: 0.8rem;
+      color: rgba(4, 255, 255, 0.7);
+      text-align: center;
+    }
+
+    /* Admin dashboard */
+    #admin-dashboard {
+      display: none;
+    }
+
+    .admin-header {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      padding: 24px 40px;
+      border-bottom: 1px solid rgba(255, 255, 255, 0.06);
+      background: rgba(255, 255, 255, 0.02);
+      position: sticky;
+      top: 0;
+      z-index: 10;
+      backdrop-filter: blur(8px);
+    }
+
+    .admin-header__title {
+      font-family: 'Jura', sans-serif;
+      font-size: 1rem;
+      font-weight: 700;
+      color: rgba(255, 255, 255, 0.9);
+      letter-spacing: 0.05em;
+    }
+
+    .admin-header__badge {
+      font-size: 0.65rem;
+      color: rgba(4, 255, 255, 0.6);
+      font-family: 'Jura', sans-serif;
+      letter-spacing: 0.1em;
+      text-transform: uppercase;
+      background: rgba(4, 255, 255, 0.08);
+      border: 1px solid rgba(4, 255, 255, 0.2);
+      padding: 3px 10px;
+      border-radius: 20px;
+      margin-left: 10px;
+    }
+
+    .admin-header__actions {
+      display: flex;
+      gap: 12px;
+      align-items: center;
+    }
+
+    .admin-header__btn {
+      background: transparent;
+      border: 1px solid rgba(255, 255, 255, 0.12);
+      color: rgba(255, 255, 255, 0.45);
+      padding: 6px 14px;
+      border-radius: 6px;
+      font-family: 'Jura', sans-serif;
+      font-size: 0.72rem;
+      letter-spacing: 0.06em;
+      cursor: pointer;
+      text-decoration: none;
+      transition: all 0.2s;
+    }
+
+    .admin-header__btn:hover {
+      border-color: rgba(4, 255, 255, 0.4);
+      color: rgba(4, 255, 255, 0.9);
+    }
+
+    .admin-body {
+      max-width: 1200px;
+      margin: 0 auto;
+      padding: 40px;
+    }
+
+    /* Stats */
+    .admin-stats {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(180px, 1fr));
+      gap: 16px;
+      margin-bottom: 48px;
+    }
+
+    .stat-card {
+      background: rgba(255, 255, 255, 0.03);
+      border: 1px solid rgba(255, 255, 255, 0.07);
+      border-radius: 12px;
+      padding: 24px;
+      text-align: center;
+    }
+
+    .stat-card__num {
+      font-size: 2.4rem;
+      font-family: 'Jura', sans-serif;
+      font-weight: 700;
+      color: rgba(4, 255, 255, 0.9);
+      line-height: 1;
+      margin-bottom: 8px;
+    }
+
+    .stat-card__label {
+      font-size: 0.7rem;
+      color: rgba(255, 255, 255, 0.4);
+      font-family: 'Jura', sans-serif;
+      letter-spacing: 0.1em;
+      text-transform: uppercase;
+    }
+
+    /* Section */
+    .admin-section {
+      margin-bottom: 48px;
+    }
+
+    .admin-section__header {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      margin-bottom: 16px;
+    }
+
+    .admin-section__title {
+      font-family: 'Jura', sans-serif;
+      font-size: 0.7rem;
+      color: rgba(255, 255, 255, 0.35);
+      letter-spacing: 0.14em;
+      text-transform: uppercase;
+    }
+
+    .admin-section__count {
+      font-family: 'Jura', sans-serif;
+      font-size: 0.7rem;
+      color: rgba(255, 255, 255, 0.25);
+    }
+
+    /* Table */
+    .admin-table-wrap {
+      overflow-x: auto;
+      border-radius: 10px;
+      border: 1px solid rgba(255, 255, 255, 0.06);
+    }
+
+    table.at {
+      width: 100%;
+      border-collapse: collapse;
+      font-size: 0.8rem;
+    }
+
+    table.at th {
+      text-align: left;
+      padding: 10px 16px;
+      font-family: 'Jura', sans-serif;
+      font-size: 0.62rem;
+      letter-spacing: 0.12em;
+      text-transform: uppercase;
+      color: rgba(255, 255, 255, 0.25);
+      background: rgba(255, 255, 255, 0.02);
+      border-bottom: 1px solid rgba(255, 255, 255, 0.06);
+      white-space: nowrap;
+    }
+
+    table.at td {
+      padding: 11px 16px;
+      color: rgba(255, 255, 255, 0.55);
+      border-bottom: 1px solid rgba(255, 255, 255, 0.03);
+      white-space: nowrap;
+    }
+
+    table.at tr:last-child td { border-bottom: none; }
+
+    table.at tr:hover td {
+      background: rgba(255, 255, 255, 0.025);
+      color: rgba(255, 255, 255, 0.75);
+    }
+
+    table.at .td-em {
+      color: rgba(255, 255, 255, 0.8);
+      font-weight: 500;
+    }
+
+    /* Tags */
+    .tag {
+      display: inline-block;
+      font-size: 0.6rem;
+      padding: 2px 8px;
+      border-radius: 20px;
+      font-family: 'Jura', sans-serif;
+      letter-spacing: 0.07em;
+      white-space: nowrap;
+    }
+
+    .tag--cyan { color: rgba(4,255,255,0.9); background: rgba(4,255,255,0.1); border: 1px solid rgba(4,255,255,0.2); }
+    .tag--magenta { color: rgba(215,2,241,0.9); background: rgba(215,2,241,0.1); border: 1px solid rgba(215,2,241,0.2); }
+    .tag--green { color: rgba(80,255,150,0.9); background: rgba(80,255,150,0.08); border: 1px solid rgba(80,255,150,0.2); }
+    .tag--red { color: rgba(255,80,80,0.8); background: rgba(255,80,80,0.08); border: 1px solid rgba(255,80,80,0.2); }
+    .tag--grey { color: rgba(255,255,255,0.4); background: rgba(255,255,255,0.05); border: 1px solid rgba(255,255,255,0.1); }
+
+    /* Activity feed */
+    .activity-feed {
+      display: flex;
+      flex-direction: column;
+      gap: 0;
+    }
+
+    .activity-item {
+      display: flex;
+      align-items: flex-start;
+      gap: 14px;
+      padding: 12px 0;
+      border-bottom: 1px solid rgba(255, 255, 255, 0.04);
+    }
+
+    .activity-item:last-child { border-bottom: none; }
+
+    .activity-dot {
+      width: 7px;
+      height: 7px;
+      border-radius: 50%;
+      margin-top: 6px;
+      flex-shrink: 0;
+    }
+
+    .activity-dot--cyan { background: rgba(4,255,255,0.7); }
+    .activity-dot--magenta { background: rgba(215,2,241,0.7); }
+    .activity-dot--grey { background: rgba(255,255,255,0.2); }
+
+    .activity-text {
+      font-size: 0.78rem;
+      color: rgba(255,255,255,0.5);
+      flex: 1;
+    }
+
+    .activity-text strong { color: rgba(255,255,255,0.8); }
+
+    .activity-time {
+      font-size: 0.65rem;
+      color: rgba(255,255,255,0.25);
+      font-family: 'Jura', sans-serif;
+      white-space: nowrap;
+    }
+
+    /* Empty state */
+    .admin-empty {
+      padding: 40px;
+      text-align: center;
+      color: rgba(255,255,255,0.25);
+      font-family: 'Jura', sans-serif;
+      font-size: 0.8rem;
+    }
+
+    @media (max-width: 768px) {
+      .admin-header { padding: 16px 20px; }
+      .admin-body { padding: 24px 20px; }
+    }
+  </style>
+</head>
+<body>
+
+  <!-- LOGIN SCREEN -->
+  <div id="admin-login" class="admin-login">
+    <div class="admin-login__box">
+      <div class="admin-login__title">Duhodah HQ</div>
+      <p class="admin-login__sub">Admin panel za Ernesta. Prijavi se s email adresom — dobit ćeš magični link.</p>
+      <form id="admin-login-form">
+        <input type="email" class="admin-login__input" id="admin-email-input" placeholder="tvoj@email.com" required autocomplete="email">
+        <button type="submit" class="admin-login__btn">Pošalji magični link →</button>
+      </form>
+      <div id="admin-login-msg" class="admin-login__msg" style="display:none"></div>
+    </div>
+  </div>
+
+  <!-- DASHBOARD (prikazuje se samo prijavljivanjem) -->
+  <div id="admin-dashboard">
+
+    <!-- Header -->
+    <header class="admin-header">
+      <div style="display:flex;align-items:center;gap:12px">
+        <span class="admin-header__title">Duhodah HQ</span>
+        <span class="admin-header__badge">Admin</span>
+      </div>
+      <div class="admin-header__actions">
+        <a href="events.html" class="admin-header__btn">Termini</a>
+        <a href="index.html" class="admin-header__btn">Stranica</a>
+        <button class="admin-header__btn" id="admin-signout">Odjava</button>
+      </div>
+    </header>
+
+    <div class="admin-body">
+
+      <!-- Stats -->
+      <div class="admin-stats" id="admin-stats">
+        <div class="stat-card">
+          <div class="stat-card__num" id="stat-klijenti">—</div>
+          <div class="stat-card__label">Klijenata ukupno</div>
+        </div>
+        <div class="stat-card">
+          <div class="stat-card__num" id="stat-pretplatnici">—</div>
+          <div class="stat-card__label">Aktivnih pretplatnika</div>
+        </div>
+        <div class="stat-card">
+          <div class="stat-card__num" id="stat-registracije">—</div>
+          <div class="stat-card__label">Registracija ukupno</div>
+        </div>
+        <div class="stat-card">
+          <div class="stat-card__num" id="stat-eventi">—</div>
+          <div class="stat-card__label">Nadol. događaja</div>
+        </div>
+      </div>
+
+      <!-- Nadolazeći eventi -->
+      <div class="admin-section">
+        <div class="admin-section__header">
+          <span class="admin-section__title">Nadolazeći događaji</span>
+        </div>
+        <div class="admin-table-wrap">
+          <table class="at">
+            <thead>
+              <tr>
+                <th>Datum</th>
+                <th>Naziv</th>
+                <th>Tip</th>
+                <th>Mjesta</th>
+                <th>Prijavljenih</th>
+                <th>Popunjenost</th>
+              </tr>
+            </thead>
+            <tbody id="admin-events-body">
+              <tr><td colspan="6" class="admin-empty">Učitavam...</td></tr>
+            </tbody>
+          </table>
+        </div>
+      </div>
+
+      <!-- Klijenti -->
+      <div class="admin-section">
+        <div class="admin-section__header">
+          <span class="admin-section__title">Klijenti</span>
+          <span class="admin-section__count" id="klijenti-count"></span>
+        </div>
+        <div class="admin-table-wrap">
+          <table class="at">
+            <thead>
+              <tr>
+                <th>Email</th>
+                <th>Ime</th>
+                <th>Izvor</th>
+                <th>Priručnik</th>
+                <th>Kviz tip</th>
+                <th>Pretplata</th>
+                <th>Datum upisa</th>
+              </tr>
+            </thead>
+            <tbody id="admin-clients-body">
+              <tr><td colspan="7" class="admin-empty">Učitavam...</td></tr>
+            </tbody>
+          </table>
+        </div>
+      </div>
+
+      <!-- Zadnje interakcije -->
+      <div class="admin-section">
+        <div class="admin-section__header">
+          <span class="admin-section__title">Zadnje interakcije</span>
+        </div>
+        <div id="admin-activity" class="activity-feed">
+          <div class="admin-empty">Učitavam...</div>
+        </div>
+      </div>
+
+    </div><!-- /admin-body -->
+  </div><!-- /admin-dashboard -->
+
+  <script type="module">
+    import { supabase } from './js/supabase-config.js';
+    import { signInWithEmail, signOut, initAuth } from './js/auth.js';
+    import { getAdminStats, getAdminClients, getAdminEvents } from './js/db.js';
+
+    // Admin email — jedino ova adresa smije ući
+    // Promijeni u Ernijev pravi email:
+    const ADMIN_EMAIL = 'duhodah@duhodah.com';
+
+    const loginScreen = document.getElementById('admin-login');
+    const dashboard = document.getElementById('admin-dashboard');
+
+    // Check auth state
+    initAuth(async (event, session, user) => {
+      if (user) {
+        // Provjeri je li admin email
+        if (user.email !== ADMIN_EMAIL) {
+          await supabase.auth.signOut();
+          alert('Pristup odbijen. Ovo je admin panel samo za Ernesta.');
+          return;
+        }
+        loginScreen.style.display = 'none';
+        dashboard.style.display = 'block';
+        loadDashboard();
+      } else {
+        loginScreen.style.display = 'flex';
+        dashboard.style.display = 'none';
+      }
+    });
+
+    // Login form
+    document.getElementById('admin-login-form').addEventListener('submit', async (e) => {
+      e.preventDefault();
+      const email = document.getElementById('admin-email-input').value;
+      const msg = document.getElementById('admin-login-msg');
+      const btn = e.target.querySelector('button');
+
+      try {
+        btn.disabled = true;
+        btn.textContent = 'Šaljem...';
+        await signInWithEmail(email, { redirectTo: window.location.href });
+        msg.style.display = 'block';
+        msg.textContent = `Magični link poslan na ${email}. Provjeri inbox.`;
+        e.target.style.display = 'none';
+      } catch (err) {
+        btn.disabled = false;
+        btn.textContent = 'Pošalji magični link →';
+        msg.style.display = 'block';
+        msg.style.color = 'rgba(255,80,80,0.8)';
+        msg.textContent = 'Greška: ' + err.message;
+      }
+    });
+
+    // Sign out
+    document.getElementById('admin-signout').addEventListener('click', signOut);
+
+    // ---- LOAD DASHBOARD DATA ----
+    async function loadDashboard() {
+      try {
+        const [stats, clients, events] = await Promise.all([
+          getAdminStats(),
+          getAdminClients(),
+          getAdminEvents()
+        ]);
+
+        renderStats(stats, events.length);
+        renderEvents(events);
+        renderClients(clients);
+        renderActivity(stats.zadnjeInterakcije);
+      } catch (err) {
+        console.error('[Admin dashboard]', err);
+      }
+    }
+
+    function renderStats(stats, eventsCount) {
+      document.getElementById('stat-klijenti').textContent = stats.ukupnoKlijenata;
+      document.getElementById('stat-pretplatnici').textContent = stats.aktivnihPretplatnika;
+      document.getElementById('stat-registracije').textContent = stats.ukupnoRegistracija;
+      document.getElementById('stat-eventi').textContent = eventsCount;
+    }
+
+    function renderEvents(events) {
+      const tbody = document.getElementById('admin-events-body');
+      if (!events.length) {
+        tbody.innerHTML = `<tr><td colspan="6" class="admin-empty">Nema nadolazećih događaja.</td></tr>`;
+        return;
+      }
+
+      tbody.innerHTML = events.map(ev => {
+        const d = new Date(ev.datum);
+        const datum = `${String(d.getDate()).padStart(2,'0')}.${String(d.getMonth()+1).padStart(2,'0')}.${d.getFullYear()}. ${String(d.getHours()).padStart(2,'0')}:${String(d.getMinutes()).padStart(2,'0')}`;
+        const prijavljeni = ev.registracije?.[0]?.count || 0;
+        const kapacitet = ev.kapacitet || 15;
+        const posto = Math.round((prijavljeni / kapacitet) * 100);
+        const tipColor = ev.tip.startsWith('autoskola') ? 'magenta' : 'cyan';
+
+        return `<tr>
+          <td>${datum}</td>
+          <td class="td-em">${ev.naziv}</td>
+          <td><span class="tag tag--${tipColor}">${ev.tip.replace('_', ' ')}</span></td>
+          <td>${kapacitet}</td>
+          <td>${prijavljeni}</td>
+          <td>
+            <span class="tag ${posto >= 90 ? 'tag--red' : posto >= 60 ? 'tag--magenta' : 'tag--grey'}">${posto}%</span>
+          </td>
+        </tr>`;
+      }).join('');
+    }
+
+    function renderClients(clients) {
+      const tbody = document.getElementById('admin-clients-body');
+      const count = document.getElementById('klijenti-count');
+      count.textContent = `${clients.length} klijenata`;
+
+      if (!clients.length) {
+        tbody.innerHTML = `<tr><td colspan="7" class="admin-empty">Nema klijenata još.</td></tr>`;
+        return;
+      }
+
+      tbody.innerHTML = clients.map(c => {
+        const d = new Date(c.created_at);
+        const datum = `${String(d.getDate()).padStart(2,'0')}.${String(d.getMonth()+1).padStart(2,'0')}.${d.getFullYear()}`;
+        const pretplata = c.pretplate?.[0];
+        const izvorColor = c.izvor === 'priručnik' ? 'cyan' : c.izvor === 'kviz' ? 'magenta' : 'grey';
+
+        return `<tr>
+          <td class="td-em">${c.email || '—'}</td>
+          <td>${c.ime || '—'}</td>
+          <td><span class="tag tag--${izvorColor}">${c.izvor || '—'}</span></td>
+          <td>${c.priručnik_preuzet ? '✓' : '—'}</td>
+          <td>${c.kviz_tip ? `<span class="tag tag--grey">${c.kviz_tip}</span>` : '—'}</td>
+          <td>${pretplata ? `<span class="tag tag--green">${pretplata.plan}</span>` : '—'}</td>
+          <td>${datum}</td>
+        </tr>`;
+      }).join('');
+    }
+
+    function renderActivity(interactions) {
+      const feed = document.getElementById('admin-activity');
+      if (!interactions.length) {
+        feed.innerHTML = `<div class="admin-empty">Nema interakcija još.</div>`;
+        return;
+      }
+
+      const tipLabels = {
+        'priručnik_download': { label: 'preuzeo/la priručnik', dot: 'cyan' },
+        'kviz_zavrsen': { label: 'završio/la kviz', dot: 'magenta' },
+        'kontakt_forma': { label: 'poslao/la kontakt upit', dot: 'cyan' },
+        'event_registracija': { label: 'registrirao/la se na događaj', dot: 'green' },
+        'event_otkazivanje': { label: 'otkazao/la registraciju', dot: 'red' },
+        'pretplata_start': { label: 'pokrenuo/la pretplatu', dot: 'green' },
+        'pretplata_kraj': { label: 'otkazao/la pretplatu', dot: 'red' },
+        'posjet_stranici': { label: 'posjetio/la stranicu', dot: 'grey' },
+      };
+
+      feed.innerHTML = interactions.map(i => {
+        const cfg = tipLabels[i.tip] || { label: i.tip, dot: 'grey' };
+        const d = new Date(i.created_at);
+        const when = `${String(d.getDate()).padStart(2,'0')}.${String(d.getMonth()+1).padStart(2,'0')}. ${String(d.getHours()).padStart(2,'0')}:${String(d.getMinutes()).padStart(2,'0')}`;
+        const who = i.email || 'Anonimni posjetitelj';
+
+        let extra = '';
+        if (i.vrijednost?.kviz_tip) extra = ` — tip: ${i.vrijednost.kviz_tip}`;
+        if (i.vrijednost?.stranica) extra = ` — ${i.vrijednost.stranica}`;
+
+        return `<div class="activity-item">
+          <span class="activity-dot activity-dot--${cfg.dot}"></span>
+          <span class="activity-text"><strong>${who}</strong> ${cfg.label}${extra}</span>
+          <span class="activity-time">${when}</span>
+        </div>`;
+      }).join('');
+    }
+  </script>
+
+</body>
+</html>

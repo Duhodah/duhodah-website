@@ -1,0 +1,1452 @@
+<!DOCTYPE html>
+<html lang="hr">
+
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Priručnik za Živčani Sustav — Duhodah (Besplatno)</title>
+  <meta name="description"
+    content="Besplatni priručnik: Komparativna analiza autonomnog živčanog sustava. Simpatik vs. parasimpatik — od biokemije do psihologije. Preuzmi odmah.">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link
+    href="https://fonts.googleapis.com/css2?family=Jura:wght@300;400;500;600;700&family=Montserrat:wght@300;400;500;600;700&family=Inter:wght@300;400;500&display=swap"
+    rel="stylesheet">
+  <style>
+    :root {
+      --black: #08081a;
+      --dark: #0d0d22;
+      --dark2: #15154d;
+      --purple-deep: #540280;
+      --cyan: #04ffff;
+      --cyan-soft: #a5ffff;
+      --magenta: #d702f1;
+      --pink: #e488d1;
+      --periwinkle: #9aabd8;
+      --steel: #aad0e4;
+      --white: #ffffff;
+      --white-soft: #e8eeff;
+      --grey: #c8cfe0;
+      --font-brand: 'Montserrat', sans-serif;
+      --font-head: 'Jura', sans-serif;
+      --font-body: 'Inter', sans-serif;
+      --sns: #ff4444;
+      --sns-bg: rgba(255, 68, 68, 0.08);
+      --pns: #22dd88;
+      --pns-bg: rgba(34, 221, 136, 0.08);
+    }
+
+    *,
+    *::before,
+    *::after {
+      margin: 0;
+      padding: 0;
+      box-sizing: border-box;
+    }
+
+    html {
+      scroll-behavior: smooth;
+    }
+
+    body {
+      background: var(--black);
+      color: var(--white-soft);
+      font-family: var(--font-body);
+      font-weight: 300;
+      line-height: 1.7;
+      overflow-x: hidden;
+    }
+
+    ::selection {
+      background: var(--purple-deep);
+      color: var(--cyan-soft);
+    }
+
+    a {
+      color: inherit;
+      text-decoration: none;
+    }
+
+    /* ═══ REVEAL ═══ */
+    .reveal {
+      opacity: 0;
+      transform: translateY(30px);
+      transition: opacity 0.7s ease, transform 0.7s ease;
+    }
+
+    .reveal.visible {
+      opacity: 1;
+      transform: translateY(0);
+    }
+
+    .reveal-delay-1 {
+      transition-delay: 0.15s;
+    }
+
+    .reveal-delay-2 {
+      transition-delay: 0.3s;
+    }
+
+    .reveal-delay-3 {
+      transition-delay: 0.45s;
+    }
+
+    /* ═══ NAV ═══ */
+    nav {
+      position: fixed;
+      top: 0;
+      left: 0;
+      right: 0;
+      z-index: 100;
+      padding: 1rem 5%;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      transition: background 0.4s;
+    }
+
+    nav.scrolled {
+      background: rgba(8, 8, 26, 0.94);
+      backdrop-filter: blur(20px);
+      border-bottom: 1px solid rgba(4, 255, 255, 0.08);
+    }
+
+    .nav-logo video {
+      height: 70px;
+      width: auto;
+      display: block;
+    }
+
+    .nav-back {
+      font-family: var(--font-brand);
+      font-size: 0.68rem;
+      font-weight: 500;
+      letter-spacing: 0.2em;
+      text-transform: uppercase;
+      color: var(--steel);
+      transition: color 0.3s;
+    }
+
+    .nav-back:hover {
+      color: var(--cyan);
+    }
+
+    /* ═══ HERO ═══ */
+    #hero-prir {
+      min-height: 100vh;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      text-align: center;
+      padding: 120px 5% 80px;
+      position: relative;
+      overflow: hidden;
+    }
+
+    .hero-bg {
+      position: absolute;
+      inset: 0;
+      background:
+        radial-gradient(ellipse 80% 60% at 50% 40%, rgba(84, 2, 128, 0.25) 0%, rgba(4, 255, 255, 0.04) 50%, transparent 70%),
+        radial-gradient(ellipse 40% 40% at 15% 80%, rgba(215, 2, 241, 0.08) 0%, transparent 60%),
+        radial-gradient(ellipse 40% 40% at 85% 20%, rgba(4, 255, 255, 0.06) 0%, transparent 60%);
+    }
+
+    .hero-content {
+      position: relative;
+      z-index: 2;
+      max-width: 800px;
+    }
+
+    .hero-eyebrow {
+      font-family: var(--font-brand);
+      font-size: 0.68rem;
+      font-weight: 600;
+      letter-spacing: 0.45em;
+      text-transform: uppercase;
+      color: var(--cyan);
+      margin-bottom: 1.5rem;
+    }
+
+    .hero-title {
+      font-family: var(--font-head);
+      font-size: clamp(2rem, 5.5vw, 4.2rem);
+      font-weight: 400;
+      letter-spacing: 0.05em;
+      color: var(--white);
+      line-height: 1.15;
+      margin-bottom: 1.5rem;
+    }
+
+    .hero-title em {
+      font-style: normal;
+      color: var(--cyan);
+    }
+
+    .hero-sub {
+      font-size: clamp(0.95rem, 2vw, 1.15rem);
+      font-weight: 300;
+      color: var(--steel);
+      line-height: 1.8;
+      max-width: 620px;
+      margin: 0 auto 1rem;
+    }
+
+    .hero-promise {
+      display: flex;
+      justify-content: center;
+      flex-wrap: wrap;
+      gap: 1.5rem;
+      margin: 2.5rem auto;
+    }
+
+    .promise-item {
+      display: flex;
+      align-items: center;
+      gap: 0.6rem;
+      font-family: var(--font-brand);
+      font-size: 0.65rem;
+      font-weight: 600;
+      letter-spacing: 0.18em;
+      text-transform: uppercase;
+      color: var(--periwinkle);
+    }
+
+    .promise-dot {
+      width: 6px;
+      height: 6px;
+      border-radius: 50%;
+      background: var(--cyan);
+      flex-shrink: 0;
+    }
+
+    .scroll-hint {
+      font-family: var(--font-brand);
+      font-size: 0.62rem;
+      letter-spacing: 0.3em;
+      text-transform: uppercase;
+      color: var(--grey);
+      opacity: 0.5;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      gap: 0.7rem;
+      margin-top: 2rem;
+    }
+
+    .scroll-line {
+      width: 1px;
+      height: 50px;
+      background: linear-gradient(180deg, var(--cyan), transparent);
+      animation: spulse 2s ease-in-out infinite;
+    }
+
+    @keyframes spulse {
+
+      0%,
+      100% {
+        opacity: 0.4;
+      }
+
+      50% {
+        opacity: 1;
+      }
+    }
+
+    /* ═══ CONTAINER ═══ */
+    .container {
+      width: 90%;
+      max-width: 1100px;
+      margin: 0 auto;
+    }
+
+    .container-narrow {
+      width: 90%;
+      max-width: 800px;
+      margin: 0 auto;
+    }
+
+    .divider {
+      width: 60px;
+      height: 1px;
+      background: linear-gradient(90deg, var(--cyan), var(--magenta));
+      margin: 1.5rem 0 2.5rem;
+    }
+
+    .section-label {
+      font-family: var(--font-brand);
+      font-size: 0.68rem;
+      font-weight: 600;
+      letter-spacing: 0.35em;
+      text-transform: uppercase;
+      color: var(--cyan);
+      margin-bottom: 1rem;
+    }
+
+    .section-title {
+      font-family: var(--font-head);
+      font-size: clamp(1.8rem, 4vw, 3rem);
+      font-weight: 400;
+      letter-spacing: 0.06em;
+      color: var(--white);
+      margin-bottom: 1.5rem;
+    }
+
+    /* ═══ ANS TABLE ═══ */
+    .ans-section {
+      padding: 80px 0;
+    }
+
+    .ans-section:first-of-type {
+      padding-top: 80px;
+    }
+
+    .ans-block {
+      margin-bottom: 3.5rem;
+    }
+
+    .ans-header {
+      display: grid;
+      grid-template-columns: 220px 1fr 1fr;
+      gap: 0;
+      margin-bottom: 0;
+      border-radius: 2px 2px 0 0;
+      overflow: hidden;
+    }
+
+    .ans-header-label {
+      background: rgba(4, 255, 255, 0.06);
+      padding: 0.8rem 1.2rem;
+      font-family: var(--font-brand);
+      font-size: 0.58rem;
+      font-weight: 600;
+      letter-spacing: 0.3em;
+      text-transform: uppercase;
+      color: var(--grey);
+      display: flex;
+      align-items: center;
+      border-right: 1px solid rgba(255, 255, 255, 0.04);
+    }
+
+    .ans-header-sns {
+      background: rgba(255, 68, 68, 0.12);
+      padding: 0.9rem 1.5rem;
+      border-right: 1px solid rgba(255, 255, 255, 0.04);
+    }
+
+    .ans-header-pns {
+      background: rgba(34, 221, 136, 0.12);
+      padding: 0.9rem 1.5rem;
+    }
+
+    .ans-header-sns .col-title {
+      font-family: var(--font-brand);
+      font-size: 0.72rem;
+      font-weight: 700;
+      letter-spacing: 0.2em;
+      text-transform: uppercase;
+      color: #ff6666;
+    }
+
+    .ans-header-pns .col-title {
+      font-family: var(--font-brand);
+      font-size: 0.72rem;
+      font-weight: 700;
+      letter-spacing: 0.2em;
+      text-transform: uppercase;
+      color: #22dd88;
+    }
+
+    .ans-header-sns .col-sub {
+      font-size: 0.7rem;
+      color: rgba(255, 102, 102, 0.6);
+      font-style: italic;
+    }
+
+    .ans-header-pns .col-sub {
+      font-size: 0.7rem;
+      color: rgba(34, 221, 136, 0.6);
+      font-style: italic;
+    }
+
+    .ans-row {
+      display: grid;
+      grid-template-columns: 220px 1fr 1fr;
+      border-bottom: 1px solid rgba(255, 255, 255, 0.04);
+      transition: background 0.2s;
+    }
+
+    .ans-row:hover {
+      background: rgba(255, 255, 255, 0.02);
+    }
+
+    .ans-row-label {
+      padding: 0.85rem 1.2rem;
+      font-family: var(--font-brand);
+      font-size: 0.65rem;
+      font-weight: 600;
+      letter-spacing: 0.12em;
+      text-transform: uppercase;
+      color: var(--periwinkle);
+      border-right: 1px solid rgba(255, 255, 255, 0.04);
+      display: flex;
+      align-items: center;
+      background: rgba(255, 255, 255, 0.01);
+    }
+
+    .ans-row-sns {
+      padding: 0.85rem 1.5rem;
+      font-size: 0.85rem;
+      color: #ffaaaa;
+      line-height: 1.5;
+      border-right: 1px solid rgba(255, 255, 255, 0.04);
+      background: rgba(255, 68, 68, 0.03);
+      display: flex;
+      align-items: center;
+    }
+
+    .ans-row-pns {
+      padding: 0.85rem 1.5rem;
+      font-size: 0.85rem;
+      color: #aaffcc;
+      line-height: 1.5;
+      background: rgba(34, 221, 136, 0.03);
+      display: flex;
+      align-items: center;
+    }
+
+    .ans-category-title {
+      font-family: var(--font-head);
+      font-size: 1.4rem;
+      letter-spacing: 0.1em;
+      color: var(--white);
+      margin-bottom: 0.8rem;
+      display: flex;
+      align-items: center;
+      gap: 1rem;
+    }
+
+    .ans-category-title::after {
+      content: '';
+      flex: 1;
+      height: 1px;
+      background: linear-gradient(90deg, rgba(4, 255, 255, 0.2), transparent);
+    }
+
+    /* ═══ LOCK OVERLAY ═══ */
+    .locked-section {
+      position: relative;
+    }
+
+    .lock-fade {
+      position: absolute;
+      bottom: 0;
+      left: 0;
+      right: 0;
+      height: 180px;
+      background: linear-gradient(180deg, transparent 0%, var(--black) 100%);
+      pointer-events: none;
+      z-index: 2;
+    }
+
+    .lock-overlay {
+      position: absolute;
+      inset: 0;
+      z-index: 3;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      background: rgba(8, 8, 26, 0.6);
+      backdrop-filter: blur(8px);
+    }
+
+    .lock-icon {
+      font-size: 2.5rem;
+      margin-bottom: 1rem;
+      opacity: 0.7;
+    }
+
+    .lock-text {
+      font-family: var(--font-brand);
+      font-size: 0.7rem;
+      font-weight: 600;
+      letter-spacing: 0.3em;
+      text-transform: uppercase;
+      color: var(--steel);
+      margin-bottom: 0.5rem;
+      text-align: center;
+    }
+
+    .lock-sub {
+      font-size: 0.82rem;
+      color: var(--grey);
+      text-align: center;
+      max-width: 340px;
+    }
+
+    /* ═══ EMAIL FORM SECTION ═══ */
+    #email-gate {
+      padding: 80px 0;
+      background: linear-gradient(180deg, var(--black) 0%, rgba(84, 2, 128, 0.15) 50%, var(--black) 100%);
+      border-top: 1px solid rgba(4, 255, 255, 0.08);
+      border-bottom: 1px solid rgba(4, 255, 255, 0.08);
+    }
+
+    .email-gate-inner {
+      max-width: 620px;
+      margin: 0 auto;
+      text-align: center;
+      padding: 0 5%;
+    }
+
+    .email-gate-title {
+      font-family: var(--font-head);
+      font-size: clamp(1.6rem, 4vw, 2.8rem);
+      font-weight: 400;
+      letter-spacing: 0.06em;
+      color: var(--white);
+      margin-bottom: 1rem;
+    }
+
+    .email-gate-sub {
+      font-size: 1rem;
+      color: var(--steel);
+      line-height: 1.75;
+      margin-bottom: 2.5rem;
+    }
+
+    .what-you-get {
+      display: flex;
+      flex-direction: column;
+      gap: 0.7rem;
+      margin-bottom: 2.5rem;
+      text-align: left;
+    }
+
+    .wyg-item {
+      display: flex;
+      align-items: flex-start;
+      gap: 0.9rem;
+      font-size: 0.88rem;
+      color: var(--white-soft);
+      line-height: 1.5;
+    }
+
+    .wyg-check {
+      font-size: 1rem;
+      color: var(--cyan);
+      flex-shrink: 0;
+      margin-top: 0.05rem;
+    }
+
+    .email-form {
+      display: flex;
+      gap: 0.75rem;
+      flex-wrap: wrap;
+      justify-content: center;
+    }
+
+    .email-input {
+      flex: 1;
+      min-width: 260px;
+      background: rgba(255, 255, 255, 0.05);
+      border: 1px solid rgba(4, 255, 255, 0.2);
+      color: var(--white);
+      font-family: var(--font-body);
+      font-size: 0.95rem;
+      font-weight: 300;
+      padding: 0.95rem 1.4rem;
+      border-radius: 2px;
+      outline: none;
+      transition: border-color 0.3s, background 0.3s;
+    }
+
+    .email-input::placeholder {
+      color: rgba(200, 207, 224, 0.4);
+    }
+
+    .email-input:focus {
+      border-color: var(--cyan);
+      background: rgba(4, 255, 255, 0.05);
+    }
+
+    .email-submit {
+      font-family: var(--font-brand);
+      font-size: 0.72rem;
+      font-weight: 600;
+      letter-spacing: 0.22em;
+      text-transform: uppercase;
+      color: var(--black);
+      background: var(--cyan);
+      border: none;
+      padding: 0.95rem 2.2rem;
+      cursor: pointer;
+      border-radius: 2px;
+      transition: box-shadow 0.3s, transform 0.3s;
+      white-space: nowrap;
+    }
+
+    .email-submit:hover {
+      box-shadow: 0 0 30px rgba(4, 255, 255, 0.4);
+      transform: translateY(-2px);
+    }
+
+    .email-submit:disabled {
+      opacity: 0.5;
+      cursor: not-allowed;
+      transform: none;
+    }
+
+    .form-note {
+      font-size: 0.72rem;
+      color: var(--grey);
+      margin-top: 1rem;
+      opacity: 0.7;
+    }
+
+    /* Success state */
+    .success-state {
+      display: none;
+      text-align: center;
+      padding: 2rem;
+    }
+
+    .success-state.active {
+      display: block;
+    }
+
+    .email-form-wrap.hidden {
+      display: none;
+    }
+
+    .success-title {
+      font-family: var(--font-head);
+      font-size: 2rem;
+      letter-spacing: 0.06em;
+      color: var(--white);
+      margin-bottom: 1rem;
+    }
+
+    .success-sub {
+      font-size: 0.95rem;
+      color: var(--steel);
+      margin-bottom: 2.5rem;
+      line-height: 1.7;
+    }
+
+    .download-btns {
+      display: flex;
+      gap: 1rem;
+      flex-wrap: wrap;
+      justify-content: center;
+    }
+
+    .dl-btn {
+      display: inline-flex;
+      align-items: center;
+      gap: 0.7rem;
+      font-family: var(--font-brand);
+      font-size: 0.68rem;
+      font-weight: 600;
+      letter-spacing: 0.2em;
+      text-transform: uppercase;
+      padding: 1rem 2rem;
+      border-radius: 2px;
+      transition: box-shadow 0.3s, transform 0.3s;
+    }
+
+    .dl-btn-primary {
+      color: var(--black);
+      background: var(--cyan);
+    }
+
+    .dl-btn-primary:hover {
+      box-shadow: 0 0 30px rgba(4, 255, 255, 0.4);
+      transform: translateY(-2px);
+    }
+
+    .dl-btn-secondary {
+      color: var(--pink);
+      background: transparent;
+      border: 1px solid rgba(215, 2, 241, 0.4);
+    }
+
+    .dl-btn-secondary:hover {
+      background: rgba(215, 2, 241, 0.08);
+      border-color: var(--magenta);
+      transform: translateY(-2px);
+    }
+
+    /* ═══ UNLOCKED CONTENT (hidden until email submit) ═══ */
+    #unlocked-content {
+      display: none;
+    }
+
+    #unlocked-content.active {
+      display: block;
+    }
+
+    /* ═══ FULL INFOGRAPHIC PREVIEW ═══ */
+    #infografike {
+      padding: 80px 0;
+      display: none;
+    }
+
+    #infografike.active {
+      display: block;
+    }
+
+    .infografike-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(340px, 1fr));
+      gap: 2rem;
+      margin-top: 3rem;
+    }
+
+    .infografika-card {
+      border: 1px solid rgba(4, 255, 255, 0.08);
+      border-radius: 2px;
+      overflow: hidden;
+      background: rgba(255, 255, 255, 0.02);
+      transition: border-color 0.3s;
+    }
+
+    .infografika-card:hover {
+      border-color: rgba(4, 255, 255, 0.25);
+    }
+
+    .infografika-card img {
+      width: 100%;
+      display: block;
+    }
+
+    .infografika-card-label {
+      padding: 1rem 1.5rem;
+      font-family: var(--font-brand);
+      font-size: 0.62rem;
+      font-weight: 600;
+      letter-spacing: 0.25em;
+      text-transform: uppercase;
+      color: var(--periwinkle);
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      border-top: 1px solid rgba(4, 255, 255, 0.06);
+    }
+
+    .infografika-dl {
+      font-size: 0.6rem;
+      color: var(--cyan);
+      letter-spacing: 0.2em;
+    }
+
+    /* ═══ FOOTER ═══ */
+    footer {
+      background: #050510;
+      padding: 50px 0 35px;
+      border-top: 1px solid rgba(4, 255, 255, 0.06);
+    }
+
+    .footer-row {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      flex-wrap: wrap;
+      gap: 1.5rem;
+    }
+
+    .footer-logo video {
+      height: 70px;
+      width: auto;
+      display: block;
+    }
+
+    .footer-copy {
+      font-family: var(--font-brand);
+      font-size: 0.62rem;
+      letter-spacing: 0.18em;
+      color: var(--grey);
+      text-align: right;
+      line-height: 2;
+    }
+
+    /* ═══ RESPONSIVE ═══ */
+    @media (max-width: 768px) {
+      .ans-header {
+        grid-template-columns: 1fr;
+      }
+
+      .ans-header-label {
+        display: none;
+      }
+
+      .ans-row {
+        grid-template-columns: 1fr;
+      }
+
+      .ans-row-label {
+        background: rgba(4, 255, 255, 0.05);
+        border-right: none;
+        border-bottom: 1px solid rgba(255, 255, 255, 0.04);
+      }
+
+      .ans-row-sns {
+        border-right: none;
+        border-bottom: 1px solid rgba(255, 255, 255, 0.04);
+      }
+
+      .ans-row-sns::before {
+        content: '🔴 Simpatik — ';
+        font-size: 0.65rem;
+        color: #ff6666;
+        display: block;
+        margin-bottom: 0.3rem;
+      }
+
+      .ans-row-pns::before {
+        content: '🟢 Parasimpatik — ';
+        font-size: 0.65rem;
+        color: #22dd88;
+        display: block;
+        margin-bottom: 0.3rem;
+      }
+
+      .ans-header-sns,
+      .ans-header-pns {
+        padding: 0.6rem 1rem;
+      }
+    }
+  </style>
+</head>
+
+<body>
+
+  <!-- NAV -->
+  <nav id="main-nav">
+    <a href="index.html" class="nav-logo">
+      <video autoplay loop muted playsinline>
+        <source src="video/Duhodah_Anim_12sec_1280x720.mp4" type="video/mp4">
+      </video>
+    </a>
+    <a href="index.html" class="nav-back">← Natrag na Duhodah</a>
+  </nav>
+
+  <!-- HERO -->
+  <section id="hero-prir">
+    <div class="hero-bg"></div>
+    <div class="hero-content">
+      <div class="hero-eyebrow reveal">Besplatni lead magnet · Duhodah Autoškola</div>
+      <h1 class="hero-title reveal reveal-delay-1">
+        Tvoje tijelo ima dva načina rada.<br>
+        Znaš li u <em>kojem si sada?</em>
+      </h1>
+      <p class="hero-sub reveal reveal-delay-2">
+        Autonomni živčani sustav upravlja svime — od imuniteta i hormonima do fokusa i kvalitete odnosa. Ova
+        komparativna analiza pokazuje točno što se događa u tijelu u svakom od dva stanja.
+      </p>
+      <div class="hero-promise reveal reveal-delay-3">
+        <div class="promise-item">
+          <div class="promise-dot"></div>8 tjelesnih sustava
+        </div>
+        <div class="promise-item">
+          <div class="promise-dot"></div>40+ parametara
+        </div>
+        <div class="promise-item">
+          <div class="promise-dot"></div>Simpatik vs. Parasimpatik
+        </div>
+        <div class="promise-item">
+          <div class="promise-dot"></div>Besplatno preuzimanje
+        </div>
+      </div>
+      <div class="scroll-hint reveal reveal-delay-3">
+        <span>Počni čitati</span>
+        <div class="scroll-line"></div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ═══ ANS TEASER — SLOBODAN SADRŽAJ ═══ -->
+  <section class="ans-section">
+    <div class="container">
+
+      <p class="section-label reveal">Komparativna analiza · Slobodan pregled</p>
+      <h2 class="section-title reveal">Autonomni živčani sustav —<br>dva načina rada</h2>
+      <div class="divider reveal"></div>
+      <p style="color:var(--steel); font-size:0.95rem; max-width:640px; margin-bottom:3.5rem;" class="reveal">
+        Svako stanje uma, svaka tjelesna funkcija, svaki hormon — sve je determinirano kojim sustavom trenutno
+        dominiraš. Ovo je vodič koji se ne uči u školi.
+      </p>
+
+      <!-- BLOK 1: OPĆA LOGIKA -->
+      <div class="ans-block reveal">
+        <div class="ans-category-title">Opća logika</div>
+        <div class="ans-header">
+          <div class="ans-header-label">Parametar</div>
+          <div class="ans-header-sns">
+            <div class="col-title">Simpatikus (SNS) 🔥</div>
+            <div class="col-sub">"Borba / Bijeg" — Gas</div>
+          </div>
+          <div class="ans-header-pns">
+            <div class="col-title">Parasimpatikus (PNS) 💧</div>
+            <div class="col-sub">"Odmor / Probava" — Kočnica</div>
+          </div>
+        </div>
+        <div class="ans-row">
+          <div class="ans-row-label">Primarna svrha</div>
+          <div class="ans-row-sns">Preživljavanje prijetnje. Mobilizacija.</div>
+          <div class="ans-row-pns">Oporavak, regeneracija, rast.</div>
+        </div>
+        <div class="ans-row">
+          <div class="ans-row-label">Energetski proces</div>
+          <div class="ans-row-sns">Katabolizam — tijelo troši zalihe.</div>
+          <div class="ans-row-pns">Anabolizam — tijelo se gradi i sprema.</div>
+        </div>
+        <div class="ans-row">
+          <div class="ans-row-label">Gl. neurotransmiter</div>
+          <div class="ans-row-sns">Noradrenalin (Norepinefrin)</div>
+          <div class="ans-row-pns">Acetilkolin</div>
+        </div>
+        <div class="ans-row">
+          <div class="ans-row-label">Dominantni hormoni</div>
+          <div class="ans-row-sns">Adrenalin, Kortizol (stres)</div>
+          <div class="ans-row-pns">Oksitocin, Serotonin, Dopamin</div>
+        </div>
+        <div class="ans-row">
+          <div class="ans-row-label">Vrijeme aktivacije</div>
+          <div class="ans-row-sns">Trenutno / Eksplozivno (milisekunde)</div>
+          <div class="ans-row-pns">Sporije — traži osjećaj sigurnosti</div>
+        </div>
+      </div>
+
+      <!-- BLOK 2: GLAVA I VRAT -->
+      <div class="ans-block reveal">
+        <div class="ans-category-title">Glava i vrat</div>
+        <div class="ans-header">
+          <div class="ans-header-label">Parametar</div>
+          <div class="ans-header-sns">
+            <div class="col-title">Simpatikus 🔥</div>
+          </div>
+          <div class="ans-header-pns">
+            <div class="col-title">Parasimpatikus 💧</div>
+          </div>
+        </div>
+        <div class="ans-row">
+          <div class="ans-row-label">Zjenice (oči)</div>
+          <div class="ans-row-sns">Širenje (Midrijaza). Tunelski vid.</div>
+          <div class="ans-row-pns">Sužavanje (Mioza). Fokus na blizinu.</div>
+        </div>
+        <div class="ans-row">
+          <div class="ans-row-label">Suzne žlijezde</div>
+          <div class="ans-row-sns">Inhibicija — suhe, staklene oči.</div>
+          <div class="ans-row-pns">Stimulacija — vlažne, sjajne oči.</div>
+        </div>
+        <div class="ans-row">
+          <div class="ans-row-label">Slina (usta)</div>
+          <div class="ans-row-sns">Gusta, ljepljiva, oskudna.</div>
+          <div class="ans-row-pns">Vodenasta, obilna (bogata enzimima).</div>
+        </div>
+      </div>
+
+      <!-- BLOK 3: PRSNI KOŠ — vidljivo -->
+      <div class="ans-block reveal">
+        <div class="ans-category-title">Prsni koš</div>
+        <div class="ans-header">
+          <div class="ans-header-label">Parametar</div>
+          <div class="ans-header-sns">
+            <div class="col-title">Simpatikus 🔥</div>
+          </div>
+          <div class="ans-header-pns">
+            <div class="col-title">Parasimpatikus 💧</div>
+          </div>
+        </div>
+        <div class="ans-row">
+          <div class="ans-row-label">Srce (rad)</div>
+          <div class="ans-row-sns">Ubrzava (Tahikardija). Pumpa jače.</div>
+          <div class="ans-row-pns">Usporava (Bradikardija). Štednja.</div>
+        </div>
+        <div class="ans-row">
+          <div class="ans-row-label">HRV (varijabilnost)</div>
+          <div class="ans-row-sns">Nizak HRV. Kuca kao metronom.</div>
+          <div class="ans-row-pns">Visok HRV. Pleše s dahom.</div>
+        </div>
+        <div class="ans-row">
+          <div class="ans-row-label">Pluća (bronhije)</div>
+          <div class="ans-row-sns">Širenje (Bronhodilatacija).</div>
+          <div class="ans-row-pns">Sužavanje (normalan tonus).</div>
+        </div>
+        <div class="ans-row">
+          <div class="ans-row-label">Tip disanja</div>
+          <div class="ans-row-sns">Torakalno (prsno). Visoko, brzo.</div>
+          <div class="ans-row-pns">Abdominalno (dijafragmatsko). Nisko, sporo.</div>
+        </div>
+      </div>
+
+    </div><!-- /container -->
+  </section>
+
+  <!-- LOCKED SECTION — blurriran teaser trbuh/probava -->
+  <div class="locked-section" style="padding: 0 0 40px;">
+    <div class="container" style="filter: blur(5px); pointer-events: none; user-select: none; opacity: 0.45;">
+      <div class="ans-block">
+        <div class="ans-category-title">Trbuh / Probava</div>
+        <div class="ans-header">
+          <div class="ans-header-label">Parametar</div>
+          <div class="ans-header-sns">
+            <div class="col-title">Simpatikus 🔥</div>
+          </div>
+          <div class="ans-header-pns">
+            <div class="col-title">Parasimpatikus 💧</div>
+          </div>
+        </div>
+        <div class="ans-row">
+          <div class="ans-row-label">Želudac / Crijeva</div>
+          <div class="ans-row-sns">Gasi se. Krv odlazi u mišiće.</div>
+          <div class="ans-row-pns">Aktivira se. Lučenje probavnih sokova.</div>
+        </div>
+        <div class="ans-row">
+          <div class="ans-row-label">Jetra</div>
+          <div class="ans-row-sns">Otpušta glukozu u krv (gorivo).</div>
+          <div class="ans-row-pns">Sprema glukozu (Glikogen).</div>
+        </div>
+        <div class="ans-row">
+          <div class="ans-row-label">Gušterača</div>
+          <div class="ans-row-sns">Inhibira lučenje inzulina.</div>
+          <div class="ans-row-pns">Potiče lučenje inzulina.</div>
+        </div>
+        <div class="ans-row">
+          <div class="ans-row-label">Sfinkteri (ventili)</div>
+          <div class="ans-row-sns">Zatvaraju se (zadržavanje).</div>
+          <div class="ans-row-pns">Opuštaju se (prolaz hrane).</div>
+        </div>
+      </div>
+      <div class="ans-block" style="margin-top:1rem;">
+        <div class="ans-category-title">Psihologija / Um</div>
+        <div class="ans-row">
+          <div class="ans-row-label">Fokus pažnje</div>
+          <div class="ans-row-sns">Uzak (Tunelski).</div>
+          <div class="ans-row-pns">Širok (Difuzni). Šira slika.</div>
+        </div>
+        <div class="ans-row">
+          <div class="ans-row-label">Emocionalni spektar</div>
+          <div class="ans-row-sns">Strah. Bijes. Frustracija.</div>
+          <div class="ans-row-pns">Mir. Zadovoljstvo. Povezanost.</div>
+        </div>
+      </div>
+    </div>
+    <div class="lock-fade"></div>
+  </div>
+
+  <!-- ═══ EMAIL GATE ═══ -->
+  <section id="email-gate">
+    <div class="email-gate-inner">
+
+      <div class="email-form-wrap reveal">
+        <p class="section-label" style="text-align:center;">Besplatni priručnik</p>
+        <h2 class="email-gate-title">Otključaj cijeli priručnik</h2>
+        <p class="email-gate-sub">
+          Dobij kompletnu komparativnu analizu — svih 8 tjelesnih sustava, 40+ parametara, moždane mreže, fascia,
+          imunitet, hormoni. Dvije infografike u jednom PDF-u.
+        </p>
+
+        <div class="what-you-get">
+          <div class="wyg-item"><span class="wyg-check">✦</span>Trbuh / Probava — šećer u krvi, inzulin, jetra</div>
+          <div class="wyg-item"><span class="wyg-check">✦</span>Zdjelica i izlučivanje — seksualna funkcija, sfinkteri
+          </div>
+          <div class="wyg-item"><span class="wyg-check">✦</span>Periferija — krvne žile, mišići, znojenje, dlačice</div>
+          <div class="wyg-item"><span class="wyg-check">✦</span>Psihologija / Um — fokus, percepcija vremena, kognicija
+          </div>
+          <div class="wyg-item"><span class="wyg-check">✦</span>Moždane mreže — TPN vs. DMN, "Doing" vs. "Being"</div>
+          <div class="wyg-item"><span class="wyg-check">✦</span>Imunitet, biokemija, fascia i socijalni angažman</div>
+        </div>
+
+        <form class="email-form" id="lead-form" onsubmit="submitEmail(event)">
+          <input type="email" class="email-input" id="email-input" placeholder="tvoj@email.com" required
+            autocomplete="email">
+          <button type="submit" class="email-submit" id="submit-btn">
+            Preuzmi besplatno
+          </button>
+        </form>
+        <p class="form-note">Bez spama. Samo jednom za priručnik. Odjava uvijek moguća.</p>
+      </div>
+
+      <div class="success-state" id="success-state">
+        <div style="font-size:2.5rem; margin-bottom:1rem;">✓</div>
+        <h3 class="success-title">Sve je spremno!</h3>
+        <p class="success-sub">
+          Tvoj email je zabilježen. Priručnik možeš odmah preuzeti — obje infografike u visokoj rezoluciji.
+        </p>
+        <div class="download-btns">
+          <a href="images/infografika-ans-1.png" download="Duhodah-ANS-Priručnik-1.png" class="dl-btn dl-btn-primary">
+            ↓ Preuzmi Priručnik 1
+          </a>
+          <a href="images/infografika-ans-2.png" download="Duhodah-ANS-Priručnik-2.png" class="dl-btn dl-btn-secondary">
+            ↓ Preuzmi Priručnik 2
+          </a>
+        </div>
+        <p style="margin-top:2rem; font-size:0.82rem; color:var(--grey);">
+          Ili nastavi čitati — ostatak analize sada je vidljiv ispod.
+        </p>
+      </div>
+
+    </div>
+  </section>
+
+  <!-- ═══ UNLOCKED CONTENT ═══ -->
+  <div id="unlocked-content">
+    <section class="ans-section">
+      <div class="container">
+
+        <!-- TRBUH/PROBAVA -->
+        <div class="ans-block reveal">
+          <div class="ans-category-title">Trbuh / Probava</div>
+          <div class="ans-header">
+            <div class="ans-header-label">Parametar</div>
+            <div class="ans-header-sns">
+              <div class="col-title">Simpatikus 🔥</div>
+            </div>
+            <div class="ans-header-pns">
+              <div class="col-title">Parasimpatikus 💧</div>
+            </div>
+          </div>
+          <div class="ans-row">
+            <div class="ans-row-label">Želudac / Crijeva</div>
+            <div class="ans-row-sns">Gasi se. Krv odlazi u mišiće.</div>
+            <div class="ans-row-pns">Aktivira se. Lučenje probavnih sokova.</div>
+          </div>
+          <div class="ans-row">
+            <div class="ans-row-label">Jetra</div>
+            <div class="ans-row-sns">Otpušta glukozu u krv (gorivo za bijeg).</div>
+            <div class="ans-row-pns">Sprema glukozu u glikogen.</div>
+          </div>
+          <div class="ans-row">
+            <div class="ans-row-label">Gušterača</div>
+            <div class="ans-row-sns">Inhibira lučenje inzulina.</div>
+            <div class="ans-row-pns">Potiče lučenje inzulina.</div>
+          </div>
+          <div class="ans-row">
+            <div class="ans-row-label">Sfinkteri (ventili)</div>
+            <div class="ans-row-sns">Zatvaraju se (zadržavanje).</div>
+            <div class="ans-row-pns">Opuštaju se (prolaz hrane).</div>
+          </div>
+        </div>
+
+        <!-- ZDJELICA -->
+        <div class="ans-block reveal">
+          <div class="ans-category-title">Zdjelica i izlučivanje</div>
+          <div class="ans-header">
+            <div class="ans-header-label">Parametar</div>
+            <div class="ans-header-sns">
+              <div class="col-title">Simpatikus 🔥</div>
+            </div>
+            <div class="ans-header-pns">
+              <div class="col-title">Parasimpatikus 💧</div>
+            </div>
+          </div>
+          <div class="ans-row">
+            <div class="ans-row-label">Mjehur</div>
+            <div class="ans-row-sns">Mišić se opušta, sfinkter steže.</div>
+            <div class="ans-row-pns">Mišić se steže, sfinkter opušta.</div>
+          </div>
+          <div class="ans-row">
+            <div class="ans-row-label">Seksualna funkcija</div>
+            <div class="ans-row-sns">Ejakulacija / Orgazam (vrhunac).</div>
+            <div class="ans-row-pns">Uzbuđenje / Erekcija / Ovlaživanje.</div>
+          </div>
+        </div>
+
+        <!-- PERIFERIJA -->
+        <div class="ans-block reveal">
+          <div class="ans-category-title">Periferija</div>
+          <div class="ans-header">
+            <div class="ans-header-label">Parametar</div>
+            <div class="ans-header-sns">
+              <div class="col-title">Simpatikus 🔥</div>
+            </div>
+            <div class="ans-header-pns">
+              <div class="col-title">Parasimpatikus 💧</div>
+            </div>
+          </div>
+          <div class="ans-row">
+            <div class="ans-row-label">Krvne žile</div>
+            <div class="ans-row-sns">Vazokonstrikcija — blijedilo, hladnoća.</div>
+            <div class="ans-row-pns">Vazodilatacija — toplina, rumenilo.</div>
+          </div>
+          <div class="ans-row">
+            <div class="ans-row-label">Mišićni tonus</div>
+            <div class="ans-row-sns">Povećan (napetost / oklop).</div>
+            <div class="ans-row-pns">Opušten (mekoća / hidratacija).</div>
+          </div>
+          <div class="ans-row">
+            <div class="ans-row-label">Znojenje</div>
+            <div class="ans-row-sns">Povećano — hladan znoj dlanova.</div>
+            <div class="ans-row-pns">Normalno / Termoregulacijsko.</div>
+          </div>
+          <div class="ans-row">
+            <div class="ans-row-label">Dlačice</div>
+            <div class="ans-row-sns">Ježe se (Piloreakcija).</div>
+            <div class="ans-row-pns">Opuštene.</div>
+          </div>
+        </div>
+
+        <!-- PSIHOLOGIJA -->
+        <div class="ans-block reveal">
+          <div class="ans-category-title">Psihologija / Um</div>
+          <div class="ans-header">
+            <div class="ans-header-label">Parametar</div>
+            <div class="ans-header-sns">
+              <div class="col-title">Simpatikus 🔥</div>
+            </div>
+            <div class="ans-header-pns">
+              <div class="col-title">Parasimpatikus 💧</div>
+            </div>
+          </div>
+          <div class="ans-row">
+            <div class="ans-row-label">Fokus pažnje</div>
+            <div class="ans-row-sns">Uzak (tunelski).</div>
+            <div class="ans-row-pns">Širok (difuzni) — šira slika.</div>
+          </div>
+          <div class="ans-row">
+            <div class="ans-row-label">Percepcija vremena</div>
+            <div class="ans-row-sns">Fokus na opasnost. "Nemam vremena."</div>
+            <div class="ans-row-pns">Bezvremensko. Flow stanje.</div>
+          </div>
+          <div class="ans-row">
+            <div class="ans-row-label">Emocionalni spektar</div>
+            <div class="ans-row-sns">Strah, bijes, frustracija, uzbuđenje.</div>
+            <div class="ans-row-pns">Mir, zadovoljstvo, povezanost.</div>
+          </div>
+          <div class="ans-row">
+            <div class="ans-row-label">Socijalni angažman</div>
+            <div class="ans-row-sns">Obrana, napad, povlačenje.</div>
+            <div class="ans-row-pns">Povezivanje, kontakt očima.</div>
+          </div>
+          <div class="ans-row">
+            <div class="ans-row-label">Kognicija</div>
+            <div class="ans-row-sns">Reaktivna, instinktivna, crno-bijela.</div>
+            <div class="ans-row-pns">Kreativna, analitička, planiranje.</div>
+          </div>
+        </div>
+
+        <!-- MOŽDANE MREŽE -->
+        <div class="ans-block reveal">
+          <div class="ans-category-title">Moždane mreže</div>
+          <div class="ans-header">
+            <div class="ans-header-label">Parametar</div>
+            <div class="ans-header-sns">
+              <div class="col-title">Simpatikus 🔥</div>
+            </div>
+            <div class="ans-header-pns">
+              <div class="col-title">Parasimpatikus 💧</div>
+            </div>
+          </div>
+          <div class="ans-row">
+            <div class="ans-row-label">Dominantna mreža</div>
+            <div class="ans-row-sns">TPN — Task Positive Network ("Mreža za zadatke")</div>
+            <div class="ans-row-pns">DMN — Default Mode Network ("Zadana mreža")</div>
+          </div>
+          <div class="ans-row">
+            <div class="ans-row-label">Fokus svijesti</div>
+            <div class="ans-row-sns">Vanjski svijet. Rješavanje problema.</div>
+            <div class="ans-row-pns">Unutarnji svijet. Lutanje uma (daydreaming).</div>
+          </div>
+          <div class="ans-row">
+            <div class="ans-row-label">Mentalno stanje</div>
+            <div class="ans-row-sns">"Doing" — Rad / Činjenje. Visoka koncentracija.</div>
+            <div class="ans-row-pns">"Being" (Bivanje) … ili Ruminacija (Briga).</div>
+          </div>
+          <div class="ans-row">
+            <div class="ans-row-label">Utjecaj daha</div>
+            <div class="ans-row-sns">Brzo disanje aktivira TPN (fokus na preživljavanje).</div>
+            <div class="ans-row-pns">Sporo disanje umiruje DMN (gasi "majmunski um").</div>
+          </div>
+        </div>
+
+      </div>
+    </section>
+  </div><!-- /unlocked-content -->
+
+  <!-- INFOGRAFIKE (otključane) -->
+  <div id="infografike">
+    <div class="container">
+      <p class="section-label reveal" style="text-align:center;">Vizualni priručnik</p>
+      <h2 class="section-title reveal" style="text-align:center;">Obje infografike</h2>
+      <div
+        style="width:60px; height:1px; background:linear-gradient(90deg,var(--cyan),var(--magenta)); margin:1.5rem auto 1rem;">
+      </div>
+      <div class="infografike-grid">
+        <div class="infografika-card reveal">
+          <img src="images/infografika-ans-1.png"
+            alt="ANS Komparativna analiza — Opća logika, prsni koš, trbuh, psihologija, moždane mreže">
+          <div class="infografika-card-label">
+            <span>Priručnik 1 — Opća logika · Organi · Um</span>
+            <a href="images/infografika-ans-1.png" download class="infografika-dl">↓ Preuzmi</a>
+          </div>
+        </div>
+        <div class="infografika-card reveal reveal-delay-1">
+          <img src="images/infografika-ans-2.png"
+            alt="ANS Komparativna analiza — Imunitet, biokemija, fascia, socijalni angažman">
+          <div class="infografika-card-label">
+            <span>Priručnik 2 — Imunitet · Fascia · Socijalni angažman</span>
+            <a href="images/infografika-ans-2.png" download class="infografika-dl">↓ Preuzmi</a>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- FOOTER -->
+  <footer>
+    <div class="container">
+      <div class="footer-row">
+        <div class="footer-logo">
+          <video autoplay loop muted playsinline>
+            <source src="video/Duhodah_Anim_12sec_1280x720.mp4" type="video/mp4">
+          </video>
+        </div>
+        <div class="footer-copy">
+          <div>Studio Shine · Ivana Gundulića 5 · Osijek</div>
+          <div><a href="mailto:duhodahos@gmail.com" style="color:var(--cyan);">duhodahos@gmail.com</a></div>
+          <div>© 2024 Duhodah · <a href="index.html" style="color:var(--periwinkle);">Početna</a></div>
+        </div>
+      </div>
+    </div>
+  </footer>
+
+  <!-- ═══ GOOGLE APPS SCRIPT SETUP ═══
+  KORACI:
+  1. Otvori sheets.google.com → novi sheet → nazovi ga "Duhodah HQ"
+  2. Dodaj sheet tab s imenom "Leadovi"
+  3. U retku 1 dodaj zaglavlja: Datum | Email | Izvor
+  4. Idi na Extensions → Apps Script
+  5. Zalijepi donji kod:
+
+  function doPost(e) {
+    var sheet = SpreadsheetApp.getActiveSpreadsheet().getSheetByName('Leadovi');
+    sheet.appendRow([
+      new Date(),
+      e.parameter.email,
+      e.parameter.source || 'ANS Priručnik'
+    ]);
+    return ContentService.createTextOutput('OK');
+  }
+
+  6. Klikni Deploy → New deployment → Web app
+  7. "Execute as" = Me, "Who has access" = Anyone
+  8. Kopiraj URL koji dobiješ
+  9. Zamijeni APPS_SCRIPT_URL dolje s tim URL-om
+════════════════════════════════════ -->
+
+  <script>
+    // Nav scroll
+    const nav = document.getElementById('main-nav');
+    window.addEventListener('scroll', () => {
+      nav.classList.toggle('scrolled', window.scrollY > 40);
+    });
+
+    // Scroll reveal
+    const revealEls = document.querySelectorAll('.reveal');
+    const observer = new IntersectionObserver((entries) => {
+      entries.forEach(e => {
+        if (e.isIntersecting) { e.target.classList.add('visible'); observer.unobserve(e.target); }
+      });
+    }, { threshold: 0.1, rootMargin: '0px 0px -50px 0px' });
+    revealEls.forEach(el => observer.observe(el));
+
+    // unlockContent — otključava sadržaj i prikazuje downloadove
+    function unlockContent(email) {
+      document.querySelector('.email-form-wrap').classList.add('hidden');
+      document.getElementById('success-state').classList.add('active');
+
+      const unlocked = document.getElementById('unlocked-content');
+      unlocked.classList.add('active');
+      unlocked.scrollIntoView({ behavior: 'smooth', block: 'start' });
+
+      document.getElementById('infografike').classList.add('active');
+
+      setTimeout(() => {
+        document.querySelectorAll('#unlocked-content .reveal, #infografike .reveal').forEach(el => {
+          observer.observe(el);
+        });
+      }, 100);
+
+      localStorage.setItem('dhdh_lead_email', email);
+    }
+
+    // Ako je već unio email ranije — odmah otključaj
+    window.addEventListener('DOMContentLoaded', () => {
+      const saved = localStorage.getItem('dhdh_lead_email');
+      if (saved) {
+        document.querySelector('.email-form-wrap').classList.add('hidden');
+        document.getElementById('success-state').classList.add('active');
+        document.getElementById('unlocked-content').classList.add('active');
+        document.getElementById('infografike').classList.add('active');
+      }
+    });
+  </script>
+
+  <!-- Supabase: email capture → magic link + tracking -->
+  <script type="module">
+    import { supabase } from './js/supabase-config.js';
+    import { signInWithEmail, initAuth, getCurrentUser } from './js/auth.js';
+    import { markPriručnikDownloaded } from './js/db.js';
+
+    // Ako korisnik dođe s magic linka → automatski otključaj
+    initAuth(async (event, session, user) => {
+      if ((event === 'SIGNED_IN') && user) {
+        // Ažuriraj profil s izvorom
+        await supabase.from('profiles').upsert({
+          id: user.id,
+          email: user.email,
+          izvor: 'priručnik',
+          priručnik_preuzet: true,
+          updated_at: new Date().toISOString()
+        }, { onConflict: 'id', ignoreDuplicates: false });
+
+        await markPriručnikDownloaded(user.id, user.email);
+        unlockContent(user.email);
+      }
+    });
+
+    // Form submit — šalje magic link umjesto Apps Scripta
+    window.submitEmail = async function(e) {
+      e.preventDefault();
+      const email = document.getElementById('email-input').value.trim();
+      const btn = document.getElementById('submit-btn');
+
+      if (!email) return;
+
+      btn.textContent = 'Šaljem...';
+      btn.disabled = true;
+
+      try {
+        // Provjeri je li već prijavljen
+        const user = await getCurrentUser();
+        if (user) {
+          // Već je prijavljen — otključaj direktno
+          await markPriručnikDownloaded(user.id, user.email);
+          unlockContent(user.email);
+          return;
+        }
+
+        // Pošalji magic link (korisnik klikne → prijavi se → initAuth handler otključa)
+        await signInWithEmail(email, {
+          redirectTo: window.location.href,
+          metadata: { izvor: 'priručnik' }
+        });
+
+        // Optimistično otključaj odmah (lokalno) dok čeka mail
+        await markPriručnikDownloaded(null, email);
+        setTimeout(() => unlockContent(email), 800);
+
+      } catch (err) {
+        console.warn('[Priručnik submit]', err);
+        // Fallback — otključaj bez prijave (UX important)
+        setTimeout(() => unlockContent(email), 800);
+      }
+    };
+  </script>
+
+</body>
+
+</html>

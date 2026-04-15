@@ -1,0 +1,1361 @@
+<!DOCTYPE html>
+<html lang="hr">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Koji je tvoj obrazac disanja? — Duhodah Quiz</title>
+  <meta name="description" content="12 pitanja. Otkrij koji tip disača si i dobij svoju prvu vježbu.">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Cinzel:wght@400;600&family=Montserrat:wght@300;400;500;600;700&family=Inter:wght@300;400;500&display=swap" rel="stylesheet">
+  <style>
+    :root {
+      --black:      #08081a;
+      --dark:       #0d0d22;
+      --navy:       #15154d;
+      --purple:     #540280;
+      --cyan:       #04ffff;
+      --cyan-soft:  #a5ffff;
+      --cyan-dim:   rgba(4,255,255,0.12);
+      --magenta:    #d702f1;
+      --pink:       #e488d1;
+      --steel:      #8bbad8;
+      --periwinkle: #808ec1;
+      --white:      #ffffff;
+      --white-soft: #e8eeff;
+      --grey:       #6b7494;
+
+      --font-brand: 'Montserrat', sans-serif;
+      --font-head:  'Cinzel', serif;
+      --font-body:  'Inter', sans-serif;
+
+      --glow-cyan: 0 0 30px rgba(4,255,255,0.35), 0 0 70px rgba(4,255,255,0.15);
+    }
+
+    *, *::before, *::after { margin: 0; padding: 0; box-sizing: border-box; }
+    html { scroll-behavior: smooth; }
+    body {
+      background: var(--black);
+      color: var(--white-soft);
+      font-family: var(--font-body);
+      font-weight: 300;
+      line-height: 1.7;
+      min-height: 100vh;
+      overflow-x: hidden;
+    }
+
+    /* ── Stars bg ── */
+    #stars-canvas {
+      position: fixed;
+      inset: 0;
+      width: 100%;
+      height: 100%;
+      pointer-events: none;
+      z-index: 0;
+      opacity: 0.5;
+    }
+
+    /* ── Nav ── */
+    nav {
+      position: fixed;
+      top: 0; left: 0; right: 0;
+      z-index: 100;
+      padding: 1.2rem 5%;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      background: rgba(8,8,26,0.85);
+      backdrop-filter: blur(16px);
+      border-bottom: 1px solid rgba(4,255,255,0.07);
+    }
+    .nav-logo {
+      font-family: var(--font-brand);
+      font-size: 1rem;
+      font-weight: 700;
+      letter-spacing: 0.3em;
+      color: var(--white);
+      text-decoration: none;
+    }
+    .nav-logo span { color: var(--cyan); }
+    .nav-back {
+      font-family: var(--font-brand);
+      font-size: 0.65rem;
+      font-weight: 500;
+      letter-spacing: 0.2em;
+      text-transform: uppercase;
+      color: var(--steel);
+      text-decoration: none;
+      transition: color 0.3s;
+    }
+    .nav-back:hover { color: var(--cyan); }
+
+    /* ── Main layout ── */
+    main {
+      position: relative;
+      z-index: 1;
+      min-height: 100vh;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: flex-start;
+      padding: 100px 20px 60px;
+    }
+
+    .quiz-shell {
+      width: 100%;
+      max-width: 680px;
+    }
+
+    /* ── Screen transitions ── */
+    .screen {
+      display: none;
+      animation: fadeUp 0.5s ease both;
+    }
+    .screen.active { display: block; }
+    @keyframes fadeUp {
+      from { opacity: 0; transform: translateY(24px); }
+      to   { opacity: 1; transform: translateY(0); }
+    }
+
+    /* ── INTRO screen ── */
+    .intro-label {
+      font-family: var(--font-brand);
+      font-size: 0.65rem;
+      font-weight: 600;
+      letter-spacing: 0.4em;
+      text-transform: uppercase;
+      color: var(--cyan);
+      margin-bottom: 1.2rem;
+    }
+    .intro-title {
+      font-family: var(--font-head);
+      font-size: clamp(1.8rem, 5vw, 2.8rem);
+      font-weight: 400;
+      letter-spacing: 0.05em;
+      color: var(--white);
+      margin-bottom: 1.5rem;
+      line-height: 1.2;
+    }
+    .intro-divider {
+      width: 60px;
+      height: 1px;
+      background: linear-gradient(90deg, var(--cyan), var(--magenta));
+      margin-bottom: 1.8rem;
+    }
+    .intro-desc {
+      font-size: 1rem;
+      font-weight: 300;
+      color: var(--steel);
+      margin-bottom: 1.2rem;
+      line-height: 1.8;
+    }
+    .intro-types {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 0.8rem;
+      margin: 2rem 0 2.5rem;
+    }
+    .intro-type-pill {
+      background: rgba(21,21,77,0.6);
+      border: 1px solid rgba(128,142,193,0.15);
+      padding: 0.7rem 1rem;
+      font-family: var(--font-brand);
+      font-size: 0.65rem;
+      letter-spacing: 0.15em;
+      text-transform: uppercase;
+      color: var(--periwinkle);
+      text-align: center;
+    }
+    .intro-meta {
+      font-family: var(--font-brand);
+      font-size: 0.6rem;
+      letter-spacing: 0.25em;
+      text-transform: uppercase;
+      color: var(--grey);
+      margin-bottom: 2rem;
+    }
+
+    /* ── Progress ── */
+    .progress-wrap {
+      margin-bottom: 2.5rem;
+    }
+    .progress-info {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      margin-bottom: 0.6rem;
+    }
+    .progress-label {
+      font-family: var(--font-brand);
+      font-size: 0.6rem;
+      letter-spacing: 0.25em;
+      text-transform: uppercase;
+      color: var(--grey);
+    }
+    .progress-count {
+      font-family: var(--font-brand);
+      font-size: 0.6rem;
+      letter-spacing: 0.2em;
+      color: var(--cyan);
+    }
+    .progress-bar {
+      width: 100%;
+      height: 2px;
+      background: rgba(128,142,193,0.15);
+      border-radius: 1px;
+      overflow: hidden;
+    }
+    .progress-fill {
+      height: 100%;
+      background: linear-gradient(90deg, var(--cyan), var(--magenta));
+      border-radius: 1px;
+      transition: width 0.5s ease;
+      width: 0%;
+    }
+
+    /* ── Question ── */
+    .question-num {
+      font-family: var(--font-brand);
+      font-size: 0.6rem;
+      letter-spacing: 0.3em;
+      text-transform: uppercase;
+      color: var(--cyan);
+      margin-bottom: 0.8rem;
+      opacity: 0.7;
+    }
+    .question-text {
+      font-family: var(--font-head);
+      font-size: clamp(1.1rem, 3vw, 1.5rem);
+      font-weight: 400;
+      color: var(--white);
+      line-height: 1.4;
+      margin-bottom: 2rem;
+    }
+
+    /* ── Answer options ── */
+    .options {
+      display: flex;
+      flex-direction: column;
+      gap: 0.8rem;
+    }
+    .option {
+      background: rgba(13,13,34,0.7);
+      border: 1px solid rgba(128,142,193,0.15);
+      padding: 1.1rem 1.4rem;
+      cursor: pointer;
+      transition: border-color 0.25s, background 0.25s, transform 0.2s;
+      display: flex;
+      align-items: flex-start;
+      gap: 1rem;
+      position: relative;
+      overflow: hidden;
+    }
+    .option::before {
+      content: '';
+      position: absolute;
+      inset: 0;
+      background: linear-gradient(135deg, rgba(4,255,255,0.04), transparent);
+      opacity: 0;
+      transition: opacity 0.3s;
+    }
+    .option:hover {
+      border-color: rgba(4,255,255,0.35);
+      transform: translateX(4px);
+    }
+    .option:hover::before { opacity: 1; }
+    .option.selected {
+      border-color: var(--cyan);
+      background: rgba(4,255,255,0.07);
+    }
+    .option.selected::before { opacity: 1; }
+    .option-letter {
+      font-family: var(--font-brand);
+      font-size: 0.65rem;
+      font-weight: 700;
+      letter-spacing: 0.1em;
+      color: var(--cyan);
+      opacity: 0.5;
+      flex-shrink: 0;
+      padding-top: 2px;
+      transition: opacity 0.2s;
+    }
+    .option.selected .option-letter { opacity: 1; }
+    .option-text {
+      font-size: 0.95rem;
+      font-weight: 300;
+      color: var(--white-soft);
+      line-height: 1.5;
+    }
+
+    /* ── Nav buttons ── */
+    .quiz-nav {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      margin-top: 2.5rem;
+      gap: 1rem;
+    }
+    .btn-next, .btn-back, .btn-primary {
+      font-family: var(--font-brand);
+      font-size: 0.7rem;
+      font-weight: 600;
+      letter-spacing: 0.2em;
+      text-transform: uppercase;
+      border: none;
+      cursor: pointer;
+      padding: 0.9rem 2.2rem;
+      border-radius: 2px;
+      transition: box-shadow 0.3s, transform 0.2s, opacity 0.3s;
+    }
+    .btn-next, .btn-primary {
+      color: var(--black);
+      background: linear-gradient(135deg, var(--cyan), var(--steel));
+    }
+    .btn-next:hover, .btn-primary:hover {
+      box-shadow: var(--glow-cyan);
+      transform: translateY(-2px);
+    }
+    .btn-next:disabled {
+      opacity: 0.3;
+      cursor: not-allowed;
+      transform: none;
+      box-shadow: none;
+    }
+    .btn-back {
+      color: var(--steel);
+      background: transparent;
+      border: 1px solid rgba(139,186,216,0.25);
+    }
+    .btn-back:hover {
+      border-color: rgba(139,186,216,0.5);
+      color: var(--white-soft);
+    }
+    .btn-back.hidden { visibility: hidden; }
+
+    /* ── START button ── */
+    .btn-start {
+      font-family: var(--font-brand);
+      font-size: 0.8rem;
+      font-weight: 700;
+      letter-spacing: 0.25em;
+      text-transform: uppercase;
+      color: var(--black);
+      background: linear-gradient(135deg, var(--cyan), var(--steel));
+      border: none;
+      padding: 1.1rem 3rem;
+      border-radius: 2px;
+      cursor: pointer;
+      transition: box-shadow 0.3s, transform 0.2s;
+      display: inline-block;
+    }
+    .btn-start:hover {
+      box-shadow: var(--glow-cyan);
+      transform: translateY(-2px);
+    }
+
+    /* ── RESULTS screen ── */
+    .result-header {
+      text-align: center;
+      margin-bottom: 3rem;
+    }
+    .result-label {
+      font-family: var(--font-brand);
+      font-size: 0.6rem;
+      font-weight: 600;
+      letter-spacing: 0.4em;
+      text-transform: uppercase;
+      color: var(--cyan);
+      margin-bottom: 1rem;
+    }
+    .result-type-name {
+      font-family: var(--font-head);
+      font-size: clamp(1.8rem, 6vw, 3rem);
+      font-weight: 400;
+      color: var(--white);
+      margin-bottom: 0.5rem;
+      line-height: 1.15;
+    }
+    .result-type-sub {
+      font-family: var(--font-brand);
+      font-size: 0.7rem;
+      letter-spacing: 0.3em;
+      text-transform: uppercase;
+      color: var(--periwinkle);
+    }
+
+    .result-orb {
+      width: 120px;
+      height: 120px;
+      margin: 2rem auto;
+      position: relative;
+    }
+    .result-orb-ring {
+      width: 100%;
+      height: 100%;
+      border-radius: 50%;
+      border: 1.5px solid var(--cyan);
+      box-shadow: 0 0 20px rgba(4,255,255,0.5), 0 0 50px rgba(4,255,255,0.2);
+      animation: breathe-slow 4s ease-in-out infinite;
+    }
+    .result-orb-inner {
+      position: absolute;
+      inset: 18px;
+      border-radius: 50%;
+      border: 1px solid rgba(215,2,241,0.4);
+      box-shadow: 0 0 15px rgba(215,2,241,0.25);
+      animation: breathe-slow 4s ease-in-out infinite 0.4s;
+    }
+    .result-orb-emoji {
+      position: absolute;
+      inset: 0;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 2.2rem;
+    }
+    @keyframes breathe-slow {
+      0%, 100% { transform: scale(1); opacity: 0.75; }
+      50% { transform: scale(1.1); opacity: 1; }
+    }
+
+    .result-section {
+      background: rgba(13,13,34,0.7);
+      border: 1px solid rgba(128,142,193,0.1);
+      padding: 1.8rem;
+      margin-bottom: 1.2rem;
+      position: relative;
+    }
+    .result-section::before {
+      content: '';
+      position: absolute;
+      left: 0; top: 0; bottom: 0;
+      width: 3px;
+      background: var(--section-accent, var(--cyan));
+    }
+    .result-section-title {
+      font-family: var(--font-brand);
+      font-size: 0.6rem;
+      font-weight: 600;
+      letter-spacing: 0.3em;
+      text-transform: uppercase;
+      color: var(--section-accent, var(--cyan));
+      margin-bottom: 0.8rem;
+    }
+    .result-section-body {
+      font-size: 0.95rem;
+      font-weight: 300;
+      color: var(--white-soft);
+      line-height: 1.75;
+    }
+
+    .result-tags {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 0.5rem;
+      margin-top: 1rem;
+    }
+    .result-tag {
+      font-family: var(--font-brand);
+      font-size: 0.55rem;
+      letter-spacing: 0.15em;
+      text-transform: uppercase;
+      padding: 0.3rem 0.8rem;
+      border: 1px solid;
+      border-radius: 1px;
+    }
+    .result-tag.strength {
+      color: var(--cyan);
+      border-color: rgba(4,255,255,0.3);
+      background: rgba(4,255,255,0.05);
+    }
+    .result-tag.challenge {
+      color: var(--pink);
+      border-color: rgba(228,136,209,0.3);
+      background: rgba(228,136,209,0.05);
+    }
+
+    /* Exercise box */
+    .exercise-box {
+      background: linear-gradient(135deg, rgba(4,255,255,0.06), rgba(84,2,128,0.1));
+      border: 1px solid rgba(4,255,255,0.2);
+      padding: 2rem;
+      margin: 2rem 0;
+    }
+    .exercise-box-label {
+      font-family: var(--font-brand);
+      font-size: 0.6rem;
+      font-weight: 600;
+      letter-spacing: 0.35em;
+      text-transform: uppercase;
+      color: var(--cyan);
+      margin-bottom: 0.8rem;
+    }
+    .exercise-box-title {
+      font-family: var(--font-head);
+      font-size: 1.2rem;
+      color: var(--white);
+      margin-bottom: 0.8rem;
+    }
+    .exercise-box-desc {
+      font-size: 0.9rem;
+      color: var(--steel);
+      line-height: 1.7;
+      margin-bottom: 1.2rem;
+    }
+    .exercise-steps {
+      list-style: none;
+      display: flex;
+      flex-direction: column;
+      gap: 0.5rem;
+    }
+    .exercise-steps li {
+      display: flex;
+      gap: 0.8rem;
+      align-items: flex-start;
+      font-size: 0.9rem;
+      color: var(--white-soft);
+    }
+    .exercise-steps li::before {
+      content: attr(data-n);
+      font-family: var(--font-brand);
+      font-size: 0.7rem;
+      font-weight: 700;
+      color: var(--cyan);
+      flex-shrink: 0;
+      padding-top: 2px;
+    }
+
+    /* Score breakdown */
+    .score-breakdown {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 0.8rem;
+      margin-bottom: 2rem;
+    }
+    .score-bar-item {}
+    .score-bar-label {
+      display: flex;
+      justify-content: space-between;
+      font-family: var(--font-brand);
+      font-size: 0.58rem;
+      letter-spacing: 0.15em;
+      text-transform: uppercase;
+      color: var(--grey);
+      margin-bottom: 0.4rem;
+    }
+    .score-bar-track {
+      height: 3px;
+      background: rgba(128,142,193,0.15);
+      border-radius: 2px;
+      overflow: hidden;
+    }
+    .score-bar-fill {
+      height: 100%;
+      border-radius: 2px;
+      transition: width 1s ease 0.5s;
+      width: 0%;
+    }
+
+    /* CTA / share */
+    .result-cta {
+      text-align: center;
+      padding: 2.5rem 0 1rem;
+    }
+    .result-cta-title {
+      font-family: var(--font-head);
+      font-size: 1.3rem;
+      color: var(--white);
+      margin-bottom: 0.6rem;
+    }
+    .result-cta-desc {
+      font-size: 0.9rem;
+      color: var(--steel);
+      margin-bottom: 2rem;
+      line-height: 1.7;
+    }
+    .result-actions {
+      display: flex;
+      gap: 1rem;
+      justify-content: center;
+      flex-wrap: wrap;
+    }
+    .btn-share {
+      font-family: var(--font-brand);
+      font-size: 0.65rem;
+      font-weight: 500;
+      letter-spacing: 0.2em;
+      text-transform: uppercase;
+      color: var(--cyan-soft);
+      background: transparent;
+      border: 1px solid rgba(4,255,255,0.3);
+      padding: 0.9rem 2rem;
+      border-radius: 2px;
+      cursor: pointer;
+      transition: border-color 0.3s, box-shadow 0.3s;
+    }
+    .btn-share:hover {
+      border-color: var(--cyan);
+      box-shadow: var(--glow-cyan);
+    }
+    .btn-retry {
+      font-family: var(--font-brand);
+      font-size: 0.65rem;
+      font-weight: 500;
+      letter-spacing: 0.2em;
+      text-transform: uppercase;
+      color: var(--grey);
+      background: transparent;
+      border: 1px solid rgba(107,116,148,0.25);
+      padding: 0.9rem 2rem;
+      border-radius: 2px;
+      cursor: pointer;
+      transition: color 0.3s, border-color 0.3s;
+    }
+    .btn-retry:hover { color: var(--white-soft); border-color: rgba(107,116,148,0.5); }
+
+    .share-toast {
+      position: fixed;
+      bottom: 2rem;
+      left: 50%;
+      transform: translateX(-50%) translateY(20px);
+      background: var(--navy);
+      border: 1px solid rgba(4,255,255,0.3);
+      color: var(--cyan-soft);
+      font-family: var(--font-brand);
+      font-size: 0.65rem;
+      letter-spacing: 0.2em;
+      text-transform: uppercase;
+      padding: 0.8rem 1.6rem;
+      opacity: 0;
+      transition: opacity 0.3s, transform 0.3s;
+      pointer-events: none;
+      z-index: 200;
+    }
+    .share-toast.show {
+      opacity: 1;
+      transform: translateX(-50%) translateY(0);
+    }
+
+    /* Footer */
+    .quiz-footer {
+      text-align: center;
+      padding: 2rem 0 0;
+      border-top: 1px solid rgba(128,142,193,0.08);
+      margin-top: 3rem;
+    }
+    .quiz-footer-brand {
+      font-family: var(--font-brand);
+      font-size: 0.7rem;
+      font-weight: 700;
+      letter-spacing: 0.3em;
+      color: var(--periwinkle);
+      margin-bottom: 0.3rem;
+    }
+    .quiz-footer-brand span { color: var(--cyan); }
+    .quiz-footer-sub {
+      font-family: var(--font-brand);
+      font-size: 0.55rem;
+      letter-spacing: 0.2em;
+      text-transform: uppercase;
+      color: var(--grey);
+    }
+
+    @media (max-width: 520px) {
+      .intro-types { grid-template-columns: 1fr; }
+      .score-breakdown { grid-template-columns: 1fr; }
+      .result-actions { flex-direction: column; align-items: center; }
+    }
+  </style>
+</head>
+<body>
+
+<canvas id="stars-canvas"></canvas>
+
+<nav>
+  <a href="index.html" class="nav-logo">DUH<span>O</span>DAH</a>
+  <a href="index.html" class="nav-back">← Natrag na stranicu</a>
+</nav>
+
+<main>
+  <div class="quiz-shell">
+
+    <!-- ═══ INTRO ═══ -->
+    <div class="screen active" id="screen-intro">
+      <p class="intro-label">Duhodah · Besplatni quiz</p>
+      <h1 class="intro-title">Koji je tvoj<br>obrazac disanja?</h1>
+      <div class="intro-divider"></div>
+      <p class="intro-desc">
+        Dišeš oko 20.000 puta dnevno — a gotovo nikad svjesno.
+        12 pitanja. 4 minute. Otkrit ćeš koji tip disača si i dobiti
+        prvu vježbu posebno za tebe.
+      </p>
+      <div class="intro-types">
+        <div class="intro-type-pill">Kronični Plitki Disač</div>
+        <div class="intro-type-pill">Hiperventilator</div>
+        <div class="intro-type-pill">Zadržavač</div>
+        <div class="intro-type-pill">Kaotični Disač</div>
+      </div>
+      <p class="intro-meta">12 pitanja · bez točnih ili krivih odgovora · 100% anonimno</p>
+      <button class="btn-start" onclick="startQuiz()">KRENI →</button>
+
+      <div class="quiz-footer">
+        <div class="quiz-footer-brand">DUH<span>O</span>DAH</div>
+        <div class="quiz-footer-sub">Autoškola za živčani sustav · Osijek</div>
+      </div>
+    </div>
+
+    <!-- ═══ QUIZ ═══ -->
+    <div class="screen" id="screen-quiz">
+      <div class="progress-wrap">
+        <div class="progress-info">
+          <span class="progress-label">Napredak</span>
+          <span class="progress-count" id="prog-count">1 / 12</span>
+        </div>
+        <div class="progress-bar">
+          <div class="progress-fill" id="prog-fill"></div>
+        </div>
+      </div>
+
+      <div id="question-area">
+        <!-- Dynamically rendered -->
+      </div>
+
+      <div class="quiz-nav">
+        <button class="btn-back hidden" id="btn-back" onclick="prevQ()">← Natrag</button>
+        <button class="btn-next" id="btn-next" onclick="nextQ()" disabled>Dalje →</button>
+      </div>
+    </div>
+
+    <!-- ═══ RESULTS ═══ -->
+    <div class="screen" id="screen-results">
+      <!-- Dynamically rendered -->
+    </div>
+
+  </div>
+</main>
+
+<div class="share-toast" id="share-toast">Link kopiran u clipboard ✓</div>
+
+<script>
+// ════════════════════════════════════════════════════════════
+//  STARFIELD
+// ════════════════════════════════════════════════════════════
+const canvas = document.getElementById('stars-canvas');
+const ctx = canvas.getContext('2d');
+let stars = [], W, H;
+function resize() { W = canvas.width = window.innerWidth; H = canvas.height = window.innerHeight; }
+function createStars() {
+  stars = [];
+  for (let i = 0; i < 150; i++) stars.push({
+    x: Math.random()*W, y: Math.random()*H,
+    r: Math.random()*1.1+0.2, o: Math.random()*0.5+0.1,
+    speed: Math.random()*0.12+0.02,
+    color: ['#a5ffff','#04ffff','#8bbad8','#808ec1','#e488d1'][Math.floor(Math.random()*5)]
+  });
+}
+function drawStars() {
+  ctx.clearRect(0,0,W,H);
+  stars.forEach(s => {
+    ctx.beginPath(); ctx.arc(s.x,s.y,s.r,0,Math.PI*2);
+    ctx.fillStyle = s.color; ctx.globalAlpha = s.o; ctx.fill();
+    s.o += Math.sin(Date.now()*0.001*s.speed)*0.003;
+    s.o = Math.max(0.05, Math.min(0.6, s.o));
+  });
+  ctx.globalAlpha = 1;
+  requestAnimationFrame(drawStars);
+}
+window.addEventListener('resize', () => { resize(); createStars(); });
+resize(); createStars(); drawStars();
+
+// ════════════════════════════════════════════════════════════
+//  QUIZ DATA
+//  Types: P = Plitki, H = Hiperventilator, Z = Zadrzavac, K = Kaotični
+// ════════════════════════════════════════════════════════════
+const QUESTIONS = [
+  {
+    text: "Kako bi opisao/la svoje disanje dok si pod stresom?",
+    options: [
+      { text: "Postaje plitko i jedva ga primjećujem — kao da se smanji", type: "P" },
+      { text: "Ubrzava i osjećam da ne mogu dovoljno udahnuti", type: "H" },
+      { text: "Zaustavim se — doslovno zaboravim disati", type: "Z" },
+      { text: "Svaki put je drugačije, ovisi o situaciji", type: "K" },
+    ]
+  },
+  {
+    text: "Jutro, čim se probudiš — gdje je tvoje disanje?",
+    options: [
+      { text: "Plitko, samo gornji dio prsa — trbuh gotovo ne sudjeluje", type: "P" },
+      { text: "Brzo, odmah u pogonu, srce već radi", type: "H" },
+      { text: "Duboko ali tijelo teško — kao da se motor polako pali", type: "Z" },
+      { text: "Nisam nikad obratio/la pažnju na to", type: "K" },
+    ]
+  },
+  {
+    text: "Kad si jako fokusiran/a na zadatak — što se dogodi s dahom?",
+    options: [
+      { text: "Postaje sporiji i plići, gotovo nevidljiv", type: "P" },
+      { text: "Ubrzava, ponekad se i znojim ili pocrvenim", type: "H" },
+      { text: "Zadržim ga bez da to primijetim — budem pa ga otpustim", type: "Z" },
+      { text: "Ovisi o zadatku i mom raspoloženju", type: "K" },
+    ]
+  },
+  {
+    text: "Netko ti kaže: \"Uzmi dubok dah.\" Što se dogodi?",
+    options: [
+      { text: "Pokušam, ali ne znam je li stvarno duboko — ne osjećam razliku", type: "P" },
+      { text: "Odmah mi je malo bolje, ali efekt brzo prođe", type: "H" },
+      { text: "Olakšanje — kao da sam napokon dobio/la dozvolu da dišem", type: "Z" },
+      { text: "Ponekad pomaže, ponekad ne — nepredvidivo", type: "K" },
+    ]
+  },
+  {
+    text: "Kako izgleda tvoj živčani sustav navečer?",
+    options: [
+      { text: "Umoran/a ali ne mogu zaspati — tijelo prazno, glava puna magle", type: "P" },
+      { text: "Teško se smirim, misli mi jure, ne mogu se \"ugasiti\"", type: "H" },
+      { text: "Osjetim veliku napetost tek kad legnem — tad svega ima", type: "Z" },
+      { text: "Svake večeri je drugačije — nekad OK, nekad kaos", type: "K" },
+    ]
+  },
+  {
+    text: "Što se dogodi s tvojim dahom kad te netko jako iznervira?",
+    options: [
+      { text: "Osjećam napetost u prsima, disanje se stisne i postane tiho", type: "P" },
+      { text: "Srce mi ubrza, dišem brže, možda pocrvenim ili se zagrijem", type: "H" },
+      { text: "Zamrznem — i doslovno zaustavim dah na par sekundi", type: "Z" },
+      { text: "Eksplodiram ili se povučem — ovisi o danu i osobi", type: "K" },
+    ]
+  },
+  {
+    text: "Jesi li ikad bez razloga osjetio/la vrtoglavicu, trnce u rukama ili \"prazninu u glavi\"?",
+    options: [
+      { text: "Rijetko, ali da — i nikad ne znam zašto", type: "P" },
+      { text: "Dosta često, posebno kad sam pod pritiskom", type: "H" },
+      { text: "Ponekad, uglavnom nakon dugog perioda napetosti", type: "Z" },
+      { text: "Da, ali ne znam kad ni zašto — dolazi i odlazi", type: "K" },
+    ]
+  },
+  {
+    text: "Kako reagiraš na fizički napor — stepenice, brzi hod, trčanje?",
+    options: [
+      { text: "Brzo mi ponestane daha, osjećam se slabo brže nego što bih trebao/la", type: "P" },
+      { text: "Odmah mi srce poludi i počnem ubrzano disati", type: "H" },
+      { text: "Sve OK dok traje, ali poslije osjetim val napetosti", type: "Z" },
+      { text: "Nepredvidivo — ponekad idem jako dobro, ponekad jako loše", type: "K" },
+    ]
+  },
+  {
+    text: "Kad si tužan/na ili emotivan/na — što se dogodi s dahom?",
+    options: [
+      { text: "Postaje jako tih i sitan — kao da emocija \"pojede\" dah", type: "P" },
+      { text: "Počnem jecati ili hvatati zrak — emocija i dah idu zajedno", type: "H" },
+      { text: "Stisnem ga — kao da zadržavam i emociju i dah istovremeno", type: "Z" },
+      { text: "Svaki put drugačije — nikad ne znam kako ću reagirati", type: "K" },
+    ]
+  },
+  {
+    text: "Imaš li napetost u vratu, ramenima ili čeljusti bez jasnog razloga?",
+    options: [
+      { text: "Ponekad, ali mislim da je od položaja ili posla", type: "P" },
+      { text: "Da, i obično ide s tjeskobom i ubrzanim razmišljanjem", type: "H" },
+      { text: "Stalno — kao da nosim nešto teško, uvijek", type: "Z" },
+      { text: "Dolazi i odlazi bez uzorka", type: "K" },
+    ]
+  },
+  {
+    text: "Kako spavaš?",
+    options: [
+      { text: "Dosta spavam ali se budem umoran/na — san ne pomaže dovoljno", type: "P" },
+      { text: "Teško zaspim, budem se u noći, misli mi ne prestaju", type: "H" },
+      { text: "Spavam OK, ali jutro je teško — kao da treba dugo da se pokrenem", type: "Z" },
+      { text: "Varira jako — dobar tjedan, pa loš tjedan, bez uzorka", type: "K" },
+    ]
+  },
+  {
+    text: "Što ti je u životu najteže nositi?",
+    options: [
+      { text: "Nema energije — osjećam se prazno, mutno, bez iskrice", type: "P" },
+      { text: "Anksioznost i briga — misli ne prestaju, uvijek čekam nešto loše", type: "H" },
+      { text: "Napetost u tijelu — stisnutost, bol, osjećaj da sam uvijek na rubu", type: "Z" },
+      { text: "Nepredvidivost — ne znam što da očekujem od sebe ni od dana", type: "K" },
+    ]
+  },
+];
+
+// ════════════════════════════════════════════════════════════
+//  RESULT TYPES
+// ════════════════════════════════════════════════════════════
+const RESULT_TYPES = {
+  P: {
+    name: "Kronični Plitki Disač",
+    sub: "Dišeš, ali jedva",
+    emoji: "🌫️",
+    color: "#8bbad8",
+    accentRgb: "139,186,216",
+    tagline: "Tvoje disanje je kao WiFi signal s jednom crticom — tehnički radi, ali nije dovoljno.",
+    description: "Gornji dio prsa, plitki udasi, trbuh koji gotovo ne sudjeluje. Tijelo je kronično u laganom nedostatku kisika — ne akutnom, nego baš dovoljno da si stalno malo ispod punog kapaciteta. Otuda: magla u glavi ujutro, umor koji spavanje ne rješava, osjećaj praznine koji ne možeš objasniti.",
+    strengths: ["Miran prijem", "Ne eskaliraš situacije", "Stabilan ton u interakciji"],
+    challenges: ["Niska bazična energija", "Kognitivna magla", "Teško \"probuđen\""],
+    insight: "Nisi lijen/lijena ni nemotiviran/a. Tvoje stanice doslovno dobivaju manje kisika nego što bi trebale. Plitko disanje drži i tvoj živčani sustav u laganom stress-modu — dovoljnom da ne možeš biti potpuno prisutan/na.",
+    exercise: {
+      name: "Trbušno buđenje",
+      pattern: "4·0·6·0",
+      desc: "Udah koji počinje od trbuha, ne od prsa. Ruka na pupku kao feedback — trbuh mora ići prema van pri udahu.",
+      steps: [
+        "Lezi ili sjedni udobno. Jednu ruku na trbuh, drugu na prsa.",
+        "Udahni kroz nos 4 sekunde — trbuh ide prema van (ruka se podiže), prsa miruju.",
+        "Bez pauze — izdahni kroz nos ili usta 6 sekundi. Trbuh se vraća.",
+        "Ponovi 8 puta, svako jutro, 5 dana.",
+        "Cilj: trbuh je aktivniji od prsa svaki put."
+      ]
+    }
+  },
+  H: {
+    name: "Hiperventilator",
+    sub: "Dišeš previše",
+    emoji: "🌪️",
+    color: "#d702f1",
+    accentRgb: "215,2,241",
+    tagline: "Paradoks: previše kisika — i manje ga dopire do mozga.",
+    description: "Zvuči nevjerojatno, ali tijelo može imati previše kisika i premalo CO₂. A CO₂ je taj koji šalje kisik u stanice — bez njega, kisik ostaje u krvi i ne ulazi tamo gdje treba. Rezultat: tjeskoba, trnci, srce koje poludi, osjećaj da ne možeš doći do zraka čak i kad dišeš duboko. Tvoj živčani sustav je u konstantnoj pripravnosti.",
+    strengths: ["Visoka energija i brzina", "Brza reakcija", "Snažan emotivni kapacitet"],
+    challenges: ["Anksioznost", "Teško se smiriti", "Brzo se iscrpljuje"],
+    insight: "Tvoje tijelo ne 'pretjeruje' — ono je naučilo da je uvijek bolje biti spreman. Problem nije u tebi, nego u signalima koje prima. Produljeni izdah je tvoj najjači alat — on doslovno govori živčanom sustavu: nema prijetnje, možeš se opustiti.",
+    exercise: {
+      name: "Produljeni izdah (Smiraj)",
+      pattern: "4·0·8·0",
+      desc: "Izdah je duplo duži od udaha. To aktivira parasimpatikus i spušta razinu stresa. Radi to nosom, polako.",
+      steps: [
+        "Sjedni uspravno ili lezi. Zatvori oči.",
+        "Udahni kroz nos 4 sekunde — normalno, bez sile.",
+        "Izdahni kroz nos ili poluotvorena usta 8 sekundi — polako, bez sile, do kraja.",
+        "Ne forsirati! Ako 8 sek nije moguće, kreni s 6.",
+        "Ponovi 6 puta kad osjetiš da ti tjeskoba raste."
+      ]
+    }
+  },
+  Z: {
+    name: "Zadržavač",
+    sub: "Dah pod kontrolom",
+    emoji: "🗿",
+    color: "#04ffff",
+    accentRgb: "4,255,255",
+    tagline: "Tvoje tijelo drži dah kako drži napetost — čvrsto i kontrolirano.",
+    description: "Kad se koncentriraš, kad te netko naljuti, kad legneš navečer — dah se zaustavi. I s njim sve ostalo. Napetost u ramenima, stisnutost u prsima, osjećaj da stalno nosiš nešto teško — to je tvoje tijelo koje godinama čeka dozvolu da otpusti. Nisi slomljen/a. Naučen/a si da budeš spreman/a.",
+    strengths: ["Duboka izdržljivost", "Visoka tolerancija na stres", "Pouzdan/a u krizi"],
+    challenges: ["Kronična tjelesna napetost", "Teško otpuštanje", "Bol u vratu i ramenima"],
+    insight: "Zadržavanje daha nije slabost — to je iznimno pametan biološki odgovor na okružje koje je zahtijevalo budnost. Problem je kad taj modus postane default i tijelo ne zna izaći iz njega. Tvoja prva vježba nije disanje — nego dozvola da otpustiš.",
+    exercise: {
+      name: "Svjesno otpuštanje",
+      pattern: "4·2·8·4",
+      desc: "Produljeni izdah s kratkom retencijom na dnu. Uči tijelo da 'ispuštanje' nije opasno.",
+      steps: [
+        "3 puta dnevno, bez posebnog mjesta ni pozicije.",
+        "Provjeri: je li tvoj trbuh stisnut? Jesu li ramena prema gore? Otpusti.",
+        "Udahni 4 sekunde — nos, trbuh.",
+        "Zadrži 2 sekunde na vrhu.",
+        "Izdahni 8 sekundi — polako, kompletno, s laganim uzdahom na kraju.",
+        "Pauza 4 sekunde na dnu — primijeti da je sigurno biti 'prazno'."
+      ]
+    }
+  },
+  K: {
+    name: "Kaotični Disač",
+    sub: "Bez stalnog uzorka",
+    emoji: "🌊",
+    color: "#e488d1",
+    accentRgb: "228,136,209",
+    tagline: "Tvoje disanje prati tvoje emocije — bez filtera i bez sidra.",
+    description: "Tvoj živčani sustav je visoko reaktivan i nema 'default' stanje na koje se vraća. U dobrim danima sve je OK. U lošima — kaos. Dah ti je kao more — ponekad mirno, ponekad grmljavina, bez upozorenja. To nije nedostatak karaktera; to je živčani sustav koji nije naučio gdje je 'centar'.",
+    strengths: ["Visoka emocionalna inteligencija", "Adaptabilnost", "Osjetljivost na okolinu"],
+    challenges: ["Nepredvidivost stanja", "Teško pronaći ritam", "Iscrpljujuće oscilacije"],
+    insight: "Treba ti sidro, ne sanacija. Tvoj sustav nije slomljen — njemu nedostaje jedan stalni obrazac koji može koristiti kao referentnu točku. Box breathing nije samo tehnika — to je biološko sidro koje tvom sustavu govori: 'Ovo je centar. Ovdje se vraćamo.'",
+    exercise: {
+      name: "Box breathing — Sidro",
+      pattern: "4·4·4·4",
+      desc: "Isti ritam, uvijek. Jednom dnevno, uvijek u isto vrijeme. Mozak uči: postoji konstanta.",
+      steps: [
+        "Svaki dan u isto vrijeme (preporuča se jutro ili prije spavanja).",
+        "Sjedni. Postavi timer na 5 minuta.",
+        "Udahni 4 sekunde — zadrži 4 — izdahni 4 — pauza 4.",
+        "Ako se izgubi ritam — bez stresa, samo se vrati.",
+        "Cilj nije savršenstvo. Cilj je dolaziti na isto mjesto, svaki dan."
+      ]
+    }
+  }
+};
+
+// ════════════════════════════════════════════════════════════
+//  QUIZ STATE
+// ════════════════════════════════════════════════════════════
+let current = 0;
+let answers = new Array(QUESTIONS.length).fill(null);
+const scores = { P: 0, H: 0, Z: 0, K: 0 };
+
+const LETTERS = ['A', 'B', 'C', 'D'];
+
+function showScreen(id) {
+  document.querySelectorAll('.screen').forEach(s => s.classList.remove('active'));
+  const el = document.getElementById(id);
+  el.classList.add('active');
+  // Re-trigger animation
+  el.style.animation = 'none';
+  void el.offsetWidth;
+  el.style.animation = '';
+}
+
+function startQuiz() {
+  current = 0;
+  answers.fill(null);
+  Object.keys(scores).forEach(k => scores[k] = 0);
+  renderQuestion();
+  showScreen('screen-quiz');
+}
+
+function renderQuestion() {
+  const q = QUESTIONS[current];
+  const total = QUESTIONS.length;
+
+  // Progress
+  document.getElementById('prog-count').textContent = `${current + 1} / ${total}`;
+  document.getElementById('prog-fill').style.width = `${((current) / total) * 100}%`;
+
+  // Back button
+  const backBtn = document.getElementById('btn-back');
+  if (current === 0) backBtn.classList.add('hidden');
+  else backBtn.classList.remove('hidden');
+
+  // Next button
+  const nextBtn = document.getElementById('btn-next');
+  nextBtn.disabled = answers[current] === null;
+  nextBtn.textContent = current === total - 1 ? 'Vidi rezultate →' : 'Dalje →';
+
+  // Shuffle options deterministically per question (keep same order per visit)
+  const shuffled = q.options.map((o, i) => ({ ...o, origIdx: i }));
+
+  const area = document.getElementById('question-area');
+  area.innerHTML = `
+    <p class="question-num">Pitanje ${current + 1}</p>
+    <p class="question-text">${q.text}</p>
+    <div class="options" id="options-list">
+      ${shuffled.map((opt, i) => `
+        <div class="option ${answers[current] === opt.type ? 'selected' : ''}"
+             data-type="${opt.type}" onclick="selectOption(this, '${opt.type}')">
+          <span class="option-letter">${LETTERS[i]}</span>
+          <span class="option-text">${opt.text}</span>
+        </div>
+      `).join('')}
+    </div>
+  `;
+}
+
+function selectOption(el, type) {
+  document.querySelectorAll('.option').forEach(o => o.classList.remove('selected'));
+  el.classList.add('selected');
+  answers[current] = type;
+  document.getElementById('btn-next').disabled = false;
+}
+
+function nextQ() {
+  if (answers[current] === null) return;
+  if (current < QUESTIONS.length - 1) {
+    current++;
+    renderQuestion();
+    window.scrollTo({ top: 0, behavior: 'smooth' });
+  } else {
+    computeAndShowResult();
+  }
+}
+
+function prevQ() {
+  if (current > 0) {
+    current--;
+    renderQuestion();
+    window.scrollTo({ top: 0, behavior: 'smooth' });
+  }
+}
+
+function computeAndShowResult() {
+  // Tally scores
+  Object.keys(scores).forEach(k => scores[k] = 0);
+  answers.forEach(a => { if (a) scores[a]++; });
+
+  // Winner
+  const winner = Object.entries(scores).sort((a, b) => b[1] - a[1])[0][0];
+  window._lastQuizWinner = winner; // expose za Supabase tracking
+  const type = RESULT_TYPES[winner];
+
+  // Build result HTML
+  const total = QUESTIONS.length;
+  const pct = t => Math.round((scores[t] / total) * 100);
+
+  const resultEl = document.getElementById('screen-results');
+  resultEl.innerHTML = `
+    <div class="result-header">
+      <p class="result-label">Tvoj obrazac disanja</p>
+      <div class="result-orb">
+        <div class="result-orb-ring"></div>
+        <div class="result-orb-inner"></div>
+        <div class="result-orb-emoji">${type.emoji}</div>
+      </div>
+      <h2 class="result-type-name">${type.name}</h2>
+      <p class="result-type-sub">${type.sub}</p>
+    </div>
+
+    <div class="result-section" style="--section-accent: ${type.color}">
+      <p class="result-section-title">Što to znači</p>
+      <p class="result-section-body" style="font-style:italic; opacity:0.85; margin-bottom:1rem;">"${type.tagline}"</p>
+      <p class="result-section-body">${type.description}</p>
+    </div>
+
+    <div class="result-section" style="--section-accent: ${type.color}">
+      <p class="result-section-title">Tvoj profil</p>
+      <div class="result-tags">
+        ${type.strengths.map(s => `<span class="result-tag strength">+ ${s}</span>`).join('')}
+        ${type.challenges.map(c => `<span class="result-tag challenge">▲ ${c}</span>`).join('')}
+      </div>
+    </div>
+
+    <div class="result-section" style="--section-accent: ${type.color}">
+      <p class="result-section-title">Uvid</p>
+      <p class="result-section-body">${type.insight}</p>
+    </div>
+
+    <!-- Score breakdown -->
+    <div class="result-section" style="--section-accent: rgba(107,116,148,0.6)">
+      <p class="result-section-title">Raspodjela odgovora</p>
+      <div class="score-breakdown">
+        ${Object.entries(RESULT_TYPES).map(([key, t]) => `
+          <div class="score-bar-item">
+            <div class="score-bar-label">
+              <span>${t.name.split(' ')[0]} ${t.name.split(' ')[1] || ''}</span>
+              <span style="color:${t.color}">${pct(key)}%</span>
+            </div>
+            <div class="score-bar-track">
+              <div class="score-bar-fill" data-pct="${pct(key)}"
+                   style="background: ${t.color}; width:0%"></div>
+            </div>
+          </div>
+        `).join('')}
+      </div>
+    </div>
+
+    <!-- Exercise -->
+    <div class="exercise-box">
+      <p class="exercise-box-label">Tvoja prva vježba</p>
+      <h3 class="exercise-box-title">${type.exercise.name} <span style="color:var(--cyan); font-family:var(--font-brand); font-size:0.75rem; letter-spacing:0.15em;">${type.exercise.pattern}</span></h3>
+      <p class="exercise-box-desc">${type.exercise.desc}</p>
+      <ol class="exercise-steps">
+        ${type.exercise.steps.map((s, i) => `<li data-n="${i+1}.">${s}</li>`).join('')}
+      </ol>
+    </div>
+
+    <!-- CTA -->
+    <div class="result-cta">
+      <h3 class="result-cta-title">Ovo je tek početak.</h3>
+      <p class="result-cta-desc">
+        Autoškola za živčani sustav je 4-tjedni program koji ide dublje —
+        razumijevanje svog sustava, konkretni protokoli, i trajna promjena.
+        Idući termin u Osijeku.
+      </p>
+
+      <!-- Email capture — spremi rezultate -->
+      <div id="quiz-save-box" style="
+        margin: 28px 0;
+        padding: 24px 28px;
+        border: 1px solid rgba(4,255,255,0.2);
+        background: rgba(4,255,255,0.04);
+        border-radius: 10px;
+      ">
+        <p style="font-family:var(--font-brand); font-size:0.65rem; letter-spacing:0.2em; text-transform:uppercase; color:rgba(4,255,255,0.7); margin-bottom:8px;">Spremi rezultate</p>
+        <p style="font-size:0.84rem; color:rgba(255,255,255,0.55); margin-bottom:16px; line-height:1.5;">Dobit ćeš kratki uvid na email — i pristup besplatnom ANS Priručniku koji ide uz tvoj tip disanja.</p>
+        <form id="quiz-email-form" style="display:flex; gap:10px; flex-wrap:wrap;">
+          <input type="email" id="quiz-email-input"
+            placeholder="tvoj@email.com"
+            autocomplete="email"
+            required
+            style="
+              flex:1; min-width:200px;
+              background:rgba(255,255,255,0.05);
+              border:1px solid rgba(255,255,255,0.12);
+              border-radius:6px;
+              padding:10px 14px;
+              color:rgba(255,255,255,0.9);
+              font-size:0.84rem;
+              font-family:var(--font-body);
+              outline:none;
+            "
+          >
+          <button type="submit" id="quiz-email-btn" style="
+            background:transparent;
+            color:rgba(4,255,255,0.9);
+            border:1px solid rgba(4,255,255,0.4);
+            border-radius:6px;
+            padding:10px 20px;
+            font-family:var(--font-brand);
+            font-size:0.78rem;
+            letter-spacing:0.06em;
+            cursor:pointer;
+            white-space:nowrap;
+            transition:all 0.2s;
+          ">Spremi →</button>
+        </form>
+        <div id="quiz-save-success" style="display:none; font-size:0.82rem; color:rgba(4,255,255,0.7); padding-top:12px; line-height:1.5;"></div>
+      </div>
+
+      <div class="result-actions">
+        <a href="index.html#kontakt" class="btn-primary" style="display:inline-block; text-decoration:none; text-align:center;">
+          Zanima me Autoškola →
+        </a>
+        <button class="btn-share" onclick="shareResult('${winner}', '${type.name}')">
+          Podijeli rezultat
+        </button>
+        <button class="btn-retry" onclick="startQuiz()">Ponovi quiz</button>
+      </div>
+    </div>
+
+    <div class="quiz-footer">
+      <div class="quiz-footer-brand">DUH<span>O</span>DAH</div>
+      <div class="quiz-footer-sub">Autoškola za živčani sustav · Osijek</div>
+    </div>
+  `;
+
+  showScreen('screen-results');
+  window.scrollTo({ top: 0, behavior: 'smooth' });
+
+  // Animate score bars
+  setTimeout(() => {
+    document.querySelectorAll('.score-bar-fill').forEach(bar => {
+      bar.style.width = bar.dataset.pct + '%';
+    });
+  }, 300);
+}
+
+function shareResult(typeKey, typeName) {
+  const url = window.location.href.split('?')[0] + `?tip=${typeKey}`;
+  if (navigator.clipboard) {
+    navigator.clipboard.writeText(url).then(() => showToast());
+  } else {
+    const ta = document.createElement('textarea');
+    ta.value = url;
+    document.body.appendChild(ta);
+    ta.select();
+    document.execCommand('copy');
+    document.body.removeChild(ta);
+    showToast();
+  }
+}
+
+function showToast() {
+  const t = document.getElementById('share-toast');
+  t.classList.add('show');
+  setTimeout(() => t.classList.remove('show'), 2500);
+}
+
+// Handle shared result URL
+const urlParams = new URLSearchParams(window.location.search);
+const sharedType = urlParams.get('tip');
+if (sharedType && RESULT_TYPES[sharedType]) {
+  // Show the result directly
+  window.addEventListener('load', () => {
+    // Fill dummy answers
+    answers.fill(sharedType);
+    computeAndShowResult();
+  });
+}
+</script>
+
+<!-- Supabase: quiz result tracking + email capture -->
+<script type="module">
+  import { supabase } from './js/supabase-config.js';
+  import { signInWithEmail, initAuth, getCurrentUser } from './js/auth.js';
+  import { saveQuizResult } from './js/db.js';
+
+  let pendingKvizTip = null;
+
+  // Ako korisnik dođe s magic linka → spremi kviz tip
+  initAuth(async (event, session, user) => {
+    if (event === 'SIGNED_IN' && user && pendingKvizTip) {
+      await supabase.from('profiles').upsert({
+        id: user.id,
+        email: user.email,
+        izvor: 'kviz',
+        kviz_tip: pendingKvizTip,
+        updated_at: new Date().toISOString()
+      }, { onConflict: 'id', ignoreDuplicates: false });
+      await saveQuizResult(user.id, pendingKvizTip);
+    }
+  });
+
+  // Email submit na result screenu
+  document.addEventListener('submit', async (e) => {
+    if (e.target.id !== 'quiz-email-form') return;
+    e.preventDefault();
+
+    const email = document.getElementById('quiz-email-input').value.trim();
+    const btn = document.getElementById('quiz-email-btn');
+    const successDiv = document.getElementById('quiz-save-success');
+    const form = document.getElementById('quiz-email-form');
+
+    if (!email) return;
+    btn.disabled = true;
+    btn.textContent = 'Šaljem...';
+
+    // Dohvati trenutni winner (kviz tip) iz DOM-a ili globalnog stanja
+    const kvizTip = window._lastQuizWinner || null;
+    pendingKvizTip = kvizTip;
+
+    try {
+      const user = await getCurrentUser();
+
+      if (user) {
+        // Već prijavljen — spremi direktno
+        await supabase.from('profiles').upsert({
+          id: user.id,
+          email: user.email,
+          izvor: user.izvor || 'kviz',
+          kviz_tip: kvizTip,
+          updated_at: new Date().toISOString()
+        }, { onConflict: 'id', ignoreDuplicates: false });
+        await saveQuizResult(user.id, kvizTip);
+
+        form.style.display = 'none';
+        successDiv.style.display = 'block';
+        successDiv.textContent = 'Rezultati su spremljeni na tvom profilu!';
+      } else {
+        // Pošalji magic link
+        await signInWithEmail(email, {
+          redirectTo: window.location.href + '?tip=' + (kvizTip || ''),
+          metadata: { izvor: 'kviz', kviz_tip: kvizTip }
+        });
+        // Track i bez prijave
+        await saveQuizResult(null, kvizTip);
+
+        form.style.display = 'none';
+        successDiv.style.display = 'block';
+        successDiv.innerHTML = `Poslan magični link na <strong>${email}</strong>.<br>Klikni ga da spremimo tvoje rezultate i otvori pristup ANS Priručniku.`;
+      }
+    } catch (err) {
+      console.warn('[Quiz save]', err);
+      btn.disabled = false;
+      btn.textContent = 'Spremi →';
+    }
+  });
+
+  // Expose winner setter za quiz JS
+  const origCompute = window.computeAndShowResult;
+  if (origCompute) {
+    window.computeAndShowResult = function() {
+      origCompute.apply(this, arguments);
+      // Extract winner from answers after render
+      setTimeout(() => {
+        if (window._lastQuizWinner) return;
+        // Fallback: čitaj iz URL-a
+        const tip = new URLSearchParams(window.location.search).get('tip');
+        if (tip) window._lastQuizWinner = tip;
+      }, 100);
+    };
+  }
+</script>
+</body>
+</html>
