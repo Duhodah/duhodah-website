@@ -4295,6 +4295,17 @@
        SUPABASE — Calendar widget + kontakt forma
   ═══════════════════════════════════ -->
   <link rel="stylesheet" href="css/calendar.css">
+
+  <!-- Supabase auth redirect handler — mora biti inline, bez modula -->
+  <script>
+    (function() {
+      var h = window.location.hash;
+      if (h && h.includes('type=recovery')) {
+        window.location.replace('/reset-lozinka.html' + h);
+      }
+    })();
+  </script>
+
   <script type="module">
     import { renderEventsWidget } from './js/calendar.js';
     import { initAuth, signOut } from './js/auth.js';
