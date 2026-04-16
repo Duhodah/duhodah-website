@@ -116,23 +116,34 @@ export async function renderEventsWidget(containerId) {
       const btn = await buildEventButton(ev, authState, avail);
       const tipCfg = TIP_CONFIG[ev.tip] || { label: ev.tip, color: 'cyan' };
       const uskoro = isUskoro(ev.datum);
+      const d = new Date(ev.datum);
+      const dayNum = d.getDate();
+      const monthAbbr = MJESECI[d.getMonth()].slice(0, 3).toUpperCase();
 
       return `
-        <article class="cal-widget-card ${uskoro ? 'cal-widget-card--uskoro' : ''}">
-          <div class="cal-widget-card__header">
-            <span class="cal-badge cal-badge--${tipCfg.color}">${tipCfg.label}</span>
-            ${uskoro ? '<span class="cal-badge cal-badge--uskoro">Uskoro</span>' : ''}
-          </div>
-          <div class="cal-widget-card__datum">
-            <span class="cal-datum-day">${formatDatum(ev.datum)}</span>
-            <span class="cal-datum-time">${formatVrijeme(ev.datum)} h</span>
-          </div>
-          <h3 class="cal-widget-card__naziv">${ev.naziv}</h3>
-          <p class="cal-widget-card__lokacija">📍 ${ev.lokacija}</p>
-          ${ev.opis_kratki ? `<p class="cal-widget-card__opis">${ev.opis_kratki}</p>` : ''}
-          <div class="cal-widget-card__footer">
-            <span class="cal-mjesta ${avail.slobodna <= 3 ? 'cal-mjesta--kritican' : ''}">${avail.slobodna} mjesta</span>
-            ${btn}
+        <article class="cal-widget-card cal-widget-card--${tipCfg.color}${uskoro ? ' cal-widget-card--uskoro' : ''}">
+          <div class="cal-widget-card__accent"></div>
+          <div class="cal-widget-card__inner">
+            <div class="cal-widget-card__top">
+              <div class="cal-widget-card__date-block">
+                <span class="cal-widget-card__day-num">${dayNum}</span>
+                <span class="cal-widget-card__month-abbr">${monthAbbr}</span>
+              </div>
+              <div class="cal-widget-card__badges">
+                <span class="cal-badge cal-badge--${tipCfg.color}">${tipCfg.label}</span>
+                ${uskoro ? '<span class="cal-badge cal-badge--uskoro">Uskoro</span>' : ''}
+              </div>
+            </div>
+            <h3 class="cal-widget-card__naziv">${ev.naziv}</h3>
+            <div class="cal-widget-card__meta-row">
+              <span>🕐 ${formatVrijeme(ev.datum)} · ${ev.trajanje_min} min</span>
+              <span>📍 ${ev.lokacija.split(',')[0]}</span>
+            </div>
+            ${ev.opis_kratki ? `<p class="cal-widget-card__opis">${ev.opis_kratki}</p>` : ''}
+            <div class="cal-widget-card__footer">
+              <span class="cal-mjesta ${avail.slobodna <= 3 ? 'cal-mjesta--kritican' : ''}">${avail.slobodna} mjesta slobodno</span>
+              ${btn}
+            </div>
           </div>
         </article>`;
     }));
