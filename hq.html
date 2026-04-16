@@ -391,9 +391,10 @@
           <div class="controls">
             <div class="filter-tabs" id="ev-filters">
               <button class="ftab active" data-tip="sve">Svi</button>
+              <button class="ftab" data-tip="nadolazeci">Nadolazeći</button>
+              <button class="ftab" data-tip="prosli">Arhiva</button>
               <button class="ftab" data-tip="breathwork_journey">Breathwork</button>
               <button class="ftab" data-tip="autoskola">Autoškola</button>
-              <button class="ftab" data-tip="individualno">Individualno</button>
             </div>
             <button class="btn-primary" id="btn-new-event">+ Novi događaj</button>
           </div>
@@ -749,9 +750,12 @@ function renderEvStats() {
 
 function renderEvents() {
   const container = document.getElementById('events-list');
-  let list = evFilter === 'sve' ? allEvents
-    : evFilter === 'autoskola' ? allEvents.filter(e => e.tip?.startsWith('autoskola'))
-    : allEvents.filter(e => e.tip === evFilter);
+  const now = new Date();
+  let list = allEvents;
+  if      (evFilter === 'nadolazeci')       list = allEvents.filter(e => new Date(e.datum) >= now);
+  else if (evFilter === 'prosli')           list = allEvents.filter(e => new Date(e.datum) <  now);
+  else if (evFilter === 'autoskola')        list = allEvents.filter(e => e.tip?.startsWith('autoskola'));
+  else if (evFilter !== 'sve')              list = allEvents.filter(e => e.tip === evFilter);
   if (!list.length) { container.innerHTML = '<div class="empty-state">Nema događaja.</div>'; return; }
   container.innerHTML = list.map(e => {
     const d   = new Date(e.datum);
@@ -770,6 +774,7 @@ function renderEvents() {
       </div>
       <div class="card-actions">
         <button class="btn-ghost" onclick="openEditEv('${e.id}')">Uredi</button>
+        <button class="btn-ghost" onclick="copyEv('${e.id}')" style="color:rgba(255,213,79,0.7);border-color:rgba(255,213,79,0.2)">Kopiraj</button>
         <button class="btn-ghost btn-danger" onclick="deleteEv('${e.id}','${e.naziv.replace(/'/g,"\\'")}')">Izbriši</button>
         <label class="toggle-wrap">
           <span>${e.aktivan?'Vidljivo':'Skriveno'}</span>
@@ -880,6 +885,33 @@ document.getElementById('ev-form').addEventListener('submit', async e => {
   }
   btn.disabled = false; btn.textContent = 'Spremi i objavi →';
 });
+
+window.copyEv = id => {
+  const e = allEvents.find(x => x.id === id);
+  if (!e) return;
+  editEvId = null; // novi zapis
+  document.getElementById('ev-panel-title').textContent = 'Kopija događaja';
+  document.getElementById('ev-form').reset();
+  document.getElementById('ef-id').value          = '';
+  document.getElementById('ef-naziv').value       = e.naziv + ' — kopija';
+  document.getElementById('ef-datum').value       = ''; // datum namjerno prazan — postavi novi
+  document.getElementById('ef-trajanje').value    = e.trajanje_min || 120;
+  document.getElementById('ef-kapacitet').value   = e.kapacitet || 15;
+  document.getElementById('ef-lokacija').value    = e.lokacija || '';
+  document.getElementById('ef-opis-kratki').value = e.opis_kratki || '';
+  document.getElementById('ef-opis').value        = e.opis || '';
+  document.getElementById('ef-cijena').value      = e.cijena_eur || '';
+  document.getElementById('ef-cijena-p').value    = e.cijena_pretplatnik ?? 0;
+  document.getElementById('ef-stripe').value      = e.stripe_link || '';
+  document.getElementById('ef-slug').value        = '';
+  document.getElementById('ef-aktivan').checked   = false; // kopija skrivena dok ne postaviš datum
+  document.getElementById('ef-plan-15').checked   = (e.pokriva_plan || []).includes('zajednica_15');
+  document.getElementById('ef-plan-god').checked  = (e.pokriva_plan || []).includes('zajednica_120_god');
+  document.getElementById('ef-msg').textContent   = '';
+  buildTagPicker('tp-tip',    'tip',    e.tagovi || []);
+  buildTagPicker('tp-format', 'format', e.tagovi || []);
+  openPanel('ev-panel');
+};
 
 window.deleteEv = async (id, naziv) => {
   if (!confirm(`Izbrisati "${naziv}"?`)) return;
