@@ -27,8 +27,8 @@ const TIP_CONFIG = {
 
 // Tag definicije — sinkronizirano s hq.html
 const TAG_DEFS = [
-  { key:'dp_mir',    label:'Disajno putovanje MIR',       color:'#04e8ff', group:'tip' },
-  { key:'dp_tok',    label:'Disajno putovanje TOK',       color:'#8b9eff', group:'tip' },
+  { key:'dp_mir',    label:'Disajno putovanje MIR',       color:'#8b9eff', group:'tip' },
+  { key:'dp_tok',    label:'Disajno putovanje TOK',       color:'#04e8ff', group:'tip' },
   { key:'as_hod',    label:'Tečaj autoškola HOD',         color:'#d702f1', group:'tip' },
   { key:'as_uhoda',  label:'Tečaj autoškola UHODA',       color:'#ff7043', group:'tip' },
   { key:'dp_free',   label:'Besplatno disajno putovanje', color:'#00e676', group:'tip' },
