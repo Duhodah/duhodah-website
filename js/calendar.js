@@ -64,25 +64,48 @@ function isUskoro(isoStr) {
 
 async function buildEventButton(event, authState, availability) {
   const { user, pretplata } = authState;
+  const isBesplatno = event.tagovi?.includes('dp_free');
   const pretplataPokriva = pretplata && event.pokriva_plan?.includes(pretplata.plan);
 
   if (availability.puno) {
     return `<button class="cal-btn cal-btn--disabled" disabled>Popunjeno</button>`;
   }
 
+  // Besplatni događaji — svi se mogu prijaviti, bez plaćanja
+  if (isBesplatno) {
+    if (user) {
+      const regStatus = await isUserRegistered(user.id, event.id);
+      if (regStatus?.status === 'potvrdjena') {
+        return `<div class="cal-btn-group">
+          <span class="cal-registered-badge">Prijavljen/a ✓</span>
+          <button class="cal-btn cal-btn--cancel" onclick="cancelReg('${event.id}')">Otkaži</button>
+        </div>`;
+      }
+      return `<button class="cal-btn cal-btn--free" data-reg="${event.id}" onclick="registerFree('${event.id}','besplatno')">
+        Prijavi se →
+      </button>`;
+    } else {
+      return `<div class="cal-btn-group cal-btn-group--stacked">
+        <button class="cal-btn cal-btn--free" onclick="showLoginModal('${event.id}')">
+          Prijavi se →
+        </button>
+        <span class="cal-member-hint">Besplatno — unesite email za prijavu</span>
+      </div>`;
+    }
+  }
+
   if (user) {
     const regStatus = await isUserRegistered(user.id, event.id);
 
     if (regStatus && regStatus.status === 'potvrdjena') {
-      return `
-        <div class="cal-btn-group">
-          <span class="cal-registered-badge">Prijavljen/a</span>
-          <button class="cal-btn cal-btn--cancel" onclick="cancelReg('${event.id}')">Otkaži</button>
-        </div>`;
+      return `<div class="cal-btn-group">
+        <span class="cal-registered-badge">Prijavljen/a</span>
+        <button class="cal-btn cal-btn--cancel" onclick="cancelReg('${event.id}')">Otkaži</button>
+      </div>`;
     }
 
     if (pretplataPokriva) {
-      return `<button class="cal-btn cal-btn--free" onclick="registerFree('${event.id}')">
+      return `<button class="cal-btn cal-btn--free" data-reg="${event.id}" onclick="registerFree('${event.id}')">
         Prijavi se besplatno →
       </button>`;
     } else {
@@ -92,15 +115,13 @@ async function buildEventButton(event, authState, availability) {
       </a>`;
     }
   } else {
-    // Nije prijavljen
     const stripeLink = event.stripe_link || '#';
-    return `
-      <div class="cal-btn-group cal-btn-group--stacked">
-        <a class="cal-btn cal-btn--pay" href="${stripeLink}" target="_blank" rel="noopener">
-          Kupi kartu — ${event.cijena_eur ? event.cijena_eur + ' €' : 'upitaj'} →
-        </a>
-        <span class="cal-member-hint">Pretplatnik? <a href="#" onclick="showLoginModal('${event.id}');return false;">Prijavi se za besplatnu opciju</a></span>
-      </div>`;
+    return `<div class="cal-btn-group cal-btn-group--stacked">
+      <a class="cal-btn cal-btn--pay" href="${stripeLink}" target="_blank" rel="noopener">
+        Kupi kartu — ${event.cijena_eur ? event.cijena_eur + ' €' : 'upitaj'} →
+      </a>
+      <span class="cal-member-hint">Pretplatnik? <a href="#" onclick="showLoginModal('${event.id}');return false;">Prijavi se za besplatnu opciju</a></span>
+    </div>`;
   }
 }
 
@@ -434,15 +455,15 @@ function bindMonthNavigation() {
 // AKCIJE (global window functions)
 // ============================================================
 
-async function registerFree(eventId) {
+async function registerFree(eventId, tipPlacanja = 'pretplatnik_besplatno') {
   const user = authState.user;
   if (!user) { showLoginModal(eventId); return; }
 
   try {
-    const btn = document.querySelector(`[onclick="registerFree('${eventId}')"]`);
+    const btn = document.querySelector(`[data-reg="${eventId}"]`);
     if (btn) { btn.disabled = true; btn.textContent = 'Registriram...'; }
 
-    await registerForEvent(user.id, eventId, 'pretplatnik_besplatno');
+    await registerForEvent(user.id, eventId, tipPlacanja);
 
     // Refresh panel
     await openEventPanel(eventId);
