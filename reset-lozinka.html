@@ -1,0 +1,111 @@
+<!DOCTYPE html>
+<html lang="hr">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Postavi lozinku — Duhodah</title>
+  <link href="https://fonts.googleapis.com/css2?family=Jura:wght@400;600&family=Inter:wght@300;400;500&family=Montserrat:wght@500;700&display=swap" rel="stylesheet">
+  <style>
+    *, *::before, *::after { margin:0; padding:0; box-sizing:border-box; }
+    body {
+      background:#08081a; color:rgba(255,255,255,0.88);
+      font-family:'Inter',sans-serif; min-height:100vh;
+      display:flex; align-items:center; justify-content:center; padding:2rem;
+    }
+    .box {
+      background:rgba(255,255,255,0.025); border:1px solid rgba(4,255,255,0.15);
+      border-radius:14px; padding:3rem 2.5rem; width:100%; max-width:400px; text-align:center;
+    }
+    .logo { font-family:'Jura',sans-serif; font-size:1.4rem; letter-spacing:0.3em; color:rgba(255,255,255,0.9); margin-bottom:0.3rem; }
+    .sub  { font-family:'Montserrat',sans-serif; font-size:0.58rem; letter-spacing:0.25em; text-transform:uppercase; color:rgba(4,255,255,0.45); margin-bottom:2.5rem; }
+    label { display:block; font-size:0.7rem; letter-spacing:0.08em; text-transform:uppercase; color:rgba(255,255,255,0.35); margin-bottom:0.5rem; text-align:left; }
+    input {
+      width:100%; background:rgba(255,255,255,0.04); border:1px solid rgba(255,255,255,0.12);
+      border-radius:8px; padding:0.8rem 1rem; color:rgba(255,255,255,0.88);
+      font-family:'Inter',sans-serif; font-size:0.9rem; outline:none; margin-bottom:1rem; transition:border-color 0.2s;
+    }
+    input:focus { border-color:rgba(4,255,255,0.4); }
+    button {
+      width:100%; padding:0.9rem; background:#04ffff; color:#08081a;
+      font-family:'Montserrat',sans-serif; font-size:0.75rem; font-weight:700;
+      letter-spacing:0.15em; text-transform:uppercase; border:none; border-radius:8px;
+      cursor:pointer; transition:opacity 0.2s; margin-top:0.4rem;
+    }
+    button:hover { opacity:0.85; }
+    button:disabled { opacity:0.35; cursor:not-allowed; }
+    .msg { margin-top:1rem; font-size:0.82rem; min-height:1.2rem; }
+    .msg.ok  { color:rgba(4,255,255,0.8); }
+    .msg.err { color:#d702f1; }
+    .hq-link { display:none; margin-top:1.5rem; }
+    .hq-link a {
+      font-family:'Montserrat',sans-serif; font-size:0.72rem; letter-spacing:0.1em;
+      text-transform:uppercase; color:rgba(4,255,255,0.7); text-decoration:none;
+    }
+    .hq-link a:hover { color:#04ffff; }
+  </style>
+</head>
+<body>
+  <div class="box">
+    <div class="logo">DUHODAH</div>
+    <div class="sub">Postavljanje lozinke</div>
+
+    <div id="form-area">
+      <label>Nova lozinka</label>
+      <input type="password" id="p1" placeholder="Minimum 8 znakova" autocomplete="new-password">
+      <label>Ponovi lozinku</label>
+      <input type="password" id="p2" placeholder="Ponovi lozinku" autocomplete="new-password">
+      <button id="btn">Postavi lozinku →</button>
+      <div class="msg" id="msg"></div>
+    </div>
+
+    <div id="hq-link" class="hq-link">
+      <a href="/hq.html">→ Idi na Duhodah HQ</a>
+    </div>
+  </div>
+
+  <script type="module">
+    import { createClient } from 'https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2/+esm';
+    import { SUPABASE_URL, SUPABASE_ANON_KEY } from './js/supabase-config.js';
+
+    const sb = createClient(SUPABASE_URL, SUPABASE_ANON_KEY);
+
+    // Supabase šalje token u URL hash — potrebno pozvati getSession da ga pokupi
+    const { data: { session }, error: sessionErr } = await sb.auth.getSession();
+
+    if (!session) {
+      setMsg('Link je istekao ili je već iskorišten. Zatraži novi recovery email.', true);
+      document.getElementById('btn').disabled = true;
+    }
+
+    document.getElementById('btn').addEventListener('click', async () => {
+      const p1 = document.getElementById('p1').value;
+      const p2 = document.getElementById('p2').value;
+
+      if (p1.length < 8) { setMsg('Lozinka mora imati najmanje 8 znakova.', true); return; }
+      if (p1 !== p2)     { setMsg('Lozinke se ne podudaraju.', true); return; }
+
+      document.getElementById('btn').disabled = true;
+      document.getElementById('btn').textContent = 'Postavljam...';
+
+      const { error } = await sb.auth.updateUser({ password: p1 });
+
+      if (error) {
+        setMsg('Greška: ' + error.message, true);
+        document.getElementById('btn').disabled = false;
+        document.getElementById('btn').textContent = 'Postavi lozinku →';
+      } else {
+        setMsg('✓ Lozinka uspješno postavljena!');
+        document.getElementById('form-area').style.opacity = '0.4';
+        document.getElementById('form-area').style.pointerEvents = 'none';
+        document.getElementById('hq-link').style.display = 'block';
+      }
+    });
+
+    function setMsg(msg, isErr = false) {
+      const el = document.getElementById('msg');
+      el.textContent = msg;
+      el.className = 'msg ' + (isErr ? 'err' : 'ok');
+    }
+  </script>
+</body>
+</html>

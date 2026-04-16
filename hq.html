@@ -1,0 +1,988 @@
+<!DOCTYPE html>
+<html lang="hr">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Duhodah HQ</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link href="https://fonts.googleapis.com/css2?family=Jura:wght@400;600;700&family=Inter:wght@300;400;500&family=Montserrat:wght@400;500;600;700&display=swap" rel="stylesheet">
+  <style>
+    :root {
+      --black:     #08081a;
+      --dark:      #0d0d22;
+      --dark2:     #12122e;
+      --border:    rgba(255,255,255,0.07);
+      --cyan:      #04ffff;
+      --magenta:   #d702f1;
+      --periwinkle:#9aabd8;
+      --steel:     #aad0e4;
+      --fb:        'Montserrat', sans-serif;
+      --fh:        'Jura', sans-serif;
+      --fi:        'Inter', sans-serif;
+      --sidebar-w: 220px;
+    }
+    *, *::before, *::after { margin:0; padding:0; box-sizing:border-box; }
+    html, body { height:100%; font-size:16px; }
+    body { background:var(--black); color:rgba(255,255,255,0.88); font-family:var(--fi); overflow:hidden; }
+
+    /* ════════════════════════════════════
+       LOGIN
+    ════════════════════════════════════ */
+    #login-screen {
+      display:flex; align-items:center; justify-content:center;
+      height:100vh; padding:2rem;
+    }
+    .login-box {
+      background:rgba(255,255,255,0.025); border:1px solid rgba(4,255,255,0.15);
+      border-radius:14px; padding:3rem 2.5rem; width:100%; max-width:420px;
+    }
+    .login-logo { font-family:var(--fh); font-size:1.5rem; letter-spacing:0.3em; color:rgba(255,255,255,0.9); margin-bottom:0.3rem; text-align:center; }
+    .login-tag  { font-family:var(--fb); font-size:0.58rem; letter-spacing:0.3em; text-transform:uppercase; color:rgba(4,255,255,0.5); text-align:center; margin-bottom:2.5rem; }
+    .f-label    { display:block; font-size:0.7rem; letter-spacing:0.08em; text-transform:uppercase; color:rgba(255,255,255,0.35); margin-bottom:0.5rem; }
+    .f-input {
+      width:100%; background:rgba(255,255,255,0.04); border:1px solid rgba(255,255,255,0.1);
+      border-radius:8px; padding:0.8rem 1rem; color:rgba(255,255,255,0.88);
+      font-family:var(--fi); font-size:0.9rem; outline:none; margin-bottom:1rem; transition:border-color 0.2s;
+    }
+    .f-input:focus { border-color:rgba(4,255,255,0.4); }
+    .login-btn {
+      width:100%; padding:0.9rem; background:var(--cyan); color:#08081a;
+      font-family:var(--fb); font-size:0.75rem; font-weight:700;
+      letter-spacing:0.15em; text-transform:uppercase;
+      border:none; border-radius:8px; cursor:pointer; transition:opacity 0.2s; margin-top:0.4rem;
+    }
+    .login-btn:hover { opacity:0.85; }
+    .login-hint { margin-top:1rem; font-size:0.75rem; color:rgba(255,255,255,0.25); text-align:center; line-height:1.6; }
+    .login-err  { margin-top:0.8rem; font-size:0.8rem; color:var(--magenta); text-align:center; min-height:1.2rem; }
+
+    /* ════════════════════════════════════
+       APP SHELL
+    ════════════════════════════════════ */
+    #app { display:none; height:100vh; overflow:hidden; }
+    .app-layout { display:flex; height:100vh; }
+
+    /* ── SIDEBAR ── */
+    .sidebar {
+      width:var(--sidebar-w); flex-shrink:0;
+      background:var(--dark); border-right:1px solid var(--border);
+      display:flex; flex-direction:column; height:100vh; overflow:hidden;
+    }
+    .sb-logo {
+      padding:1.6rem 1.4rem 1.4rem;
+      border-bottom:1px solid var(--border);
+    }
+    .sb-logo-text { font-family:var(--fh); font-size:1rem; letter-spacing:0.25em; color:rgba(255,255,255,0.9); }
+    .sb-logo-sub  { font-family:var(--fb); font-size:0.55rem; letter-spacing:0.2em; text-transform:uppercase; color:rgba(4,255,255,0.45); margin-top:0.2rem; }
+
+    .sb-nav { flex:1; overflow-y:auto; padding:0.8rem 0; }
+    .sb-section-label {
+      font-family:var(--fb); font-size:0.55rem; letter-spacing:0.2em; text-transform:uppercase;
+      color:rgba(255,255,255,0.2); padding:1rem 1.4rem 0.4rem;
+    }
+    .sb-item {
+      display:flex; align-items:center; gap:0.75rem;
+      padding:0.65rem 1.4rem; cursor:pointer;
+      font-family:var(--fb); font-size:0.72rem; letter-spacing:0.04em;
+      color:rgba(255,255,255,0.4); transition:all 0.2s; border-left:2px solid transparent;
+      text-decoration:none;
+    }
+    .sb-item:hover { color:rgba(255,255,255,0.7); background:rgba(255,255,255,0.03); }
+    .sb-item.active { color:var(--cyan); border-left-color:var(--cyan); background:rgba(4,255,255,0.05); }
+    .sb-item .sb-icon { font-size:0.95rem; width:18px; text-align:center; flex-shrink:0; }
+
+    .sb-bottom {
+      padding:1.2rem 1.4rem; border-top:1px solid var(--border);
+    }
+    .sb-user  { font-size:0.72rem; color:rgba(255,255,255,0.3); margin-bottom:0.7rem; white-space:nowrap; overflow:hidden; text-overflow:ellipsis; }
+    .sb-logout {
+      background:none; border:1px solid rgba(255,255,255,0.1);
+      color:rgba(255,255,255,0.35); padding:0.4rem 0.9rem; border-radius:5px;
+      font-family:var(--fb); font-size:0.65rem; letter-spacing:0.08em; text-transform:uppercase;
+      cursor:pointer; width:100%; transition:all 0.2s;
+    }
+    .sb-logout:hover { border-color:rgba(215,2,241,0.4); color:var(--magenta); }
+
+    /* ── MAIN ── */
+    .main { flex:1; display:flex; flex-direction:column; overflow:hidden; }
+    .main-header {
+      padding:1.2rem 2rem; border-bottom:1px solid var(--border);
+      display:flex; align-items:center; justify-content:space-between; flex-shrink:0;
+    }
+    .main-title { font-family:var(--fh); font-size:1.1rem; color:rgba(255,255,255,0.9); letter-spacing:0.08em; }
+    .main-subtitle { font-size:0.75rem; color:rgba(255,255,255,0.3); margin-top:0.15rem; }
+    .main-body { flex:1; overflow-y:auto; padding:1.8rem 2rem; }
+
+    /* ════════════════════════════════════
+       SHARED COMPONENTS
+    ════════════════════════════════════ */
+    .section { display:none; }
+    .section.active { display:block; }
+
+    .stats-grid { display:grid; grid-template-columns:repeat(auto-fit,minmax(150px,1fr)); gap:1rem; margin-bottom:1.8rem; }
+    .stat-card  { background:rgba(255,255,255,0.02); border:1px solid var(--border); border-radius:10px; padding:1.1rem 1.3rem; }
+    .stat-label { font-family:var(--fb); font-size:0.58rem; letter-spacing:0.18em; text-transform:uppercase; color:rgba(255,255,255,0.3); margin-bottom:0.4rem; }
+    .stat-val   { font-family:var(--fh); font-size:1.7rem; color:rgba(255,255,255,0.9); }
+    .stat-val.c { color:var(--cyan); }
+    .stat-val.m { color:var(--magenta); }
+    .stat-val.p { color:var(--periwinkle); }
+
+    .controls { display:flex; align-items:center; justify-content:space-between; flex-wrap:wrap; gap:0.8rem; margin-bottom:1.4rem; }
+    .filter-tabs { display:flex; gap:0.4rem; flex-wrap:wrap; }
+    .ftab {
+      background:transparent; border:1px solid rgba(255,255,255,0.1);
+      color:rgba(255,255,255,0.35); padding:0.35rem 0.9rem; border-radius:20px;
+      font-family:var(--fb); font-size:0.65rem; letter-spacing:0.05em; cursor:pointer; transition:all 0.2s;
+    }
+    .ftab.active, .ftab:hover { border-color:rgba(4,255,255,0.35); color:var(--cyan); background:rgba(4,255,255,0.05); }
+
+    .btn-primary {
+      background:var(--cyan); color:#08081a; font-family:var(--fb); font-size:0.7rem;
+      font-weight:700; letter-spacing:0.12em; text-transform:uppercase;
+      border:none; padding:0.65rem 1.4rem; border-radius:7px; cursor:pointer; transition:opacity 0.2s;
+    }
+    .btn-primary:hover { opacity:0.85; }
+    .btn-ghost {
+      background:rgba(255,255,255,0.04); border:1px solid rgba(255,255,255,0.12);
+      color:rgba(255,255,255,0.5); font-family:var(--fb); font-size:0.65rem;
+      letter-spacing:0.06em; padding:0.35rem 0.8rem; border-radius:5px; cursor:pointer; transition:all 0.2s;
+    }
+    .btn-ghost:hover { background:rgba(255,255,255,0.08); color:rgba(255,255,255,0.8); }
+    .btn-danger { border-color:rgba(215,2,241,0.3); color:var(--magenta); }
+    .btn-danger:hover { background:rgba(215,2,241,0.1); }
+
+    .cards-grid { display:grid; grid-template-columns:repeat(auto-fill,minmax(320px,1fr)); gap:1.1rem; }
+    .card {
+      background:rgba(255,255,255,0.02); border:1px solid var(--border);
+      border-radius:10px; padding:1.3rem 1.5rem; transition:border-color 0.2s;
+    }
+    .card:hover { border-color:rgba(4,255,255,0.18); }
+    .card.inactive { opacity:0.4; }
+    .card-meta { font-size:0.76rem; color:rgba(255,255,255,0.32); margin:0.4rem 0 0.9rem; line-height:1.65; }
+    .card-meta strong { color:rgba(255,255,255,0.55); }
+    .card-actions { display:flex; gap:0.5rem; align-items:center; }
+    .badge {
+      display:inline-block; font-family:var(--fb); font-size:0.56rem;
+      letter-spacing:0.13em; text-transform:uppercase; padding:0.22rem 0.6rem; border-radius:10px;
+    }
+    .badge-bw  { background:rgba(4,255,255,0.08);  color:var(--cyan);       border:1px solid rgba(4,255,255,0.2); }
+    .badge-as  { background:rgba(215,2,241,0.07); color:var(--magenta);   border:1px solid rgba(215,2,241,0.2); }
+    .badge-ind { background:rgba(154,171,216,0.07); color:var(--periwinkle); border:1px solid rgba(154,171,216,0.2); }
+    .badge-sub { background:rgba(84,2,128,0.12); color:#c084fc; border:1px solid rgba(84,2,128,0.3); }
+
+    .toggle-wrap { display:flex; align-items:center; gap:0.5rem; margin-left:auto; cursor:pointer; }
+    .toggle-wrap span { font-family:var(--fb); font-size:0.62rem; letter-spacing:0.06em; color:rgba(255,255,255,0.3); }
+    .toggle-sw { position:relative; width:38px; height:20px; flex-shrink:0; }
+    .toggle-sw input { opacity:0; width:0; height:0; position:absolute; }
+    .toggle-sl {
+      position:absolute; inset:0; background:rgba(255,255,255,0.1);
+      border-radius:20px; cursor:pointer; transition:0.25s;
+    }
+    .toggle-sl::before {
+      content:''; position:absolute; width:14px; height:14px; left:3px; bottom:3px;
+      background:rgba(255,255,255,0.4); border-radius:50%; transition:0.25s;
+    }
+    .toggle-sw input:checked + .toggle-sl { background:rgba(4,255,255,0.2); }
+    .toggle-sw input:checked + .toggle-sl::before { transform:translateX(18px); background:var(--cyan); }
+
+    .empty-state { text-align:center; padding:4rem; color:rgba(255,255,255,0.2); font-family:var(--fh); font-size:0.88rem; letter-spacing:0.1em; grid-column:1/-1; }
+
+    /* ── SLIDE PANEL ── */
+    .overlay { display:none; position:fixed; inset:0; background:rgba(0,0,0,0.55); backdrop-filter:blur(4px); z-index:200; }
+    .overlay.open { display:block; }
+    .panel {
+      position:fixed; top:0; right:-110%; bottom:0; width:min(560px,100vw);
+      background:var(--dark2); border-left:1px solid rgba(4,255,255,0.12);
+      z-index:201; overflow-y:auto; padding:1.8rem;
+      transition:right 0.32s cubic-bezier(0.4,0,0.2,1);
+    }
+    .panel.open { right:0; }
+    .panel-hdr { display:flex; align-items:center; justify-content:space-between; margin-bottom:1.8rem; }
+    .panel-hdr h2 { font-family:var(--fh); font-size:1rem; color:rgba(255,255,255,0.9); }
+    .panel-x {
+      background:none; border:1px solid rgba(255,255,255,0.1); color:rgba(255,255,255,0.45);
+      width:32px; height:32px; border-radius:6px; cursor:pointer; font-size:0.9rem;
+      display:flex; align-items:center; justify-content:center; transition:all 0.2s;
+    }
+    .panel-x:hover { border-color:rgba(215,2,241,0.4); color:var(--magenta); }
+
+    .form-sec { font-family:var(--fb); font-size:0.58rem; letter-spacing:0.2em; text-transform:uppercase; color:rgba(4,255,255,0.45); margin:1.6rem 0 0.8rem; padding-bottom:0.4rem; border-bottom:1px solid rgba(255,255,255,0.05); }
+    .frow  { display:grid; grid-template-columns:1fr 1fr; gap:0.9rem; }
+    .frow1 { grid-template-columns:1fr; }
+    .field { display:flex; flex-direction:column; gap:0.35rem; margin-bottom:0.85rem; }
+    .field label { font-size:0.68rem; letter-spacing:0.07em; text-transform:uppercase; color:rgba(255,255,255,0.35); }
+    .field input, .field select, .field textarea {
+      background:rgba(255,255,255,0.04); border:1px solid rgba(255,255,255,0.1);
+      border-radius:7px; padding:0.65rem 0.85rem; color:rgba(255,255,255,0.88);
+      font-family:var(--fi); font-size:0.86rem; outline:none; width:100%; transition:border-color 0.2s;
+    }
+    .field input:focus, .field select:focus, .field textarea:focus { border-color:rgba(4,255,255,0.4); }
+    .field textarea { resize:vertical; min-height:80px; line-height:1.6; }
+    .field select option { background:#0d0d22; }
+    .field .hint { font-size:0.65rem; color:rgba(255,255,255,0.22); }
+
+    .checkbox-grp { display:flex; flex-wrap:wrap; gap:0.6rem; }
+    .chk-label { display:flex; align-items:center; gap:0.45rem; cursor:pointer; font-size:0.78rem; color:rgba(255,255,255,0.5); }
+    .chk-label input[type=checkbox] { accent-color:var(--cyan); width:13px; height:13px; }
+
+    .panel-footer { margin-top:1.8rem; padding-top:1.2rem; border-top:1px solid var(--border); }
+    .btn-save {
+      width:100%; padding:0.9rem; background:var(--cyan); color:#08081a;
+      font-family:var(--fb); font-size:0.76rem; font-weight:700;
+      letter-spacing:0.14em; text-transform:uppercase;
+      border:none; border-radius:8px; cursor:pointer; transition:opacity 0.2s;
+    }
+    .btn-save:hover { opacity:0.86; }
+    .btn-save:disabled { opacity:0.35; cursor:not-allowed; }
+    .save-msg { text-align:center; font-size:0.76rem; margin-top:0.6rem; min-height:1.1rem; }
+    .save-msg.ok  { color:rgba(4,255,255,0.8); }
+    .save-msg.err { color:var(--magenta); }
+
+    /* ── CLIENTS TABLE ── */
+    .tbl-wrap { overflow-x:auto; }
+    table { width:100%; border-collapse:collapse; font-size:0.82rem; }
+    th { font-family:var(--fb); font-size:0.6rem; letter-spacing:0.12em; text-transform:uppercase; color:rgba(255,255,255,0.3); padding:0.7rem 1rem; text-align:left; border-bottom:1px solid var(--border); white-space:nowrap; }
+    td { padding:0.75rem 1rem; border-bottom:1px solid rgba(255,255,255,0.04); color:rgba(255,255,255,0.65); vertical-align:top; }
+    tr:hover td { background:rgba(255,255,255,0.02); }
+
+    /* ── DASHBOARD FEED ── */
+    .feed-item { display:flex; gap:0.9rem; padding:0.75rem 0; border-bottom:1px solid rgba(255,255,255,0.04); align-items:flex-start; }
+    .feed-dot { width:8px; height:8px; border-radius:50%; flex-shrink:0; margin-top:0.3rem; }
+    .feed-body { flex:1; }
+    .feed-text { font-size:0.82rem; color:rgba(255,255,255,0.6); line-height:1.5; }
+    .feed-time { font-size:0.7rem; color:rgba(255,255,255,0.25); margin-top:0.2rem; }
+
+    /* ── UPCOMING MINI ── */
+    .upcoming-list { display:flex; flex-direction:column; gap:0.6rem; }
+    .upcoming-item {
+      display:flex; align-items:center; gap:1rem;
+      background:rgba(255,255,255,0.02); border:1px solid var(--border);
+      border-radius:8px; padding:0.8rem 1rem;
+    }
+    .upcoming-date { font-family:var(--fh); font-size:0.9rem; color:var(--cyan); min-width:40px; text-align:center; }
+    .upcoming-name { font-size:0.85rem; color:rgba(255,255,255,0.75); }
+    .upcoming-meta { font-size:0.72rem; color:rgba(255,255,255,0.3); }
+
+    /* ── FINANCIJE ── */
+    .fin-card { background:rgba(255,255,255,0.02); border:1px solid var(--border); border-radius:10px; padding:1.2rem 1.4rem; margin-bottom:1rem; }
+    .fin-month { font-family:var(--fh); font-size:0.95rem; color:rgba(255,255,255,0.8); margin-bottom:0.8rem; }
+    .fin-row { display:flex; justify-content:space-between; font-size:0.82rem; padding:0.3rem 0; border-bottom:1px solid rgba(255,255,255,0.04); }
+    .fin-row:last-child { border-bottom:none; padding-top:0.5rem; font-weight:600; }
+    .fin-prihod { color:rgba(4,255,255,0.8); }
+    .fin-trosak { color:rgba(215,2,241,0.8); }
+    .fin-neto   { color:rgba(255,255,255,0.9); font-family:var(--fh); }
+  </style>
+</head>
+<body>
+
+<!-- ════ LOGIN ════ -->
+<div id="login-screen">
+  <div class="login-box">
+    <div class="login-logo">DUHODAH</div>
+    <div class="login-tag">Mission Control</div>
+    <label class="f-label">Email</label>
+    <input type="email" class="f-input" id="l-email" value="duhodah@duhodah.com" autocomplete="email">
+    <label class="f-label">Lozinka</label>
+    <input type="password" class="f-input" id="l-pass" autocomplete="current-password" placeholder="••••••••">
+    <button class="login-btn" id="l-btn">Prijava →</button>
+    <div class="login-err" id="l-err"></div>
+    <div class="login-hint">Lozinku postavi u: Supabase → Authentication → Users → duhodah@duhodah.com → Update password</div>
+  </div>
+</div>
+
+<!-- ════ APP ════ -->
+<div id="app">
+  <div class="app-layout">
+
+    <!-- SIDEBAR -->
+    <nav class="sidebar">
+      <div class="sb-logo">
+        <div class="sb-logo-text">DUHODAH</div>
+        <div class="sb-logo-sub">Mission Control</div>
+      </div>
+      <div class="sb-nav">
+        <div class="sb-section-label">Pregled</div>
+        <div class="sb-item active" data-section="dashboard"><span class="sb-icon">◈</span> Dashboard</div>
+
+        <div class="sb-section-label">Upravljanje</div>
+        <div class="sb-item" data-section="events"><span class="sb-icon">📅</span> Događaji</div>
+        <div class="sb-item" data-section="usluge"><span class="sb-icon">✦</span> Usluge</div>
+        <div class="sb-item" data-section="clients"><span class="sb-icon">👥</span> Klijenti</div>
+
+        <div class="sb-section-label">Financije</div>
+        <div class="sb-item" data-section="financije"><span class="sb-icon">€</span> Financije</div>
+      </div>
+      <div class="sb-bottom">
+        <div class="sb-user" id="sb-user"></div>
+        <button class="sb-logout" id="btn-logout">Odjava</button>
+      </div>
+    </nav>
+
+    <!-- MAIN -->
+    <div class="main">
+      <div class="main-header">
+        <div>
+          <div class="main-title" id="main-title">Dashboard</div>
+          <div class="main-subtitle" id="main-subtitle">Pregled stanja Duhodaha</div>
+        </div>
+      </div>
+      <div class="main-body">
+
+        <!-- ── DASHBOARD ── -->
+        <div id="section-dashboard" class="section active">
+          <div class="stats-grid" id="dash-stats"></div>
+          <div style="display:grid; grid-template-columns:1fr 1fr; gap:1.4rem; margin-top:0.4rem;">
+            <div>
+              <div style="font-family:var(--fb); font-size:0.6rem; letter-spacing:0.2em; text-transform:uppercase; color:rgba(255,255,255,0.3); margin-bottom:0.8rem;">Nadolazeći eventi</div>
+              <div class="upcoming-list" id="dash-upcoming"></div>
+            </div>
+            <div>
+              <div style="font-family:var(--fb); font-size:0.6rem; letter-spacing:0.2em; text-transform:uppercase; color:rgba(255,255,255,0.3); margin-bottom:0.8rem;">Nedavna aktivnost</div>
+              <div id="dash-feed"></div>
+            </div>
+          </div>
+        </div>
+
+        <!-- ── DOGAĐAJI ── -->
+        <div id="section-events" class="section">
+          <div class="stats-grid" id="ev-stats"></div>
+          <div class="controls">
+            <div class="filter-tabs" id="ev-filters">
+              <button class="ftab active" data-tip="sve">Svi</button>
+              <button class="ftab" data-tip="breathwork_journey">Breathwork</button>
+              <button class="ftab" data-tip="autoskola">Autoškola</button>
+              <button class="ftab" data-tip="individualno">Individualno</button>
+            </div>
+            <button class="btn-primary" id="btn-new-event">+ Novi događaj</button>
+          </div>
+          <div class="cards-grid" id="events-list"></div>
+        </div>
+
+        <!-- ── USLUGE ── -->
+        <div id="section-usluge" class="section">
+          <div style="margin-bottom:1.2rem; display:flex; justify-content:flex-end;">
+            <button class="btn-primary" id="btn-new-usluga">+ Nova usluga</button>
+          </div>
+          <div class="cards-grid" id="usluge-list"></div>
+        </div>
+
+        <!-- ── KLIJENTI ── -->
+        <div id="section-clients" class="section">
+          <div class="stats-grid" id="cl-stats"></div>
+          <div class="controls">
+            <input type="search" id="cl-search" placeholder="Pretraži po imenu ili emailu..." style="background:rgba(255,255,255,0.04); border:1px solid rgba(255,255,255,0.1); border-radius:7px; padding:0.55rem 1rem; color:rgba(255,255,255,0.8); font-family:var(--fi); font-size:0.84rem; outline:none; width:280px;">
+          </div>
+          <div class="tbl-wrap">
+            <table>
+              <thead>
+                <tr>
+                  <th>ID</th><th>Ime</th><th>Email</th><th>Izvor</th>
+                  <th>Status</th><th>Priručnik</th><th>Quiz</th><th>Upisan</th>
+                </tr>
+              </thead>
+              <tbody id="clients-tbody"></tbody>
+            </table>
+          </div>
+        </div>
+
+        <!-- ── FINANCIJE ── -->
+        <div id="section-financije" class="section">
+          <div class="stats-grid" id="fin-stats"></div>
+          <div id="fin-list"></div>
+        </div>
+
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- ════ OVERLAY + PANELS ════ -->
+<div class="overlay" id="overlay"></div>
+
+<!-- Event Panel -->
+<div class="panel" id="ev-panel">
+  <div class="panel-hdr">
+    <h2 id="ev-panel-title">Novi događaj</h2>
+    <button class="panel-x" data-close="ev-panel">✕</button>
+  </div>
+  <form id="ev-form">
+    <input type="hidden" id="ef-id">
+    <div class="form-sec">Osnovni podaci</div>
+    <div class="field"><label>Naziv *</label><input type="text" id="ef-naziv" required placeholder="Breathwork Journey — Lipanj"></div>
+    <div class="frow">
+      <div class="field">
+        <label>Tip *</label>
+        <select id="ef-tip" required>
+          <option value="">— odaberi —</option>
+          <option value="breathwork_journey">Breathwork Journey</option>
+          <option value="autoskola_1">Autoškola — Susret 1</option>
+          <option value="autoskola_2">Autoškola — Susret 2</option>
+          <option value="autoskola_3">Autoškola — Susret 3</option>
+          <option value="autoskola_4">Autoškola — Susret 4</option>
+          <option value="individualno">Individualno</option>
+        </select>
+      </div>
+      <div class="field"><label>Datum i vrijeme *</label><input type="datetime-local" id="ef-datum" required></div>
+    </div>
+    <div class="frow">
+      <div class="field"><label>Trajanje (min)</label><input type="number" id="ef-trajanje" value="120" min="30"></div>
+      <div class="field"><label>Kapacitet</label><input type="number" id="ef-kapacitet" value="15" min="1"></div>
+    </div>
+    <div class="field"><label>Lokacija</label><input type="text" id="ef-lokacija" placeholder="Livada &quot;Kod Zdenca&quot;..."></div>
+    <div class="form-sec">Opisi</div>
+    <div class="field"><label>Kratki opis (kartica)</label><textarea id="ef-opis-kratki" rows="2"></textarea></div>
+    <div class="field"><label>Puni opis (detail panel)</label><textarea id="ef-opis" rows="4"></textarea></div>
+    <div class="form-sec">Cijena i plaćanje</div>
+    <div class="frow">
+      <div class="field"><label>Cijena (€)</label><input type="number" id="ef-cijena" min="0" step="0.01"></div>
+      <div class="field"><label>Cijena pretplatnici (€)</label><input type="number" id="ef-cijena-p" value="0" min="0" step="0.01"><span class="hint">0 = besplatno</span></div>
+    </div>
+    <div class="field"><label>Stripe Payment Link</label><input type="url" id="ef-stripe" placeholder="https://buy.stripe.com/..."></div>
+    <div class="field">
+      <label>Pokriva pretplatni plan</label>
+      <div class="checkbox-grp">
+        <label class="chk-label"><input type="checkbox" id="ef-plan-15"> Zajednica 35€/mj</label>
+        <label class="chk-label"><input type="checkbox" id="ef-plan-god"> Zajednica 50€/mj</label>
+      </div>
+    </div>
+    <div class="form-sec">Ostalo</div>
+    <div class="field"><label>Slug <span class="hint">(auto-generiran)</span></label><input type="text" id="ef-slug"></div>
+    <div style="display:flex; align-items:center; justify-content:space-between; padding:0.6rem 0;">
+      <span style="font-size:0.82rem; color:rgba(255,255,255,0.55);">Vidljivo na stranici</span>
+      <label class="toggle-sw"><input type="checkbox" id="ef-aktivan" checked><span class="toggle-sl"></span></label>
+    </div>
+    <div class="panel-footer">
+      <button type="submit" class="btn-save" id="ef-save-btn">Spremi i objavi →</button>
+      <div class="save-msg" id="ef-msg"></div>
+    </div>
+  </form>
+</div>
+
+<!-- Usluga Panel -->
+<div class="panel" id="us-panel">
+  <div class="panel-hdr">
+    <h2 id="us-panel-title">Nova usluga</h2>
+    <button class="panel-x" data-close="us-panel">✕</button>
+  </div>
+  <form id="us-form">
+    <input type="hidden" id="uf-id">
+    <div class="form-sec">Osnovni podaci</div>
+    <div class="field"><label>Naziv *</label><input type="text" id="uf-naziv" required placeholder="Disajno putovanje Online"></div>
+    <div class="frow">
+      <div class="field">
+        <label>Kategorija *</label>
+        <select id="uf-kategorija" required>
+          <option value="">— odaberi —</option>
+          <option value="breathwork_journey">Breathwork Journey</option>
+          <option value="pretplata">Pretplata</option>
+          <option value="autoskola">Autoškola</option>
+          <option value="individualno">Individualno</option>
+        </select>
+      </div>
+      <div class="field">
+        <label>Format</label>
+        <select id="uf-format">
+          <option value="online">Online</option>
+          <option value="uzivo">Uživo</option>
+          <option value="hybrid">Online + Uživo</option>
+        </select>
+      </div>
+    </div>
+    <div class="form-sec">Opis</div>
+    <div class="field"><label>Kratki opis (kartica)</label><textarea id="uf-opis-kratki" rows="2"></textarea></div>
+    <div class="field"><label>Puni opis</label><textarea id="uf-opis" rows="4"></textarea></div>
+    <div class="form-sec">Cijena</div>
+    <div class="frow">
+      <div class="field"><label>Cijena (€) *</label><input type="number" id="uf-cijena" min="0" step="0.01" required></div>
+      <div class="field">
+        <label>Period</label>
+        <select id="uf-period">
+          <option value="">Jednokratno</option>
+          <option value="mj">/ mjesečno</option>
+          <option value="god">/ godišnje</option>
+        </select>
+      </div>
+    </div>
+    <div class="frow">
+      <div class="field"><label>Trajanje (min)</label><input type="number" id="uf-trajanje" min="0"></div>
+      <div class="field"><label>Br. susreta</label><input type="number" id="uf-susreti" min="1" placeholder="npr. 4"></div>
+    </div>
+    <div class="field"><label>Stripe Payment Link</label><input type="url" id="uf-stripe" placeholder="https://buy.stripe.com/..."></div>
+    <div style="display:flex; align-items:center; justify-content:space-between; padding:0.5rem 0 0.3rem;">
+      <span style="font-size:0.82rem; color:rgba(255,255,255,0.55);">Istaknuto (featured)</span>
+      <label class="toggle-sw"><input type="checkbox" id="uf-featured"><span class="toggle-sl"></span></label>
+    </div>
+    <div style="display:flex; align-items:center; justify-content:space-between; padding:0.5rem 0;">
+      <span style="font-size:0.82rem; color:rgba(255,255,255,0.55);">Aktivno / vidljivo</span>
+      <label class="toggle-sw"><input type="checkbox" id="uf-aktivan" checked><span class="toggle-sl"></span></label>
+    </div>
+    <div class="panel-footer">
+      <button type="submit" class="btn-save" id="uf-save-btn">Spremi →</button>
+      <div class="save-msg" id="uf-msg"></div>
+    </div>
+  </form>
+</div>
+
+<script type="module">
+import { createClient } from 'https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2/+esm';
+import { SUPABASE_URL, SUPABASE_ANON_KEY } from './js/supabase-config.js';
+
+const sb = createClient(SUPABASE_URL, SUPABASE_ANON_KEY);
+const ADMIN = 'duhodah@duhodah.com';
+let allEvents = [], allUsluge = [], evFilter = 'sve', editEvId = null, editUsId = null;
+
+// ════ AUTH ════════════════════════════════════════
+sb.auth.onAuthStateChange((event, session) => {
+  if (session?.user?.email === ADMIN) showApp(session.user);
+  else showLogin();
+});
+
+document.getElementById('l-btn').addEventListener('click', async () => {
+  const email = document.getElementById('l-email').value.trim();
+  const pass  = document.getElementById('l-pass').value;
+  setErr('');
+  const { error } = await sb.auth.signInWithPassword({ email, password: pass });
+  if (error) setErr(error.message === 'Invalid login credentials' ? 'Pogrešna lozinka.' : error.message);
+});
+
+document.getElementById('l-pass').addEventListener('keydown', e => { if (e.key === 'Enter') document.getElementById('l-btn').click(); });
+document.getElementById('btn-logout').addEventListener('click', () => sb.auth.signOut());
+
+function setErr(msg) { document.getElementById('l-err').textContent = msg; }
+function showLogin() { document.getElementById('login-screen').style.display = 'flex'; document.getElementById('app').style.display = 'none'; }
+function showApp(user) {
+  document.getElementById('login-screen').style.display = 'none';
+  document.getElementById('app').style.display = 'block';
+  document.getElementById('sb-user').textContent = user.email;
+  loadAll();
+}
+
+// ════ NAVIGATION ══════════════════════════════════
+const sectionMeta = {
+  dashboard:  { title:'Dashboard',  sub:'Pregled stanja Duhodaha' },
+  events:     { title:'Događaji',   sub:'Upravljanje terminima i kalendarom' },
+  usluge:     { title:'Usluge',     sub:'Ponuda — cijenik i opisi' },
+  clients:    { title:'Klijenti',   sub:'Baza korisnika i aktivnosti' },
+  financije:  { title:'Financije',  sub:'Prihodi, troškovi, neto' },
+};
+
+document.querySelectorAll('.sb-item[data-section]').forEach(item => {
+  item.addEventListener('click', () => {
+    document.querySelectorAll('.sb-item').forEach(i => i.classList.remove('active'));
+    item.classList.add('active');
+    const sec = item.dataset.section;
+    document.querySelectorAll('.section').forEach(s => s.classList.remove('active'));
+    document.getElementById('section-' + sec).classList.add('active');
+    const m = sectionMeta[sec];
+    document.getElementById('main-title').textContent    = m.title;
+    document.getElementById('main-subtitle').textContent = m.sub;
+  });
+});
+
+// ════ LOAD ALL ════════════════════════════════════
+async function loadAll() {
+  await Promise.all([loadEvents(), loadUsluge(), loadClients(), loadFinancije(), loadDashboard()]);
+}
+
+// ════ EVENTS ══════════════════════════════════════
+async function loadEvents() {
+  const { data } = await sb.from('dogadjaji').select('*').order('datum', { ascending: true });
+  allEvents = data || [];
+  renderEvStats(); renderEvents();
+}
+
+function renderEvStats() {
+  const now = new Date();
+  document.getElementById('ev-stats').innerHTML = `
+    <div class="stat-card"><div class="stat-label">Ukupno</div><div class="stat-val c">${allEvents.length}</div></div>
+    <div class="stat-card"><div class="stat-label">Nadolazeći</div><div class="stat-val">${allEvents.filter(e=>new Date(e.datum)>=now).length}</div></div>
+    <div class="stat-card"><div class="stat-label">Aktivni</div><div class="stat-val">${allEvents.filter(e=>e.aktivan).length}</div></div>
+    <div class="stat-card"><div class="stat-label">Skriveni</div><div class="stat-val m">${allEvents.filter(e=>!e.aktivan).length}</div></div>`;
+}
+
+function renderEvents() {
+  const container = document.getElementById('events-list');
+  let list = evFilter === 'sve' ? allEvents
+    : evFilter === 'autoskola' ? allEvents.filter(e => e.tip?.startsWith('autoskola'))
+    : allEvents.filter(e => e.tip === evFilter);
+  if (!list.length) { container.innerHTML = '<div class="empty-state">Nema događaja.</div>'; return; }
+  container.innerHTML = list.map(e => {
+    const d   = new Date(e.datum);
+    const dt  = d.toLocaleDateString('hr-HR', { day:'numeric', month:'short', year:'numeric' }) + ' · ' + d.toLocaleTimeString('hr-HR',{hour:'2-digit',minute:'2-digit'});
+    const b   = evBadge(e.tip);
+    return `<div class="card ${e.aktivan?'':'inactive'}">
+      <div style="display:flex;align-items:flex-start;justify-content:space-between;gap:.6rem;margin-bottom:.6rem;">
+        <span class="badge ${b.cls}">${b.label}</span>
+        ${new Date(e.datum)<new Date()?'<span style="font-size:.6rem;color:rgba(255,255,255,.22);font-family:var(--fb);letter-spacing:.1em">PROŠLO</span>':''}
+      </div>
+      <div style="font-family:var(--fh);font-size:.95rem;color:rgba(255,255,255,.88);margin-bottom:.4rem;">${e.naziv}</div>
+      <div class="card-meta">
+        <strong>${dt}</strong><br>
+        ${e.lokacija||'—'} · ${e.trajanje_min||120} min
+        ${e.cijena_eur?` · <strong style="color:var(--cyan)">${e.cijena_eur}€</strong>`:''}
+        ${e.kapacitet?` · ${e.kapacitet} mjesta`:''}
+      </div>
+      <div class="card-actions">
+        <button class="btn-ghost" onclick="openEditEv('${e.id}')">Uredi</button>
+        <button class="btn-ghost btn-danger" onclick="deleteEv('${e.id}','${e.naziv.replace(/'/g,"\\'")}')">Izbriši</button>
+        <label class="toggle-wrap">
+          <span>${e.aktivan?'Vidljivo':'Skriveno'}</span>
+          <label class="toggle-sw"><input type="checkbox" ${e.aktivan?'checked':''} onchange="toggleEv('${e.id}',this.checked)"><span class="toggle-sl"></span></label>
+        </label>
+      </div>
+    </div>`;
+  }).join('');
+}
+
+document.querySelectorAll('.ftab').forEach(t => {
+  t.addEventListener('click', () => {
+    document.querySelectorAll('.ftab').forEach(x => x.classList.remove('active'));
+    t.classList.add('active'); evFilter = t.dataset.tip; renderEvents();
+  });
+});
+
+document.getElementById('btn-new-event').addEventListener('click', () => {
+  editEvId = null;
+  document.getElementById('ev-panel-title').textContent = 'Novi događaj';
+  document.getElementById('ev-form').reset();
+  document.getElementById('ef-id').value = '';
+  document.getElementById('ef-aktivan').checked = true;
+  document.getElementById('ef-trajanje').value = 120;
+  document.getElementById('ef-kapacitet').value = 15;
+  document.getElementById('ef-lokacija').value = 'Livada "Kod Zdenca", Šetalište kardinala Franje Šepera, Osijek';
+  document.getElementById('ef-msg').textContent = '';
+  openPanel('ev-panel');
+});
+
+window.openEditEv = id => {
+  const e = allEvents.find(x => x.id === id);
+  if (!e) return;
+  editEvId = id;
+  document.getElementById('ev-panel-title').textContent = 'Uredi događaj';
+  document.getElementById('ef-id').value         = e.id;
+  document.getElementById('ef-naziv').value      = e.naziv||'';
+  document.getElementById('ef-tip').value        = e.tip||'';
+  document.getElementById('ef-trajanje').value   = e.trajanje_min||120;
+  document.getElementById('ef-kapacitet').value  = e.kapacitet||15;
+  document.getElementById('ef-lokacija').value   = e.lokacija||'';
+  document.getElementById('ef-opis-kratki').value= e.opis_kratki||'';
+  document.getElementById('ef-opis').value       = e.opis||'';
+  document.getElementById('ef-cijena').value     = e.cijena_eur||'';
+  document.getElementById('ef-cijena-p').value   = e.cijena_pretplatnik??0;
+  document.getElementById('ef-stripe').value     = e.stripe_link||'';
+  document.getElementById('ef-slug').value       = e.slug||'';
+  document.getElementById('ef-aktivan').checked  = e.aktivan;
+  document.getElementById('ef-plan-15').checked  = (e.pokriva_plan||[]).includes('zajednica_15');
+  document.getElementById('ef-plan-god').checked = (e.pokriva_plan||[]).includes('zajednica_120_god');
+  if (e.datum) {
+    const d = new Date(e.datum), p = n => String(n).padStart(2,'0');
+    document.getElementById('ef-datum').value = `${d.getFullYear()}-${p(d.getMonth()+1)}-${p(d.getDate())}T${p(d.getHours())}:${p(d.getMinutes())}`;
+  }
+  document.getElementById('ef-msg').textContent = '';
+  openPanel('ev-panel');
+};
+
+// Auto slug
+['ef-naziv','ef-datum'].forEach(id => document.getElementById(id).addEventListener('input', () => {
+  if (editEvId) return;
+  const n = document.getElementById('ef-naziv').value;
+  const d = document.getElementById('ef-datum').value;
+  let base = n.toLowerCase().replace(/[čć]/g,'c').replace(/š/g,'s').replace(/đ/g,'d').replace(/ž/g,'z').replace(/[^a-z0-9\s-]/g,'').replace(/\s+/g,'-').trim();
+  if (d) { const dt = new Date(d); if (!isNaN(dt)) { const p = n=>String(n).padStart(2,'0'); base += `-${dt.getFullYear()}-${p(dt.getMonth()+1)}-${p(dt.getDate())}`; } }
+  document.getElementById('ef-slug').value = base;
+}));
+
+document.getElementById('ev-form').addEventListener('submit', async e => {
+  e.preventDefault();
+  const btn = document.getElementById('ef-save-btn');
+  btn.disabled = true; btn.textContent = 'Spremat...';
+  const plans = [];
+  if (document.getElementById('ef-plan-15').checked)  plans.push('zajednica_15');
+  if (document.getElementById('ef-plan-god').checked) plans.push('zajednica_120_god');
+  const datum = document.getElementById('ef-datum').value;
+  const payload = {
+    naziv: document.getElementById('ef-naziv').value.trim(),
+    tip:   document.getElementById('ef-tip').value,
+    datum: datum ? new Date(datum).toISOString() : null,
+    trajanje_min: +document.getElementById('ef-trajanje').value||120,
+    kapacitet:    +document.getElementById('ef-kapacitet').value||15,
+    lokacija:     document.getElementById('ef-lokacija').value.trim()||null,
+    opis_kratki:  document.getElementById('ef-opis-kratki').value.trim()||null,
+    opis:         document.getElementById('ef-opis').value.trim()||null,
+    cijena_eur:   parseFloat(document.getElementById('ef-cijena').value)||null,
+    cijena_pretplatnik: parseFloat(document.getElementById('ef-cijena-p').value)??0,
+    stripe_link:  document.getElementById('ef-stripe').value.trim()||null,
+    pokriva_plan: plans.length?plans:null,
+    slug:         document.getElementById('ef-slug').value.trim(),
+    aktivan:      document.getElementById('ef-aktivan').checked,
+  };
+  const { error } = editEvId
+    ? await sb.from('dogadjaji').update(payload).eq('id', editEvId)
+    : await sb.from('dogadjaji').insert(payload);
+  if (error) { setMsg('ef-msg', 'Greška: '+error.message, true); }
+  else {
+    setMsg('ef-msg', '✓ Objavljeno — vidljivo odmah na duhodah.com');
+    await loadEvents();
+    if (!editEvId) setTimeout(() => closePanel('ev-panel'), 1800);
+  }
+  btn.disabled = false; btn.textContent = 'Spremi i objavi →';
+});
+
+window.deleteEv = async (id, naziv) => {
+  if (!confirm(`Izbrisati "${naziv}"?`)) return;
+  await sb.from('dogadjaji').delete().eq('id', id);
+  loadEvents();
+};
+window.toggleEv = async (id, val) => {
+  await sb.from('dogadjaji').update({ aktivan: val }).eq('id', id);
+  loadEvents();
+};
+
+// ════ USLUGE ══════════════════════════════════════
+async function loadUsluge() {
+  const { data, error } = await sb.from('usluge').select('*').order('sort_order', { ascending: true });
+  if (error && error.code === '42P01') { renderUslugeSetupNote(); return; }
+  allUsluge = data || [];
+  renderUsluge();
+}
+
+function renderUslugeSetupNote() {
+  document.getElementById('usluge-list').innerHTML = `
+    <div style="grid-column:1/-1; background:rgba(215,2,241,0.05); border:1px solid rgba(215,2,241,0.2); border-radius:10px; padding:2rem; font-size:.85rem; color:rgba(255,255,255,.55); line-height:1.8;">
+      <strong style="color:var(--magenta);">Tablica "usluge" ne postoji.</strong><br>
+      Idi na Supabase → SQL Editor → New query → zalijepi i pokreni:
+      <pre style="margin-top:1rem; background:rgba(0,0,0,.4); padding:1rem; border-radius:6px; font-size:.75rem; overflow-x:auto; color:rgba(4,255,255,.7);">CREATE TABLE usluge (
+  id UUID PRIMARY KEY DEFAULT uuid_generate_v4(),
+  slug TEXT UNIQUE,
+  naziv TEXT NOT NULL,
+  kategorija TEXT,
+  format TEXT,
+  cijena_eur NUMERIC(10,2),
+  period TEXT,
+  trajanje_min INTEGER,
+  broj_susreta INTEGER,
+  opis_kratki TEXT,
+  opis TEXT,
+  stripe_link TEXT,
+  featured BOOLEAN DEFAULT FALSE,
+  aktivan BOOLEAN DEFAULT TRUE,
+  sort_order INTEGER DEFAULT 0,
+  created_at TIMESTAMPTZ DEFAULT NOW()
+);
+ALTER TABLE usluge ENABLE ROW LEVEL SECURITY;
+CREATE POLICY "usluge_public_read" ON usluge FOR SELECT USING (aktivan = TRUE);
+CREATE POLICY "usluge_admin_all"   ON usluge FOR ALL USING (auth.role()='authenticated');</pre>
+      Nakon toga osvježi stranicu.
+    </div>`;
+}
+
+function renderUsluge() {
+  const c = document.getElementById('usluge-list');
+  if (!allUsluge.length) { c.innerHTML = '<div class="empty-state">Nema usluga. Klikni "+ Nova usluga".</div>'; return; }
+  c.innerHTML = allUsluge.map(u => {
+    const b = usBadge(u.kategorija);
+    const cijena = u.cijena_eur ? `${u.cijena_eur}€${u.period==='mj'?'/mj':u.period==='god'?'/god':''}` : '—';
+    return `<div class="card ${u.aktivan?'':'inactive'}">
+      <div style="display:flex;align-items:center;justify-content:space-between;gap:.6rem;margin-bottom:.6rem;">
+        <span class="badge ${b.cls}">${b.label}</span>
+        ${u.featured?'<span style="font-size:.6rem;color:rgba(255,215,0,.7);font-family:var(--fb);letter-spacing:.1em">★ FEATURED</span>':''}
+      </div>
+      <div style="font-family:var(--fh);font-size:.95rem;color:rgba(255,255,255,.88);margin-bottom:.3rem;">${u.naziv}</div>
+      <div class="card-meta">
+        <strong style="color:var(--cyan);font-size:1rem;">${cijena}</strong>
+        ${u.format?' · '+fmtLabel(u.format):''}${u.trajanje_min?' · '+u.trajanje_min+' min':''}${u.broj_susreta?' · '+u.broj_susreta+' susreta':''}
+        ${u.opis_kratki?'<br>'+u.opis_kratki:''}
+      </div>
+      <div class="card-actions">
+        <button class="btn-ghost" onclick="openEditUs('${u.id}')">Uredi</button>
+        <button class="btn-ghost btn-danger" onclick="deleteUs('${u.id}','${u.naziv.replace(/'/g,"\\'")}')">Izbriši</button>
+        <label class="toggle-wrap">
+          <span>${u.aktivan?'Aktivno':'Skriveno'}</span>
+          <label class="toggle-sw"><input type="checkbox" ${u.aktivan?'checked':''} onchange="toggleUs('${u.id}',this.checked)"><span class="toggle-sl"></span></label>
+        </label>
+      </div>
+    </div>`;
+  }).join('');
+}
+
+function usBadge(k) {
+  if (k==='breathwork_journey') return { cls:'badge-bw',  label:'Breathwork Journey' };
+  if (k==='pretplata')          return { cls:'badge-sub', label:'Pretplata' };
+  if (k==='autoskola')          return { cls:'badge-as',  label:'Autoškola' };
+  return { cls:'badge-ind', label:'Individualno' };
+}
+function fmtLabel(f) { return f==='online'?'Online':f==='uzivo'?'Uživo':'Online + Uživo'; }
+
+document.getElementById('btn-new-usluga').addEventListener('click', () => {
+  editUsId = null;
+  document.getElementById('us-panel-title').textContent = 'Nova usluga';
+  document.getElementById('us-form').reset();
+  document.getElementById('uf-id').value = '';
+  document.getElementById('uf-aktivan').checked = true;
+  document.getElementById('uf-msg').textContent = '';
+  openPanel('us-panel');
+});
+
+window.openEditUs = id => {
+  const u = allUsluge.find(x => x.id === id);
+  if (!u) return;
+  editUsId = id;
+  document.getElementById('us-panel-title').textContent = 'Uredi uslugu';
+  document.getElementById('uf-id').value           = u.id;
+  document.getElementById('uf-naziv').value        = u.naziv||'';
+  document.getElementById('uf-kategorija').value   = u.kategorija||'';
+  document.getElementById('uf-format').value       = u.format||'online';
+  document.getElementById('uf-opis-kratki').value  = u.opis_kratki||'';
+  document.getElementById('uf-opis').value         = u.opis||'';
+  document.getElementById('uf-cijena').value       = u.cijena_eur||'';
+  document.getElementById('uf-period').value       = u.period||'';
+  document.getElementById('uf-trajanje').value     = u.trajanje_min||'';
+  document.getElementById('uf-susreti').value      = u.broj_susreta||'';
+  document.getElementById('uf-stripe').value       = u.stripe_link||'';
+  document.getElementById('uf-featured').checked   = u.featured;
+  document.getElementById('uf-aktivan').checked    = u.aktivan;
+  document.getElementById('uf-msg').textContent    = '';
+  openPanel('us-panel');
+};
+
+document.getElementById('us-form').addEventListener('submit', async e => {
+  e.preventDefault();
+  const btn = document.getElementById('uf-save-btn');
+  btn.disabled = true; btn.textContent = 'Spremat...';
+  const naziv = document.getElementById('uf-naziv').value.trim();
+  const payload = {
+    naziv,
+    slug:        naziv.toLowerCase().replace(/[čć]/g,'c').replace(/š/g,'s').replace(/đ/g,'d').replace(/ž/g,'z').replace(/[^a-z0-9\s-]/g,'').replace(/\s+/g,'-'),
+    kategorija:  document.getElementById('uf-kategorija').value,
+    format:      document.getElementById('uf-format').value,
+    opis_kratki: document.getElementById('uf-opis-kratki').value.trim()||null,
+    opis:        document.getElementById('uf-opis').value.trim()||null,
+    cijena_eur:  parseFloat(document.getElementById('uf-cijena').value)||null,
+    period:      document.getElementById('uf-period').value||null,
+    trajanje_min: +document.getElementById('uf-trajanje').value||null,
+    broj_susreta: +document.getElementById('uf-susreti').value||null,
+    stripe_link: document.getElementById('uf-stripe').value.trim()||null,
+    featured:    document.getElementById('uf-featured').checked,
+    aktivan:     document.getElementById('uf-aktivan').checked,
+  };
+  const { error } = editUsId
+    ? await sb.from('usluge').update(payload).eq('id', editUsId)
+    : await sb.from('usluge').insert(payload);
+  if (error) setMsg('uf-msg', 'Greška: '+error.message, true);
+  else { setMsg('uf-msg', '✓ Spremljeno'); await loadUsluge(); if (!editUsId) setTimeout(()=>closePanel('us-panel'),1600); }
+  btn.disabled = false; btn.textContent = 'Spremi →';
+});
+
+window.deleteUs = async (id, naziv) => {
+  if (!confirm(`Izbrisati uslugu "${naziv}"?`)) return;
+  await sb.from('usluge').delete().eq('id', id); loadUsluge();
+};
+window.toggleUs = async (id, val) => {
+  await sb.from('usluge').update({ aktivan: val }).eq('id', id); loadUsluge();
+};
+
+// ════ CLIENTS ══════════════════════════════════════
+async function loadClients() {
+  const { data } = await sb.from('profiles').select('*').order('created_at', { ascending: false });
+  const clients = data || [];
+  const tbody = document.getElementById('clients-tbody');
+  document.getElementById('cl-stats').innerHTML = `
+    <div class="stat-card"><div class="stat-label">Ukupno</div><div class="stat-val c">${clients.length}</div></div>
+    <div class="stat-card"><div class="stat-label">S priručnikom</div><div class="stat-val">${clients.filter(c=>c.priručnik_preuzet).length}</div></div>
+    <div class="stat-card"><div class="stat-label">S kvizom</div><div class="stat-val p">${clients.filter(c=>c.kviz_tip).length}</div></div>`;
+
+  const render = (list) => {
+    tbody.innerHTML = list.map(c => `<tr>
+      <td style="color:rgba(255,255,255,.3);font-size:.72rem;">${c.id?.slice(0,8)}…</td>
+      <td>${c.ime||'—'}</td>
+      <td style="color:rgba(255,255,255,.45);">${c.email||'—'}</td>
+      <td><span class="badge badge-bw" style="font-size:.56rem;">${c.izvor||'—'}</span></td>
+      <td>${c.pretplata_status||'—'}</td>
+      <td>${c.priručnik_preuzet?'✓':''}</td>
+      <td style="color:var(--periwinkle);">${c.kviz_tip||''}</td>
+      <td style="color:rgba(255,255,255,.3);font-size:.72rem;">${c.created_at?new Date(c.created_at).toLocaleDateString('hr-HR'):''}</td>
+    </tr>`).join('');
+  };
+  render(clients);
+  document.getElementById('cl-search').addEventListener('input', e => {
+    const q = e.target.value.toLowerCase();
+    render(clients.filter(c => (c.ime||'').toLowerCase().includes(q) || (c.email||'').toLowerCase().includes(q)));
+  });
+}
+
+// ════ FINANCIJE ════════════════════════════════════
+async function loadFinancije() {
+  const { data } = await sb.from('financije').select('*').order('mjesec', { ascending: false });
+  const rows = data || [];
+  const totalPrihod = rows.reduce((s,r) => s+(r.prihod_eur||0), 0);
+  document.getElementById('fin-stats').innerHTML = `
+    <div class="stat-card"><div class="stat-label">Ukupni prihodi</div><div class="stat-val c">${totalPrihod.toFixed(0)}€</div></div>
+    <div class="stat-card"><div class="stat-label">Evidentirani mjeseci</div><div class="stat-val">${rows.length}</div></div>`;
+  document.getElementById('fin-list').innerHTML = rows.length ? rows.map(r => `
+    <div class="fin-card">
+      <div class="fin-month">${r.mjesec||'—'}</div>
+      <div class="fin-row"><span>Prihodi</span><span class="fin-prihod">${(r.prihod_eur||0).toFixed(2)} €</span></div>
+      <div class="fin-row"><span>Troškovi</span><span class="fin-trosak">${(r.troškovi_eur||0).toFixed(2)} €</span></div>
+      <div class="fin-row"><span>Neto</span><span class="fin-neto">${(r.neto_eur||0).toFixed(2)} €</span></div>
+      ${r.bilješka?`<div style="font-size:.76rem;color:rgba(255,255,255,.3);margin-top:.5rem;">${r.bilješka}</div>`:''}
+    </div>`).join('')
+    : '<div class="empty-state">Nema financijskih podataka.</div>';
+}
+
+// ════ DASHBOARD ════════════════════════════════════
+async function loadDashboard() {
+  const now = new Date();
+  const [{ data: profiles }, { data: evData }, { data: intData }] = await Promise.all([
+    sb.from('profiles').select('id', { count: 'exact' }),
+    sb.from('dogadjaji').select('*').gte('datum', now.toISOString()).order('datum').limit(3),
+    sb.from('interakcije').select('*').order('created_at', { ascending: false }).limit(10),
+  ]);
+
+  document.getElementById('dash-stats').innerHTML = `
+    <div class="stat-card"><div class="stat-label">Klijenti</div><div class="stat-val c">${(profiles||[]).length}</div></div>
+    <div class="stat-card"><div class="stat-label">Nadolazeći eventi</div><div class="stat-val">${(evData||[]).length}</div></div>
+    <div class="stat-card"><div class="stat-label">Aktivnih usluga</div><div class="stat-val p">${allUsluge.filter(u=>u.aktivan).length}</div></div>`;
+
+  const upEl = document.getElementById('dash-upcoming');
+  upEl.innerHTML = (evData||[]).length ? (evData||[]).map(e => {
+    const d = new Date(e.datum);
+    return `<div class="upcoming-item">
+      <div class="upcoming-date">${d.getDate()}<br><span style="font-size:.65rem;font-family:var(--fb);">${d.toLocaleDateString('hr-HR',{month:'short'})}</span></div>
+      <div><div class="upcoming-name">${e.naziv}</div><div class="upcoming-meta">${d.toLocaleTimeString('hr-HR',{hour:'2-digit',minute:'2-digit'})} · ${e.lokacija||'—'}</div></div>
+    </div>`;
+  }).join('') : '<div style="color:rgba(255,255,255,.25);font-size:.82rem;">Nema nadolazećih eventi.</div>';
+
+  const dotColor = { prijava: '#04ffff', priručnik: '#d702f1', kviz: '#9aabd8', kontakt: '#c084fc' };
+  const feedEl = document.getElementById('dash-feed');
+  feedEl.innerHTML = (intData||[]).length ? (intData||[]).map(i => `
+    <div class="feed-item">
+      <div class="feed-dot" style="background:${dotColor[i.tip]||'rgba(255,255,255,.3)'}"></div>
+      <div class="feed-body">
+        <div class="feed-text">${i.email||'—'} · <strong>${i.tip}</strong></div>
+        <div class="feed-time">${new Date(i.created_at).toLocaleString('hr-HR')}</div>
+      </div>
+    </div>`).join('')
+    : '<div style="color:rgba(255,255,255,.25);font-size:.82rem;">Nema nedavne aktivnosti.</div>';
+}
+
+// ════ PANEL UTILS ══════════════════════════════════
+function evBadge(tip) {
+  if (tip==='breathwork_journey') return { cls:'badge-bw', label:'Breathwork Journey' };
+  if (tip?.startsWith('autoskola')) return { cls:'badge-as', label:'Autoškola' };
+  return { cls:'badge-ind', label:'Individualno' };
+}
+function openPanel(id)  { document.getElementById(id).classList.add('open'); document.getElementById('overlay').classList.add('open'); }
+function closePanel(id) { document.getElementById(id).classList.remove('open'); document.getElementById('overlay').classList.remove('open'); }
+function setMsg(elId, msg, isErr=false) {
+  const el = document.getElementById(elId);
+  el.textContent = msg; el.className = 'save-msg ' + (isErr?'err':'ok');
+}
+
+document.querySelectorAll('.panel-x[data-close]').forEach(btn => {
+  btn.addEventListener('click', () => closePanel(btn.dataset.close));
+});
+document.getElementById('overlay').addEventListener('click', () => {
+  ['ev-panel','us-panel'].forEach(id => closePanel(id));
+});
+</script>
+</body>
+</html>
