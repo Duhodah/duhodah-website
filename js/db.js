@@ -14,7 +14,6 @@ export async function getUpcomingEvents(limit = 20) {
     .from('dogadjaji')
     .select('*')
     .eq('aktivan', true)
-    .gte('datum', new Date().toISOString())
     .order('datum', { ascending: true })
     .limit(limit);
   if (error) throw error;
