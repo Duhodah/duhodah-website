@@ -54,6 +54,17 @@
     .login-btn:hover { opacity:0.85; }
     .login-hint { margin-top:1rem; font-size:0.75rem; color:rgba(255,255,255,0.25); text-align:center; line-height:1.6; }
     .login-err  { margin-top:0.8rem; font-size:0.8rem; color:var(--magenta); text-align:center; min-height:1.2rem; }
+    .login-ok   { margin-top:0.8rem; font-size:0.8rem; color:var(--cyan); text-align:center; min-height:1.2rem; }
+
+    /* ════════════════════════════════════
+       PASSWORD RESET SCREEN
+    ════════════════════════════════════ */
+    #reset-screen {
+      display:none; align-items:center; justify-content:center;
+      height:100vh; padding:2rem;
+    }
+    #reset-screen .login-box { max-width:420px; }
+    #reset-screen .login-tag { color:rgba(255,140,0,0.6); }
 
     /* ════════════════════════════════════
        APP SHELL
@@ -285,7 +296,22 @@
     <input type="password" class="f-input" id="l-pass" autocomplete="current-password" placeholder="••••••••">
     <button class="login-btn" id="l-btn">Prijava →</button>
     <div class="login-err" id="l-err"></div>
-    <div class="login-hint">Lozinku postavi u: Supabase → Authentication → Users → duhodah@duhodah.com → Update password</div>
+    <div class="login-hint">Zaboravljena lozinka? Supabase → Users → duhodah@duhodah.com → Send password recovery</div>
+  </div>
+</div>
+
+<!-- ════ PASSWORD RESET ════ -->
+<div id="reset-screen">
+  <div class="login-box">
+    <div class="login-logo">DUHODAH</div>
+    <div class="login-tag">Postavljanje lozinke</div>
+    <label class="f-label">Nova lozinka</label>
+    <input type="password" class="f-input" id="r-pass1" autocomplete="new-password" placeholder="Minimum 8 znakova">
+    <label class="f-label">Ponovi lozinku</label>
+    <input type="password" class="f-input" id="r-pass2" autocomplete="new-password" placeholder="Ponovi lozinku">
+    <button class="login-btn" id="r-btn">Postavi lozinku →</button>
+    <div class="login-err" id="r-err"></div>
+    <div class="login-ok"  id="r-ok"></div>
   </div>
 </div>
 
@@ -530,10 +556,51 @@ const sb = createClient(SUPABASE_URL, SUPABASE_ANON_KEY);
 const ADMIN = 'duhodah@duhodah.com';
 let allEvents = [], allUsluge = [], evFilter = 'sve', editEvId = null, editUsId = null;
 
+// ════ PASSWORD RECOVERY — detektira token u URL hashu ═════
+(function() {
+  const h = window.location.hash;
+  if (h && h.includes('type=recovery')) {
+    // Odmah prikaži reset ekran, sakrij ostalo
+    document.getElementById('reset-screen').style.display = 'flex';
+    document.getElementById('login-screen').style.display  = 'none';
+  }
+})();
+
 // ════ AUTH ════════════════════════════════════════
-sb.auth.onAuthStateChange((event, session) => {
+sb.auth.onAuthStateChange(async (event, session) => {
+  if (event === 'PASSWORD_RECOVERY') {
+    // Supabase je detektirao recovery token — prikaži reset ekran
+    document.getElementById('reset-screen').style.display = 'flex';
+    document.getElementById('login-screen').style.display  = 'none';
+    document.getElementById('app').style.display           = 'none';
+    return;
+  }
   if (session?.user?.email === ADMIN) showApp(session.user);
   else showLogin();
+});
+
+// ════ PASSWORD RESET FORM ═════════════════════════
+document.getElementById('r-btn').addEventListener('click', async () => {
+  const p1 = document.getElementById('r-pass1').value;
+  const p2 = document.getElementById('r-pass2').value;
+  document.getElementById('r-err').textContent = '';
+  document.getElementById('r-ok').textContent  = '';
+  if (p1.length < 8) { document.getElementById('r-err').textContent = 'Lozinka mora imati najmanje 8 znakova.'; return; }
+  if (p1 !== p2)     { document.getElementById('r-err').textContent = 'Lozinke se ne podudaraju.'; return; }
+  const btn = document.getElementById('r-btn');
+  btn.disabled = true; btn.textContent = 'Postavljam...';
+  const { error } = await sb.auth.updateUser({ password: p1 });
+  if (error) {
+    document.getElementById('r-err').textContent = 'Greška: ' + error.message;
+    btn.disabled = false; btn.textContent = 'Postavi lozinku →';
+  } else {
+    document.getElementById('r-ok').textContent = '✓ Lozinka postavljena! Prijavljujem te...';
+    // Korisnik je sada prijavljen — onAuthStateChange će ga prebaciti na app
+    setTimeout(() => {
+      window.location.hash = '';
+      window.location.reload();
+    }, 2000);
+  }
 });
 
 document.getElementById('l-btn').addEventListener('click', async () => {
@@ -548,9 +615,14 @@ document.getElementById('l-pass').addEventListener('keydown', e => { if (e.key =
 document.getElementById('btn-logout').addEventListener('click', () => sb.auth.signOut());
 
 function setErr(msg) { document.getElementById('l-err').textContent = msg; }
-function showLogin() { document.getElementById('login-screen').style.display = 'flex'; document.getElementById('app').style.display = 'none'; }
+function showLogin() {
+  document.getElementById('login-screen').style.display = 'flex';
+  document.getElementById('reset-screen').style.display = 'none';
+  document.getElementById('app').style.display = 'none';
+}
 function showApp(user) {
   document.getElementById('login-screen').style.display = 'none';
+  document.getElementById('reset-screen').style.display = 'none';
   document.getElementById('app').style.display = 'block';
   document.getElementById('sb-user').textContent = user.email;
   loadAll();
