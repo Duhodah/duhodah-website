@@ -4296,21 +4296,42 @@
   ═══════════════════════════════════ -->
   <link rel="stylesheet" href="css/calendar.css">
 
-  <!-- Supabase auth redirect handler — mora biti inline, bez modula -->
-  <script>
-    (function() {
-      var h = window.location.hash;
-      if (h && h.includes('type=recovery')) {
-        window.location.replace('/hq.html' + h);
-      }
-    })();
-  </script>
-
   <script type="module">
+    import { createClient } from 'https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2/+esm';
+    import { SUPABASE_URL, SUPABASE_ANON_KEY } from './js/supabase-config.js';
     import { renderEventsWidget } from './js/calendar.js';
     import { initAuth, signOut } from './js/auth.js';
     import { trackInteraction } from './js/db.js';
     import { getCurrentUser } from './js/auth.js';
+
+    // ── PASSWORD RECOVERY (PKCE + implicit) ──────────────────
+    const _sb = createClient(SUPABASE_URL, SUPABASE_ANON_KEY);
+    _sb.auth.onAuthStateChange((event) => {
+      if (event === 'PASSWORD_RECOVERY') {
+        document.getElementById('pw-reset-overlay').style.display = 'flex';
+      }
+    });
+
+    document.getElementById('pw-reset-btn').addEventListener('click', async () => {
+      const p1  = document.getElementById('pw-p1').value;
+      const p2  = document.getElementById('pw-p2').value;
+      const err = document.getElementById('pw-err');
+      const ok  = document.getElementById('pw-ok');
+      err.textContent = ''; ok.textContent = '';
+      if (p1.length < 8) { err.textContent = 'Lozinka mora imati najmanje 8 znakova.'; return; }
+      if (p1 !== p2)     { err.textContent = 'Lozinke se ne podudaraju.'; return; }
+      document.getElementById('pw-reset-btn').disabled = true;
+      document.getElementById('pw-reset-btn').textContent = 'Postavljam...';
+      const { error } = await _sb.auth.updateUser({ password: p1 });
+      if (error) {
+        err.textContent = 'Greška: ' + error.message;
+        document.getElementById('pw-reset-btn').disabled = false;
+        document.getElementById('pw-reset-btn').textContent = 'Postavi lozinku →';
+      } else {
+        ok.textContent = '✓ Lozinka postavljena!';
+        setTimeout(() => { window.location.href = '/hq.html'; }, 1500);
+      }
+    });
 
     // Auth listener
     initAuth((event, session, user) => {
@@ -4352,6 +4373,43 @@
     // Auth signout link u nav (ako postoji)
     document.getElementById('auth-signout-btn')?.addEventListener('click', signOut);
   </script>
+
+  <!-- Password reset overlay (za Supabase recovery flow) -->
+  <div id="pw-reset-overlay" style="
+    display:none; position:fixed; inset:0; z-index:99999;
+    background:rgba(8,8,26,0.97); backdrop-filter:blur(20px);
+    align-items:center; justify-content:center; padding:2rem;
+  ">
+    <div style="
+      background:rgba(255,255,255,0.03); border:1px solid rgba(4,255,255,0.2);
+      border-radius:14px; padding:3rem 2.5rem; width:100%; max-width:380px; text-align:center;
+    ">
+      <div style="font-family:'Jura',sans-serif; font-size:1.3rem; letter-spacing:0.3em; color:rgba(255,255,255,0.9); margin-bottom:0.3rem;">DUHODAH</div>
+      <div style="font-family:'Montserrat',sans-serif; font-size:0.58rem; letter-spacing:0.25em; text-transform:uppercase; color:rgba(4,255,255,0.45); margin-bottom:2.5rem;">Postavljanje lozinke</div>
+      <div style="text-align:left;">
+        <label style="display:block; font-size:0.7rem; letter-spacing:0.08em; text-transform:uppercase; color:rgba(255,255,255,0.35); margin-bottom:0.5rem;">Nova lozinka</label>
+        <input id="pw-p1" type="password" placeholder="Minimum 8 znakova" autocomplete="new-password" style="
+          width:100%; background:rgba(255,255,255,0.04); border:1px solid rgba(255,255,255,0.12);
+          border-radius:8px; padding:0.8rem 1rem; color:rgba(255,255,255,0.88);
+          font-family:'Inter',sans-serif; font-size:0.9rem; outline:none; margin-bottom:1rem;
+        ">
+        <label style="display:block; font-size:0.7rem; letter-spacing:0.08em; text-transform:uppercase; color:rgba(255,255,255,0.35); margin-bottom:0.5rem;">Ponovi lozinku</label>
+        <input id="pw-p2" type="password" placeholder="Ponovi lozinku" autocomplete="new-password" style="
+          width:100%; background:rgba(255,255,255,0.04); border:1px solid rgba(255,255,255,0.12);
+          border-radius:8px; padding:0.8rem 1rem; color:rgba(255,255,255,0.88);
+          font-family:'Inter',sans-serif; font-size:0.9rem; outline:none; margin-bottom:1rem;
+        ">
+      </div>
+      <button id="pw-reset-btn" style="
+        width:100%; padding:0.9rem; background:#04ffff; color:#08081a;
+        font-family:'Montserrat',sans-serif; font-size:0.75rem; font-weight:700;
+        letter-spacing:0.15em; text-transform:uppercase; border:none; border-radius:8px;
+        cursor:pointer; margin-top:0.4rem;
+      ">Postavi lozinku →</button>
+      <div id="pw-err" style="margin-top:0.8rem; font-size:0.82rem; color:#d702f1; min-height:1.2rem;"></div>
+      <div id="pw-ok"  style="margin-top:0.4rem; font-size:0.82rem; color:rgba(4,255,255,0.85); min-height:1.2rem;"></div>
+    </div>
+  </div>
 
   <!-- Login modal za events widget -->
   <div id="cal-login-modal" class="cal-modal">
