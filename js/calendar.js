@@ -12,6 +12,9 @@ const DANI_PUNI = ['Nedjelja', 'Ponedjeljak', 'Utorak', 'Srijeda', 'Četvrtak', 
 const MJESECI = ['Siječanj', 'Veljača', 'Ožujak', 'Travanj', 'Svibanj', 'Lipanj',
                  'Srpanj', 'Kolovoz', 'Rujan', 'Listopad', 'Studeni', 'Prosinac'];
 
+// Cache događaja za widget (koristi se za Realtime refresh)
+let eventsCache = {};
+
 // Tip badge boje i labeli (fallback ako nema tagova)
 const TIP_CONFIG = {
   breathwork_journey: { label: 'Breathwork Journey', color: 'cyan' },
@@ -144,6 +147,9 @@ export async function renderEventsWidget(containerId) {
       return;
     }
 
+    // Spremi događaje u cache za Realtime refresh
+    events.forEach(ev => { eventsCache[ev.id] = ev; });
+
     const cards = await Promise.all(events.map(async (ev) => {
       const avail = await getEventAvailability(ev.id);
       const btn = await buildEventButton(ev, authState, avail);
@@ -169,7 +175,7 @@ export async function renderEventsWidget(containerId) {
       ).join('');
 
       return `
-        <article class="cal-widget-card${uskoro ? ' cal-widget-card--uskoro' : ''}" style="--c-border:${tipColor}40;--c-glow:${tipColor}14;">
+        <article class="cal-widget-card${uskoro ? ' cal-widget-card--uskoro' : ''}" data-event-id="${ev.id}" style="--c-border:${tipColor}40;--c-glow:${tipColor}14;">
           <div class="cal-widget-card__accent" style="background:${accentBg};"></div>
           <div class="cal-widget-card__inner">
             <div class="cal-widget-card__top">
@@ -203,9 +209,36 @@ export async function renderEventsWidget(containerId) {
         <a href="events.html" class="cal-all-link">Svi termini i kalendar →</a>
       </div>`;
 
+    // Realtime: smanji broj mjesta čim netko novi dođe ili ode
+    supabase.channel('registracije-live')
+      .on('postgres_changes', { event: '*', schema: 'public', table: 'registracije' }, async (payload) => {
+        const evId = payload.new?.dogadjaj_id || payload.old?.dogadjaj_id;
+        if (evId) await refreshWidgetCard(evId);
+      })
+      .subscribe();
+
   } catch (err) {
     console.error('[Calendar widget]', err);
     container.innerHTML = `<p class="cal-empty">Nema nadolazećih događaja. Provjeri uskoro.</p>`;
+  }
+}
+
+// ============================================================
+// WIDGET REFRESH (ažurira broj mjesta na kartici bez re-rendera)
+// ============================================================
+
+async function refreshWidgetCard(eventId) {
+  const card = document.querySelector(`article[data-event-id="${eventId}"]`);
+  if (!card) return;
+  const event = eventsCache[eventId];
+  if (!event) return;
+  const avail = await getEventAvailability(eventId);
+  const btn = await buildEventButton(event, authState, avail);
+  const footer = card.querySelector('.cal-widget-card__footer');
+  if (footer) {
+    footer.innerHTML = `
+      <span class="cal-mjesta${avail.slobodna <= 3 ? ' cal-mjesta--kritican' : ''}">${avail.slobodna} mjesta slobodno</span>
+      ${btn}`;
   }
 }
 
@@ -465,8 +498,10 @@ async function registerFree(eventId, tipPlacanja = 'pretplatnik_besplatno') {
 
     await registerForEvent(user.id, eventId, tipPlacanja);
 
-    // Refresh panel
-    await openEventPanel(eventId);
+    // Ažuriraj widget karticu (index.html)
+    await refreshWidgetCard(eventId);
+    // Otvori/osvježi panel (events.html)
+    if (document.getElementById('cal-panel')) await openEventPanel(eventId);
   } catch (err) {
     console.error('[Register free]', err);
     alert('Greška pri registraciji. Pokušaj ponovo.');
