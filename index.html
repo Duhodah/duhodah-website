@@ -232,6 +232,114 @@
       transition: 0.3s;
     }
 
+    /* ── AUTH NAV ── */
+    #nav-auth-btn {
+      font-family: var(--font-brand);
+      font-size: 0.62rem; letter-spacing: 0.18em; text-transform: uppercase;
+      color: rgba(4,255,255,0.65); background: none;
+      border: 1px solid rgba(4,255,255,0.22); border-radius: 2px;
+      padding: 0.42rem 1rem; cursor: pointer; transition: all 0.2s;
+    }
+    #nav-auth-btn:hover { color: #04ffff; border-color: rgba(4,255,255,0.55); }
+
+    #nav-auth-user {
+      display: none; align-items: center; gap: 0.55rem;
+      font-family: var(--font-brand); font-size: 0.6rem;
+      letter-spacing: 0.12em; color: rgba(255,255,255,0.4);
+    }
+    .nav-auth-dot {
+      width: 6px; height: 6px; border-radius: 50%;
+      background: #04ffff; box-shadow: 0 0 7px #04ffff;
+    }
+    #nav-auth-signout {
+      background: none; border: none; color: rgba(255,255,255,0.25);
+      font-family: var(--font-brand); font-size: 0.58rem;
+      letter-spacing: 0.1em; text-transform: uppercase;
+      cursor: pointer; transition: color 0.2s; padding: 0;
+    }
+    #nav-auth-signout:hover { color: rgba(215,2,241,0.7); }
+
+    /* ── AUTH MODAL ── */
+    #auth-modal {
+      display: none; position: fixed; inset: 0; z-index: 99999;
+      background: rgba(8,8,26,0.96); backdrop-filter: blur(24px);
+      align-items: center; justify-content: center; padding: 1.5rem;
+    }
+    #auth-modal.open { display: flex; }
+    .auth-box {
+      background: rgba(255,255,255,0.025);
+      border: 1px solid rgba(4,255,255,0.15);
+      border-radius: 16px; padding: 2.5rem 2.2rem;
+      width: 100%; max-width: 400px; position: relative;
+    }
+    .auth-close {
+      position: absolute; top: 1.2rem; right: 1.2rem;
+      background: none; border: none; color: rgba(255,255,255,0.25);
+      font-size: 1.1rem; cursor: pointer; padding: 0.3rem 0.5rem; transition: color 0.2s;
+    }
+    .auth-close:hover { color: rgba(255,255,255,0.6); }
+    .auth-modal-logo {
+      font-family: 'Jura', sans-serif; font-size: 1.1rem;
+      letter-spacing: 0.3em; color: rgba(255,255,255,0.85);
+      text-align: center; margin-bottom: 0.2rem;
+    }
+    .auth-modal-tag {
+      font-family: 'Montserrat', sans-serif; font-size: 0.5rem;
+      letter-spacing: 0.25em; text-transform: uppercase;
+      color: rgba(4,255,255,0.38); text-align: center; margin-bottom: 2rem;
+    }
+    .auth-tabs {
+      display: flex; margin-bottom: 1.8rem;
+      border-bottom: 1px solid rgba(255,255,255,0.07);
+    }
+    .auth-tab {
+      flex: 1; background: none; border: none;
+      font-family: 'Montserrat', sans-serif; font-size: 0.62rem;
+      letter-spacing: 0.12em; text-transform: uppercase;
+      color: rgba(255,255,255,0.28); padding: 0.65rem 0;
+      cursor: pointer; border-bottom: 2px solid transparent;
+      margin-bottom: -1px; transition: all 0.2s;
+    }
+    .auth-tab.active { color: #04ffff; border-bottom-color: #04ffff; }
+    .auth-panel { display: none; }
+    .auth-panel.active { display: block; }
+    .auth-lbl {
+      display: block; font-size: 0.62rem; letter-spacing: 0.08em;
+      text-transform: uppercase; color: rgba(255,255,255,0.28); margin-bottom: 0.45rem;
+    }
+    .auth-inp {
+      width: 100%; background: rgba(255,255,255,0.04);
+      border: 1px solid rgba(255,255,255,0.1); border-radius: 8px;
+      padding: 0.75rem 1rem; color: rgba(255,255,255,0.88);
+      font-family: 'Inter', sans-serif; font-size: 0.88rem;
+      outline: none; margin-bottom: 0.95rem; transition: border-color 0.2s;
+    }
+    .auth-inp:focus { border-color: rgba(4,255,255,0.4); }
+    .auth-submit {
+      width: 100%; padding: 0.85rem; background: #04ffff; color: #08081a;
+      font-family: 'Montserrat', sans-serif; font-size: 0.7rem; font-weight: 700;
+      letter-spacing: 0.15em; text-transform: uppercase;
+      border: none; border-radius: 8px; cursor: pointer; transition: opacity 0.2s; margin-top: 0.1rem;
+    }
+    .auth-submit:hover { opacity: 0.85; }
+    .auth-submit:disabled { opacity: 0.35; cursor: not-allowed; }
+    .auth-ok  { margin-top: 0.8rem; font-size: 0.78rem; color: rgba(4,255,255,0.85); text-align: center; min-height: 1rem; }
+    .auth-err { margin-top: 0.8rem; font-size: 0.78rem; color: #d702f1; text-align: center; min-height: 1rem; }
+    .auth-hint {
+      margin-top: 1rem; font-size: 0.7rem; color: rgba(255,255,255,0.2);
+      text-align: center; line-height: 1.65;
+    }
+    .auth-hint button {
+      background: none; border: none; color: rgba(4,255,255,0.45);
+      font-family: 'Inter', sans-serif; font-size: 0.7rem;
+      cursor: pointer; padding: 0; transition: color 0.2s;
+    }
+    .auth-hint button:hover { color: #04ffff; }
+
+    @media (max-width: 768px) {
+      #nav-auth-btn, #nav-auth-user { display: none !important; }
+    }
+
     /* ═══════════════════════════════════════════════
        HERO
     ═══════════════════════════════════════════════ */
@@ -2171,8 +2279,16 @@
       <li><a href="znanje.html">Znanost</a></li>
       <li><a href="#kontakt" class="nav-cta">Rezerviraj</a></li>
     </ul>
-    <div class="nav-hamburger" id="hamburger">
-      <span></span><span></span><span></span>
+    <div style="display:flex; align-items:center; gap:0.8rem;">
+      <button id="nav-auth-btn">Prijava</button>
+      <div id="nav-auth-user">
+        <span class="nav-auth-dot"></span>
+        <span id="nav-auth-name"></span>
+        <button id="nav-auth-signout">Odjava</button>
+      </div>
+      <div class="nav-hamburger" id="hamburger">
+        <span></span><span></span><span></span>
+      </div>
     </div>
   </nav>
 
@@ -4303,42 +4419,137 @@
     import { trackInteraction } from './js/db.js';
     import { getCurrentUser } from './js/auth.js';
 
-    // ── PASSWORD RECOVERY ──────────────────────────────────────
-    // Jedan client, jedan listener — radi za i PKCE i implicit flow
+    // ════ AUTH MODAL ═══════════════════════════════════════════
+    const authModal = document.getElementById('auth-modal');
+
+    function openAuthModal(tab) {
+      authModal.classList.add('open');
+      document.body.style.overflow = 'hidden';
+      if (tab) switchTab(tab);
+    }
+    function closeAuthModal() {
+      authModal.classList.remove('open');
+      document.body.style.overflow = '';
+    }
+    function switchTab(name) {
+      document.querySelectorAll('.auth-tab').forEach(b => b.classList.toggle('active', b.dataset.tab === name));
+      document.querySelectorAll('.auth-panel').forEach(p => p.classList.toggle('active', p.id === 'panel-' + name));
+    }
+
+    document.getElementById('auth-close').addEventListener('click', closeAuthModal);
+    authModal.addEventListener('click', e => { if (e.target === authModal) closeAuthModal(); });
+    document.addEventListener('keydown', e => { if (e.key === 'Escape') closeAuthModal(); });
+    document.querySelectorAll('.auth-tab').forEach(btn => {
+      btn.addEventListener('click', () => switchTab(btn.dataset.tab));
+    });
+    document.getElementById('nav-auth-btn').addEventListener('click', () => openAuthModal('pretplatnik'));
+
+    // ── Pretplatnik: magic link ──
+    document.getElementById('sub-btn').addEventListener('click', async () => {
+      const email = document.getElementById('sub-email').value.trim();
+      document.getElementById('sub-ok').textContent  = '';
+      document.getElementById('sub-err').textContent = '';
+      if (!email) { document.getElementById('sub-err').textContent = 'Upiši email adresu.'; return; }
+      const btn = document.getElementById('sub-btn');
+      btn.disabled = true; btn.textContent = 'Šaljem...';
+      const { error } = await supabase.auth.signInWithOtp({
+        email, options: { emailRedirectTo: window.location.origin }
+      });
+      if (error) {
+        document.getElementById('sub-err').textContent = 'Greška: ' + error.message;
+        btn.disabled = false; btn.textContent = 'Pošalji link za prijavu →';
+      } else {
+        document.getElementById('sub-ok').textContent = '✓ Link poslan! Provjeri email.';
+        btn.textContent = '✓ Poslan';
+        setTimeout(() => { btn.disabled = false; btn.textContent = 'Pošalji link za prijavu →'; }, 30000);
+      }
+    });
+
+    // ── Admin: password login ──
+    document.getElementById('adm-btn').addEventListener('click', async () => {
+      const email = document.getElementById('adm-email').value.trim();
+      const pass  = document.getElementById('adm-pass').value;
+      document.getElementById('adm-ok').textContent  = '';
+      document.getElementById('adm-err').textContent = '';
+      if (!pass) { document.getElementById('adm-err').textContent = 'Upiši lozinku.'; return; }
+      const btn = document.getElementById('adm-btn');
+      btn.disabled = true; btn.textContent = 'Prijavujem...';
+      const { data, error } = await supabase.auth.signInWithPassword({ email, password: pass });
+      if (error) {
+        document.getElementById('adm-err').textContent =
+          error.message.includes('Invalid login credentials') ? 'Pogrešna lozinka.' : error.message;
+        btn.disabled = false; btn.textContent = 'Prijava →';
+      } else {
+        document.getElementById('adm-ok').textContent = '✓ Prijavljen!';
+        closeAuthModal();
+        if (data.user.email === 'duhodah@duhodah.com') {
+          setTimeout(() => { window.location.href = '/hq.html'; }, 700);
+        }
+      }
+    });
+    document.getElementById('adm-pass').addEventListener('keydown', e => {
+      if (e.key === 'Enter') document.getElementById('adm-btn').click();
+    });
+
+    // ── Forgot password ──
+    document.getElementById('adm-forgot').addEventListener('click', async () => {
+      const email = document.getElementById('adm-email').value.trim() || 'duhodah@duhodah.com';
+      document.getElementById('adm-err').textContent = '';
+      document.getElementById('adm-ok').textContent  = 'Šaljem recovery email...';
+      const { error } = await supabase.auth.resetPasswordForEmail(email, {
+        redirectTo: window.location.origin
+      });
+      if (error) {
+        document.getElementById('adm-ok').textContent  = '';
+        document.getElementById('adm-err').textContent = 'Greška: ' + error.message;
+      } else {
+        document.getElementById('adm-ok').textContent = '✓ Provjeri email — klikni link.';
+      }
+    });
+
+    // ── Password reset form ──
+    document.getElementById('rst-btn').addEventListener('click', async () => {
+      const p1  = document.getElementById('rst-p1').value;
+      const p2  = document.getElementById('rst-p2').value;
+      document.getElementById('rst-err').textContent = '';
+      document.getElementById('rst-ok').textContent  = '';
+      if (p1.length < 8) { document.getElementById('rst-err').textContent = 'Lozinka mora imati najmanje 8 znakova.'; return; }
+      if (p1 !== p2)     { document.getElementById('rst-err').textContent = 'Lozinke se ne podudaraju.'; return; }
+      const btn = document.getElementById('rst-btn');
+      btn.disabled = true; btn.textContent = 'Postavljam...';
+      const { error } = await supabase.auth.updateUser({ password: p1 });
+      if (error) {
+        document.getElementById('rst-err').textContent = 'Greška: ' + error.message;
+        btn.disabled = false; btn.textContent = 'Postavi lozinku →';
+      } else {
+        document.getElementById('rst-ok').textContent = '✓ Lozinka postavljena!';
+        setTimeout(() => { closeAuthModal(); window.location.href = '/hq.html'; }, 1200);
+      }
+    });
+
+    // ── Auth state ──
     initAuth((event, session, user) => {
       if (event === 'PASSWORD_RECOVERY') {
-        document.getElementById('pw-reset-overlay').style.display = 'flex';
+        openAuthModal('reset');
         return;
+      }
+      const navBtn  = document.getElementById('nav-auth-btn');
+      const navUser = document.getElementById('nav-auth-user');
+      if (user) {
+        navBtn.style.display  = 'none';
+        navUser.style.display = 'flex';
+        document.getElementById('nav-auth-name').textContent =
+          user.email === 'duhodah@duhodah.com' ? 'Erni' : user.email.split('@')[0];
+      } else {
+        navBtn.style.display  = '';
+        navUser.style.display = 'none';
       }
       if (event === 'SIGNED_IN' || event === 'SIGNED_OUT') {
         renderEventsWidget('events-widget-container');
       }
     });
 
-    // Backup za implicit flow (token u URL hashu)
-    if (window.location.hash.includes('type=recovery')) {
-      document.getElementById('pw-reset-overlay').style.display = 'flex';
-    }
-
-    document.getElementById('pw-reset-btn').addEventListener('click', async () => {
-      const p1  = document.getElementById('pw-p1').value;
-      const p2  = document.getElementById('pw-p2').value;
-      const err = document.getElementById('pw-err');
-      const ok  = document.getElementById('pw-ok');
-      err.textContent = ''; ok.textContent = '';
-      if (p1.length < 8) { err.textContent = 'Lozinka mora imati najmanje 8 znakova.'; return; }
-      if (p1 !== p2)     { err.textContent = 'Lozinke se ne podudaraju.'; return; }
-      const btn = document.getElementById('pw-reset-btn');
-      btn.disabled = true; btn.textContent = 'Postavljam...';
-      const { error } = await supabase.auth.updateUser({ password: p1 });
-      if (error) {
-        err.textContent = 'Greška: ' + error.message;
-        btn.disabled = false; btn.textContent = 'Postavi lozinku →';
-      } else {
-        ok.textContent = '✓ Lozinka postavljena!';
-        setTimeout(() => { window.location.href = '/hq.html'; }, 1500);
-      }
-    });
+    document.getElementById('nav-auth-signout').addEventListener('click', () => supabase.auth.signOut());
 
     // Render events widget
     renderEventsWidget('events-widget-container');
@@ -4375,6 +4586,58 @@
     // Auth signout link u nav (ako postoji)
     document.getElementById('auth-signout-btn')?.addEventListener('click', signOut);
   </script>
+
+  <!-- ════ AUTH MODAL ════ -->
+  <div id="auth-modal">
+    <div class="auth-box">
+      <button class="auth-close" id="auth-close">✕</button>
+      <div class="auth-modal-logo">DUHODAH</div>
+      <div class="auth-modal-tag">Prijava</div>
+
+      <div class="auth-tabs">
+        <button class="auth-tab active" data-tab="pretplatnik">Pretplatnik</button>
+        <button class="auth-tab" data-tab="admin">Admin</button>
+      </div>
+
+      <!-- Pretplatnik: magic link -->
+      <div class="auth-panel active" id="panel-pretplatnik">
+        <label class="auth-lbl">Email adresa</label>
+        <input type="email" class="auth-inp" id="sub-email" placeholder="tvoj@email.com" autocomplete="email">
+        <button class="auth-submit" id="sub-btn">Pošalji link za prijavu →</button>
+        <div class="auth-ok"  id="sub-ok"></div>
+        <div class="auth-err" id="sub-err"></div>
+        <div class="auth-hint">Dobit ćeš link za prijavu na email.<br>Bez lozinke — jednostavno klikni link.</div>
+      </div>
+
+      <!-- Admin: password -->
+      <div class="auth-panel" id="panel-admin">
+        <label class="auth-lbl">Email</label>
+        <input type="email" class="auth-inp" id="adm-email" value="duhodah@duhodah.com" autocomplete="email">
+        <label class="auth-lbl">Lozinka</label>
+        <input type="password" class="auth-inp" id="adm-pass" placeholder="••••••••" autocomplete="current-password">
+        <button class="auth-submit" id="adm-btn">Prijava →</button>
+        <div class="auth-ok"  id="adm-ok"></div>
+        <div class="auth-err" id="adm-err"></div>
+        <div class="auth-hint">
+          <button id="adm-forgot">Zaboravljena lozinka? Pošalji reset link</button>
+        </div>
+      </div>
+
+      <!-- Password reset (pojavi se kad dođe recovery token) -->
+      <div class="auth-panel" id="panel-reset">
+        <div style="font-size:0.75rem; color:rgba(255,255,255,0.45); margin-bottom:1.5rem; text-align:center; line-height:1.65;">
+          Postavi novu lozinku za Duhodah HQ
+        </div>
+        <label class="auth-lbl">Nova lozinka</label>
+        <input type="password" class="auth-inp" id="rst-p1" placeholder="Minimum 8 znakova" autocomplete="new-password">
+        <label class="auth-lbl">Ponovi lozinku</label>
+        <input type="password" class="auth-inp" id="rst-p2" placeholder="Ponovi lozinku" autocomplete="new-password">
+        <button class="auth-submit" id="rst-btn">Postavi lozinku →</button>
+        <div class="auth-ok"  id="rst-ok"></div>
+        <div class="auth-err" id="rst-err"></div>
+      </div>
+    </div>
+  </div>
 
   <!-- Password reset overlay (za Supabase recovery flow) -->
   <div id="pw-reset-overlay" style="
