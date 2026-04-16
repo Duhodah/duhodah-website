@@ -214,7 +214,8 @@
 .cal-widget-card:hover {
   background: rgba(255, 255, 255, 0.055);
   transform: translateY(-4px);
-  box-shadow: 0 16px 48px rgba(0, 0, 0, 0.4);
+  border-color: var(--c-border, rgba(4, 255, 255, 0.25));
+  box-shadow: 0 16px 48px rgba(0, 0, 0, 0.4), 0 0 28px var(--c-glow, rgba(4, 255, 255, 0.07));
 }
 
 /* Akcent linija na vrhu kartice — boja po tipu */
@@ -310,6 +311,26 @@
   font-size: 0.78rem;
   color: var(--cal-text-dim);
   font-family: 'Jura', sans-serif;
+}
+
+.cal-widget-card__tags {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 6px;
+  margin-bottom: 12px;
+}
+
+.cwt {
+  font-family: 'Jura', sans-serif;
+  font-size: 0.58rem;
+  font-weight: 700;
+  letter-spacing: 0.1em;
+  text-transform: uppercase;
+  padding: 3px 9px;
+  border-radius: 20px;
+  border: 1px solid;
+  line-height: 1.6;
+  white-space: nowrap;
 }
 
 .cal-widget-card__opis {

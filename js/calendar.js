@@ -12,7 +12,7 @@ const DANI_PUNI = ['Nedjelja', 'Ponedjeljak', 'Utorak', 'Srijeda', 'Četvrtak', 
 const MJESECI = ['Siječanj', 'Veljača', 'Ožujak', 'Travanj', 'Svibanj', 'Lipanj',
                  'Srpanj', 'Kolovoz', 'Rujan', 'Listopad', 'Studeni', 'Prosinac'];
 
-// Tip badge boje i labeli
+// Tip badge boje i labeli (fallback ako nema tagova)
 const TIP_CONFIG = {
   breathwork_journey: { label: 'Breathwork Journey', color: 'cyan' },
   autoskola_1: { label: 'Autoškola — Susret 1', color: 'magenta' },
@@ -21,6 +21,18 @@ const TIP_CONFIG = {
   autoskola_4: { label: 'Autoškola — Susret 4', color: 'magenta' },
   individualno: { label: 'Individualna sesija', color: 'cyan' },
 };
+
+// Tag definicije — sinkronizirano s hq.html
+const TAG_DEFS = [
+  { key:'dp_mir',    label:'Disajno putovanje MIR',       color:'#04e8ff', group:'tip' },
+  { key:'dp_tok',    label:'Disajno putovanje TOK',       color:'#8b9eff', group:'tip' },
+  { key:'as_hod',    label:'Tečaj autoškola HOD',         color:'#d702f1', group:'tip' },
+  { key:'as_uhoda',  label:'Tečaj autoškola UHODA',       color:'#ff7043', group:'tip' },
+  { key:'dp_free',   label:'Besplatno disajno putovanje', color:'#00e676', group:'tip' },
+  { key:'online',    label:'ONLINE',                      color:'#4fc3f7', group:'format' },
+  { key:'uzivo_dvo', label:'UŽIVO DVORANA',               color:'#ffd54f', group:'format' },
+  { key:'uzivo_pri', label:'UŽIVO PRIRODA',               color:'#69f0ae', group:'format' },
+];
 
 // ============================================================
 // FORMATIRANJE
@@ -102,7 +114,7 @@ export async function renderEventsWidget(containerId) {
 
   try {
     const [events, authState] = await Promise.all([
-      getUpcomingEvents(3),
+      getUpcomingEvents(6),
       getAuthState()
     ]);
 
@@ -120,17 +132,32 @@ export async function renderEventsWidget(containerId) {
       const dayNum = d.getDate();
       const monthAbbr = MJESECI[d.getMonth()].slice(0, 3).toUpperCase();
 
+      // Razriješi tagove i izvuci boje
+      const tagovi = ev.tagovi || [];
+      const resolvedTags = tagovi.map(k => TAG_DEFS.find(t => t.key === k)).filter(Boolean);
+      const tipTagObj    = resolvedTags.find(t => t.group === 'tip');
+      const formatTagObj = resolvedTags.find(t => t.group === 'format');
+      const tipColor     = tipTagObj?.color    || (tipCfg.color === 'cyan' ? '#04e8ff' : '#d702f1');
+      const formatColor  = formatTagObj?.color || null;
+      const accentBg     = formatColor
+        ? `linear-gradient(90deg, ${tipColor}, ${formatColor})`
+        : `linear-gradient(90deg, ${tipColor}, transparent)`;
+      const primaryLabel = tipTagObj?.label || tipCfg.label;
+      const tagChipsHtml = resolvedTags.map(t =>
+        `<span class="cwt" style="color:${t.color};border-color:${t.color}38;background:${t.color}14;">${t.label}</span>`
+      ).join('');
+
       return `
-        <article class="cal-widget-card cal-widget-card--${tipCfg.color}${uskoro ? ' cal-widget-card--uskoro' : ''}">
-          <div class="cal-widget-card__accent"></div>
+        <article class="cal-widget-card${uskoro ? ' cal-widget-card--uskoro' : ''}" style="--c-border:${tipColor}40;--c-glow:${tipColor}14;">
+          <div class="cal-widget-card__accent" style="background:${accentBg};"></div>
           <div class="cal-widget-card__inner">
             <div class="cal-widget-card__top">
               <div class="cal-widget-card__date-block">
-                <span class="cal-widget-card__day-num">${dayNum}</span>
+                <span class="cal-widget-card__day-num" style="color:${tipColor};">${dayNum}</span>
                 <span class="cal-widget-card__month-abbr">${monthAbbr}</span>
               </div>
               <div class="cal-widget-card__badges">
-                <span class="cal-badge cal-badge--${tipCfg.color}">${tipCfg.label}</span>
+                <span class="cal-badge" style="color:${tipColor};background:${tipColor}18;border-color:${tipColor}50;">${primaryLabel}</span>
                 ${uskoro ? '<span class="cal-badge cal-badge--uskoro">Uskoro</span>' : ''}
               </div>
             </div>
@@ -139,6 +166,7 @@ export async function renderEventsWidget(containerId) {
               <span>🕐 ${formatVrijeme(ev.datum)} · ${ev.trajanje_min} min</span>
               <span>📍 ${ev.lokacija.split(',')[0]}</span>
             </div>
+            ${tagChipsHtml ? `<div class="cal-widget-card__tags">${tagChipsHtml}</div>` : ''}
             ${ev.opis_kratki ? `<p class="cal-widget-card__opis">${ev.opis_kratki}</p>` : ''}
             <div class="cal-widget-card__footer">
               <span class="cal-mjesta ${avail.slobodna <= 3 ? 'cal-mjesta--kritican' : ''}">${avail.slobodna} mjesta slobodno</span>
