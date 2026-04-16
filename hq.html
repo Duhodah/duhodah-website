@@ -180,6 +180,23 @@
     .badge-ind { background:rgba(154,171,216,0.07); color:var(--periwinkle); border:1px solid rgba(154,171,216,0.2); }
     .badge-sub { background:rgba(84,2,128,0.12); color:#c084fc; border:1px solid rgba(84,2,128,0.3); }
 
+    /* Tag picker */
+    .tag-group-label { font-size:0.58rem; letter-spacing:0.12em; text-transform:uppercase; color:rgba(255,255,255,0.25); margin-bottom:0.4rem; font-family:var(--fb); }
+    .tag-picker { display:flex; flex-wrap:wrap; gap:0.4rem; margin-bottom:0.9rem; }
+    .tag-btn {
+      font-family:var(--fb); font-size:0.58rem; letter-spacing:0.1em; text-transform:uppercase;
+      padding:0.28rem 0.7rem; border-radius:12px; cursor:pointer; transition:all 0.15s;
+      border:1px solid; background:transparent; opacity:0.38;
+    }
+    .tag-btn:hover { opacity:0.7; }
+    .tag-btn.on { opacity:1; }
+    /* Event card tag row */
+    .card-tags { display:flex; flex-wrap:wrap; gap:0.3rem; margin-bottom:0.5rem; }
+    .card-tag {
+      font-family:var(--fb); font-size:0.52rem; letter-spacing:0.1em; text-transform:uppercase;
+      padding:0.18rem 0.55rem; border-radius:10px; border:1px solid;
+    }
+
     .toggle-wrap { display:flex; align-items:center; gap:0.5rem; margin-left:auto; cursor:pointer; }
     .toggle-wrap span { font-family:var(--fb); font-size:0.62rem; letter-spacing:0.06em; color:rgba(255,255,255,0.3); }
     .toggle-sw { position:relative; width:38px; height:20px; flex-shrink:0; }
@@ -434,20 +451,15 @@
     <input type="hidden" id="ef-id">
     <div class="form-sec">Osnovni podaci</div>
     <div class="field"><label>Naziv *</label><input type="text" id="ef-naziv" required placeholder="Breathwork Journey — Lipanj"></div>
-    <div class="frow">
-      <div class="field">
-        <label>Tip *</label>
-        <select id="ef-tip" required>
-          <option value="">— odaberi —</option>
-          <option value="breathwork_journey">Breathwork Journey</option>
-          <option value="autoskola_1">Autoškola — Susret 1</option>
-          <option value="autoskola_2">Autoškola — Susret 2</option>
-          <option value="autoskola_3">Autoškola — Susret 3</option>
-          <option value="autoskola_4">Autoškola — Susret 4</option>
-          <option value="individualno">Individualno</option>
-        </select>
-      </div>
-      <div class="field"><label>Datum i vrijeme *</label><input type="datetime-local" id="ef-datum" required></div>
+    <input type="hidden" id="ef-tip" value="breathwork_journey">
+    <div class="field"><label>Datum i vrijeme *</label><input type="datetime-local" id="ef-datum" required></div>
+
+    <div class="form-sec">Tagovi</div>
+    <div class="field">
+      <div class="tag-group-label">Vrsta događaja</div>
+      <div class="tag-picker" id="tp-tip"></div>
+      <div class="tag-group-label">Format</div>
+      <div class="tag-picker" id="tp-format"></div>
     </div>
     <div class="frow">
       <div class="field"><label>Trajanje (min)</label><input type="number" id="ef-trajanje" value="120" min="30"></div>
@@ -555,6 +567,70 @@ import { SUPABASE_URL, SUPABASE_ANON_KEY } from './js/supabase-config.js';
 const sb = createClient(SUPABASE_URL, SUPABASE_ANON_KEY);
 const ADMIN = 'duhodah@duhodah.com';
 let allEvents = [], allUsluge = [], evFilter = 'sve', editEvId = null, editUsId = null;
+
+// ════ TAG SUSTAV ══════════════════════════════════════
+const TAG_DEFS = [
+  // Vrsta
+  { key:'dp_mir',    label:'Disajno putovanje MIR',       color:'#04e8ff', group:'tip' },
+  { key:'dp_tok',    label:'Disajno putovanje TOK',       color:'#8b9eff', group:'tip' },
+  { key:'as_hod',    label:'Tečaj autoškola HOD',         color:'#d702f1', group:'tip' },
+  { key:'as_uhoda',  label:'Tečaj autoškola UHODA',       color:'#ff7043', group:'tip' },
+  { key:'dp_free',   label:'Besplatno disajno putovanje', color:'#00e676', group:'tip' },
+  // Format
+  { key:'online',    label:'ONLINE',         color:'#4fc3f7', group:'format' },
+  { key:'uzivo_dvo', label:'UŽIVO DVORANA',  color:'#ffd54f', group:'format' },
+  { key:'uzivo_pri', label:'UŽIVO PRIRODA',  color:'#69f0ae', group:'format' },
+];
+
+// Mapiraj tag ključ → interni tip (za filtere)
+function tipFromTags(tags) {
+  if (!tags || !tags.length) return 'breathwork_journey';
+  if (tags.includes('as_hod') || tags.includes('as_uhoda')) return 'autoskola_1';
+  return 'breathwork_journey';
+}
+
+// Gradi tag picker u containeru
+function buildTagPicker(containerId, group, selectedKeys = []) {
+  const c = document.getElementById(containerId);
+  c.innerHTML = '';
+  TAG_DEFS.filter(t => t.group === group).forEach(t => {
+    const btn = document.createElement('button');
+    btn.type = 'button';
+    btn.className = 'tag-btn' + (selectedKeys.includes(t.key) ? ' on' : '');
+    btn.textContent = t.label;
+    btn.style.color       = t.color;
+    btn.style.borderColor = t.color;
+    btn.style.setProperty('--tag-bg', t.color + '22');
+    if (btn.classList.contains('on')) btn.style.background = t.color + '22';
+    btn.addEventListener('click', () => {
+      btn.classList.toggle('on');
+      btn.style.background = btn.classList.contains('on') ? t.color + '22' : 'transparent';
+    });
+    c.appendChild(btn);
+  });
+}
+
+// Vrati niz odabranih tag ključeva iz oba pickera
+function getSelectedTags() {
+  const keys = [];
+  document.querySelectorAll('#tp-tip .tag-btn.on, #tp-format .tag-btn.on').forEach(btn => {
+    const def = TAG_DEFS.find(t => t.label === btn.textContent);
+    if (def) keys.push(def.key);
+  });
+  return keys;
+}
+
+// Render tag badgeva na kartici
+function renderCardTags(tagovi) {
+  if (!tagovi || !tagovi.length) return '';
+  return '<div class="card-tags">' +
+    tagovi.map(key => {
+      const def = TAG_DEFS.find(t => t.key === key);
+      if (!def) return '';
+      return `<span class="card-tag" style="color:${def.color};border-color:${def.color}33;background:${def.color}11">${def.label}</span>`;
+    }).join('') +
+  '</div>';
+}
 
 // ════ PASSWORD RECOVERY — detektira token u URL hashu ═════
 (function() {
@@ -680,11 +756,10 @@ function renderEvents() {
   container.innerHTML = list.map(e => {
     const d   = new Date(e.datum);
     const dt  = d.toLocaleDateString('hr-HR', { day:'numeric', month:'short', year:'numeric' }) + ' · ' + d.toLocaleTimeString('hr-HR',{hour:'2-digit',minute:'2-digit'});
-    const b   = evBadge(e.tip);
     return `<div class="card ${e.aktivan?'':'inactive'}">
-      <div style="display:flex;align-items:flex-start;justify-content:space-between;gap:.6rem;margin-bottom:.6rem;">
-        <span class="badge ${b.cls}">${b.label}</span>
-        ${new Date(e.datum)<new Date()?'<span style="font-size:.6rem;color:rgba(255,255,255,.22);font-family:var(--fb);letter-spacing:.1em">PROŠLO</span>':''}
+      <div style="display:flex;align-items:flex-start;justify-content:space-between;gap:.6rem;margin-bottom:.4rem;">
+        <div style="flex:1">${renderCardTags(e.tagovi)}</div>
+        ${new Date(e.datum)<new Date()?'<span style="font-size:.6rem;color:rgba(255,255,255,.22);font-family:var(--fb);letter-spacing:.1em;white-space:nowrap">PROŠLO</span>':''}
       </div>
       <div style="font-family:var(--fh);font-size:.95rem;color:rgba(255,255,255,.88);margin-bottom:.4rem;">${e.naziv}</div>
       <div class="card-meta">
@@ -722,6 +797,8 @@ document.getElementById('btn-new-event').addEventListener('click', () => {
   document.getElementById('ef-kapacitet').value = 15;
   document.getElementById('ef-lokacija').value = 'Livada "Kod Zdenca", Šetalište kardinala Franje Šepera, Osijek';
   document.getElementById('ef-msg').textContent = '';
+  buildTagPicker('tp-tip',    'tip',    []);
+  buildTagPicker('tp-format', 'format', []);
   openPanel('ev-panel');
 });
 
@@ -750,6 +827,9 @@ window.openEditEv = id => {
     document.getElementById('ef-datum').value = `${d.getFullYear()}-${p(d.getMonth()+1)}-${p(d.getDate())}T${p(d.getHours())}:${p(d.getMinutes())}`;
   }
   document.getElementById('ef-msg').textContent = '';
+  const savedTags = e.tagovi || [];
+  buildTagPicker('tp-tip',    'tip',    savedTags);
+  buildTagPicker('tp-format', 'format', savedTags);
   openPanel('ev-panel');
 };
 
@@ -771,10 +851,12 @@ document.getElementById('ev-form').addEventListener('submit', async e => {
   if (document.getElementById('ef-plan-15').checked)  plans.push('zajednica_15');
   if (document.getElementById('ef-plan-god').checked) plans.push('zajednica_120_god');
   const datum = document.getElementById('ef-datum').value;
+  const tagovi = getSelectedTags();
   const payload = {
-    naziv: document.getElementById('ef-naziv').value.trim(),
-    tip:   document.getElementById('ef-tip').value,
-    datum: datum ? new Date(datum).toISOString() : null,
+    naziv:  document.getElementById('ef-naziv').value.trim(),
+    tip:    tipFromTags(tagovi),
+    tagovi: tagovi,
+    datum:  datum ? new Date(datum).toISOString() : null,
     trajanje_min: +document.getElementById('ef-trajanje').value||120,
     kapacitet:    +document.getElementById('ef-kapacitet').value||15,
     lokacija:     document.getElementById('ef-lokacija').value.trim()||null,

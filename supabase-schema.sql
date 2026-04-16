@@ -155,6 +155,11 @@ CREATE POLICY "dogadjaji_public_read" ON dogadjaji
 CREATE POLICY "dogadjaji_admin_all" ON dogadjaji
   FOR ALL USING (auth.role() = 'authenticated');
 
+-- ============================================================
+-- DODAJ OVO ako koristiš postojeću dogadjaji tablicu:
+-- ============================================================
+ALTER TABLE dogadjaji ADD COLUMN IF NOT EXISTS tagovi TEXT[] DEFAULT '{}';
+
 -- Registracije: korisnik vidi samo svoje
 ALTER TABLE registracije ENABLE ROW LEVEL SECURITY;
 CREATE POLICY "registracije_own_read" ON registracije
