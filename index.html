@@ -4297,20 +4297,28 @@
   <link rel="stylesheet" href="css/calendar.css">
 
   <script type="module">
-    import { createClient } from 'https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2/+esm';
-    import { SUPABASE_URL, SUPABASE_ANON_KEY } from './js/supabase-config.js';
+    import { supabase } from './js/supabase-config.js';
     import { renderEventsWidget } from './js/calendar.js';
     import { initAuth, signOut } from './js/auth.js';
     import { trackInteraction } from './js/db.js';
     import { getCurrentUser } from './js/auth.js';
 
-    // ── PASSWORD RECOVERY (PKCE + implicit) ──────────────────
-    const _sb = createClient(SUPABASE_URL, SUPABASE_ANON_KEY);
-    _sb.auth.onAuthStateChange((event) => {
+    // ── PASSWORD RECOVERY ──────────────────────────────────────
+    // Jedan client, jedan listener — radi za i PKCE i implicit flow
+    initAuth((event, session, user) => {
       if (event === 'PASSWORD_RECOVERY') {
         document.getElementById('pw-reset-overlay').style.display = 'flex';
+        return;
+      }
+      if (event === 'SIGNED_IN' || event === 'SIGNED_OUT') {
+        renderEventsWidget('events-widget-container');
       }
     });
+
+    // Backup za implicit flow (token u URL hashu)
+    if (window.location.hash.includes('type=recovery')) {
+      document.getElementById('pw-reset-overlay').style.display = 'flex';
+    }
 
     document.getElementById('pw-reset-btn').addEventListener('click', async () => {
       const p1  = document.getElementById('pw-p1').value;
@@ -4320,26 +4328,20 @@
       err.textContent = ''; ok.textContent = '';
       if (p1.length < 8) { err.textContent = 'Lozinka mora imati najmanje 8 znakova.'; return; }
       if (p1 !== p2)     { err.textContent = 'Lozinke se ne podudaraju.'; return; }
-      document.getElementById('pw-reset-btn').disabled = true;
-      document.getElementById('pw-reset-btn').textContent = 'Postavljam...';
-      const { error } = await _sb.auth.updateUser({ password: p1 });
+      const btn = document.getElementById('pw-reset-btn');
+      btn.disabled = true; btn.textContent = 'Postavljam...';
+      const { error } = await supabase.auth.updateUser({ password: p1 });
       if (error) {
         err.textContent = 'Greška: ' + error.message;
-        document.getElementById('pw-reset-btn').disabled = false;
-        document.getElementById('pw-reset-btn').textContent = 'Postavi lozinku →';
+        btn.disabled = false; btn.textContent = 'Postavi lozinku →';
       } else {
         ok.textContent = '✓ Lozinka postavljena!';
         setTimeout(() => { window.location.href = '/hq.html'; }, 1500);
       }
     });
 
-    // Auth listener
-    initAuth((event, session, user) => {
-      if (event === 'SIGNED_IN' || event === 'SIGNED_OUT') {
-        // Refresh widget na promjenu auth stanja
-        renderEventsWidget('events-widget-container');
-      }
-    });
+    // Render events widget
+    renderEventsWidget('events-widget-container');
 
     // Render events widget
     renderEventsWidget('events-widget-container');
