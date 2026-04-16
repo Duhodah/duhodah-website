@@ -156,7 +156,7 @@ export async function renderEventsWidget(containerId) {
 
   } catch (err) {
     console.error('[Calendar widget]', err);
-    container.innerHTML = `<p class="cal-empty">Greška pri učitavanju termina.</p>`;
+    container.innerHTML = `<p class="cal-empty">Greška: ${err?.message || err?.code || JSON.stringify(err)}</p>`;
   }
 }
 
