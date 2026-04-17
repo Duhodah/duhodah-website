@@ -502,7 +502,7 @@ let currentMonth = new Date().getMonth() + 1;
 let allEvents = [];
 let authState = {};
 let activePanel = null;
-let activeFilter = null; // null = sve, ili tag key iz TAG_DEFS
+let activeFilters = new Set(); // prazan Set = sve
 
 function initTagFilters() {
   const container = document.getElementById('cal-filter-tags');
@@ -523,9 +523,26 @@ function initTagFilters() {
   container.addEventListener('click', e => {
     const btn = e.target.closest('.cal-filter-tag');
     if (!btn) return;
-    container.querySelectorAll('.cal-filter-tag').forEach(b => b.classList.remove('cal-filter-tag--active'));
-    btn.classList.add('cal-filter-tag--active');
-    activeFilter = btn.dataset.tag === 'sve' ? null : btn.dataset.tag;
+    const tag = btn.dataset.tag;
+
+    if (tag === 'sve') {
+      // Sve — obriši sve filtere
+      activeFilters.clear();
+      container.querySelectorAll('.cal-filter-tag').forEach(b => b.classList.remove('cal-filter-tag--active'));
+      btn.classList.add('cal-filter-tag--active');
+    } else {
+      // Toggle tag
+      if (activeFilters.has(tag)) {
+        activeFilters.delete(tag);
+        btn.classList.remove('cal-filter-tag--active');
+      } else {
+        activeFilters.add(tag);
+        btn.classList.add('cal-filter-tag--active');
+      }
+      // Makni "Sve" active ako ima aktivnih filtera, vrati ga ako ih nema
+      const sveBtn = container.querySelector('[data-tag="sve"]');
+      if (sveBtn) sveBtn.classList.toggle('cal-filter-tag--active', activeFilters.size === 0);
+    }
     renderListView();
   });
 }
@@ -573,9 +590,9 @@ async function renderListView() {
   // Spremi sve u cache da showEventModal radi
   allEvents.forEach(ev => { eventsCache[ev.id] = ev; });
 
-  // Filtriraj po aktivnom tagu
-  const filtered = activeFilter
-    ? allEvents.filter(ev => (ev.tagovi || []).includes(activeFilter))
+  // Filtriraj — OR logika: prikaži ako događaj ima BILO KOJI od aktivnih tagova
+  const filtered = activeFilters.size > 0
+    ? allEvents.filter(ev => (ev.tagovi || []).some(t => activeFilters.has(t)))
     : allEvents;
 
   if (!filtered.length) {
