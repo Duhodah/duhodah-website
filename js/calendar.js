@@ -4,7 +4,7 @@
 
 import { getUpcomingEvents, getEventsByMonth, getEventAvailability, registerForEvent, registerAnonymous, isUserRegistered, cancelRegistration } from './db.js';
 import { getAuthState, signInWithEmail } from './auth.js';
-import { buildStripeUrl } from './stripe.js';
+import { buildStripeUrl, KARTE_LINKS } from './stripe.js';
 
 // Lokalizirani nazivi dana i mjeseci (HR)
 const DANI = ['Ned', 'Pon', 'Uto', 'Sri', 'Čet', 'Pet', 'Sub'];
@@ -67,6 +67,13 @@ function isUskoro(isoStr) {
 // GUMB LOGIKA (uvjetno prikazivanje)
 // ============================================================
 
+// Vrati pravi Stripe link za event: vlastiti ako postoji, inače generički po formatu
+function resolveStripeLink(event) {
+  if (event.stripe_link) return event.stripe_link;
+  const isOnline = (event.tagovi || []).includes('online');
+  return isOnline ? KARTE_LINKS.online : KARTE_LINKS.uzivo;
+}
+
 async function buildEventButton(event, authState, availability) {
   const { user, pretplata } = authState;
   const isBesplatno = event.tagovi?.includes('dp_free');
@@ -112,7 +119,7 @@ async function buildEventButton(event, authState, availability) {
       </button>`;
     } else {
       // Prijavljeni korisnik bez pretplate — Stripe link s kontekstom
-      const stripeUrl = buildStripeUrl(event.stripe_link, {
+      const stripeUrl = buildStripeUrl(resolveStripeLink(event), {
         userId:  user.id,
         email:   user.email,
         eventId: event.id,
@@ -126,8 +133,8 @@ async function buildEventButton(event, authState, availability) {
       </div>`;
     }
   } else {
-    // Anonimni posjetitelj — Stripe link bez konteksta (ali s # ako link nije postavljen)
-    const stripeUrl = event.stripe_link || '#';
+    // Anonimni posjetitelj — Stripe link bez konteksta
+    const stripeUrl = resolveStripeLink(event);
     const cijenaLabel = event.cijena_eur ? `${event.cijena_eur} €` : 'Upitaj';
     return `<div class="cal-btn-group cal-btn-group--stacked">
       <a class="cal-btn cal-btn--pay" href="${stripeUrl}" target="_blank" rel="noopener">

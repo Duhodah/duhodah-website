@@ -16,11 +16,19 @@
 // Format: https://buy.stripe.com/xxxxxxxx
 // NAPOMENA: Ne dodavaj ništa iza URL-a — buildStripeUrl() dodaje parametre automatski.
 
+// ---- Pretplate ----
 export const STRIPE_LINKS = {
   online_35:      'https://buy.stripe.com/fZu14na18cui5JPdITdby00',  // Online (Starter) — 35 €/mj
   optimum_50:     'https://buy.stripe.com/9B67sLflseCqa056grdby01',  // Optimum — 50 €/mj
   premium_60:     'https://buy.stripe.com/aFabJ13CKama4FLdITdby02',  // Premium — 60 €/mj
   online_god_300: 'https://buy.stripe.com/28EeVd7T01PEfkpgV5dby03',  // Godišnje online — 300 €/god
+};
+
+// ---- Karte za događaje ----
+// Ako događaj nema postavljen stripe_link, koristi ove generičke linkove.
+export const KARTE_LINKS = {
+  online: 'https://buy.stripe.com/bJeaEXddk0LA6NT9sDdby05',  // Online karta — 20 €
+  uzivo:  'https://buy.stripe.com/eVq9AT4GOfGua050W7dby06',  // Uživo karta — 30 €
 };
 
 // ============================================================
