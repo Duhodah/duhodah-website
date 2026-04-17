@@ -1296,14 +1296,14 @@
   background: #0a0a0a;
   border-radius: 20px 20px 0 0;
   flex-shrink: 0;
-  overflow: hidden;
+  line-height: 0;
 }
 
 .cal-ev-modal__hero-img {
   width: 100%;
   height: auto;
-  object-fit: contain;
   display: block;
+  border-radius: 20px 20px 0 0;
 }
 
 /* Animated placeholder — vidljiv kad nema slike */
