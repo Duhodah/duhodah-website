@@ -372,6 +372,28 @@
       </div>
     </div>
 
+    <div class="form-section-title">Tagovi</div>
+
+    <div class="field">
+      <label>Tip događaja <span class="hint">(odaberi jedan)</span></label>
+      <div class="checkbox-group">
+        <label class="checkbox-label"><input type="checkbox" class="f-tag" value="dp_mir">  Disajno putovanje MIR</label>
+        <label class="checkbox-label"><input type="checkbox" class="f-tag" value="dp_tok">  Disajno putovanje TOK</label>
+        <label class="checkbox-label"><input type="checkbox" class="f-tag" value="as_hod">  Tečaj autoškola HOD</label>
+        <label class="checkbox-label"><input type="checkbox" class="f-tag" value="as_uhoda">Tečaj autoškola UHODA</label>
+        <label class="checkbox-label"><input type="checkbox" class="f-tag" value="dp_free"> Besplatno disajno putovanje</label>
+      </div>
+    </div>
+
+    <div class="field">
+      <label>Format <span class="hint">(odaberi jedan)</span></label>
+      <div class="checkbox-group">
+        <label class="checkbox-label"><input type="checkbox" class="f-tag" value="online">    Online</label>
+        <label class="checkbox-label"><input type="checkbox" class="f-tag" value="uzivo_dvo"> Uživo — dvorana</label>
+        <label class="checkbox-label"><input type="checkbox" class="f-tag" value="uzivo_pri"> Uživo — priroda</label>
+      </div>
+    </div>
+
     <div class="form-section-title">Ostale postavke</div>
 
     <div class="field">
@@ -555,6 +577,7 @@
     document.getElementById('f-kapacitet').value = '15';
     document.getElementById('f-cijena-pretplata').value = '0';
     document.getElementById('f-lokacija').value = 'Livada "Kod Zdenca", Šetalište kardinala Franje Šepera, Osijek';
+    document.querySelectorAll('.f-tag').forEach(cb => { cb.checked = false; });
     setSaveStatus('');
     openPanel();
   }
@@ -587,6 +610,9 @@
     const plans = e.pokriva_plan || [];
     document.getElementById('f-plan-15').checked  = plans.includes('zajednica_15');
     document.getElementById('f-plan-god').checked = plans.includes('zajednica_120_god');
+    // Tags
+    const tagovi = e.tagovi || [];
+    document.querySelectorAll('.f-tag').forEach(cb => { cb.checked = tagovi.includes(cb.value); });
     setSaveStatus('');
     openPanel();
   };
@@ -634,6 +660,7 @@
     const plans = [];
     if (document.getElementById('f-plan-15').checked)  plans.push('zajednica_15');
     if (document.getElementById('f-plan-god').checked) plans.push('zajednica_120_god');
+    const tagovi = [...document.querySelectorAll('.f-tag:checked')].map(cb => cb.value);
 
     // Convert datetime-local to ISO with timezone
     const datumLocal = document.getElementById('f-datum').value;
@@ -654,6 +681,7 @@
       pokriva_plan:       plans.length ? plans : null,
       slug:               document.getElementById('f-slug').value.trim(),
       aktivan:            document.getElementById('f-aktivan').checked,
+      tagovi:             tagovi.length ? tagovi : null,
     };
 
     let error;
