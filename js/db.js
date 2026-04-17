@@ -98,6 +98,29 @@ export async function registerForEvent(userId, eventId, tipPlacanja, poruka = ''
   return data;
 }
 
+// Anonimna prijava na besplatan događaj (bez auth)
+export async function registerAnonymous(ime, email, eventId, poruka = '') {
+  const { data, error } = await supabase
+    .from('registracije')
+    .insert({
+      ime: ime.trim(),
+      email: email.trim().toLowerCase(),
+      dogadjaj_id: eventId,
+      tip_placanja: 'besplatno',
+      status: 'potvrdjena',
+      user_id: null,
+      poruka
+    })
+    .select()
+    .single();
+  if (error) throw error;
+  await trackInteraction(null, email, 'event_registracija', {
+    dogadjaj_id: eventId,
+    tip_placanja: 'besplatno'
+  });
+  return data;
+}
+
 // Provjeri je li korisnik već registriran
 export async function isUserRegistered(userId, eventId) {
   const { data } = await supabase

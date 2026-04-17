@@ -2,7 +2,7 @@
 // CALENDAR.JS — Duhodah Calendar Render Engine
 // ============================================================
 
-import { getUpcomingEvents, getEventsByMonth, getEventAvailability, registerForEvent, isUserRegistered, cancelRegistration } from './db.js';
+import { getUpcomingEvents, getEventsByMonth, getEventAvailability, registerForEvent, registerAnonymous, isUserRegistered, cancelRegistration } from './db.js';
 import { getAuthState, signInWithEmail } from './auth.js';
 import { supabase } from './supabase-config.js';
 
@@ -88,12 +88,9 @@ async function buildEventButton(event, authState, availability) {
         Prijavi se →
       </button>`;
     } else {
-      return `<div class="cal-btn-group cal-btn-group--stacked">
-        <button class="cal-btn cal-btn--free" onclick="showLoginModal('${event.id}')">
-          Prijavi se →
-        </button>
-        <span class="cal-member-hint">Besplatno — unesite email za prijavu</span>
-      </div>`;
+      return `<button class="cal-btn cal-btn--free" onclick="showRegFormModal('${event.id}')">
+        Prijavi se →
+      </button>`;
     }
   }
 
@@ -240,6 +237,76 @@ async function refreshWidgetCard(eventId) {
 }
 
 // ============================================================
+// FORMA ZA PRIJAVU (anonimni korisnici, dp_free eventi)
+// ============================================================
+
+function showRegFormModal(eventId) {
+  const MODAL_ID = 'cal-regform-modal';
+  if (!document.getElementById(MODAL_ID)) {
+    const m = document.createElement('div');
+    m.id = MODAL_ID;
+    m.className = 'cal-modal';
+    m.innerHTML = `
+      <div class="cal-modal__box">
+        <button class="cal-modal__close" id="cal-regform-close">✕</button>
+        <h3 class="cal-modal__title">Prijava na događaj</h3>
+        <p class="cal-modal__sub">Upiši svoje podatke — rezervirat ćemo ti mjesto odmah.</p>
+        <form id="cal-regform">
+          <input type="text"  id="cal-rf-ime"    placeholder="Ime i prezime *" required class="cal-modal__input">
+          <input type="email" id="cal-rf-email"  placeholder="Email adresa *"  required class="cal-modal__input">
+          <textarea           id="cal-rf-poruka" placeholder="Napomena (opcionalno)" class="cal-modal__input" rows="2" style="resize:vertical;min-height:56px;"></textarea>
+          <button type="submit" class="cal-modal__submit" id="cal-rf-submit">Rezerviraj mjesto →</button>
+          <div id="cal-rf-msg" style="margin-top:.7rem;font-size:.76rem;color:rgba(255,80,80,.85);min-height:1rem;"></div>
+        </form>
+        <div id="cal-rf-success" style="display:none;text-align:center;padding:1.5rem 0;font-size:.88rem;color:rgba(255,255,255,.65);line-height:1.7;"></div>
+      </div>`;
+    document.body.appendChild(m);
+    document.getElementById('cal-regform-close').addEventListener('click', () => m.classList.remove('cal-modal--open'));
+    m.addEventListener('click', e => { if (e.target === m) m.classList.remove('cal-modal--open'); });
+  }
+
+  const modal  = document.getElementById(MODAL_ID);
+  const form   = document.getElementById('cal-regform');
+  const success = document.getElementById('cal-rf-success');
+
+  form.style.display = '';
+  form.reset();
+  success.style.display = 'none';
+  document.getElementById('cal-rf-msg').textContent = '';
+  modal.dataset.eventId = eventId;
+  modal.classList.add('cal-modal--open');
+
+  form.onsubmit = async (e) => {
+    e.preventDefault();
+    const ime    = document.getElementById('cal-rf-ime').value.trim();
+    const email  = document.getElementById('cal-rf-email').value.trim();
+    const poruka = document.getElementById('cal-rf-poruka').value.trim();
+    const btn    = document.getElementById('cal-rf-submit');
+    const msgEl  = document.getElementById('cal-rf-msg');
+
+    try {
+      btn.disabled = true;
+      btn.textContent = 'Prijavljujem...';
+      await registerAnonymous(ime, email, eventId, poruka);
+
+      form.style.display = 'none';
+      success.style.display = 'block';
+      success.innerHTML = `✓ Uspješno prijavljeno!<br><strong style="color:rgba(4,232,255,.85)">${ime}</strong>, vidimo se.<br><span style="font-size:.78rem;opacity:.6">Potvrda stiže na ${email}</span>`;
+      await refreshWidgetCard(eventId);
+    } catch (err) {
+      const dup = err.message?.toLowerCase().includes('duplicate') || err.code === '23505';
+      msgEl.textContent = dup
+        ? 'Ta email adresa je već prijavljena za ovaj događaj.'
+        : 'Greška pri prijavi. Pokušaj ponovo.';
+      btn.disabled = false;
+      btn.textContent = 'Rezerviraj mjesto →';
+    }
+  };
+}
+
+window.showRegFormModal = showRegFormModal;
+
+// ============================================================
 // FULL PAGE CALENDAR (events.html)
 // ============================================================
 
@@ -263,10 +330,11 @@ export async function initFullCalendar() {
     bindLoginModal();
 
     // Expose global functions za onclick handlere
-    window.registerFree = registerFree;
-    window.cancelReg = cancelReg;
-    window.showLoginModal = showLoginModal;
-    window.openEventPanel = openEventPanel;
+    window.registerFree    = registerFree;
+    window.cancelReg       = cancelReg;
+    window.showLoginModal  = showLoginModal;
+    window.showRegFormModal = showRegFormModal;
+    window.openEventPanel  = openEventPanel;
     window.closeEventPanel = closeEventPanel;
 
   } catch (err) {

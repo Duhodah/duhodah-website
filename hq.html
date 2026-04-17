@@ -265,6 +265,8 @@
     .save-msg.ok  { color:rgba(4,255,255,0.8); }
     .save-msg.err { color:var(--magenta); }
 
+    .reg-filter-label { font-family:var(--fb); font-size:.55rem; letter-spacing:.18em; text-transform:uppercase; color:rgba(255,255,255,.22); white-space:nowrap; min-width:44px; }
+
     /* ── CLIENTS TABLE ── */
     .tbl-wrap { overflow-x:auto; }
     table { width:100%; border-collapse:collapse; font-size:0.82rem; }
@@ -351,6 +353,8 @@
         <div class="sb-item" data-section="usluge"><span class="sb-icon">✦</span> Usluge</div>
         <div class="sb-item" data-section="clients"><span class="sb-icon">👥</span> Klijenti</div>
 
+        <div class="sb-item" data-section="prijavljeni"><span class="sb-icon">✓</span> Prijavljeni</div>
+
         <div class="sb-section-label">Financije</div>
         <div class="sb-item" data-section="financije"><span class="sb-icon">€</span> Financije</div>
       </div>
@@ -424,6 +428,67 @@
                 </tr>
               </thead>
               <tbody id="clients-tbody"></tbody>
+            </table>
+          </div>
+        </div>
+
+        <!-- ── PRIJAVLJENI ── -->
+        <div id="section-prijavljeni" class="section">
+          <div class="stats-grid" id="reg-master-stats"></div>
+
+          <!-- Filteri -->
+          <div style="display:flex;flex-direction:column;gap:.7rem;margin-bottom:1.4rem;">
+            <div style="display:flex;align-items:center;gap:.8rem;flex-wrap:wrap;">
+              <span class="reg-filter-label">Period:</span>
+              <div class="filter-tabs" id="reg-period-tabs">
+                <button class="ftab active" data-period="sve">Sve</button>
+                <button class="ftab" data-period="tjedan">Ovaj tjedan</button>
+                <button class="ftab" data-period="mjesec">Ovaj mjesec</button>
+              </div>
+            </div>
+            <div style="display:flex;align-items:center;gap:.8rem;flex-wrap:wrap;">
+              <span class="reg-filter-label">Vrsta:</span>
+              <div class="filter-tabs" id="reg-tip-tabs">
+                <button class="ftab active" data-tip-f="sve">Svi</button>
+                <button class="ftab" data-tip-f="dp_mir">MIR</button>
+                <button class="ftab" data-tip-f="dp_tok">TOK</button>
+                <button class="ftab" data-tip-f="dp_free">Besplatno</button>
+                <button class="ftab" data-tip-f="as_hod">Autoškola HOD</button>
+                <button class="ftab" data-tip-f="as_uhoda">Autoškola UHODA</button>
+              </div>
+            </div>
+            <div style="display:flex;align-items:center;gap:.8rem;flex-wrap:wrap;">
+              <span class="reg-filter-label">Format:</span>
+              <div class="filter-tabs" id="reg-format-tabs">
+                <button class="ftab active" data-fmt-f="sve">Svi</button>
+                <button class="ftab" data-fmt-f="online">Online</button>
+                <button class="ftab" data-fmt-f="uzivo_dvo">Uživo dvorana</button>
+                <button class="ftab" data-fmt-f="uzivo_pri">Uživo priroda</button>
+              </div>
+            </div>
+            <div style="display:flex;align-items:center;gap:.8rem;">
+              <input type="search" id="reg-search" placeholder="Pretraži po imenu, emailu, događaju..."
+                style="background:rgba(255,255,255,0.04);border:1px solid rgba(255,255,255,0.1);border-radius:7px;padding:.5rem 1rem;color:rgba(255,255,255,.8);font-family:var(--fi);font-size:.84rem;outline:none;width:320px;">
+              <span id="reg-master-count" style="font-size:.72rem;color:rgba(255,255,255,.25);font-family:var(--fb);letter-spacing:.06em;"></span>
+              <button onclick="exportRegCSV()" class="btn-ghost" style="margin-left:auto;color:rgba(0,230,118,.75);border-color:rgba(0,230,118,.2)">↓ Export CSV</button>
+            </div>
+          </div>
+
+          <!-- Tabla -->
+          <div class="tbl-wrap">
+            <table>
+              <thead>
+                <tr>
+                  <th>Ime</th>
+                  <th>Email</th>
+                  <th>Događaj</th>
+                  <th>Datum dod.</th>
+                  <th>Prijavljeno</th>
+                  <th>Plaćanje</th>
+                  <th>Napomena</th>
+                </tr>
+              </thead>
+              <tbody id="reg-master-tbody"></tbody>
             </table>
           </div>
         </div>
@@ -577,6 +642,7 @@ import { SUPABASE_URL, SUPABASE_ANON_KEY } from './js/supabase-config.js';
 const sb = createClient(SUPABASE_URL, SUPABASE_ANON_KEY);
 const ADMIN = 'duhodah@duhodah.com';
 let allEvents = [], allUsluge = [], regCounts = {}, evFilter = 'sve', editEvId = null, editUsId = null;
+let allRegistrations = [], regPeriodFilter = 'sve', regTipFilter = 'sve', regFormatFilter = 'sve', regSearch = '';
 
 // ════ TAG SUSTAV ══════════════════════════════════════
 const TAG_DEFS = [
@@ -720,6 +786,7 @@ const sectionMeta = {
   events:     { title:'Događaji',   sub:'Upravljanje terminima i kalendarom' },
   usluge:     { title:'Usluge',     sub:'Ponuda — cijenik i opisi' },
   clients:    { title:'Klijenti',   sub:'Baza korisnika i aktivnosti' },
+  prijavljeni:{ title:'Prijavljeni', sub:'Master lista svih prijava na događaje' },
   financije:  { title:'Financije',  sub:'Prihodi, troškovi, neto' },
 };
 
@@ -738,7 +805,7 @@ document.querySelectorAll('.sb-item[data-section]').forEach(item => {
 
 // ════ LOAD ALL ════════════════════════════════════
 async function loadAll() {
-  await Promise.all([loadEvents(), loadUsluge(), loadClients(), loadFinancije(), loadDashboard()]);
+  await Promise.all([loadEvents(), loadUsluge(), loadClients(), loadFinancije(), loadDashboard(), loadPrijavljeni()]);
 }
 
 // ════ EVENTS ══════════════════════════════════════
@@ -959,18 +1026,168 @@ window.openRegPanel = async (eventId, naziv) => {
   }
   document.getElementById('reg-list').innerHTML = `
     <div style="padding:0 1.5rem 0.8rem;font-size:.68rem;color:rgba(255,255,255,.3);letter-spacing:.1em;text-transform:uppercase;">${data.length} prijavljen${data.length===1?'':'ih'}</div>
-    ${data.map(r => `
-      <div style="display:flex;align-items:center;justify-content:space-between;padding:.85rem 1.5rem;border-bottom:1px solid rgba(255,255,255,.05);">
+    ${data.map(r => {
+      const ime   = r.profiles?.ime   || r.ime   || '—';
+      const email = r.profiles?.email || r.email || '—';
+      const color = { pretplatnik_besplatno:'var(--periwinkle)', besplatno:'#00e676', stripe:'var(--cyan)', gotovina:'#ffd54f' }[r.tip_placanja] || 'rgba(255,255,255,.4)';
+      return `<div style="display:flex;align-items:center;justify-content:space-between;padding:.85rem 1.5rem;border-bottom:1px solid rgba(255,255,255,.05);">
         <div>
-          <div style="font-size:.85rem;color:rgba(255,255,255,.82);margin-bottom:.2rem;">${r.profiles?.ime||'—'}</div>
-          <div style="font-size:.72rem;color:rgba(255,255,255,.38);">${r.profiles?.email||'—'}</div>
+          <div style="font-size:.85rem;color:rgba(255,255,255,.82);margin-bottom:.2rem;">${ime}</div>
+          <div style="font-size:.72rem;color:rgba(255,255,255,.38);">${email}</div>
+          ${r.poruka?`<div style="font-size:.68rem;color:rgba(255,255,255,.25);margin-top:.2rem;font-style:italic;">${r.poruka}</div>`:''}
         </div>
         <div style="text-align:right;flex-shrink:0;">
-          <div style="font-size:.65rem;color:rgba(4,255,255,.6);font-family:var(--fb);letter-spacing:.08em;text-transform:uppercase;margin-bottom:.2rem;">${tipPlacanjaLabel(r.tip_placanja)}</div>
+          <div style="font-size:.62rem;color:${color};font-family:var(--fb);letter-spacing:.08em;text-transform:uppercase;margin-bottom:.2rem;">${tipPlacanjaLabel(r.tip_placanja)}</div>
           <div style="font-size:.62rem;color:rgba(255,255,255,.22);">${new Date(r.created_at).toLocaleDateString('hr-HR')}</div>
         </div>
-      </div>`).join('')}`;
+      </div>`;
+    }).join('')}`;
 };
+
+// ════ PRIJAVLJENI ══════════════════════════════════
+async function loadPrijavljeni() {
+  const { data, error } = await sb
+    .from('registracije')
+    .select(`id, ime, email, tip_placanja, status, poruka, created_at,
+             profiles(ime, email),
+             dogadjaji(id, naziv, datum, tagovi)`)
+    .neq('status', 'otkazana')
+    .order('created_at', { ascending: false });
+  if (error) { console.error('[Prijavljeni]', error); return; }
+  allRegistrations = data || [];
+  renderPrijavljeniStats();
+  renderPrijavljeni();
+  bindPrijavljeniFilters();
+}
+
+function getRegIme(r)   { return r.profiles?.ime   || r.ime   || '—'; }
+function getRegEmail(r) { return r.profiles?.email || r.email || '—'; }
+
+function renderPrijavljeniStats() {
+  const now  = new Date();
+  const wed  = new Date(now); wed.setDate(now.getDate() - ((now.getDay()+6)%7));  wed.setHours(0,0,0,0);
+  const mst  = new Date(now.getFullYear(), now.getMonth(), 1);
+  const all  = allRegistrations;
+  document.getElementById('reg-master-stats').innerHTML = `
+    <div class="stat-card"><div class="stat-label">Ukupno prijavljenih</div><div class="stat-val c">${all.length}</div></div>
+    <div class="stat-card"><div class="stat-label">Ovaj tjedan</div><div class="stat-val">${all.filter(r=>new Date(r.created_at)>=wed).length}</div></div>
+    <div class="stat-card"><div class="stat-label">Ovaj mjesec</div><div class="stat-val p">${all.filter(r=>new Date(r.created_at)>=mst).length}</div></div>
+    <div class="stat-card"><div class="stat-label">Besplatnih</div><div class="stat-val" style="color:#00e676">${all.filter(r=>['besplatno','pretplatnik_besplatno'].includes(r.tip_placanja)).length}</div></div>`;
+}
+
+function filterPrijavljeni() {
+  const now  = new Date();
+  const wed  = new Date(now); wed.setDate(now.getDate() - ((now.getDay()+6)%7)); wed.setHours(0,0,0,0);
+  const mst  = new Date(now.getFullYear(), now.getMonth(), 1);
+  return allRegistrations.filter(r => {
+    if (regPeriodFilter === 'tjedan' && new Date(r.created_at) < wed) return false;
+    if (regPeriodFilter === 'mjesec' && new Date(r.created_at) < mst) return false;
+    const tagovi = r.dogadjaji?.tagovi || [];
+    if (regTipFilter    !== 'sve' && !tagovi.includes(regTipFilter))    return false;
+    if (regFormatFilter !== 'sve' && !tagovi.includes(regFormatFilter)) return false;
+    if (regSearch) {
+      const q = regSearch.toLowerCase();
+      if (![getRegIme(r), getRegEmail(r), r.dogadjaji?.naziv||''].some(s=>s.toLowerCase().includes(q))) return false;
+    }
+    return true;
+  });
+}
+
+function tipPlacanjaColorHQ(tip) {
+  return { pretplatnik_besplatno:'var(--periwinkle)', besplatno:'#00e676', stripe:'var(--cyan)', gotovina:'#ffd54f', na_cekanju:'rgba(255,255,255,.3)' }[tip] || 'rgba(255,255,255,.3)';
+}
+
+function renderPrijavljeni() {
+  const list  = filterPrijavljeni();
+  const tbody = document.getElementById('reg-master-tbody');
+  if (!tbody) return;
+  const countEl = document.getElementById('reg-master-count');
+  if (countEl) countEl.textContent = `${list.length} prijava`;
+  if (!list.length) {
+    tbody.innerHTML = `<tr><td colspan="7" style="text-align:center;color:rgba(255,255,255,.2);padding:2rem;">Nema rezultata.</td></tr>`;
+    return;
+  }
+  tbody.innerHTML = list.map(r => {
+    const ev      = r.dogadjaji;
+    const evDatum = ev?.datum ? new Date(ev.datum).toLocaleDateString('hr-HR',{day:'numeric',month:'short',year:'numeric'}) : '—';
+    const regTime = new Date(r.created_at);
+    const regStr  = regTime.toLocaleDateString('hr-HR',{day:'numeric',month:'short'}) + ' ' + regTime.toLocaleTimeString('hr-HR',{hour:'2-digit',minute:'2-digit'});
+    const color   = tipPlacanjaColorHQ(r.tip_placanja);
+    const label   = tipPlacanjaLabel(r.tip_placanja);
+    return `<tr>
+      <td style="color:rgba(255,255,255,.85);font-weight:500;">${getRegIme(r)}</td>
+      <td style="color:rgba(255,255,255,.38);font-size:.74rem;">${getRegEmail(r)}</td>
+      <td>
+        <div style="color:rgba(255,255,255,.7);font-size:.8rem;">${ev?.naziv||'—'}</div>
+        <div style="color:rgba(255,255,255,.28);font-size:.68rem;">${evDatum}</div>
+      </td>
+      <td style="font-size:.72rem;color:rgba(255,255,255,.28);">${evDatum}</td>
+      <td style="font-size:.72rem;color:rgba(255,255,255,.35);">${regStr}</td>
+      <td><span style="font-size:.58rem;font-family:var(--fb);letter-spacing:.08em;text-transform:uppercase;color:${color};">${label}</span></td>
+      <td style="font-size:.72rem;color:rgba(255,255,255,.28);max-width:140px;word-break:break-word;">${r.poruka||''}</td>
+    </tr>`;
+  }).join('');
+}
+
+function bindPrijavljeniFilters() {
+  // Samo bind jednom
+  if (document.getElementById('reg-period-tabs').dataset.bound) return;
+  document.getElementById('reg-period-tabs').dataset.bound = '1';
+
+  document.querySelectorAll('#reg-period-tabs .ftab').forEach(b => {
+    b.addEventListener('click', () => {
+      document.querySelectorAll('#reg-period-tabs .ftab').forEach(x => x.classList.remove('active'));
+      b.classList.add('active'); regPeriodFilter = b.dataset.period; renderPrijavljeni();
+    });
+  });
+  document.querySelectorAll('#reg-tip-tabs .ftab').forEach(b => {
+    b.addEventListener('click', () => {
+      document.querySelectorAll('#reg-tip-tabs .ftab').forEach(x => x.classList.remove('active'));
+      b.classList.add('active'); regTipFilter = b.dataset.tipF; renderPrijavljeni();
+    });
+  });
+  document.querySelectorAll('#reg-format-tabs .ftab').forEach(b => {
+    b.addEventListener('click', () => {
+      document.querySelectorAll('#reg-format-tabs .ftab').forEach(x => x.classList.remove('active'));
+      b.classList.add('active'); regFormatFilter = b.dataset.fmtF; renderPrijavljeni();
+    });
+  });
+  document.getElementById('reg-search').addEventListener('input', e => {
+    regSearch = e.target.value; renderPrijavljeni();
+  });
+}
+
+function exportRegCSV() {
+  const list = filterPrijavljeni();
+  if (!list.length) { alert('Nema podataka za export.'); return; }
+
+  const esc = v => `"${String(v ?? '').replace(/"/g, '""')}"`;
+  const headers = ['Ime', 'Email', 'Događaj', 'Datum događaja', 'Datum prijave', 'Plaćanje', 'Napomena'];
+  const rows = list.map(r => {
+    const ev      = r.dogadjaji;
+    const evDatum = ev?.datum ? new Date(ev.datum).toLocaleDateString('hr-HR') : '';
+    const regDatum = new Date(r.created_at).toLocaleString('hr-HR');
+    return [
+      getRegIme(r),
+      getRegEmail(r),
+      ev?.naziv || '',
+      evDatum,
+      regDatum,
+      tipPlacanjaLabel(r.tip_placanja),
+      r.poruka || ''
+    ].map(esc).join(',');
+  });
+
+  const csv  = '\uFEFF' + [headers.map(esc).join(','), ...rows].join('\r\n');
+  const blob = new Blob([csv], { type: 'text/csv;charset=utf-8;' });
+  const url  = URL.createObjectURL(blob);
+  const a    = document.createElement('a');
+  a.href     = url;
+  a.download = `duhodah-prijavljeni-${new Date().toISOString().slice(0,10)}.csv`;
+  a.click();
+  URL.revokeObjectURL(url);
+}
+window.exportRegCSV = exportRegCSV;
 
 // ════ USLUGE ══════════════════════════════════════
 async function loadUsluge() {
