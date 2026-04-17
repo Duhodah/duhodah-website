@@ -203,17 +203,9 @@ export async function renderEventsWidget(containerId) {
         <a href="events.html" class="cal-all-link">Svi termini i kalendar →</a>
       </div>`;
 
-    // Realtime: smanji broj mjesta čim netko novi dođe ili ode
-    supabase.channel('registracije-live')
-      .on('postgres_changes', { event: '*', schema: 'public', table: 'registracije' }, async (payload) => {
-        const evId = payload.new?.dogadjaj_id || payload.old?.dogadjaj_id;
-        if (evId) await refreshWidgetCard(evId);
-      })
-      .subscribe();
-
   } catch (err) {
     console.error('[Calendar widget]', err);
-    container.innerHTML = `<p class="cal-empty" style="color:rgba(255,80,80,.8);font-size:.78rem;">Greška: ${err?.message || JSON.stringify(err)}</p>`;
+    container.innerHTML = `<p class="cal-empty">Nema nadolazećih događaja. Provjeri uskoro.</p>`;
   }
 }
 
