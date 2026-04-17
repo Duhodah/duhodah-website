@@ -1,0 +1,11 @@
+User-agent: *
+Allow: /
+
+Sitemap: https://duhodah.com/sitemap.xml
+
+# Privatne stranice — ne indeksiraj
+Disallow: /admin.html
+Disallow: /hq.html
+Disallow: /events-admin.html
+Disallow: /reset-lozinka.html
+Disallow: /webhook/
