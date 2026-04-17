@@ -4,6 +4,7 @@
 
 import { getUpcomingEvents, getEventsByMonth, getEventAvailability, registerForEvent, registerAnonymous, isUserRegistered, cancelRegistration } from './db.js';
 import { getAuthState, signInWithEmail } from './auth.js';
+import { buildStripeUrl } from './stripe.js';
 
 // Lokalizirani nazivi dana i mjeseci (HR)
 const DANI = ['Ned', 'Pon', 'Uto', 'Sri', 'Čet', 'Pet', 'Sub'];
@@ -100,7 +101,7 @@ async function buildEventButton(event, authState, availability) {
 
     if (regStatus && regStatus.status === 'potvrdjena') {
       return `<div class="cal-btn-group">
-        <span class="cal-registered-badge">Prijavljen/a</span>
+        <span class="cal-registered-badge">Prijavljen/a ✓</span>
         <button class="cal-btn cal-btn--cancel" onclick="cancelReg('${event.id}')">Otkaži</button>
       </div>`;
     }
@@ -110,16 +111,27 @@ async function buildEventButton(event, authState, availability) {
         Prijavi se besplatno →
       </button>`;
     } else {
-      const stripeLink = event.stripe_link || '#';
-      return `<a class="cal-btn cal-btn--pay" href="${stripeLink}" target="_blank" rel="noopener">
-        Kupi kartu — ${event.cijena_eur ? event.cijena_eur + ' €' : 'upitaj'} →
-      </a>`;
+      // Prijavljeni korisnik bez pretplate — Stripe link s kontekstom
+      const stripeUrl = buildStripeUrl(event.stripe_link, {
+        userId:  user.id,
+        email:   user.email,
+        eventId: event.id,
+      });
+      const cijenaLabel = event.cijena_eur ? `${event.cijena_eur} €` : 'Upitaj';
+      return `<div class="cal-btn-group cal-btn-group--stacked">
+        <a class="cal-btn cal-btn--pay" href="${stripeUrl}" target="_blank" rel="noopener">
+          Kupi kartu — ${cijenaLabel} →
+        </a>
+        <span class="cal-member-hint">Ili <a href="zajednica.html">postani pretplatnik</a> i dođi besplatno</span>
+      </div>`;
     }
   } else {
-    const stripeLink = event.stripe_link || '#';
+    // Anonimni posjetitelj — Stripe link bez konteksta (ali s # ako link nije postavljen)
+    const stripeUrl = event.stripe_link || '#';
+    const cijenaLabel = event.cijena_eur ? `${event.cijena_eur} €` : 'Upitaj';
     return `<div class="cal-btn-group cal-btn-group--stacked">
-      <a class="cal-btn cal-btn--pay" href="${stripeLink}" target="_blank" rel="noopener">
-        Kupi kartu — ${event.cijena_eur ? event.cijena_eur + ' €' : 'upitaj'} →
+      <a class="cal-btn cal-btn--pay" href="${stripeUrl}" target="_blank" rel="noopener">
+        Kupi kartu — ${cijenaLabel} →
       </a>
       <span class="cal-member-hint">Pretplatnik? <a href="#" onclick="showLoginModal('${event.id}');return false;">Prijavi se za besplatnu opciju</a></span>
     </div>`;
