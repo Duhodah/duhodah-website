@@ -1078,19 +1078,21 @@
 
 .cal-ev-details-link {
   font-family: 'Jura', sans-serif;
-  font-size: 0.65rem;
+  font-size: 0.75rem;
   letter-spacing: 0.06em;
-  color: rgba(255, 255, 255, 0.28);
+  color: var(--link-color, rgba(4, 255, 255, 0.7));
   background: transparent;
   border: none;
   cursor: pointer;
   padding: 0;
   text-align: left;
-  transition: color 0.2s ease;
+  transition: color 0.2s ease, opacity 0.2s ease;
   line-height: 1;
+  opacity: 0.8;
 }
 .cal-ev-details-link:hover {
-  color: var(--link-color, rgba(4, 255, 255, 0.75));
+  color: var(--link-color, #04e8ff);
+  opacity: 1;
 }
 
 /* ============================================================
