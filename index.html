@@ -2460,27 +2460,27 @@
             <div class="bv-settings-group-title">Trajanje faza</div>
             <!-- Presets -->
             <div class="bv-patterns" style="margin-bottom:1.5rem;" id="bv-patterns">
-              <button class="bv-pattern-btn active" data-p="4-2-6-2">4·2·6·2 — Relaks</button>
+              <button class="bv-pattern-btn" data-p="4-2-6-2">4·2·6·2 — Relaks</button>
               <button class="bv-pattern-btn" data-p="4-4-4-4">4·4·4·4 — Box</button>
               <button class="bv-pattern-btn" data-p="4-7-8-0">4·7·8·0 — 4-7-8</button>
               <button class="bv-pattern-btn" data-p="6-0-6-0">6·0·6·0 — Koherentno</button>
               <button class="bv-pattern-btn" data-p="2-0-2-0">2·0·2·0 — Aktivacija</button>
-              <button class="bv-pattern-btn" data-p="5-0-5-0">5·0·5·0 — Koherentno</button>
+              <button class="bv-pattern-btn active" data-p="5-0-5-0">5·0·5·0 — Koherentno</button>
               <button class="bv-pattern-btn" data-p="4-0-8-0">4·0·8·0 — Smiraj</button>
               <button class="bv-pattern-btn" data-p="4-2-12-0">4·2·12·0 — Spokoj</button>
             </div>
             <div class="bv-timing-grid">
               <div class="bv-timing-cell">
                 <div class="bv-cell-label" style="color:var(--cyan)">Udah</div>
-                <div class="bv-cell-val phase-inhale" id="lbl-inhale">4</div>
+                <div class="bv-cell-val phase-inhale" id="lbl-inhale">5</div>
                 <div class="bv-cell-unit">sekunde</div>
-                <input type="range" class="bv-range" id="rng-inhale" min="1" max="12" value="4" step="1">
+                <input type="range" class="bv-range" id="rng-inhale" min="1" max="12" value="5" step="1">
               </div>
               <div class="bv-timing-cell">
                 <div class="bv-cell-label" style="color:var(--magenta)">Pauza gore</div>
-                <div class="bv-cell-val phase-holdtop" id="lbl-holdtop">2</div>
+                <div class="bv-cell-val phase-holdtop" id="lbl-holdtop">0</div>
                 <div class="bv-cell-unit">sekunde</div>
-                <input type="range" class="bv-range" id="rng-holdtop" min="0" max="12" value="2" step="1">
+                <input type="range" class="bv-range" id="rng-holdtop" min="0" max="12" value="0" step="1">
               </div>
               <div class="bv-timing-cell">
                 <div class="bv-cell-label" style="color:var(--pink)">Izdah</div>
@@ -2490,9 +2490,9 @@
               </div>
               <div class="bv-timing-cell">
                 <div class="bv-cell-label" style="color:var(--steel)">Pauza dolje</div>
-                <div class="bv-cell-val phase-holdbot" id="lbl-holdbot">2</div>
+                <div class="bv-cell-val phase-holdbot" id="lbl-holdbot">0</div>
                 <div class="bv-cell-unit">sekunde</div>
-                <input type="range" class="bv-range" id="rng-holdbot" min="0" max="12" value="2" step="1">
+                <input type="range" class="bv-range" id="rng-holdbot" min="0" max="12" value="0" step="1">
               </div>
             </div>
           </div>
@@ -2513,7 +2513,7 @@
                   <option value="1">Voda — usisavanje</option>
                   <option value="2">Kozmički dron — rast</option>
                   <option value="3">Kristal — udar</option>
-                  <option value="4">Dah — uvlačenje</option>
+                  <option value="4" selected>Dah — uvlačenje</option>
                   <option value="5">Bubanj — izgradnja</option>
                   <option value="6">Šuma — jutro</option>
                 </select>
@@ -2526,7 +2526,7 @@
               <div class="bv-sound-row">
                 <div class="bv-sound-phase-label" style="color:var(--magenta)">Pauza gore</div>
                 <label class="bv-sound-toggle" id="tog-holdtop">
-                  <div class="bv-toggle-track on" id="track-holdtop"></div>
+                  <div class="bv-toggle-track" id="track-holdtop"></div>
                   <span style="font-family:var(--font-brand);font-size:0.55rem;letter-spacing:0.15em;color:var(--grey)">Zvuk</span>
                 </label>
                 <select class="bv-sound-select" id="sel-holdtop">
@@ -2536,7 +2536,7 @@
                   <option value="3">Kristal — zvonjava</option>
                   <option value="4">Dah — tišina</option>
                   <option value="5">Bubanj — udarac</option>
-                  <option value="6">Šuma — cvrkut</option>
+                  <option value="6" selected>Šuma — cvrkut</option>
                 </select>
                 <div class="bv-vol-wrap">
                   <span class="bv-vol-icon"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round"><path d="M11 5L6 9H2v6h4l5 4V5z"/><path d="M15.54 8.46a5 5 0 010 7.07"/></svg></span>
@@ -2557,7 +2557,7 @@
                   <option value="3">Kristal — rezonancija</option>
                   <option value="4">Dah — izdisaj</option>
                   <option value="5">Bubanj — odmor</option>
-                  <option value="6">Šuma — vjetar</option>
+                  <option value="6" selected>Šuma — vjetar</option>
                 </select>
                 <div class="bv-vol-wrap">
                   <span class="bv-vol-icon"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round"><path d="M11 5L6 9H2v6h4l5 4V5z"/><path d="M15.54 8.46a5 5 0 010 7.07"/></svg></span>
@@ -2574,7 +2574,7 @@
                 <select class="bv-sound-select" id="sel-holdbot">
                   <option value="0">Tibetska posuda — tišina</option>
                   <option value="1">Voda — tama</option>
-                  <option value="2">Kozmički dron — pod</option>
+                  <option value="2" selected>Kozmički dron — pod</option>
                   <option value="3">Kristal — bez zvuka</option>
                   <option value="4">Dah — praznina</option>
                   <option value="5">Bubanj — puls</option>
