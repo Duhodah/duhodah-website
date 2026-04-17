@@ -432,30 +432,34 @@
   text-transform: uppercase;
   padding: 6px 14px;
   border-radius: 20px;
-  border: 1px solid rgba(255, 255, 255, 0.1);
-  background: rgba(255, 255, 255, 0.04);
-  color: rgba(255, 255, 255, 0.45);
+  border: 1px solid rgba(255, 255, 255, 0.12);
+  background: transparent;
+  color: rgba(255, 255, 255, 0.38);
   cursor: pointer;
-  transition: all 0.2s ease;
+  transition: border-color 0.18s ease, background 0.18s ease, color 0.18s ease, box-shadow 0.18s ease;
   white-space: nowrap;
 }
 
 .cal-filter-tag:hover {
-  border-color: var(--tag-color, rgba(4, 255, 255, 0.4));
-  color: var(--tag-color, rgba(4, 255, 255, 0.9));
-  background: color-mix(in srgb, var(--tag-color, #04e8ff) 10%, transparent);
+  border-color: var(--tag-color, rgba(255, 255, 255, 0.5));
+  color: var(--tag-color, rgba(255, 255, 255, 0.75));
 }
 
+/* Aktivan tag — ispunjen bojom, tamni tekst (jasno vidljivo "uključeno") */
 .cal-filter-tag--active {
-  border-color: var(--tag-color, rgba(4, 255, 255, 0.6));
-  color: var(--tag-color, var(--cal-cyan));
-  background: color-mix(in srgb, var(--tag-color, #04e8ff) 14%, transparent);
-  box-shadow: 0 0 12px color-mix(in srgb, var(--tag-color, #04e8ff) 20%, transparent);
+  background: var(--tag-color, rgba(255, 255, 255, 0.85));
+  border-color: var(--tag-color, rgba(255, 255, 255, 0.85));
+  color: #08081a;
+  box-shadow: 0 0 14px rgba(0, 0, 0, 0.15);
 }
 
-/* "Sve" gumb — bijeli stil bez tag boje */
+.cal-filter-tag--active:hover {
+  opacity: 0.88;
+}
+
+/* "Sve" gumb */
 .cal-filter-tag[data-tag="sve"] {
-  --tag-color: rgba(255, 255, 255, 0.7);
+  --tag-color: rgba(255, 255, 255, 0.82);
 }
 
 /* Separator između grupe tip i format */
