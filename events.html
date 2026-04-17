@@ -208,11 +208,7 @@
 
     <!-- Controls -->
     <div class="cal-controls">
-      <div class="cal-filter-tabs">
-        <button class="cal-filter-tab active" data-filter="sve">Sve</button>
-        <button class="cal-filter-tab" data-filter="breathwork_journey">Breathwork Journey</button>
-        <button class="cal-filter-tab" data-filter="autoskola">Autoškola</button>
-      </div>
+      <div id="cal-filter-tags" class="cal-filter-tags"></div>
 
       <div class="cal-view-toggle">
         <button id="cal-view-list" class="active">Lista</button>
@@ -269,14 +265,6 @@
     // Init calendar
     initFullCalendar();
 
-    // Filter tabs
-    document.querySelectorAll('.cal-filter-tab').forEach(tab => {
-      tab.addEventListener('click', () => {
-        document.querySelectorAll('.cal-filter-tab').forEach(t => t.classList.remove('active'));
-        tab.classList.add('active');
-        // TODO: implement filter by type
-      });
-    });
   </script>
 
 </body>

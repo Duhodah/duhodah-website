@@ -502,6 +502,33 @@ let currentMonth = new Date().getMonth() + 1;
 let allEvents = [];
 let authState = {};
 let activePanel = null;
+let activeFilter = null; // null = sve, ili tag key iz TAG_DEFS
+
+function initTagFilters() {
+  const container = document.getElementById('cal-filter-tags');
+  if (!container) return;
+
+  // Generiraj gumbe iz TAG_DEFS — "Sve" + sve tagove s grupnim separatorom
+  let html = `<button class="cal-filter-tag cal-filter-tag--active" data-tag="sve">Sve</button>`;
+  let lastGroup = null;
+  TAG_DEFS.forEach(t => {
+    if (lastGroup && lastGroup !== t.group) {
+      html += `<span class="cal-filter-sep"></span>`;
+    }
+    lastGroup = t.group;
+    html += `<button class="cal-filter-tag" data-tag="${t.key}" style="--tag-color:${t.color}">${t.label}</button>`;
+  });
+  container.innerHTML = html;
+
+  container.addEventListener('click', e => {
+    const btn = e.target.closest('.cal-filter-tag');
+    if (!btn) return;
+    container.querySelectorAll('.cal-filter-tag').forEach(b => b.classList.remove('cal-filter-tag--active'));
+    btn.classList.add('cal-filter-tag--active');
+    activeFilter = btn.dataset.tag === 'sve' ? null : btn.dataset.tag;
+    renderListView();
+  });
+}
 
 export async function initFullCalendar() {
   try {
@@ -511,6 +538,7 @@ export async function initFullCalendar() {
       getAuthState().catch(() => anonState)
     ]);
 
+    initTagFilters();
     renderListView();
     bindViewToggle();
     bindMonthNavigation();
@@ -542,10 +570,20 @@ async function renderListView() {
     return;
   }
 
-  // Spremi u cache da showEventModal radi i na ovoj stranici
+  // Spremi sve u cache da showEventModal radi
   allEvents.forEach(ev => { eventsCache[ev.id] = ev; });
 
-  const cards = await Promise.all(allEvents.map(ev => buildEventCardHTML(ev, authState)));
+  // Filtriraj po aktivnom tagu
+  const filtered = activeFilter
+    ? allEvents.filter(ev => (ev.tagovi || []).includes(activeFilter))
+    : allEvents;
+
+  if (!filtered.length) {
+    container.innerHTML = `<p class="cal-empty">Nema događaja za odabrani filter.</p>`;
+    return;
+  }
+
+  const cards = await Promise.all(filtered.map(ev => buildEventCardHTML(ev, authState)));
 
   container.innerHTML = `<div class="cal-events-grid">${cards.join('')}</div>`;
 

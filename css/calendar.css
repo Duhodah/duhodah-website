@@ -408,11 +408,64 @@
 
 .cal-controls {
   display: flex;
-  align-items: center;
+  align-items: flex-start;
   justify-content: space-between;
   flex-wrap: wrap;
   gap: 16px;
   margin-bottom: 32px;
+}
+
+/* Tag filter row */
+.cal-filter-tags {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: 8px;
+  flex: 1;
+}
+
+.cal-filter-tag {
+  font-family: 'Jura', sans-serif;
+  font-size: 0.7rem;
+  font-weight: 600;
+  letter-spacing: 0.07em;
+  text-transform: uppercase;
+  padding: 6px 14px;
+  border-radius: 20px;
+  border: 1px solid rgba(255, 255, 255, 0.1);
+  background: rgba(255, 255, 255, 0.04);
+  color: rgba(255, 255, 255, 0.45);
+  cursor: pointer;
+  transition: all 0.2s ease;
+  white-space: nowrap;
+}
+
+.cal-filter-tag:hover {
+  border-color: var(--tag-color, rgba(4, 255, 255, 0.4));
+  color: var(--tag-color, rgba(4, 255, 255, 0.9));
+  background: color-mix(in srgb, var(--tag-color, #04e8ff) 10%, transparent);
+}
+
+.cal-filter-tag--active {
+  border-color: var(--tag-color, rgba(4, 255, 255, 0.6));
+  color: var(--tag-color, var(--cal-cyan));
+  background: color-mix(in srgb, var(--tag-color, #04e8ff) 14%, transparent);
+  box-shadow: 0 0 12px color-mix(in srgb, var(--tag-color, #04e8ff) 20%, transparent);
+}
+
+/* "Sve" gumb — bijeli stil bez tag boje */
+.cal-filter-tag[data-tag="sve"] {
+  --tag-color: rgba(255, 255, 255, 0.7);
+}
+
+/* Separator između grupe tip i format */
+.cal-filter-sep {
+  display: block;
+  width: 1px;
+  height: 18px;
+  background: rgba(255, 255, 255, 0.1);
+  margin: 0 4px;
+  flex-shrink: 0;
 }
 
 .cal-view-toggle {
