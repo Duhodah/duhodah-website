@@ -162,9 +162,10 @@ async function buildEventCardHTML(ev, curAuthState) {
     : `<span class="cwt" style="color:${t.color};border-color:${t.color}38;background:${t.color}14;">${t.label}</span>`
   ).join('');
 
+  const imgPos = ev.slika_pos || '50%';
   const heroHtml = ev.slika_url
     ? `<div class="cal-widget-card__hero">
-        <img src="${ev.slika_url}" alt="${ev.naziv}" class="cal-widget-card__hero-img" loading="lazy">
+        <img src="${ev.slika_url}" alt="${ev.naziv}" class="cal-widget-card__hero-img" loading="lazy" style="--img-pos:${imgPos}">
         <div class="cal-widget-card__hero-fade"></div>
         <div class="cal-widget-card__hero-line"></div>
       </div>`
