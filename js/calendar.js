@@ -504,11 +504,16 @@ let authState = {};
 let activePanel = null;
 let activeFilters = new Set(); // prazan Set = sve
 
+let filtersInitialized = false;
+
 function initTagFilters() {
   const container = document.getElementById('cal-filter-tags');
   if (!container) return;
 
-  // Generiraj gumbe iz TAG_DEFS — "Sve" + sve tagove s grupnim separatorom
+  // Inicijaliziraj samo jednom — sprečava dvostruki listener od višestrukih initFullCalendar poziva
+  if (filtersInitialized) return;
+  filtersInitialized = true;
+
   let html = `<button class="cal-filter-tag cal-filter-tag--active" data-tag="sve">Sve</button>`;
   let lastGroup = null;
   TAG_DEFS.forEach(t => {
@@ -526,12 +531,10 @@ function initTagFilters() {
     const tag = btn.dataset.tag;
 
     if (tag === 'sve') {
-      // Sve — obriši sve filtere
       activeFilters.clear();
       container.querySelectorAll('.cal-filter-tag').forEach(b => b.classList.remove('cal-filter-tag--active'));
       btn.classList.add('cal-filter-tag--active');
     } else {
-      // Toggle tag
       if (activeFilters.has(tag)) {
         activeFilters.delete(tag);
         btn.classList.remove('cal-filter-tag--active');
@@ -539,7 +542,6 @@ function initTagFilters() {
         activeFilters.add(tag);
         btn.classList.add('cal-filter-tag--active');
       }
-      // Makni "Sve" active ako ima aktivnih filtera, vrati ga ako ih nema
       const sveBtn = container.querySelector('[data-tag="sve"]');
       if (sveBtn) sveBtn.classList.toggle('cal-filter-tag--active', activeFilters.size === 0);
     }
