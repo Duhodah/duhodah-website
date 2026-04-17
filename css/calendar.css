@@ -228,11 +228,56 @@
     0 0 80px var(--c-glow, rgba(4, 255, 255, 0.10));
 }
 
-/* Akcent linija na vrhu kartice — boja po tipu */
+/* Akcent linija na vrhu kartice — boja po tipu (fallback kad nema slike) */
 .cal-widget-card__accent {
   height: 3px;
   width: 100%;
   background: linear-gradient(90deg, var(--cal-cyan), transparent);
+}
+
+/* Hero thumbnail strip — prikazuje se umjesto accent bara kad event ima sliku */
+.cal-widget-card__hero {
+  position: relative;
+  height: 140px;
+  overflow: hidden;
+  border-radius: 12px 12px 0 0;
+  flex-shrink: 0;
+}
+
+.cal-widget-card__hero-img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  object-position: center 30%;
+  display: block;
+  transition: transform 0.5s ease;
+}
+
+.cal-widget-card:hover .cal-widget-card__hero-img {
+  transform: scale(1.04);
+}
+
+/* Gradient fade prema tamnoj podlozi kartice */
+.cal-widget-card__hero-fade {
+  position: absolute;
+  inset: 0;
+  background: linear-gradient(
+    to bottom,
+    rgba(10, 10, 10, 0)    30%,
+    rgba(10, 10, 10, 0.72) 80%,
+    rgba(10, 10, 10, 0.92) 100%
+  );
+}
+
+/* Tanka obojena linija na dnu heroa — naglašava boju tipa */
+.cal-widget-card__hero-line {
+  position: absolute;
+  bottom: 0;
+  left: 0;
+  right: 0;
+  height: 2px;
+  background: var(--tip-color, var(--cal-cyan));
+  opacity: 0.65;
 }
 
 .cal-widget-card--magenta .cal-widget-card__accent {

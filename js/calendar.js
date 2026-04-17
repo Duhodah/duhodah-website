@@ -162,9 +162,17 @@ async function buildEventCardHTML(ev, curAuthState) {
     : `<span class="cwt" style="color:${t.color};border-color:${t.color}38;background:${t.color}14;">${t.label}</span>`
   ).join('');
 
+  const heroHtml = ev.slika_url
+    ? `<div class="cal-widget-card__hero">
+        <img src="${ev.slika_url}" alt="${ev.naziv}" class="cal-widget-card__hero-img" loading="lazy">
+        <div class="cal-widget-card__hero-fade"></div>
+        <div class="cal-widget-card__hero-line"></div>
+      </div>`
+    : `<div class="cal-widget-card__accent" style="background:${accentBg};"></div>`;
+
   return `
     <article class="cal-widget-card${uskoro ? ' cal-widget-card--uskoro' : ''}" data-event-id="${ev.id}" style="--c-border:${tipColor}55;--c-glow:${tipColor}30;--tip-color:${tipColor};">
-      <div class="cal-widget-card__accent" style="background:${accentBg};"></div>
+      ${heroHtml}
       <div class="cal-widget-card__inner">
         <div class="cal-widget-card__top">
           <div class="cal-widget-card__date-block">
