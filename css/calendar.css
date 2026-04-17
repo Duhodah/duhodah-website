@@ -1095,6 +1095,31 @@
   opacity: 1;
 }
 
+/* Gumbi unutar kartice nasljeđuju boju taga (--tip-color) */
+.cal-widget-card .cal-btn--pay {
+  color: var(--tip-color, var(--cal-cyan));
+  border-color: color-mix(in srgb, var(--tip-color, var(--cal-cyan)) 50%, transparent);
+}
+.cal-widget-card .cal-btn--pay:hover {
+  background: color-mix(in srgb, var(--tip-color, var(--cal-cyan)) 15%, transparent);
+  border-color: var(--tip-color, var(--cal-cyan));
+  box-shadow: 0 0 16px color-mix(in srgb, var(--tip-color, var(--cal-cyan)) 30%, transparent);
+}
+
+.cal-widget-card .cal-btn--free {
+  background: linear-gradient(135deg,
+    color-mix(in srgb, var(--tip-color, var(--cal-cyan)) 20%, transparent),
+    color-mix(in srgb, var(--tip-color, var(--cal-cyan)) 10%, transparent));
+  border-color: color-mix(in srgb, var(--tip-color, var(--cal-cyan)) 40%, transparent);
+  box-shadow: 0 0 20px color-mix(in srgb, var(--tip-color, var(--cal-cyan)) 12%, transparent);
+}
+.cal-widget-card .cal-btn--free:hover {
+  background: linear-gradient(135deg,
+    color-mix(in srgb, var(--tip-color, var(--cal-cyan)) 30%, transparent),
+    color-mix(in srgb, var(--tip-color, var(--cal-cyan)) 18%, transparent));
+  box-shadow: 0 0 30px color-mix(in srgb, var(--tip-color, var(--cal-cyan)) 28%, transparent);
+}
+
 /* ============================================================
    EVENT DETAIL MODAL
    ============================================================ */

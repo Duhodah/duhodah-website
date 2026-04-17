@@ -172,7 +172,7 @@ export async function renderEventsWidget(containerId) {
       ).join('');
 
       return `
-        <article class="cal-widget-card${uskoro ? ' cal-widget-card--uskoro' : ''}" data-event-id="${ev.id}" style="--c-border:${tipColor}55;--c-glow:${tipColor}30;">
+        <article class="cal-widget-card${uskoro ? ' cal-widget-card--uskoro' : ''}" data-event-id="${ev.id}" style="--c-border:${tipColor}55;--c-glow:${tipColor}30;--tip-color:${tipColor};">
           <div class="cal-widget-card__accent" style="background:${accentBg};"></div>
           <div class="cal-widget-card__inner">
             <div class="cal-widget-card__top">
