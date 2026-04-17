@@ -193,7 +193,10 @@ export async function renderEventsWidget(containerId) {
             ${tagChipsHtml ? `<div class="cal-widget-card__tags">${tagChipsHtml}</div>` : ''}
             ${ev.opis_kratki ? `<p class="cal-widget-card__opis">${ev.opis_kratki}</p>` : ''}
             <div class="cal-widget-card__footer">
-              <span class="cal-mjesta ${avail.slobodna <= 3 ? 'cal-mjesta--kritican' : ''}">${avail.slobodna} mjesta slobodno</span>
+              <div class="cal-widget-card__footer-info">
+                <span class="cal-mjesta ${avail.slobodna <= 3 ? 'cal-mjesta--kritican' : ''}">${avail.slobodna} mjesta slobodno</span>
+                <button class="cal-ev-details-link" style="--link-color:${tipColor}" onclick="showEventModal('${ev.id}')">Više o događaju →</button>
+              </div>
               ${btn}
             </div>
           </div>
@@ -226,8 +229,14 @@ async function refreshWidgetCard(eventId) {
   const btn = await buildEventButton(event, widgetAuthState, avail);
   const footer = card.querySelector('.cal-widget-card__footer');
   if (footer) {
+    const tagovi = event.tagovi || [];
+    const tipTag = tagovi.map(k => TAG_DEFS.find(t => t.key === k)).filter(Boolean).find(t => t.group === 'tip');
+    const linkColor = tipTag?.color || '#04e8ff';
     footer.innerHTML = `
-      <span class="cal-mjesta${avail.slobodna <= 3 ? ' cal-mjesta--kritican' : ''}">${avail.slobodna} mjesta slobodno</span>
+      <div class="cal-widget-card__footer-info">
+        <span class="cal-mjesta${avail.slobodna <= 3 ? ' cal-mjesta--kritican' : ''}">${avail.slobodna} mjesta slobodno</span>
+        <button class="cal-ev-details-link" style="--link-color:${linkColor}" onclick="showEventModal('${eventId}')">Više o događaju →</button>
+      </div>
       ${btn}`;
   }
 }
@@ -301,6 +310,183 @@ function showRegFormModal(eventId) {
 }
 
 window.showRegFormModal = showRegFormModal;
+
+// ============================================================
+// EVENT DETAIL MODAL (popup s punim opisom)
+// ============================================================
+
+async function showEventModal(eventId) {
+  const MODAL_ID = 'cal-ev-modal';
+
+  // Kreiraj modal DOM jednom
+  if (!document.getElementById(MODAL_ID)) {
+    const m = document.createElement('div');
+    m.id = MODAL_ID;
+    m.className = 'cal-ev-modal';
+    m.innerHTML = `
+      <div class="cal-ev-modal__backdrop"></div>
+      <div class="cal-ev-modal__dialog" id="cal-ev-dialog">
+        <div class="cal-ev-modal__skeleton">
+          <div class="cal-ev-modal__sk-hero"></div>
+          <div class="cal-ev-modal__sk-body">
+            <div class="cal-ev-modal__sk-line cal-ev-modal__sk-line--sm"></div>
+            <div class="cal-ev-modal__sk-line cal-ev-modal__sk-line--lg"></div>
+            <div class="cal-ev-modal__sk-line cal-ev-modal__sk-line--md"></div>
+          </div>
+        </div>
+      </div>`;
+    document.body.appendChild(m);
+    m.querySelector('.cal-ev-modal__backdrop').addEventListener('click', closeEventModal);
+  }
+
+  const modal  = document.getElementById(MODAL_ID);
+  const dialog = document.getElementById('cal-ev-dialog');
+
+  // Otvori odmah sa skeleton-om
+  modal.classList.add('cal-ev-modal--open');
+  document.body.style.overflow = 'hidden';
+  dialog.innerHTML = `
+    <div class="cal-ev-modal__skeleton">
+      <div class="cal-ev-modal__sk-hero"></div>
+      <div class="cal-ev-modal__sk-body">
+        <div class="cal-ev-modal__sk-line cal-ev-modal__sk-line--sm"></div>
+        <div class="cal-ev-modal__sk-line cal-ev-modal__sk-line--lg"></div>
+        <div class="cal-ev-modal__sk-line cal-ev-modal__sk-line--md"></div>
+        <div class="cal-ev-modal__sk-line cal-ev-modal__sk-line--sm"></div>
+        <div class="cal-ev-modal__sk-line cal-ev-modal__sk-line--full"></div>
+        <div class="cal-ev-modal__sk-line cal-ev-modal__sk-line--full"></div>
+      </div>
+    </div>`;
+
+  // ESC zatvaranje
+  const onEsc = e => { if (e.key === 'Escape') { closeEventModal(); document.removeEventListener('keydown', onEsc); } };
+  document.addEventListener('keydown', onEsc);
+
+  try {
+    // Dohvati događaj — iz cache-a ili svježe iz baze
+    let ev = eventsCache[eventId];
+    if (!ev) {
+      const { data } = await import('./db.js').then(m => m.getUpcomingEvents(50));
+      ev = (data || []).find(e => e.id === eventId);
+    }
+    if (!ev) { closeEventModal(); return; }
+
+    // Razriješi tagove i boje
+    const tagovi        = ev.tagovi || [];
+    const resolvedTags  = tagovi.map(k => TAG_DEFS.find(t => t.key === k)).filter(Boolean);
+    const tipTagObj     = resolvedTags.find(t => t.group === 'tip');
+    const accentColor   = tipTagObj?.color || '#04e8ff';
+    const uskoro        = isUskoro(ev.datum);
+
+    const d         = new Date(ev.datum);
+    const dan       = DANI_PUNI[d.getDay()];
+    const dayNum    = d.getDate();
+    const monthName = MJESECI[d.getMonth()];
+    const year      = d.getFullYear();
+
+    const tagChipsHtml = resolvedTags.map(t => t.group === 'format'
+      ? `<span class="cwt" style="color:#08081a;border-color:${t.color};background:${t.color};">${t.label}</span>`
+      : `<span class="cwt" style="color:${t.color};border-color:${t.color}38;background:${t.color}14;">${t.label}</span>`
+    ).join('');
+
+    const heroHtml = ev.slika_url
+      ? `<img class="cal-ev-modal__hero-img" src="${ev.slika_url}" alt="${ev.naziv}" loading="lazy">`
+      : `<div class="cal-ev-modal__hero-ph" style="--accent:${accentColor}"></div>`;
+
+    const lokacijaHtml = ev.lokacija
+      ? `<a href="https://maps.google.com/?q=${encodeURIComponent(ev.lokacija)}" target="_blank" rel="noopener">${ev.lokacija}</a>`
+      : '—';
+
+    dialog.style.setProperty('--accent-color', accentColor);
+    dialog.innerHTML = `
+      <div class="cal-ev-modal__hero">
+        ${heroHtml}
+        <div class="cal-ev-modal__hero-fade" style="--fade-to:#111116"></div>
+        <button class="cal-ev-modal__close" onclick="closeEventModal()">✕</button>
+        <div class="cal-ev-modal__hero-chips">
+          <span class="cal-badge" style="color:${accentColor};background:${accentColor}22;border:1px solid ${accentColor}50;backdrop-filter:blur(8px);">${tipTagObj?.label || ev.tip || 'Događaj'}</span>
+          ${uskoro ? '<span class="cal-badge cal-badge--uskoro">Uskoro</span>' : ''}
+        </div>
+      </div>
+      <div class="cal-ev-modal__content">
+        <div class="cal-ev-modal__date-accent" style="color:${accentColor}">${dan}, ${dayNum}. ${monthName} ${year}.</div>
+        <h2 class="cal-ev-modal__title">${ev.naziv}</h2>
+        <div class="cal-ev-modal__meta">
+          <div class="cal-ev-modal__meta-item">
+            <span class="cal-ev-modal__meta-icon">🕐</span>
+            <div class="cal-ev-modal__meta-body">
+              <span class="cal-ev-modal__meta-label">Vrijeme</span>
+              <span class="cal-ev-modal__meta-value">${formatVrijeme(ev.datum)} · ${ev.trajanje_min} min</span>
+            </div>
+          </div>
+          <div class="cal-ev-modal__meta-item">
+            <span class="cal-ev-modal__meta-icon">📍</span>
+            <div class="cal-ev-modal__meta-body">
+              <span class="cal-ev-modal__meta-label">Lokacija</span>
+              <span class="cal-ev-modal__meta-value">${lokacijaHtml}</span>
+            </div>
+          </div>
+          ${ev.cijena_eur ? `
+          <div class="cal-ev-modal__meta-item">
+            <span class="cal-ev-modal__meta-icon">💶</span>
+            <div class="cal-ev-modal__meta-body">
+              <span class="cal-ev-modal__meta-label">Cijena</span>
+              <span class="cal-ev-modal__meta-value">${ev.cijena_eur} €</span>
+            </div>
+          </div>` : ''}
+          <div class="cal-ev-modal__meta-item">
+            <span class="cal-ev-modal__meta-icon">👥</span>
+            <div class="cal-ev-modal__meta-body">
+              <span class="cal-ev-modal__meta-label">Prijavljeni / Kapacitet</span>
+              <span class="cal-ev-modal__meta-value" id="cal-evm-kapacitet">—</span>
+            </div>
+          </div>
+        </div>
+        ${tagChipsHtml ? `<div class="cal-ev-modal__tags">${tagChipsHtml}</div>` : ''}
+        ${ev.opis ? `
+          <div class="cal-ev-modal__opis-label">O događaju</div>
+          <div class="cal-ev-modal__opis">${ev.opis}</div>` : ''}
+        <div class="cal-ev-modal__footer">
+          <span class="cal-ev-modal__spots" id="cal-evm-spots">…</span>
+          <div id="cal-evm-btn"></div>
+        </div>
+      </div>`;
+
+    // Async: dohvati dostupnost + gumb
+    const avail = await getEventAvailability(eventId);
+    const btn   = await buildEventButton(ev, widgetAuthState, avail);
+
+    const spotsEl = document.getElementById('cal-evm-spots');
+    const kapEl   = document.getElementById('cal-evm-kapacitet');
+    const btnEl   = document.getElementById('cal-evm-btn');
+
+    if (spotsEl) {
+      if (avail.puno) {
+        spotsEl.textContent = 'Popunjeno';
+        spotsEl.style.color = 'rgba(255,80,80,0.7)';
+      } else {
+        spotsEl.textContent = `${avail.slobodna} mjesta slobodno`;
+        if (avail.slobodna <= 3) spotsEl.classList.add('cal-ev-modal__spots--warn');
+      }
+    }
+    if (kapEl) kapEl.textContent = `${avail.prijavljeni} / ${avail.kapacitet}`;
+    if (btnEl) btnEl.innerHTML = btn;
+
+  } catch (err) {
+    console.error('[EventModal]', err);
+    dialog.innerHTML += `<p style="padding:20px;color:rgba(255,80,80,.6);font-size:.8rem;">Greška pri učitavanju (${err?.message || err})</p>`;
+  }
+}
+
+function closeEventModal() {
+  const modal = document.getElementById('cal-ev-modal');
+  if (!modal) return;
+  modal.classList.remove('cal-ev-modal--open');
+  document.body.style.overflow = '';
+}
+
+window.showEventModal  = showEventModal;
+window.closeEventModal = closeEventModal;
 
 // ============================================================
 // FULL PAGE CALENDAR (events.html)

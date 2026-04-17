@@ -1067,6 +1067,381 @@
 .admin-tag--pending { color: rgba(255,200,0,0.8); background: rgba(255,200,0,0.08); border: 1px solid rgba(255,200,0,0.2); }
 
 /* ============================================================
+   "VIŠE O DOGAĐAJU" LINK NA KARTICI
+   ============================================================ */
+
+.cal-widget-card__footer-info {
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+}
+
+.cal-ev-details-link {
+  font-family: 'Jura', sans-serif;
+  font-size: 0.65rem;
+  letter-spacing: 0.06em;
+  color: rgba(255, 255, 255, 0.28);
+  background: transparent;
+  border: none;
+  cursor: pointer;
+  padding: 0;
+  text-align: left;
+  transition: color 0.2s ease;
+  line-height: 1;
+}
+.cal-ev-details-link:hover {
+  color: var(--link-color, rgba(4, 255, 255, 0.75));
+}
+
+/* ============================================================
+   EVENT DETAIL MODAL
+   ============================================================ */
+
+.cal-ev-modal {
+  position: fixed;
+  inset: 0;
+  z-index: 1300;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 20px;
+  pointer-events: none;
+}
+
+.cal-ev-modal__backdrop {
+  position: absolute;
+  inset: 0;
+  background: rgba(0, 0, 0, 0);
+  backdrop-filter: blur(0px);
+  transition: background 0.3s ease, backdrop-filter 0.3s ease;
+}
+
+.cal-ev-modal--open {
+  pointer-events: all;
+}
+
+.cal-ev-modal--open .cal-ev-modal__backdrop {
+  background: rgba(4, 4, 18, 0.88);
+  backdrop-filter: blur(10px);
+}
+
+/* Dialog box */
+.cal-ev-modal__dialog {
+  position: relative;
+  background: #111116;
+  border: 1px solid rgba(255, 255, 255, 0.07);
+  border-radius: 20px;
+  max-width: 740px;
+  width: 100%;
+  max-height: 88vh;
+  overflow-y: auto;
+  transform: scale(0.93) translateY(28px);
+  opacity: 0;
+  transition:
+    transform 0.34s cubic-bezier(0.34, 1.3, 0.64, 1),
+    opacity 0.26s ease;
+  box-shadow:
+    0 40px 100px rgba(0, 0, 0, 0.95),
+    0 0 0 1px rgba(255, 255, 255, 0.04),
+    0 0 60px rgba(0, 0, 0, 0.5);
+  scrollbar-width: thin;
+  scrollbar-color: rgba(255, 255, 255, 0.08) transparent;
+}
+
+.cal-ev-modal--open .cal-ev-modal__dialog {
+  transform: scale(1) translateY(0);
+  opacity: 1;
+}
+
+/* ── Hero area ── */
+.cal-ev-modal__hero {
+  position: relative;
+  width: 100%;
+  /* 1200 × 500 px — cinematic 2.4:1 ratio */
+  aspect-ratio: 12 / 5;
+  overflow: hidden;
+  border-radius: 20px 20px 0 0;
+  flex-shrink: 0;
+}
+
+.cal-ev-modal__hero-img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  display: block;
+}
+
+/* Animated placeholder — vidljiv kad nema slike */
+.cal-ev-modal__hero-ph {
+  width: 100%;
+  height: 100%;
+  background: #08080f;
+  position: relative;
+  overflow: hidden;
+}
+
+.cal-ev-modal__hero-ph::before {
+  content: '';
+  position: absolute;
+  inset: -20%;
+  background:
+    radial-gradient(ellipse 70% 90% at 25% 55%,
+      color-mix(in srgb, var(--accent, #04e8ff) 22%, transparent),
+      transparent 60%),
+    radial-gradient(ellipse 55% 70% at 78% 35%,
+      rgba(215, 2, 241, 0.14),
+      transparent 55%),
+    radial-gradient(ellipse 40% 50% at 55% 80%,
+      rgba(139, 94, 255, 0.08),
+      transparent 60%);
+  animation: evm-hero-drift 10s ease-in-out infinite alternate;
+}
+
+.cal-ev-modal__hero-ph::after {
+  content: 'DUHODAH';
+  position: absolute;
+  top: 50%;
+  left: 0;
+  right: 0;
+  text-align: center;
+  transform: translateY(-50%);
+  font-family: 'Jura', sans-serif;
+  font-size: 0.55rem;
+  letter-spacing: 0.55em;
+  color: rgba(255, 255, 255, 0.055);
+  pointer-events: none;
+}
+
+@keyframes evm-hero-drift {
+  from { transform: scale(1)    translate(0,    0); }
+  to   { transform: scale(1.07) translate(-2%, 1%); }
+}
+
+/* Gradient fade iz slike u body */
+.cal-ev-modal__hero-fade {
+  position: absolute;
+  bottom: 0;
+  left: 0;
+  right: 0;
+  height: 65%;
+  background: linear-gradient(to bottom, transparent, var(--fade-to, #111116));
+  pointer-events: none;
+}
+
+/* Zatvaranje */
+.cal-ev-modal__close {
+  position: absolute;
+  top: 14px;
+  right: 14px;
+  z-index: 2;
+  width: 34px;
+  height: 34px;
+  border-radius: 50%;
+  background: rgba(0, 0, 0, 0.55);
+  border: 1px solid rgba(255, 255, 255, 0.12);
+  color: rgba(255, 255, 255, 0.65);
+  font-size: 0.9rem;
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  transition: all 0.2s ease;
+  backdrop-filter: blur(6px);
+  line-height: 1;
+}
+
+.cal-ev-modal__close:hover {
+  background: rgba(255, 255, 255, 0.14);
+  border-color: rgba(255, 255, 255, 0.28);
+  color: #fff;
+}
+
+/* Badges preklopi na hero */
+.cal-ev-modal__hero-chips {
+  position: absolute;
+  bottom: 18px;
+  left: 22px;
+  display: flex;
+  gap: 8px;
+  flex-wrap: wrap;
+}
+
+/* ── Content ── */
+.cal-ev-modal__content {
+  padding: 26px 36px 38px;
+}
+
+.cal-ev-modal__date-accent {
+  font-family: 'Jura', sans-serif;
+  font-size: 0.68rem;
+  letter-spacing: 0.16em;
+  text-transform: uppercase;
+  margin-bottom: 8px;
+  opacity: 0.75;
+}
+
+.cal-ev-modal__title {
+  font-family: 'Jura', sans-serif;
+  font-size: clamp(1.35rem, 3.5vw, 1.9rem);
+  font-weight: 700;
+  color: rgba(255, 255, 255, 0.96);
+  margin: 0 0 26px;
+  letter-spacing: 0.01em;
+  line-height: 1.22;
+}
+
+/* Meta grid — 2 stupca */
+.cal-ev-modal__meta {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 16px 28px;
+  margin-bottom: 22px;
+  padding-bottom: 22px;
+  border-bottom: 1px solid rgba(255, 255, 255, 0.055);
+}
+
+.cal-ev-modal__meta-item {
+  display: flex;
+  align-items: flex-start;
+  gap: 10px;
+}
+
+.cal-ev-modal__meta-icon {
+  font-size: 0.95rem;
+  flex-shrink: 0;
+  margin-top: 1px;
+  opacity: 0.55;
+  line-height: 1;
+}
+
+.cal-ev-modal__meta-body {
+  display: flex;
+  flex-direction: column;
+  gap: 2px;
+}
+
+.cal-ev-modal__meta-label {
+  font-family: 'Jura', sans-serif;
+  font-size: 0.6rem;
+  letter-spacing: 0.13em;
+  text-transform: uppercase;
+  color: rgba(255, 255, 255, 0.27);
+  line-height: 1;
+}
+
+.cal-ev-modal__meta-value {
+  font-family: 'Jura', sans-serif;
+  font-size: 0.84rem;
+  color: rgba(255, 255, 255, 0.72);
+  line-height: 1.4;
+}
+
+.cal-ev-modal__meta-value a {
+  color: var(--accent-color, #04e8ff);
+  text-decoration: none;
+  border-bottom: 1px solid transparent;
+  transition: border-color 0.2s ease;
+}
+.cal-ev-modal__meta-value a:hover {
+  border-bottom-color: var(--accent-color, #04e8ff);
+}
+
+/* Tags */
+.cal-ev-modal__tags {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 8px;
+  margin-bottom: 22px;
+}
+
+/* Puni opis */
+.cal-ev-modal__opis-label {
+  font-family: 'Jura', sans-serif;
+  font-size: 0.6rem;
+  letter-spacing: 0.15em;
+  text-transform: uppercase;
+  color: rgba(255, 255, 255, 0.22);
+  margin-bottom: 12px;
+}
+
+.cal-ev-modal__opis {
+  font-family: 'Inter', sans-serif;
+  font-size: 0.9rem;
+  color: rgba(255, 255, 255, 0.57);
+  line-height: 1.85;
+  margin-bottom: 30px;
+  white-space: pre-line;
+}
+
+/* Footer: mjesta + CTA */
+.cal-ev-modal__footer {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 16px;
+  flex-wrap: wrap;
+  padding-top: 22px;
+  border-top: 1px solid rgba(255, 255, 255, 0.055);
+}
+
+.cal-ev-modal__spots {
+  font-family: 'Jura', sans-serif;
+  font-size: 0.8rem;
+  color: rgba(255, 255, 255, 0.38);
+}
+
+.cal-ev-modal__spots--warn {
+  color: rgba(215, 2, 241, 0.85);
+  font-weight: 600;
+  animation: pulse-badge 1.5s ease-in-out infinite;
+}
+
+/* ── Skeleton loader ── */
+.cal-ev-modal__skeleton {
+  border-radius: 20px;
+  overflow: hidden;
+}
+
+.cal-ev-modal__sk-hero {
+  width: 100%;
+  aspect-ratio: 12 / 5;
+  background: linear-gradient(90deg,
+    rgba(255,255,255,0.04) 0%,
+    rgba(255,255,255,0.08) 50%,
+    rgba(255,255,255,0.04) 100%);
+  background-size: 200% 100%;
+  animation: evm-shimmer 1.4s ease-in-out infinite;
+}
+
+.cal-ev-modal__sk-body {
+  padding: 28px 36px 36px;
+  display: flex;
+  flex-direction: column;
+  gap: 14px;
+}
+
+.cal-ev-modal__sk-line {
+  height: 12px;
+  border-radius: 6px;
+  background: linear-gradient(90deg,
+    rgba(255,255,255,0.04) 0%,
+    rgba(255,255,255,0.08) 50%,
+    rgba(255,255,255,0.04) 100%);
+  background-size: 200% 100%;
+  animation: evm-shimmer 1.4s ease-in-out infinite;
+}
+
+.cal-ev-modal__sk-line--sm   { width: 35%; animation-delay: 0.1s; }
+.cal-ev-modal__sk-line--lg   { width: 75%; height: 20px; animation-delay: 0.15s; }
+.cal-ev-modal__sk-line--md   { width: 55%; animation-delay: 0.2s; }
+.cal-ev-modal__sk-line--full { width: 100%; animation-delay: 0.25s; }
+
+@keyframes evm-shimmer {
+  0%   { background-position: 200% 0; }
+  100% { background-position: -200% 0; }
+}
+
+/* ============================================================
    RESPONSIVE
    ============================================================ */
 
@@ -1144,5 +1519,40 @@
   .admin-table {
     display: block;
     overflow-x: auto;
+  }
+
+  /* Event modal — mobile sheet */
+  .cal-ev-modal {
+    align-items: flex-end;
+    padding: 0;
+  }
+
+  .cal-ev-modal__dialog {
+    max-height: 92vh;
+    border-radius: 20px 20px 0 0;
+    border-bottom: none;
+    transform: translateY(40px) scale(0.98);
+  }
+
+  .cal-ev-modal--open .cal-ev-modal__dialog {
+    transform: translateY(0) scale(1);
+  }
+
+  .cal-ev-modal__hero {
+    border-radius: 20px 20px 0 0;
+    aspect-ratio: 16 / 7;
+  }
+
+  .cal-ev-modal__content {
+    padding: 20px 22px 32px;
+  }
+
+  .cal-ev-modal__meta {
+    grid-template-columns: 1fr;
+    gap: 14px;
+  }
+
+  .cal-ev-modal__sk-body {
+    padding: 20px 22px 28px;
   }
 }
