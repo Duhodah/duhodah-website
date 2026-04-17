@@ -4,7 +4,6 @@
 
 import { getUpcomingEvents, getEventsByMonth, getEventAvailability, registerForEvent, registerAnonymous, isUserRegistered, cancelRegistration } from './db.js';
 import { getAuthState, signInWithEmail } from './auth.js';
-import { supabase } from './supabase-config.js';
 
 // Lokalizirani nazivi dana i mjeseci (HR)
 const DANI = ['Ned', 'Pon', 'Uto', 'Sri', 'Čet', 'Pet', 'Sub'];
@@ -134,9 +133,10 @@ export async function renderEventsWidget(containerId) {
   if (!container) return;
 
   try {
+    const anonState = { user: null, profile: null, pretplata: null };
     const [events, authState] = await Promise.all([
       getUpcomingEvents(6),
-      getAuthState()
+      getAuthState().catch(() => anonState)
     ]);
 
     if (!events.length) {
