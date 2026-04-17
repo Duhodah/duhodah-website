@@ -213,7 +213,7 @@ export async function renderEventsWidget(containerId) {
 
   } catch (err) {
     console.error('[Calendar widget]', err);
-    container.innerHTML = `<p class="cal-empty">Nema nadolazećih događaja. Provjeri uskoro.</p>`;
+    container.innerHTML = `<p class="cal-empty" style="color:rgba(255,80,80,.8);font-size:.78rem;">Greška: ${err?.message || JSON.stringify(err)}</p>`;
   }
 }
 
