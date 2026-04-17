@@ -42,7 +42,7 @@ export async function getEventBySlug(slug) {
     .from('dogadjaji')
     .select('*')
     .eq('slug', slug)
-    .single();
+    .maybeSingle();
   if (error) throw error;
   return data;
 }
@@ -53,7 +53,7 @@ export async function getEventAvailability(eventId) {
     .from('dogadjaji')
     .select('kapacitet')
     .eq('id', eventId)
-    .single();
+    .maybeSingle();
 
   const { count } = await publicSupabase
     .from('registracije')
@@ -129,7 +129,7 @@ export async function isUserRegistered(userId, eventId) {
     .select('id, status')
     .eq('user_id', userId)
     .eq('dogadjaj_id', eventId)
-    .single();
+    .maybeSingle();
   return data || null;
 }
 

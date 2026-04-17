@@ -35,8 +35,8 @@ export async function getProfile(userId) {
     .from('profiles')
     .select('*')
     .eq('id', userId)
-    .single();
-  if (error && error.code !== 'PGRST116') throw error;
+    .maybeSingle();
+  if (error) throw error;
   return data;
 }
 
@@ -48,9 +48,9 @@ export async function checkSubscription(userId) {
     .select('plan, status, kraj')
     .eq('user_id', userId)
     .eq('status', 'active')
-    .single();
-  if (error && error.code !== 'PGRST116') return null;
-  return data || null;
+    .maybeSingle();
+  if (error) return null;
+  return data;
 }
 
 // --- Kombinacija: user + pretplata ---
