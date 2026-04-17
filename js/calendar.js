@@ -163,19 +163,15 @@ export async function renderEventsWidget(containerId) {
       const tagovi = ev.tagovi || [];
       const resolvedTags = tagovi.map(k => TAG_DEFS.find(t => t.key === k)).filter(Boolean);
       const tipTagObj    = resolvedTags.find(t => t.group === 'tip');
-      const formatTagObj = resolvedTags.find(t => t.group === 'format');
-      const tipColor     = tipTagObj?.color    || (tipCfg.color === 'cyan' ? '#04e8ff' : '#d702f1');
-      const formatColor  = formatTagObj?.color || null;
-      const accentBg     = formatColor
-        ? `linear-gradient(90deg, ${tipColor}, ${formatColor})`
-        : `linear-gradient(90deg, ${tipColor}, transparent)`;
+      const tipColor     = tipTagObj?.color || (tipCfg.color === 'cyan' ? '#04e8ff' : '#d702f1');
+      const accentBg     = `linear-gradient(90deg, ${tipColor}, transparent)`;
       const primaryLabel = tipTagObj?.label || tipCfg.label;
       const tagChipsHtml = resolvedTags.map(t =>
         `<span class="cwt" style="color:${t.color};border-color:${t.color}38;background:${t.color}14;">${t.label}</span>`
       ).join('');
 
       return `
-        <article class="cal-widget-card${uskoro ? ' cal-widget-card--uskoro' : ''}" data-event-id="${ev.id}" style="--c-border:${tipColor}40;--c-glow:${tipColor}14;">
+        <article class="cal-widget-card${uskoro ? ' cal-widget-card--uskoro' : ''}" data-event-id="${ev.id}" style="--c-border:${tipColor}55;--c-glow:${tipColor}30;">
           <div class="cal-widget-card__accent" style="background:${accentBg};"></div>
           <div class="cal-widget-card__inner">
             <div class="cal-widget-card__top">
