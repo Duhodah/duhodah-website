@@ -802,6 +802,15 @@ async function registerFree(eventId, tipPlacanja = 'pretplatnik_besplatno') {
     const btn = document.querySelector(`[data-reg="${eventId}"]`);
     if (btn) { btn.disabled = true; btn.textContent = 'Registriram...'; }
 
+    // Re-check kapacitet tik prije registracije (race condition zaštita)
+    const avail = await getEventAvailability(eventId);
+    if (avail.puno) {
+      await refreshWidgetCard(eventId);
+      if (document.getElementById('cal-panel')) await openEventPanel(eventId);
+      alert('Žao nam je — sva mjesta su upravo popunjena.');
+      return;
+    }
+
     await registerForEvent(user.id, eventId, tipPlacanja);
 
     // Ažuriraj widget karticu (index.html)
@@ -809,6 +818,11 @@ async function registerFree(eventId, tipPlacanja = 'pretplatnik_besplatno') {
     // Otvori/osvježi panel (events.html)
     if (document.getElementById('cal-panel')) await openEventPanel(eventId);
   } catch (err) {
+    const dup = err.message?.toLowerCase().includes('duplicate') || err.code === '23505';
+    if (dup) {
+      await refreshWidgetCard(eventId);
+      return;
+    }
     console.error('[Register free]', err);
     alert('Greška pri registraciji. Pokušaj ponovo.');
   }
