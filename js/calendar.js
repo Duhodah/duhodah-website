@@ -185,7 +185,7 @@ export async function renderEventsWidget(containerId) {
             <h3 class="cal-widget-card__naziv">${ev.naziv}</h3>
             <div class="cal-widget-card__meta-row">
               <span>🕐 ${formatVrijeme(ev.datum)} · ${ev.trajanje_min} min</span>
-              <span>📍 ${ev.lokacija.split(',')[0]}</span>
+              <span>📍 ${ev.lokacija?.split(',')[0] || '—'}</span>
             </div>
             ${tagChipsHtml ? `<div class="cal-widget-card__tags">${tagChipsHtml}</div>` : ''}
             ${ev.opis_kratki ? `<p class="cal-widget-card__opis">${ev.opis_kratki}</p>` : ''}
