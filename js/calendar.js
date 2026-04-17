@@ -166,8 +166,9 @@ export async function renderEventsWidget(containerId) {
       const tipColor     = tipTagObj?.color || (tipCfg.color === 'cyan' ? '#04e8ff' : '#d702f1');
       const accentBg     = `linear-gradient(90deg, ${tipColor}, transparent)`;
       const primaryLabel = tipTagObj?.label || tipCfg.label;
-      const tagChipsHtml = resolvedTags.map(t =>
-        `<span class="cwt" style="color:${t.color};border-color:${t.color}38;background:${t.color}14;">${t.label}</span>`
+      const tagChipsHtml = resolvedTags.map(t => t.group === 'format'
+        ? `<span class="cwt" style="color:#08081a;border-color:${t.color};background:${t.color};">${t.label}</span>`
+        : `<span class="cwt" style="color:${t.color};border-color:${t.color}38;background:${t.color}14;">${t.label}</span>`
       ).join('');
 
       return `
