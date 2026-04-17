@@ -1293,17 +1293,16 @@
 .cal-ev-modal__hero {
   position: relative;
   width: 100%;
-  /* 1200 × 500 px — cinematic 2.4:1 ratio */
-  aspect-ratio: 12 / 5;
-  overflow: hidden;
+  background: #0a0a0a;
   border-radius: 20px 20px 0 0;
   flex-shrink: 0;
+  overflow: hidden;
 }
 
 .cal-ev-modal__hero-img {
   width: 100%;
-  height: 100%;
-  object-fit: cover;
+  height: auto;
+  object-fit: contain;
   display: block;
 }
 
