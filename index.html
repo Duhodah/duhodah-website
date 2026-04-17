@@ -4345,6 +4345,9 @@
     import { trackInteraction } from './js/db.js';
     import { getCurrentUser } from './js/auth.js';
 
+    // Renderaj widget odmah — eventi se dohvaćaju publicSupabase-om (nema auth lock-a)
+    renderEventsWidget('events-widget-container');
+
     // ════ AUTH MODAL ═══════════════════════════════════════════
     const authModal = document.getElementById('auth-modal');
 
@@ -4470,7 +4473,9 @@
         navBtn.style.display  = '';
         navUser.style.display = 'none';
       }
-      if (event === 'INITIAL_SESSION' || event === 'SIGNED_IN' || event === 'SIGNED_OUT') {
+      // Re-renderaj widget samo kad se auth stanje stvarno promijeni
+      // (inicijalni render se radi odmah pri učitavanju stranice, ispod)
+      if (event === 'SIGNED_IN' || event === 'SIGNED_OUT') {
         renderEventsWidget('events-widget-container');
       }
     });

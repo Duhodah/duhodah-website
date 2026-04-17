@@ -2,15 +2,16 @@
 // DB.JS — Duhodah Database module
 // ============================================================
 
-import { supabase } from './supabase-config.js';
+import { supabase, publicSupabase } from './supabase-config.js';
 
 // ============================================================
 // DOGAĐAJI
 // ============================================================
 
 // Dohvati sve nadolazeće aktivne događaje
+// Koristi publicSupabase — bez auth lock-a, sigurno za poziv pri page loadu
 export async function getUpcomingEvents(limit = 20) {
-  const { data, error } = await supabase
+  const { data, error } = await publicSupabase
     .from('dogadjaji')
     .select('*')
     .eq('aktivan', true)
@@ -24,7 +25,7 @@ export async function getUpcomingEvents(limit = 20) {
 export async function getEventsByMonth(year, month) {
   const start = new Date(year, month - 1, 1).toISOString();
   const end = new Date(year, month, 0, 23, 59, 59).toISOString();
-  const { data, error } = await supabase
+  const { data, error } = await publicSupabase
     .from('dogadjaji')
     .select('*')
     .eq('aktivan', true)
@@ -37,7 +38,7 @@ export async function getEventsByMonth(year, month) {
 
 // Dohvati jedan događaj po slug-u
 export async function getEventBySlug(slug) {
-  const { data, error } = await supabase
+  const { data, error } = await publicSupabase
     .from('dogadjaji')
     .select('*')
     .eq('slug', slug)
@@ -48,13 +49,13 @@ export async function getEventBySlug(slug) {
 
 // Broj slobodnih mjesta za događaj
 export async function getEventAvailability(eventId) {
-  const { data: event } = await supabase
+  const { data: event } = await publicSupabase
     .from('dogadjaji')
     .select('kapacitet')
     .eq('id', eventId)
     .single();
 
-  const { count } = await supabase
+  const { count } = await publicSupabase
     .from('registracije')
     .select('id', { count: 'exact', head: true })
     .eq('dogadjaj_id', eventId)

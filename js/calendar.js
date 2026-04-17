@@ -11,8 +11,10 @@ const DANI_PUNI = ['Nedjelja', 'Ponedjeljak', 'Utorak', 'Srijeda', 'Četvrtak', 
 const MJESECI = ['Siječanj', 'Veljača', 'Ožujak', 'Travanj', 'Svibanj', 'Lipanj',
                  'Srpanj', 'Kolovoz', 'Rujan', 'Listopad', 'Studeni', 'Prosinac'];
 
-// Cache događaja za widget (koristi se za Realtime refresh)
+// Cache događaja za widget
 let eventsCache = {};
+// Auth state snimljen pri zadnjem renderEventsWidget pozivu
+let widgetAuthState = { user: null, profile: null, pretplata: null };
 
 // Tip badge boje i labeli (fallback ako nema tagova)
 const TIP_CONFIG = {
@@ -134,10 +136,11 @@ export async function renderEventsWidget(containerId) {
 
   try {
     const anonState = { user: null, profile: null, pretplata: null };
-    const [events, authState] = await Promise.all([
+    const [events, fetchedAuth] = await Promise.all([
       getUpcomingEvents(6),
       getAuthState().catch(() => anonState)
     ]);
+    widgetAuthState = fetchedAuth;
 
     if (!events.length) {
       container.innerHTML = `<p class="cal-empty">Nema nadolazećih događaja. Provjeri uskoro.</p>`;
@@ -149,7 +152,7 @@ export async function renderEventsWidget(containerId) {
 
     const cards = await Promise.all(events.map(async (ev) => {
       const avail = await getEventAvailability(ev.id);
-      const btn = await buildEventButton(ev, authState, avail);
+      const btn = await buildEventButton(ev, widgetAuthState, avail);
       const tipCfg = TIP_CONFIG[ev.tip] || { label: ev.tip, color: 'cyan' };
       const uskoro = isUskoro(ev.datum);
       const d = new Date(ev.datum);
@@ -220,7 +223,7 @@ async function refreshWidgetCard(eventId) {
   const event = eventsCache[eventId];
   if (!event) return;
   const avail = await getEventAvailability(eventId);
-  const btn = await buildEventButton(event, authState, avail);
+  const btn = await buildEventButton(event, widgetAuthState, avail);
   const footer = card.querySelector('.cal-widget-card__footer');
   if (footer) {
     footer.innerHTML = `
