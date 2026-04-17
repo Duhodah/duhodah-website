@@ -501,9 +501,10 @@ let activePanel = null;
 
 export async function initFullCalendar() {
   try {
+    const anonState = { user: null, profile: null, pretplata: null };
     [allEvents, authState] = await Promise.all([
       getUpcomingEvents(50),
-      getAuthState()
+      getAuthState().catch(() => anonState)
     ]);
 
     renderListView();
@@ -645,12 +646,7 @@ export async function openEventPanel(eventId) {
   const event = allEvents.find(e => e.id === eventId);
   if (!event) return;
 
-  const [avail, btn] = await Promise.all([
-    getEventAvailability(eventId),
-    buildEventButton(event, authState, avail || { puno: false, slobodna: 0, kapacitet: 0, prijavljeni: 0 })
-  ]);
-
-  // Re-build button with actual avail
+  const avail = await getEventAvailability(eventId);
   const btnHtml = await buildEventButton(event, authState, avail);
   const tipCfg = TIP_CONFIG[event.tip] || { label: event.tip, color: 'cyan' };
 
