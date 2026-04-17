@@ -205,7 +205,8 @@ export async function renderEventsWidget(containerId) {
 
   } catch (err) {
     console.error('[Calendar widget]', err);
-    container.innerHTML = `<p class="cal-empty">Nema nadolazećih događaja. Provjeri uskoro.</p>`;
+    const code = err?.message || err?.code || String(err);
+    container.innerHTML = `<p class="cal-empty">Greška pri učitavanju termina<br><span style="font-size:.7rem;opacity:.5">(${code})</span></p>`;
   }
 }
 

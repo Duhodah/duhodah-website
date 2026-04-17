@@ -4470,15 +4470,12 @@
         navBtn.style.display  = '';
         navUser.style.display = 'none';
       }
-      if (event === 'SIGNED_IN' || event === 'SIGNED_OUT') {
+      if (event === 'INITIAL_SESSION' || event === 'SIGNED_IN' || event === 'SIGNED_OUT') {
         renderEventsWidget('events-widget-container');
       }
     });
 
     document.getElementById('nav-auth-signout').addEventListener('click', () => supabase.auth.signOut());
-
-    // Render events widget
-    renderEventsWidget('events-widget-container');
 
     // ── Kontakt forma — stvarno šalje u Supabase ──────────────
     window._duhodahContactSubmit = async function(e) {
