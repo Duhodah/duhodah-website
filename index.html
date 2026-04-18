@@ -2457,7 +2457,7 @@
             justify-content:center;gap:4px;
             min-width:0;flex:1;
           ">
-            <!-- Gornji red: "Sljedeće" + "Vidi →" -->
+            <!-- Gornji red: "Sljedeće" + Countdown + "Vidi →" -->
             <div style="display:flex;align-items:center;justify-content:space-between;gap:8px;">
               <span style="
                 display:inline-flex;align-items:center;gap:5px;
@@ -2472,6 +2472,12 @@
                 "></span>
                 <span style="color:#00e676;">Sljedeće</span>
               </span>
+              <span id="hero-next-countdown" style="
+                font-family:var(--font-brand);font-size:0.88rem;letter-spacing:0.06em;font-weight:300;
+                background:linear-gradient(90deg,rgba(4,255,255,1),rgba(215,2,241,1));
+                -webkit-background-clip:text;-webkit-text-fill-color:transparent;
+                background-clip:text;flex:1;text-align:center;
+              "></span>
               <span style="
                 font-family:var(--font-brand);font-size:0.56rem;
                 letter-spacing:0.08em;color:rgba(4,255,255,0.5);white-space:nowrap;
@@ -2491,14 +2497,8 @@
             "></p>
             <!-- Intenzitet + tagovi -->
             <div id="hero-next-meta" style="display:none;flex-wrap:wrap;gap:4px;align-items:center;margin-top:1px;"></div>
-            <!-- Countdown + link -->
-            <div id="hero-next-bottom" style="display:none;align-items:center;justify-content:space-between;gap:8px;margin-top:5px;">
-              <span id="hero-next-countdown" style="
-                font-family:var(--font-brand);font-size:0.88rem;letter-spacing:0.06em;font-weight:300;
-                background:linear-gradient(90deg,rgba(4,255,255,1),rgba(215,2,241,1));
-                -webkit-background-clip:text;-webkit-text-fill-color:transparent;
-                background-clip:text;
-              "></span>
+            <!-- Link -->
+            <div id="hero-next-bottom" style="display:none;align-items:center;justify-content:flex-end;gap:8px;margin-top:5px;">
               <a id="hero-next-detail" href="javascript:void(0)"
                 onclick="event.stopPropagation();if(window.openEventPanel&&window._heroEventId)window.openEventPanel(window._heroEventId);else location.href='events.html'"
                 style="
