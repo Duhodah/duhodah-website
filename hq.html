@@ -531,6 +531,17 @@
       <div class="field"><label>Trajanje (min)</label><input type="number" id="ef-trajanje" value="120" min="30"></div>
       <div class="field"><label>Kapacitet</label><input type="number" id="ef-kapacitet" value="15" min="1"></div>
     </div>
+    <div class="field">
+      <label>Intenzitet</label>
+      <select id="ef-intenzitet">
+        <option value="">— nije definirano —</option>
+        <option value="lagan">Lagan</option>
+        <option value="lagan/srednji">Lagan / Srednji</option>
+        <option value="srednji">Srednji</option>
+        <option value="srednji/visoki">Srednji / Visoki</option>
+        <option value="visoki">Visoki</option>
+      </select>
+    </div>
     <div class="field"><label>Lokacija</label><input type="text" id="ef-lokacija" placeholder="Livada &quot;Kod Zdenca&quot;..."></div>
     <div class="form-sec">Opisi</div>
     <div class="field"><label>Kratki opis (kartica)</label><textarea id="ef-opis-kratki" rows="2"></textarea></div>
@@ -896,6 +907,7 @@ document.getElementById('btn-new-event').addEventListener('click', () => {
   document.getElementById('ef-aktivan').checked = true;
   document.getElementById('ef-trajanje').value = 120;
   document.getElementById('ef-kapacitet').value = 15;
+  document.getElementById('ef-intenzitet').value = '';
   document.getElementById('ef-lokacija').value = 'Livada "Kod Zdenca", Šetalište kardinala Franje Šepera, Osijek';
   document.getElementById('ef-msg').textContent = '';
   buildTagPicker('tp-tip',    'tip',    []);
@@ -919,8 +931,9 @@ window.openEditEv = id => {
   document.getElementById('ef-cijena').value     = e.cijena_eur||'';
   document.getElementById('ef-cijena-p').value   = e.cijena_pretplatnik??0;
   document.getElementById('ef-stripe').value     = e.stripe_link||'';
-  document.getElementById('ef-slug').value       = e.slug||'';
-  document.getElementById('ef-aktivan').checked  = e.aktivan;
+  document.getElementById('ef-slug').value        = e.slug||'';
+  document.getElementById('ef-aktivan').checked   = e.aktivan;
+  document.getElementById('ef-intenzitet').value  = e.intenzitet||'';
   document.getElementById('ef-plan-15').checked  = (e.pokriva_plan||[]).includes('zajednica_15');
   document.getElementById('ef-plan-god').checked = (e.pokriva_plan||[]).includes('zajednica_120_god');
   if (e.datum) {
@@ -969,6 +982,7 @@ document.getElementById('ev-form').addEventListener('submit', async e => {
     pokriva_plan: plans.length?plans:null,
     slug:         document.getElementById('ef-slug').value.trim(),
     aktivan:      document.getElementById('ef-aktivan').checked,
+    intenzitet:   document.getElementById('ef-intenzitet').value||null,
   };
   const { error } = editEvId
     ? await sb.from('dogadjaji').update(payload).eq('id', editEvId)
