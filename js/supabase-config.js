@@ -23,5 +23,6 @@ export const publicSupabase = createClient(SUPABASE_URL, SUPABASE_ANON_KEY, {
     persistSession: false,
     autoRefreshToken: false,
     detectSessionInUrl: false,
+    storageKey: 'sb-public-readonly', // zasebni key — nema konflikta s auth klijentom
   }
 });
