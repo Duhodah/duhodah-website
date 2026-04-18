@@ -2410,12 +2410,12 @@
       <div id="hero-next-event" style="display:none; margin-top:1.4rem;">
         <style>
           @keyframes heroBlink {
-            0%,100%{opacity:1;box-shadow:0 0 6px rgba(4,255,255,0.85);}
-            50%{opacity:0.1;box-shadow:none;}
+            0%,100%{opacity:1;box-shadow:0 0 8px rgba(4,255,255,1),0 0 16px rgba(4,255,255,0.5);}
+            50%{opacity:0.35;box-shadow:0 0 3px rgba(4,255,255,0.3);}
           }
           @keyframes heroBlinkText {
-            0%,100%{opacity:0.65;}
-            50%{opacity:0.08;}
+            0%,100%{opacity:0.9;}
+            50%{opacity:0.3;}
           }
         </style>
         <div id="hero-next-card" style="
@@ -2463,12 +2463,12 @@
                 display:inline-flex;align-items:center;gap:5px;
                 font-family:var(--font-brand);font-size:0.54rem;
                 letter-spacing:0.2em;text-transform:uppercase;
-                animation:heroBlinkText 1.4s ease-in-out infinite;
+                animation:heroBlinkText 0.9s ease-in-out infinite;
               ">
                 <span style="
                   width:5px;height:5px;border-radius:50%;flex-shrink:0;
                   background:var(--cyan);box-shadow:0 0 6px rgba(4,255,255,0.85);
-                  display:inline-block;animation:heroBlink 1.4s ease-in-out infinite;
+                  display:inline-block;animation:heroBlink 0.9s ease-in-out infinite;
                 "></span>
                 <span style="color:rgba(4,255,255,0.65);">Sljedeće</span>
               </span>
