@@ -2405,6 +2405,33 @@
         <a href="#events" class="btn-primary">Rezerviraj Mjesto</a>
         <a href="quiz.html" class="btn-secondary">Koji tip disača si? →</a>
       </div>
+
+      <!-- Sljedeći događaj — prikazuje JS ako postoji nadolazeći termin -->
+      <div id="hero-next-event" style="display:none; margin-top:1.6rem;">
+        <a href="#events" id="hero-next-link" style="
+          display:inline-flex; align-items:center; gap:0.75rem;
+          padding:0.6rem 1.4rem;
+          background:rgba(4,255,255,0.04);
+          border:1px solid rgba(4,255,255,0.15);
+          border-radius:40px;
+          text-decoration:none;
+          transition:all 0.3s;
+          backdrop-filter:blur(8px);
+        "
+        onmouseover="this.style.background='rgba(4,255,255,0.09)'; this.style.borderColor='rgba(4,255,255,0.32)'"
+        onmouseout="this.style.background='rgba(4,255,255,0.04)'; this.style.borderColor='rgba(4,255,255,0.15)'">
+          <span id="hero-next-dot" style="width:6px;height:6px;border-radius:50%;background:var(--cyan);box-shadow:0 0 8px var(--cyan);flex-shrink:0;"></span>
+          <span id="hero-next-tip" style="font-family:var(--font-brand);font-size:0.58rem;letter-spacing:0.2em;text-transform:uppercase;color:rgba(255,255,255,0.4);"></span>
+          <span style="color:rgba(255,255,255,0.15);font-size:0.65rem;">|</span>
+          <span id="hero-next-naziv" style="font-family:var(--font-head);font-size:0.82rem;color:rgba(255,255,255,0.82);"></span>
+          <span style="color:rgba(255,255,255,0.2);font-size:0.65rem;">·</span>
+          <span id="hero-next-datum" style="font-family:var(--font-brand);font-size:0.6rem;color:rgba(255,255,255,0.42);letter-spacing:0.04em;"></span>
+          <span style="color:rgba(255,255,255,0.2);font-size:0.65rem;">·</span>
+          <span id="hero-next-mjesta" style="font-family:var(--font-brand);font-size:0.6rem;letter-spacing:0.04em;color:var(--cyan);"></span>
+          <span style="color:rgba(4,255,255,0.45);font-size:0.8rem; margin-left:0.1rem;">→</span>
+        </a>
+      </div>
+
     </div>
 
     <div class="scroll-indicator">
@@ -4355,6 +4382,54 @@
 
     // Renderaj widget odmah — eventi se dohvaćaju publicSupabase-om (nema auth lock-a)
     renderEventsWidget('events-widget-container');
+
+    // ── Hero: sljedeći događaj ──────────────────────────────────
+    (async () => {
+      try {
+        const { data: evts } = await supabase
+          .from('dogadjaji')
+          .select('id, naziv, datum, tip, kapacitet')
+          .eq('aktivan', true)
+          .gte('datum', new Date().toISOString())
+          .order('datum', { ascending: true })
+          .limit(1);
+
+        if (!evts || !evts.length) return;
+        const ev = evts[0];
+
+        const { count } = await supabase
+          .from('registracije')
+          .select('*', { count: 'exact', head: true })
+          .eq('dogadjaj_id', ev.id)
+          .eq('status', 'potvrdjena');
+
+        const mjesta = Math.max(0, ev.kapacitet - (count || 0));
+
+        // Datum: "pet, 25. tra. · 18:00"
+        const DANI = ['ned','pon','uto','sri','čet','pet','sub'];
+        const MJ   = ['sij','velj','ožu','tra','svi','lip','srp','kol','ruj','lis','stu','pro'];
+        const d = new Date(ev.datum);
+        const datumStr = `${DANI[d.getDay()]}, ${d.getDate()}. ${MJ[d.getMonth()]}. · ${String(d.getHours()).padStart(2,'0')}:${String(d.getMinutes()).padStart(2,'0')}`;
+
+        // Tip badge
+        const isAutoskola = ev.tip?.startsWith('autoskola');
+        const isOnline    = ev.tip?.includes('online');
+        const tipLabel    = isAutoskola ? 'Autoškola' : (isOnline ? 'Online' : 'Uživo');
+        const dotColor    = isAutoskola ? 'var(--magenta)' : (isOnline ? 'var(--cyan)' : 'var(--magenta)');
+
+        // Mjesta
+        const mjestaLabel = mjesta <= 3 && mjesta > 0
+          ? `⚡ ${mjesta} mjesta`
+          : mjesta === 0 ? 'popunjeno' : `${mjesta} mjesta`;
+
+        document.getElementById('hero-next-dot').style.cssText   += `;background:${dotColor};box-shadow:0 0 8px ${dotColor}`;
+        document.getElementById('hero-next-tip').textContent      = tipLabel;
+        document.getElementById('hero-next-naziv').textContent    = ev.naziv;
+        document.getElementById('hero-next-datum').textContent    = datumStr;
+        document.getElementById('hero-next-mjesta').textContent   = mjestaLabel;
+        document.getElementById('hero-next-event').style.display  = 'block';
+      } catch(e) { /* silent — widget se ne prikazuje ako nema događaja */ }
+    })();
 
     // ════ AUTH MODAL ═══════════════════════════════════════════
     const authModal = document.getElementById('auth-modal');
