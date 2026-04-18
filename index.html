@@ -2780,53 +2780,306 @@
        KONTAKT
   ═══════════════════════════════════ -->
   <section id="usluge">
+    <style>
+      /* ── NOVI PROGRAMI GRID ── */
+      .prog-grid {
+        display: grid;
+        grid-template-columns: 1.15fr 1fr;
+        gap: 24px;
+        margin-top: 4rem;
+        align-items: start;
+      }
+      .prog-card {
+        position: relative;
+        background: rgba(255,255,255,0.025);
+        border: 1px solid rgba(255,255,255,0.07);
+        border-radius: 18px;
+        overflow: hidden;
+        padding: 2.4rem 2.4rem 2rem;
+        transition: border-color 0.35s, box-shadow 0.35s, transform 0.35s;
+      }
+      .prog-card:hover {
+        border-color: rgba(4,255,255,0.18);
+        box-shadow: 0 0 40px rgba(4,255,255,0.05);
+        transform: translateY(-3px);
+      }
+      .prog-card--autoskola:hover {
+        border-color: rgba(215,2,241,0.18);
+        box-shadow: 0 0 40px rgba(215,2,241,0.05);
+      }
+      .prog-card--dim {
+        opacity: 0.62;
+        filter: grayscale(0.3);
+      }
+      .prog-card--dim:hover { opacity: 0.8; transform: none; }
+      .prog-card__glow {
+        position: absolute;
+        inset: 0; pointer-events: none;
+        opacity: 0; transition: opacity 0.35s;
+      }
+      .prog-card:hover .prog-card__glow { opacity: 1; }
+      .prog-label {
+        font-family: var(--font-brand);
+        font-size: 0.62rem;
+        letter-spacing: 0.25em;
+        text-transform: uppercase;
+        color: rgba(4,255,255,0.6);
+        margin-bottom: 1.2rem;
+        display: block;
+      }
+      .prog-label--mg { color: rgba(215,2,241,0.6); }
+      .prog-title {
+        font-family: var(--font-head);
+        font-size: 1.5rem;
+        font-weight: 700;
+        color: rgba(255,255,255,0.95);
+        margin-bottom: 0.75rem;
+        line-height: 1.2;
+      }
+      .prog-desc {
+        font-size: 0.9rem;
+        color: rgba(255,255,255,0.5);
+        line-height: 1.7;
+        margin-bottom: 1.8rem;
+      }
+      /* Variant grid */
+      .prog-variants {
+        display: grid;
+        grid-template-columns: 1fr 1fr;
+        gap: 10px;
+        margin-bottom: 2rem;
+      }
+      .prog-variant {
+        background: rgba(255,255,255,0.03);
+        border: 1px solid rgba(255,255,255,0.07);
+        border-radius: 12px;
+        padding: 12px 14px;
+        transition: border-color 0.25s, background 0.25s;
+      }
+      .prog-variant:hover { background: rgba(255,255,255,0.055); }
+      .prog-variant__icon {
+        font-size: 1.1rem;
+        margin-bottom: 5px;
+        display: block;
+      }
+      .prog-variant__name {
+        font-family: var(--font-brand);
+        font-size: 0.65rem;
+        letter-spacing: 0.15em;
+        text-transform: uppercase;
+        font-weight: 700;
+        display: block;
+        margin-bottom: 3px;
+      }
+      .prog-variant__sub {
+        font-size: 0.72rem;
+        color: rgba(255,255,255,0.38);
+        line-height: 1.45;
+      }
+      /* Autoškola right column */
+      .prog-col-right {
+        display: flex;
+        flex-direction: column;
+        gap: 16px;
+      }
+      .prog-weeks {
+        display: grid;
+        grid-template-columns: 1fr 1fr;
+        gap: 8px;
+        margin-bottom: 1.8rem;
+      }
+      .prog-week {
+        background: rgba(215,2,241,0.05);
+        border: 1px solid rgba(215,2,241,0.1);
+        border-radius: 10px;
+        padding: 10px 12px;
+      }
+      .prog-week__num {
+        font-family: var(--font-brand);
+        font-size: 0.58rem;
+        letter-spacing: 0.15em;
+        color: rgba(215,2,241,0.55);
+        display: block;
+        margin-bottom: 3px;
+      }
+      .prog-week__name {
+        font-family: var(--font-brand);
+        font-size: 0.78rem;
+        font-weight: 700;
+        color: rgba(255,255,255,0.85);
+        display: block;
+        margin-bottom: 2px;
+      }
+      .prog-week__sub {
+        font-size: 0.68rem;
+        color: rgba(255,255,255,0.35);
+        line-height: 1.4;
+      }
+      /* CTA */
+      .prog-cta {
+        display: inline-flex;
+        align-items: center;
+        gap: 8px;
+        font-family: var(--font-brand);
+        font-size: 0.72rem;
+        letter-spacing: 0.12em;
+        text-transform: uppercase;
+        color: rgba(4,255,255,0.85);
+        text-decoration: none;
+        border: 1px solid rgba(4,255,255,0.25);
+        padding: 10px 22px;
+        border-radius: 30px;
+        background: rgba(4,255,255,0.04);
+        transition: all 0.25s;
+      }
+      .prog-cta:hover {
+        background: rgba(4,255,255,0.1);
+        border-color: rgba(4,255,255,0.5);
+        color: rgba(4,255,255,1);
+      }
+      .prog-cta--mg {
+        color: rgba(215,2,241,0.85);
+        border-color: rgba(215,2,241,0.25);
+        background: rgba(215,2,241,0.04);
+      }
+      .prog-cta--mg:hover {
+        background: rgba(215,2,241,0.1);
+        border-color: rgba(215,2,241,0.5);
+        color: rgba(215,2,241,1);
+      }
+      .prog-cta--dim {
+        opacity: 0.4;
+        pointer-events: none;
+        cursor: default;
+      }
+      .prog-coming {
+        display: inline-block;
+        font-family: var(--font-brand);
+        font-size: 0.58rem;
+        letter-spacing: 0.15em;
+        text-transform: uppercase;
+        color: rgba(255,255,255,0.3);
+        border: 1px solid rgba(255,255,255,0.1);
+        padding: 4px 12px;
+        border-radius: 20px;
+        margin-bottom: 1rem;
+      }
+      @media (max-width: 900px) {
+        .prog-grid { grid-template-columns: 1fr; }
+        .prog-card { padding: 1.8rem; }
+      }
+      @media (max-width: 500px) {
+        .prog-variants { grid-template-columns: 1fr; }
+        .prog-weeks    { grid-template-columns: 1fr 1fr; }
+      }
+    </style>
+
     <div class="container">
-      <div style="text-align:center; max-width:600px; margin:0 auto;">
+      <div style="text-align:center; max-width:640px; margin:0 auto;">
         <p class="section-label reveal">Programi</p>
-        <h2 class="section-title reveal">Dva puta prema<br>unutarnjoj ravnoteži</h2>
+        <h2 class="section-title reveal">Disanje kao put.<br>U svim oblicima.</h2>
         <div class="divider divider-center reveal"></div>
+        <p class="section-subtitle reveal" style="margin-top:1rem;">
+          Jedno tijelo, jedan dah — ali mnogo načina da mu pristupiš. Odaberi ono što ti u ovom trenutku odgovara.
+        </p>
       </div>
 
-      <div class="services-grid">
-        <!-- Breathwork Journey -->
-        <div class="service-card reveal">
-          <div class="service-card-bg"></div>
-          <span class="service-number">01 — GRUPNO</span>
-          <div class="service-icon">
-            <div class="service-icon-ring"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round"><path d="M2 12C5 6 7 6 9 12s4 6 6 0 4-6 7 0"/></svg></div>
-          </div>
-          <h3 class="service-title">Disajna Putovanja</h3>
-          <p class="service-desc">
-            Grupne sesije svjesnog disanja koje vode prema dubokom unutarnjem iskustvu. Svako putovanje je jedinstveno — vođeno glazbom, namjerom i dahom.
+      <div class="prog-grid">
+
+        <!-- ── DISAJNA PUTOVANJA ── -->
+        <div class="prog-card reveal">
+          <div class="prog-card__glow" style="background:radial-gradient(ellipse at 80% 10%, rgba(4,255,255,0.07), transparent 60%);"></div>
+          <span class="prog-label">01 — Grupna sesija svjesnog disanja</span>
+          <h3 class="prog-title">Disajna Putovanja</h3>
+          <p class="prog-desc">
+            Vođena grupna iskustva koja dahom otvaraju prostor za duboku transformaciju. Svako putovanje ima svoju namjeru, glazbu i energiju — odaberi ono koje te zove.
           </p>
-          <div class="service-details">
-            <div class="service-detail">Grupna sesija do 15 sudionika</div>
-            <div class="service-detail">Studio Shine, Gundulića 5, Osijek</div>
-            <div class="service-detail">Uvodna integracija + vođeno putovanje</div>
-            <div class="service-detail">Zatvoreni prostor, puna privatnost</div>
+
+          <div class="prog-variants">
+            <div class="prog-variant" style="border-color:rgba(4,232,255,0.15);">
+              <span class="prog-variant__icon">🌊</span>
+              <span class="prog-variant__name" style="color:rgba(4,232,255,0.85);">TOK</span>
+              <span class="prog-variant__sub">Aktivno, dinamično disanje. Intenzivno, transformativno, oslobađajuće.</span>
+            </div>
+            <div class="prog-variant" style="border-color:rgba(139,158,255,0.15);">
+              <span class="prog-variant__icon">🌙</span>
+              <span class="prog-variant__name" style="color:rgba(139,158,255,0.85);">MIR</span>
+              <span class="prog-variant__sub">Restorativno, opuštajuće. Duboki odmor za preopterećeni živčani sustav.</span>
+            </div>
+            <div class="prog-variant" style="border-color:rgba(0,230,118,0.15);">
+              <span class="prog-variant__icon">🎁</span>
+              <span class="prog-variant__name" style="color:rgba(0,230,118,0.85);">Besplatno</span>
+              <span class="prog-variant__sub">Uvodna sesija bez troška. Probaj svjesno disanje bez ikakve obveze.</span>
+            </div>
+            <div class="prog-variant" style="border-color:rgba(105,240,174,0.15);">
+              <span class="prog-variant__icon">🌿</span>
+              <span class="prog-variant__name" style="color:rgba(105,240,174,0.85);">Priroda</span>
+              <span class="prog-variant__sub">Van zidova. Disanje u prirodnom okruženju — šuma, zrak, zemlja.</span>
+            </div>
+            <div class="prog-variant" style="border-color:rgba(255,213,79,0.15);">
+              <span class="prog-variant__icon">🏛</span>
+              <span class="prog-variant__name" style="color:rgba(255,213,79,0.85);">Dvorana</span>
+              <span class="prog-variant__sub">Studio Shine, Osijek. Posvećeni prostor, do 15 sudionika.</span>
+            </div>
+            <div class="prog-variant" style="border-color:rgba(79,195,247,0.15);">
+              <span class="prog-variant__icon">💻</span>
+              <span class="prog-variant__name" style="color:rgba(79,195,247,0.85);">Online</span>
+              <span class="prog-variant__sub">Live sesija putem streama. Iz svog prostora, u svom ritmu.</span>
+            </div>
           </div>
-          <span class="service-price">UPITAJ ZA TERMINE →</span>
+
+          <a href="events.html" class="prog-cta">Pogledaj sve termine →</a>
         </div>
 
-        <!-- Autoškola -->
-        <div class="service-card reveal reveal-delay-1">
-          <div class="service-card-bg"></div>
-          <span class="service-number">02 — TEČAJ</span>
-          <div class="service-icon">
-            <div class="service-icon-ring"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round"><circle cx="12" cy="12" r="9"/><circle cx="12" cy="12" r="3"/><line x1="12" y1="9" x2="12" y2="3"/><line x1="7.8" y1="10.5" x2="3.4" y2="17.4"/><line x1="16.2" y1="10.5" x2="20.6" y2="17.4"/></svg></div>
+        <!-- ── AUTOŠKOLA KOLONA ── -->
+        <div class="prog-col-right">
+
+          <!-- Temeljna -->
+          <div class="prog-card prog-card--autoskola reveal reveal-delay-1">
+            <div class="prog-card__glow" style="background:radial-gradient(ellipse at 20% 80%, rgba(215,2,241,0.07), transparent 60%);"></div>
+            <span class="prog-label prog-label--mg">02 — Tečaj · 4 tjedna</span>
+            <h3 class="prog-title" style="font-size:1.25rem;">Autoškola za Živčani Sustav<br><span style="color:rgba(215,2,241,0.75);font-size:0.9rem;letter-spacing:0.05em;">— Temeljna</span></h3>
+            <p class="prog-desc" style="margin-bottom:1.4rem;">
+              Nauči jezik svog autonomnog živčanog sustava. Kroz 4 tjedna — dahom, teorijom i praksom — iz kronično aktiviranog u reguliranog.
+            </p>
+            <div class="prog-weeks">
+              <div class="prog-week">
+                <span class="prog-week__num">Tjedan 1</span>
+                <span class="prog-week__name">Kočnica</span>
+                <span class="prog-week__sub">Parasimpatikus — biološka kočnica tijela</span>
+              </div>
+              <div class="prog-week">
+                <span class="prog-week__num">Tjedan 2</span>
+                <span class="prog-week__name">Gas</span>
+                <span class="prog-week__sub">Simpatikus — razumjevanje aktivacije</span>
+              </div>
+              <div class="prog-week">
+                <span class="prog-week__num">Tjedan 3</span>
+                <span class="prog-week__name">Mjenjač</span>
+                <span class="prog-week__sub">Fleksibilnost i prelazak između stanja</span>
+              </div>
+              <div class="prog-week">
+                <span class="prog-week__num">Tjedan 4</span>
+                <span class="prog-week__name">Tempomat</span>
+                <span class="prog-week__sub">Koherentno disanje i stanje toka</span>
+              </div>
+            </div>
+            <a href="#autoskola" class="prog-cta prog-cta--mg">Saznaj više o tečaju →</a>
           </div>
-          <h3 class="service-title">Autoškola za<br>Živčani Sustav</h3>
-          <p class="service-desc">
-            Temeljni tečaj koji mijenja odnos prema stresu zauvijek. Kroz 4 tjedna učite jezik svog autonomnog živčanog sustava i kako njime upravljati disanjem.
-          </p>
-          <div class="service-details">
-            <div class="service-detail">4 susreta × 120 minuta</div>
-            <div class="service-detail">Jednom tjedno, kroz 4 tjedna</div>
-            <div class="service-detail">Teorija + praktični rad s dahom</div>
-            <div class="service-detail">Online ili Studio Shine opcija</div>
+
+          <!-- Napredna -->
+          <div class="prog-card prog-card--autoskola prog-card--dim reveal reveal-delay-2">
+            <span class="prog-coming">Uskoro</span>
+            <span class="prog-label prog-label--mg">03 — Tečaj · Napredni</span>
+            <h3 class="prog-title" style="font-size:1.15rem;">Autoškola za Živčani Sustav<br><span style="color:rgba(215,2,241,0.6);font-size:0.9rem;letter-spacing:0.05em;">— Napredna</span></h3>
+            <p class="prog-desc" style="margin-bottom:1.4rem;">
+              Za one koji su završili Temeljnu. Produbljivanje prakse — polyvagalna teorija, trauma, somatika i napredne tehnike regulacije.
+            </p>
+            <a href="#kontakt" class="prog-cta prog-cta--mg prog-cta--dim">Uskoro dostupno</a>
           </div>
-          <span class="service-price">NOVA GRUPA USKORO →</span>
+
         </div>
+
       </div>
     </div>
   </section>
