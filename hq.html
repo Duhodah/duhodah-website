@@ -758,9 +758,23 @@ document.getElementById('r-btn').addEventListener('click', async () => {
 document.getElementById('l-btn').addEventListener('click', async () => {
   const email = document.getElementById('l-email').value.trim();
   const pass  = document.getElementById('l-pass').value;
+  const btn   = document.getElementById('l-btn');
   setErr('');
-  const { error } = await sb.auth.signInWithPassword({ email, password: pass });
-  if (error) setErr(error.message === 'Invalid login credentials' ? 'Pogrešna lozinka.' : error.message);
+  btn.disabled = true;
+  btn.textContent = 'Prijavljujem...';
+  try {
+    const { error } = await sb.auth.signInWithPassword({ email, password: pass });
+    if (error) {
+      setErr(error.message === 'Invalid login credentials' ? 'Pogrešna lozinka.' : error.message);
+      btn.disabled = false;
+      btn.textContent = 'Prijava →';
+    }
+    // uspjeh: onAuthStateChange handler preuzima
+  } catch(e) {
+    setErr('Greška: ' + e.message);
+    btn.disabled = false;
+    btn.textContent = 'Prijava →';
+  }
 });
 
 document.getElementById('l-pass').addEventListener('keydown', e => { if (e.key === 'Enter') document.getElementById('l-btn').click(); });

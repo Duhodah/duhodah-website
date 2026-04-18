@@ -2,6 +2,15 @@
 # Duhodah — Apache cache i kompresija
 # ============================================================
 
+# Kratke URL adrese (bez .html ekstenzije)
+Options -MultiViews
+<IfModule mod_rewrite.c>
+  RewriteEngine On
+  RewriteRule ^hq$           hq.html           [L,R=301]
+  RewriteRule ^events-admin$ events-admin.html [L,R=301]
+  RewriteRule ^admin$        admin.html        [L,R=301]
+</IfModule>
+
 # Uključi kompresiju (Gzip)
 <IfModule mod_deflate.c>
   AddOutputFilterByType DEFLATE text/html text/css text/javascript
