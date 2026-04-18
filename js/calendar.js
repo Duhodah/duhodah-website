@@ -186,6 +186,7 @@ async function buildEventCardHTML(ev, curAuthState) {
   const d          = new Date(ev.datum);
   const dayNum     = d.getDate();
   const monthAbbr  = MJESECI[d.getMonth()].slice(0, 3).toUpperCase();
+  const dayName    = DANI_PUNI[d.getDay()];
 
   const tagovi       = ev.tagovi || [];
   const resolvedTags = tagovi.map(k => TAG_DEFS.find(t => t.key === k)).filter(Boolean);
@@ -215,6 +216,7 @@ async function buildEventCardHTML(ev, curAuthState) {
           <div class="cal-widget-card__date-block">
             <span class="cal-widget-card__day-num" style="color:${tipColor};">${dayNum}</span>
             <span class="cal-widget-card__month-abbr">${monthAbbr}</span>
+            <span class="cal-widget-card__day-name">${dayName}</span>
           </div>
           <div class="cal-widget-card__badges">
             <span class="cal-badge" style="color:${tipColor};background:${tipColor}18;border-color:${tipColor}50;">${primaryLabel}</span>
