@@ -261,6 +261,10 @@ export async function renderEventsWidget(containerId) {
 
     events.forEach(ev => { eventsCache[ev.id] = ev; });
 
+    // Izloži panel funkcije (koristimo i na index.html)
+    window.openEventPanel  = openEventPanel;
+    window.closeEventPanel = closeEventPanel;
+
     // 2. Renderaj odmah s anon stanjem (ne čekamo auth)
     const anonState = { user: null, profile: null, pretplata: null };
     const cards = await Promise.all(events.map(ev => buildEventCardHTML(ev, anonState)));
@@ -770,7 +774,7 @@ async function renderMonthView() {
 
 // --- Event detail panel ---
 export async function openEventPanel(eventId) {
-  const event = allEvents.find(e => e.id === eventId);
+  const event = allEvents.find(e => e.id === eventId) || eventsCache[eventId];
   if (!event) return;
 
   const avail = await getEventAvailability(eventId);

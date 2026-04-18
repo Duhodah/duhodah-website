@@ -2491,6 +2491,23 @@
             "></p>
             <!-- Intenzitet + tagovi -->
             <div id="hero-next-meta" style="display:none;flex-wrap:wrap;gap:4px;align-items:center;margin-top:1px;"></div>
+            <!-- Countdown + link -->
+            <div id="hero-next-bottom" style="display:none;align-items:center;justify-content:space-between;gap:8px;margin-top:5px;">
+              <span id="hero-next-countdown" style="
+                font-family:var(--font-brand);font-size:0.57rem;letter-spacing:0.06em;
+                color:rgba(4,255,255,0.5);
+              "></span>
+              <a id="hero-next-detail" href="javascript:void(0)"
+                onclick="event.stopPropagation();if(window.openEventPanel&&window._heroEventId)window.openEventPanel(window._heroEventId);else location.href='events.html'"
+                style="
+                  font-family:var(--font-brand);font-size:0.57rem;letter-spacing:0.06em;
+                  color:rgba(4,255,255,0.55);text-decoration:none;white-space:nowrap;flex-shrink:0;
+                  transition:color 0.2s;
+                "
+                onmouseover="this.style.color='rgba(4,255,255,0.9)'"
+                onmouseout="this.style.color='rgba(4,255,255,0.55)'"
+              >Više o događaju →</a>
+            </div>
           </div>
 
         </div>
@@ -4439,7 +4456,7 @@
 
   <script type="module">
     import { supabase, SUPABASE_URL, SUPABASE_ANON_KEY } from './js/supabase-config.js?v=2';
-    import { renderEventsWidget } from './js/calendar.js?v=8';
+    import { renderEventsWidget } from './js/calendar.js?v=9';
     import { initAuth, signOut } from './js/auth.js?v=5';
     import { trackInteraction } from './js/db.js?v=6';
     import { getCurrentUser } from './js/auth.js?v=5';
@@ -4552,6 +4569,31 @@
         }
 
         document.getElementById('hero-next-event').style.display = 'block';
+
+        // Pohrani ID za panel
+        window._heroEventId = ev.id;
+
+        // Odbrojavanje
+        const _target  = new Date(ev.datum).getTime();
+        const _cntEl   = document.getElementById('hero-next-countdown');
+        const _botEl   = document.getElementById('hero-next-bottom');
+        function _tick() {
+          const diff = _target - Date.now();
+          if (diff <= 0) { _cntEl.textContent = '⏱ Upravo počinje!'; return; }
+          const d = Math.floor(diff / 86400000);
+          const h = Math.floor((diff % 86400000) / 3600000);
+          const m = Math.floor((diff % 3600000)  / 60000);
+          const s = Math.floor((diff % 60000)    / 1000);
+          const parts = [];
+          if (d)      parts.push(`${d}d`);
+          if (d || h) parts.push(`${h}h`);
+          parts.push(`${String(m).padStart(2,'0')}m`);
+          parts.push(`${String(s).padStart(2,'0')}s`);
+          _cntEl.textContent = `⏱ ${parts.join(' ')}`;
+        }
+        _tick();
+        setInterval(_tick, 1000);
+        _botEl.style.display = 'flex';
 
         // Širina = hero-actions (oba CTA gumba zajedno)
         const card = document.getElementById('hero-next-card');
