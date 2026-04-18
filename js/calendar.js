@@ -225,8 +225,8 @@ async function buildEventCardHTML(ev, curAuthState) {
         <div class="cal-widget-card__meta-row">
           <span>🕐 ${formatVrijeme(ev.datum)} · ${ev.trajanje_min} min</span>
           <span>📍 ${ev.lokacija?.split(',')[0] || '—'}</span>
+          ${ev.intenzitet ? `<span>⚡ ${INTENZITET_MAP[ev.intenzitet]?.label || ev.intenzitet}</span>` : ''}
         </div>
-        ${ev.intenzitet ? `<div class="cal-widget-card__meta-row" style="margin-top:0.3rem;">${intenzitetBadge(ev.intenzitet)}</div>` : ''}
         ${tagChipsHtml ? `<div class="cal-widget-card__tags">${tagChipsHtml}</div>` : ''}
         ${ev.opis_kratki ? `<p class="cal-widget-card__opis">${ev.opis_kratki}</p>` : ''}
         <div class="cal-widget-card__footer">
