@@ -2,9 +2,9 @@
 // CALENDAR.JS — Duhodah Calendar Render Engine
 // ============================================================
 
-import { getUpcomingEvents, getEventsByMonth, getEventAvailability, registerForEvent, registerAnonymous, isUserRegistered, cancelRegistration } from './db.js';
-import { getAuthState, signInWithEmail } from './auth.js';
-import { buildStripeUrl, KARTE_LINKS } from './stripe.js';
+import { getUpcomingEvents, getEventsByMonth, getEventAvailability, registerForEvent, registerAnonymous, isUserRegistered, cancelRegistration } from './db.js?v=4';
+import { getAuthState, signInWithEmail } from './auth.js?v=4';
+import { buildStripeUrl, KARTE_LINKS } from './stripe.js?v=4';
 
 // Lokalizirani nazivi dana i mjeseci (HR)
 const DANI = ['Ned', 'Pon', 'Uto', 'Sri', 'Čet', 'Pet', 'Sub'];
