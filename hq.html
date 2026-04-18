@@ -650,7 +650,9 @@
 import { createClient } from 'https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2/+esm';
 import { SUPABASE_URL, SUPABASE_ANON_KEY } from './js/supabase-config.js';
 
-const sb = createClient(SUPABASE_URL, SUPABASE_ANON_KEY);
+const sb = createClient(SUPABASE_URL, SUPABASE_ANON_KEY, {
+  auth: { storageKey: 'sb-hq-admin', flowType: 'pkce', detectSessionInUrl: true, persistSession: true }
+});
 const ADMIN = 'duhodah@duhodah.com';
 let allEvents = [], allUsluge = [], regCounts = {}, evFilter = 'sve', editEvId = null, editUsId = null;
 let allRegistrations = [], regPeriodFilter = 'sve', regTipFilter = 'sve', regFormatFilter = 'sve', regSearch = '';

@@ -432,7 +432,9 @@
   import { createClient } from 'https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2/+esm';
   import { SUPABASE_URL, SUPABASE_ANON_KEY } from './js/supabase-config.js';
 
-  const supabase = createClient(SUPABASE_URL, SUPABASE_ANON_KEY);
+  const supabase = createClient(SUPABASE_URL, SUPABASE_ANON_KEY, {
+    auth: { storageKey: 'sb-events-admin', flowType: 'pkce', detectSessionInUrl: true, persistSession: true }
+  });
   const ADMIN_EMAIL = 'duhodah@duhodah.com';
 
   let allEvents = [];

@@ -2,8 +2,8 @@
 // CALENDAR.JS — Duhodah Calendar Render Engine
 // ============================================================
 
-import { getUpcomingEvents, getEventsByMonth, getEventAvailability, registerForEvent, registerAnonymous, isUserRegistered, cancelRegistration } from './db.js?v=4';
-import { getAuthState, signInWithEmail } from './auth.js?v=4';
+import { getUpcomingEvents, getEventsByMonth, getEventAvailability, registerForEvent, registerAnonymous, isUserRegistered, cancelRegistration } from './db.js?v=6';
+import { getAuthState, signInWithEmail } from './auth.js?v=5';
 import { buildStripeUrl, KARTE_LINKS } from './stripe.js?v=4';
 
 // Lokalizirani nazivi dana i mjeseci (HR)
@@ -251,12 +251,8 @@ export async function renderEventsWidget(containerId) {
   if (!container) return;
 
   try {
-    const anonState = { user: null, profile: null, pretplata: null };
-    const [events, fetchedAuth] = await Promise.all([
-      getUpcomingEvents(6),
-      getAuthState().catch(() => anonState)
-    ]);
-    widgetAuthState = fetchedAuth;
+    // 1. Dohvati događaje odmah — čisti fetch, nema lock-a
+    const events = await getUpcomingEvents(6);
 
     if (!events.length) {
       container.innerHTML = `<p class="cal-empty">Nema nadolazećih događaja. Provjeri uskoro.</p>`;
@@ -265,13 +261,29 @@ export async function renderEventsWidget(containerId) {
 
     events.forEach(ev => { eventsCache[ev.id] = ev; });
 
-    const cards = await Promise.all(events.map(ev => buildEventCardHTML(ev, widgetAuthState)));
+    // 2. Renderaj odmah s anon stanjem (ne čekamo auth)
+    const anonState = { user: null, profile: null, pretplata: null };
+    const cards = await Promise.all(events.map(ev => buildEventCardHTML(ev, anonState)));
 
     container.innerHTML = `
       <div class="cal-widget-grid">${cards.join('')}</div>
       <div class="cal-widget-cta">
         <a href="events.html" class="cal-all-link">Svi termini i kalendar →</a>
       </div>`;
+
+    // 3. Auth state u pozadini — ažurira gumbe samo ako je korisnik prijavljen
+    getAuthState()
+      .then(async fetchedAuth => {
+        widgetAuthState = fetchedAuth;
+        if (!fetchedAuth?.user) return; // anon — gumbi su već ispravni
+        const authCards = await Promise.all(events.map(ev => buildEventCardHTML(ev, fetchedAuth)));
+        container.innerHTML = `
+          <div class="cal-widget-grid">${authCards.join('')}</div>
+          <div class="cal-widget-cta">
+            <a href="events.html" class="cal-all-link">Svi termini i kalendar →</a>
+          </div>`;
+      })
+      .catch(() => { /* ostaje anon prikaz */ });
 
   } catch (err) {
     console.error('[Calendar widget]', err);
@@ -430,8 +442,8 @@ async function showEventModal(eventId) {
     // Dohvati događaj — iz cache-a ili svježe iz baze
     let ev = eventsCache[eventId];
     if (!ev) {
-      const { data } = await import('./db.js').then(m => m.getUpcomingEvents(50));
-      ev = (data || []).find(e => e.id === eventId);
+      const events = await import('./db.js?v=6').then(m => m.getUpcomingEvents(50));
+      ev = (events || []).find(e => e.id === eventId);
     }
     if (!ev) { closeEventModal(); return; }
 
@@ -619,11 +631,9 @@ function initTagFilters() {
 
 export async function initFullCalendar() {
   try {
-    const anonState = { user: null, profile: null, pretplata: null };
-    [allEvents, authState] = await Promise.all([
-      getUpcomingEvents(200),
-      getAuthState().catch(() => anonState)
-    ]);
+    // 1. Dohvati događaje odmah — čisti fetch, nema lock-a
+    allEvents = await getUpcomingEvents(200);
+    authState = { user: null, profile: null, pretplata: null };
 
     initTagFilters();
     renderListView();
@@ -631,18 +641,25 @@ export async function initFullCalendar() {
     bindMonthNavigation();
     bindLoginModal();
 
-    // Expose global functions za onclick handlere
-    window.registerFree    = registerFree;
-    window.cancelReg       = cancelReg;
-    window.showLoginModal  = showLoginModal;
+    window.registerFree     = registerFree;
+    window.cancelReg        = cancelReg;
+    window.showLoginModal   = showLoginModal;
     window.showRegFormModal = showRegFormModal;
-    window.openEventPanel  = openEventPanel;
-    window.closeEventPanel = closeEventPanel;
+    window.openEventPanel   = openEventPanel;
+    window.closeEventPanel  = closeEventPanel;
+
+    // 2. Auth u pozadini — re-renderaj samo ako je prijavljen
+    getAuthState()
+      .then(fetchedAuth => {
+        authState = fetchedAuth;
+        if (fetchedAuth?.user) renderListView();
+      })
+      .catch(() => { /* ostaje anon */ });
 
   } catch (err) {
     console.error('[Full calendar init]', err);
-    document.getElementById('cal-main').innerHTML =
-      '<p class="cal-empty">Greška pri učitavanju kalendara.</p>';
+    const el = document.getElementById('cal-main');
+    if (el) el.innerHTML = '<p class="cal-empty">Greška pri učitavanju kalendara.</p>';
   }
 }
 

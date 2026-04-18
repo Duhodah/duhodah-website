@@ -2,7 +2,7 @@
 // AUTH.JS — Duhodah Auth module (magic link, no passwords)
 // ============================================================
 
-import { supabase } from './supabase-config.js';
+import { supabase } from './supabase-config.js?v=2';
 
 // --- Magic link login ---
 // Šalje magic link na email; korisnik klikne → automatski prijavljen
