@@ -40,6 +40,35 @@ const TAG_DEFS = [
 ];
 
 // ============================================================
+// INTENZITET BADGE
+// ============================================================
+
+const INTENZITET_MAP = {
+  'lagan':          { label: 'Lagan',           fill: 1,   color: '#04ffff' },
+  'lagan/srednji':  { label: 'Lagan / Srednji',  fill: 1.5, color: '#52ffcc' },
+  'srednji':        { label: 'Srednji',          fill: 2,   color: '#ffe066' },
+  'srednji/visoki': { label: 'Srednji / Visoki', fill: 2.5, color: '#ff9040' },
+  'visoki':         { label: 'Visoki',           fill: 3,   color: '#d702f1' },
+};
+
+function intenzitetBadge(val) {
+  const cfg = INTENZITET_MAP[val];
+  if (!cfg) return '';
+  const bars = [
+    { h: 6,  i: 1 },
+    { h: 9,  i: 2 },
+    { h: 12, i: 3 },
+  ].map(({ h, i }) => {
+    const filled = cfg.fill >= i;
+    const half   = !filled && cfg.fill >= i - 0.5;
+    const op     = filled ? '1' : half ? '0.4' : '0.12';
+    return `<span style="display:inline-block;width:3px;height:${h}px;background:${cfg.color};opacity:${op};border-radius:1px;"></span>`;
+  }).join('');
+  return `<span style="display:inline-flex;align-items:flex-end;gap:2px;vertical-align:middle;margin-right:5px;">${bars}</span>`
+       + `<span style="font-size:0.6rem;letter-spacing:0.1em;text-transform:uppercase;color:rgba(255,255,255,0.38);">${cfg.label}</span>`;
+}
+
+// ============================================================
 // FORMATIRANJE
 // ============================================================
 
@@ -197,6 +226,7 @@ async function buildEventCardHTML(ev, curAuthState) {
           <span>🕐 ${formatVrijeme(ev.datum)} · ${ev.trajanje_min} min</span>
           <span>📍 ${ev.lokacija?.split(',')[0] || '—'}</span>
         </div>
+        ${ev.intenzitet ? `<div class="cal-widget-card__meta-row" style="margin-top:0.3rem;">${intenzitetBadge(ev.intenzitet)}</div>` : ''}
         ${tagChipsHtml ? `<div class="cal-widget-card__tags">${tagChipsHtml}</div>` : ''}
         ${ev.opis_kratki ? `<p class="cal-widget-card__opis">${ev.opis_kratki}</p>` : ''}
         <div class="cal-widget-card__footer">
@@ -458,6 +488,14 @@ async function showEventModal(eventId) {
               <span class="cal-ev-modal__meta-value">${lokacijaHtml}</span>
             </div>
           </div>
+          ${ev.intenzitet ? `
+          <div class="cal-ev-modal__meta-item">
+            <span class="cal-ev-modal__meta-icon" style="font-size:0.9rem;">⚡</span>
+            <div class="cal-ev-modal__meta-body">
+              <span class="cal-ev-modal__meta-label">Intenzitet</span>
+              <span class="cal-ev-modal__meta-value" style="display:inline-flex;align-items:center;gap:6px;">${intenzitetBadge(ev.intenzitet)}</span>
+            </div>
+          </div>` : ''}
           ${ev.cijena_eur ? `
           <div class="cal-ev-modal__meta-item">
             <span class="cal-ev-modal__meta-icon">💶</span>

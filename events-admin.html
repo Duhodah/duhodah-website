@@ -329,6 +329,18 @@
     </div>
 
     <div class="field">
+      <label>Intenzitet</label>
+      <select id="f-intenzitet">
+        <option value="">— nije definirano —</option>
+        <option value="lagan">Lagan</option>
+        <option value="lagan/srednji">Lagan / Srednji</option>
+        <option value="srednji">Srednji</option>
+        <option value="srednji/visoki">Srednji / Visoki</option>
+        <option value="visoki">Visoki</option>
+      </select>
+    </div>
+
+    <div class="field">
       <label>Lokacija</label>
       <input type="text" id="f-lokacija" placeholder="Livada &quot;Kod Zdenca&quot;, Šetalište kardinala Franje Šepera">
     </div>
@@ -578,6 +590,7 @@
     document.getElementById('f-cijena-pretplata').value = '0';
     document.getElementById('f-lokacija').value = 'Livada "Kod Zdenca", Šetalište kardinala Franje Šepera, Osijek';
     document.querySelectorAll('.f-tag').forEach(cb => { cb.checked = false; });
+    document.getElementById('f-intenzitet').value = '';
     setSaveStatus('');
     openPanel();
   }
@@ -598,8 +611,9 @@
     document.getElementById('f-cijena').value  = e.cijena_eur || '';
     document.getElementById('f-cijena-pretplata').value = e.cijena_pretplatnik ?? 0;
     document.getElementById('f-stripe').value  = e.stripe_link || '';
-    document.getElementById('f-slug').value    = e.slug || '';
-    document.getElementById('f-aktivan').checked = e.aktivan;
+    document.getElementById('f-slug').value        = e.slug || '';
+    document.getElementById('f-aktivan').checked   = e.aktivan;
+    document.getElementById('f-intenzitet').value  = e.intenzitet || '';
     // Datum: convert to datetime-local format
     if (e.datum) {
       const d = new Date(e.datum);
@@ -682,6 +696,7 @@
       slug:               document.getElementById('f-slug').value.trim(),
       aktivan:            document.getElementById('f-aktivan').checked,
       tagovi:             tagovi.length ? tagovi : null,
+      intenzitet:         document.getElementById('f-intenzitet').value || null,
     };
 
     let error;
