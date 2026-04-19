@@ -4,7 +4,7 @@
 
 import { getUpcomingEvents, getEventsByMonth, getEventAvailability, registerForEvent, registerAnonymous, isUserRegistered, cancelRegistration } from './db.js?v=6';
 import { getAuthState, signInWithEmail } from './auth.js?v=5';
-import { buildStripeUrl, KARTE_LINKS } from './stripe.js?v=4';
+import { buildStripeUrl, KARTE_LINKS, AUTOSKOLA_LINKS } from './stripe.js?v=4';
 
 // Lokalizirani nazivi dana i mjeseci (HR)
 const DANI = ['Ned', 'Pon', 'Uto', 'Sri', 'Čet', 'Pet', 'Sub'];
@@ -96,11 +96,22 @@ function isUskoro(isoStr) {
 // GUMB LOGIKA (uvjetno prikazivanje)
 // ============================================================
 
-// Vrati pravi Stripe link za event: vlastiti ako postoji, inače generički po formatu
+// Vrati pravi Stripe link za event: vlastiti ako postoji, inače po tipu/formatu
 function resolveStripeLink(event) {
   if (event.stripe_link) return event.stripe_link;
-  const isOnline = (event.tagovi || []).includes('online');
+  const tagovi = event.tagovi || [];
+  if (tagovi.includes('as_hod'))   return AUTOSKOLA_LINKS.hod;
+  if (tagovi.includes('as_uhoda')) return AUTOSKOLA_LINKS.uhoda;
+  const isOnline = tagovi.includes('online');
   return isOnline ? KARTE_LINKS.online : KARTE_LINKS.uzivo;
+}
+
+// Vrati label CTA gumba ovisno o tipu događaja
+function resolveCTALabel(event, price) {
+  const tagovi = event.tagovi || [];
+  const isAutoskola = tagovi.includes('as_hod') || tagovi.includes('as_uhoda');
+  if (isAutoskola) return 'Upiši se →';
+  return price ? `Kupi kartu — ${price} €` : 'Kupi kartu →';
 }
 
 async function buildEventButton(event, authState, availability) {
@@ -153,10 +164,10 @@ async function buildEventButton(event, authState, availability) {
         email:   user.email,
         eventId: event.id,
       });
-      const cijenaLabel = event.cijena_eur ? `${event.cijena_eur} €` : 'Upitaj';
+      const ctaLabel = resolveCTALabel(event, event.cijena_eur);
       return `<div class="cal-btn-group cal-btn-group--stacked">
         <a class="cal-btn cal-btn--pay" href="${stripeUrl}" target="_blank" rel="noopener">
-          Kupi kartu — ${cijenaLabel} →
+          ${ctaLabel}
         </a>
         <span class="cal-member-hint">Ili <a href="zajednica.html">postani pretplatnik</a> i dođi besplatno</span>
       </div>`;
@@ -164,10 +175,10 @@ async function buildEventButton(event, authState, availability) {
   } else {
     // Anonimni posjetitelj — Stripe link bez konteksta
     const stripeUrl = resolveStripeLink(event);
-    const cijenaLabel = event.cijena_eur ? `${event.cijena_eur} €` : 'Upitaj';
+    const ctaLabel = resolveCTALabel(event, event.cijena_eur);
     return `<div class="cal-btn-group cal-btn-group--stacked">
       <a class="cal-btn cal-btn--pay" href="${stripeUrl}" target="_blank" rel="noopener">
-        Kupi kartu — ${cijenaLabel} →
+        ${ctaLabel}
       </a>
       <span class="cal-member-hint">Pretplatnik? <a href="#" onclick="showLoginModal('${event.id}');return false;">Prijavi se za besplatnu opciju</a></span>
     </div>`;
