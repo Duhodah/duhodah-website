@@ -94,7 +94,7 @@ function _buildModal() {
         border:1px solid rgba(255,255,255,0.1);
         border-radius:16px;
         width:min(560px,100%);
-        max-height:min(88vh,700px);
+        height:min(88vh,700px);
         display:flex;flex-direction:column;
         box-shadow:0 40px 100px rgba(0,0,0,0.8),0 0 0 1px rgba(4,255,255,0.06);
         transform:translateY(28px) scale(0.98);
