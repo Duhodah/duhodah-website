@@ -95,7 +95,8 @@ function _buildModal() {
         border-radius:16px;
         width:min(560px,100%);
         height:min(88vh,700px);
-        display:flex;flex-direction:column;
+        display:grid;
+        grid-template-rows:auto 1fr auto;
         box-shadow:0 40px 100px rgba(0,0,0,0.8),0 0 0 1px rgba(4,255,255,0.06);
         transform:translateY(28px) scale(0.98);
         transition:transform 0.32s cubic-bezier(0.34,1.4,0.64,1);
@@ -105,10 +106,9 @@ function _buildModal() {
         transform:translateY(0) scale(1);
       }
 
-      /* Header */
+      /* Header — grid row 1 */
       #consent-header {
         padding:24px 28px 16px;
-        flex-shrink:0;
         border-bottom:1px solid rgba(255,255,255,0.06);
       }
       #consent-wordmark {
@@ -134,14 +134,13 @@ function _buildModal() {
       }
       #consent-close:hover { color:rgba(255,255,255,0.65); }
 
-      /* Scroll area */
+      /* Scroll area — grid row 2 (1fr) */
       #consent-scroll {
         overflow-y:auto;
         padding:0 28px;
-        flex:1 1 0;
         min-height:0;
-        -webkit-mask-image:linear-gradient(to bottom,#000 80%,transparent 100%);
-        mask-image:linear-gradient(to bottom,#000 80%,transparent 100%);
+        -webkit-mask-image:linear-gradient(to bottom,#000 82%,transparent 100%);
+        mask-image:linear-gradient(to bottom,#000 82%,transparent 100%);
       }
       #consent-scroll::-webkit-scrollbar { width:3px; }
       #consent-scroll::-webkit-scrollbar-track { background:transparent; }
