@@ -44,9 +44,9 @@ vlastitu odgovornost.</p>
   <li>Nedavno otpuštanje iz programa liječenja ovisnosti (manje od godinu dana)</li>
 </ul>
 
-<h4>Konzultuj se s liječnikom ako imaš</h4>
+<h4>Konzultiraj se s liječnikom ako imaš</h4>
 <ul>
-  <li>Kronični krvni tlak (i pod kontrolom lijekova), dijabetes ili bolesti štitnjače</li>
+  <li>Kronično visok krvni tlak (i pod kontrolom lijekova), dijabetes ili bolesti štitnjače</li>
   <li>PTSP, tešku neprocesuiranu traumu ili panični poremećaj</li>
   <li>Disocijativne poremećaje ili tešku anksioznost</li>
   <li>Redovitu upotrebu psihofarmaka — antidepresivi, anksiolitici, antipsihotici</li>
@@ -68,194 +68,115 @@ let _pendingTip   = null;
 
 // ── Izgradnja DOM-a (jednom) ─────────────────────────────────
 function _buildModal() {
+  // Ubaci stilove u <head> — jedini siguran način da se ne overridaju globalnim CSS-om sajta
+  if (!document.getElementById('consent-styles')) {
+    const s = document.createElement('style');
+    s.id = 'consent-styles';
+    s.textContent = `
+      #consent-modal.consent-open { opacity:1 !important; pointer-events:auto !important; background:rgba(0,0,0,0.88) !important; }
+      #consent-modal.consent-open #consent-dialog { transform:translateY(0) scale(1) !important; }
+      #consent-scroll::-webkit-scrollbar { width:3px; }
+      #consent-scroll::-webkit-scrollbar-track { background:transparent; }
+      #consent-scroll::-webkit-scrollbar-thumb { background:rgba(4,255,255,0.2);border-radius:2px; }
+      #consent-close:hover { color:rgba(255,255,255,0.7) !important; }
+      #consent-name:focus { border-color:rgba(4,255,255,0.45) !important; box-shadow:0 0 0 3px rgba(4,255,255,0.08) !important; }
+      #consent-name.input-err { border-color:rgba(255,80,80,0.6) !important; }
+      #consent-submit:hover { background:rgba(4,255,255,0.16) !important; box-shadow:0 0 24px rgba(4,255,255,0.12) !important; }
+      #consent-submit:disabled { opacity:0.45 !important; cursor:not-allowed !important; }
+      #consent-body h4 { font-family:var(--font-brand,'Jura',sans-serif);font-size:0.58rem;letter-spacing:0.2em;text-transform:uppercase;color:rgba(4,255,255,0.6);margin:1.4rem 0 0.5rem;display:block; }
+      #consent-body ul { padding-left:1.1rem;margin:0 0 0.5rem; }
+      #consent-body li { margin-bottom:0.3rem; }
+      #consent-body strong { color:rgba(255,255,255,0.7); }
+    `;
+    document.head.appendChild(s);
+  }
+
+  // ── Outer wrapper (backdrop) ──────────────────────────────
   const el = document.createElement('div');
   el.id = 'consent-modal';
   el.setAttribute('role', 'dialog');
   el.setAttribute('aria-modal', 'true');
   el.setAttribute('aria-labelledby', 'consent-title');
+  // Inline stilovi — neprobojni za globalni CSS
+  el.style.cssText = [
+    'position:fixed','inset:0','z-index:99999',
+    'display:flex','align-items:center','justify-content:center',
+    'padding:16px','box-sizing:border-box',
+    'background:rgba(0,0,0,0)','opacity:0','pointer-events:none',
+    'transition:opacity 0.25s ease,background 0.25s ease',
+  ].join(';');
 
-  el.innerHTML = `
-    <style>
-      #consent-modal {
-        position:fixed;inset:0;z-index:99999;
-        display:flex;align-items:center;justify-content:center;
-        padding:16px;box-sizing:border-box;
-        background:rgba(0,0,0,0);
-        opacity:0;pointer-events:none;
-        transition:opacity 0.25s ease, background 0.25s ease;
-      }
-      #consent-modal.consent-open {
-        opacity:1;pointer-events:auto;
-        background:rgba(0,0,0,0.88);
-      }
-      #consent-dialog {
-        position:relative;
-        background:#0d0d0d;
-        border:1px solid rgba(255,255,255,0.1);
-        border-radius:16px;
-        width:min(560px,100%);
-        height:min(88vh,700px);
-        display:grid;
-        grid-template-rows:auto 1fr auto;
-        box-shadow:0 40px 100px rgba(0,0,0,0.8),0 0 0 1px rgba(4,255,255,0.06);
-        transform:translateY(28px) scale(0.98);
-        transition:transform 0.32s cubic-bezier(0.34,1.4,0.64,1);
-        overflow:hidden;
-      }
-      #consent-modal.consent-open #consent-dialog {
-        transform:translateY(0) scale(1);
-      }
+  // ── Dialog box (grid: header | scroll | footer) ───────────
+  const dialog = document.createElement('div');
+  dialog.id = 'consent-dialog';
+  dialog.style.cssText = [
+    'position:relative','background:#0d0d0d',
+    'border:1px solid rgba(255,255,255,0.1)','border-radius:16px',
+    'width:min(560px,100%)','height:min(88vh,700px)',
+    'display:grid','grid-template-rows:auto 1fr auto',
+    'overflow:hidden',
+    'box-shadow:0 40px 100px rgba(0,0,0,0.8),0 0 0 1px rgba(4,255,255,0.06)',
+    'transform:translateY(28px) scale(0.98)',
+    'transition:transform 0.32s cubic-bezier(0.34,1.4,0.64,1)',
+  ].join(';');
 
-      /* Header — grid row 1 */
-      #consent-header {
-        padding:24px 28px 16px;
-        border-bottom:1px solid rgba(255,255,255,0.06);
-      }
-      #consent-wordmark {
-        font-family:var(--font-brand,'Jura',sans-serif);
-        font-size:0.55rem;letter-spacing:0.38em;text-transform:uppercase;
-        color:rgba(4,255,255,0.5);margin-bottom:10px;display:block;
-      }
-      #consent-title {
-        font-family:var(--font-head,'Cormorant Garamond',serif);
-        font-size:1.4rem;color:rgba(255,255,255,0.92);
-        margin:0 0 3px;line-height:1.2;
-      }
-      #consent-subtitle {
-        font-size:0.7rem;color:rgba(255,255,255,0.3);
-        font-family:var(--font-brand,'Jura',sans-serif);
-        letter-spacing:0.06em;margin:0;
-      }
-      #consent-close {
-        position:absolute;top:18px;right:20px;
-        background:none;border:none;
-        color:rgba(255,255,255,0.25);font-size:1rem;
-        cursor:pointer;transition:color 0.2s;padding:4px 6px;line-height:1;
-      }
-      #consent-close:hover { color:rgba(255,255,255,0.65); }
+  // ── Close button ──────────────────────────────────────────
+  const closeBtn = document.createElement('button');
+  closeBtn.id = 'consent-close';
+  closeBtn.setAttribute('aria-label', 'Zatvori');
+  closeBtn.textContent = '✕';
+  closeBtn.style.cssText = [
+    'position:absolute','top:18px','right:20px',
+    'background:none','border:none',
+    'color:rgba(255,255,255,0.28)','font-size:1rem',
+    'cursor:pointer','transition:color 0.2s','padding:4px 6px','line-height:1',
+    'z-index:2',
+  ].join(';');
 
-      /* Scroll area — grid row 2 (1fr) */
-      #consent-scroll {
-        overflow-y:auto;
-        padding:0 28px;
-        min-height:0;
-        -webkit-mask-image:linear-gradient(to bottom,#000 82%,transparent 100%);
-        mask-image:linear-gradient(to bottom,#000 82%,transparent 100%);
-      }
-      #consent-scroll::-webkit-scrollbar { width:3px; }
-      #consent-scroll::-webkit-scrollbar-track { background:transparent; }
-      #consent-scroll::-webkit-scrollbar-thumb {
-        background:rgba(4,255,255,0.18);border-radius:2px;
-      }
-
-      /* Disclaimer tekst */
-      #consent-body {
-        padding:20px 0 32px;
-        font-size:0.79rem;color:rgba(255,255,255,0.42);line-height:1.8;
-      }
-      #consent-body h4 {
-        font-family:var(--font-brand,'Jura',sans-serif);
-        font-size:0.58rem;letter-spacing:0.2em;text-transform:uppercase;
-        color:rgba(4,255,255,0.55);margin:1.6rem 0 0.6rem;
-      }
-      #consent-body h4:first-of-type { margin-top:1rem; }
-      #consent-body ul { padding-left:1.1rem;margin:0 0 0.6rem; }
-      #consent-body li { margin-bottom:0.25rem; }
-      #consent-body p  { margin:0 0 0.7rem; }
-      #consent-body strong { color:rgba(255,255,255,0.68); }
-
-      /* Scroll hint */
-      #consent-scroll-hint {
-        text-align:center;padding:0 0 18px;
-        font-size:0.6rem;letter-spacing:0.18em;
-        color:rgba(255,255,255,0.18);
-        font-family:var(--font-brand,'Jura',sans-serif);
-        transition:opacity 0.5s;
-        user-select:none;
-      }
-
-      /* Footer */
-      #consent-footer {
-        padding:18px 28px 24px;
-        flex-shrink:0;
-        border-top:1px solid rgba(255,255,255,0.07);
-        background:#0d0d0d;
-      }
-      #consent-name-label {
-        display:block;
-        font-family:var(--font-brand,'Jura',sans-serif);
-        font-size:0.58rem;letter-spacing:0.2em;text-transform:uppercase;
-        color:rgba(255,255,255,0.38);margin-bottom:8px;
-      }
-      #consent-name {
-        width:100%;box-sizing:border-box;
-        background:rgba(255,255,255,0.04);
-        border:1px solid rgba(255,255,255,0.1);
-        border-radius:8px;padding:11px 14px;
-        color:rgba(255,255,255,0.88);
-        font-family:var(--font-brand,'Jura',sans-serif);
-        font-size:0.85rem;letter-spacing:0.04em;
-        outline:none;transition:border-color 0.2s,box-shadow 0.2s;
-        margin-bottom:10px;
-      }
-      #consent-name:focus {
-        border-color:rgba(4,255,255,0.4);
-        box-shadow:0 0 0 3px rgba(4,255,255,0.07);
-      }
-      #consent-name.input-err { border-color:rgba(255,80,80,0.55); }
-      #consent-err {
-        font-size:0.7rem;color:rgba(255,80,80,0.75);
-        min-height:1.1rem;margin-bottom:8px;
-        font-family:var(--font-brand,'Jura',sans-serif);
-      }
-      #consent-submit {
-        width:100%;padding:13px 20px;
-        background:rgba(4,255,255,0.07);
-        border:1px solid rgba(4,255,255,0.32);
-        border-radius:8px;
-        color:#04ffff;
-        font-family:var(--font-brand,'Jura',sans-serif);
-        font-size:0.78rem;letter-spacing:0.1em;
-        cursor:pointer;transition:all 0.2s;
-      }
-      #consent-submit:hover:not(:disabled) {
-        background:rgba(4,255,255,0.14);
-        box-shadow:0 0 24px rgba(4,255,255,0.1);
-      }
-      #consent-submit:disabled {
-        opacity:0.45;cursor:not-allowed;
-      }
-    </style>
-
-    <div id="consent-dialog">
-      <button id="consent-close" aria-label="Zatvori">✕</button>
-
-      <div id="consent-header">
-        <span id="consent-wordmark">DUHODAH</span>
-        <h2 id="consent-title">Zdravstvena napomena</h2>
-        <p id="consent-subtitle">Pročitaj pažljivo prije nastavka</p>
-      </div>
-
-      <div id="consent-scroll">
-        <div id="consent-body">${DISCLAIMER_HTML}</div>
-        <div id="consent-scroll-hint">↓ &nbsp; skrolaj za čitanje</div>
-      </div>
-
-      <div id="consent-footer">
-        <label id="consent-name-label" for="consent-name">Puno ime i prezime</label>
-        <input
-          id="consent-name"
-          type="text"
-          placeholder="Ime Prezime"
-          autocomplete="name"
-          spellcheck="false"
-        >
-        <div id="consent-err"></div>
-        <button id="consent-submit">Razumijem i prihvaćam →</button>
-      </div>
-    </div>
+  // ── Header (row 1) ────────────────────────────────────────
+  const header = document.createElement('div');
+  header.id = 'consent-header';
+  header.style.cssText = 'padding:24px 28px 16px;border-bottom:1px solid rgba(255,255,255,0.06);';
+  header.innerHTML = `
+    <span style="font-family:var(--font-brand,'Jura',sans-serif);font-size:0.55rem;letter-spacing:0.38em;text-transform:uppercase;color:rgba(4,255,255,0.5);margin-bottom:10px;display:block;">DUHODAH</span>
+    <h2 id="consent-title" style="font-family:var(--font-head,'Cormorant Garamond',serif);font-size:1.4rem;color:rgba(255,255,255,0.92);margin:0 0 4px;line-height:1.2;">Zdravstvena napomena</h2>
+    <p id="consent-subtitle" style="font-size:0.7rem;color:rgba(255,255,255,0.3);font-family:var(--font-brand,'Jura',sans-serif);letter-spacing:0.06em;margin:0;">Pročitaj pažljivo prije nastavka</p>
   `;
 
+  // ── Scroll area (row 2 — 1fr) ─────────────────────────────
+  const scroll = document.createElement('div');
+  scroll.id = 'consent-scroll';
+  scroll.style.cssText = [
+    'overflow-y:auto','padding:0 28px','min-height:0',
+    '-webkit-mask-image:linear-gradient(to bottom,#000 82%,transparent 100%)',
+    'mask-image:linear-gradient(to bottom,#000 82%,transparent 100%)',
+  ].join(';');
+  scroll.innerHTML = `
+    <div id="consent-body" style="padding:20px 0 32px;font-size:0.79rem;color:rgba(255,255,255,0.44);line-height:1.8;">${DISCLAIMER_HTML}</div>
+    <div id="consent-scroll-hint" style="text-align:center;padding:0 0 18px;font-size:0.6rem;letter-spacing:0.18em;color:rgba(255,255,255,0.2);font-family:var(--font-brand,'Jura',sans-serif);transition:opacity 0.5s;user-select:none;">↓ &nbsp; skrolaj za čitanje</div>
+  `;
+
+  // ── Footer (row 3) ────────────────────────────────────────
+  const footer = document.createElement('div');
+  footer.id = 'consent-footer';
+  footer.style.cssText = 'padding:18px 28px 24px;border-top:1px solid rgba(255,255,255,0.08);background:#0d0d0d;';
+  footer.innerHTML = `
+    <label id="consent-name-label" for="consent-name" style="display:block;font-family:var(--font-brand,'Jura',sans-serif);font-size:0.58rem;letter-spacing:0.2em;text-transform:uppercase;color:rgba(255,255,255,0.38);margin-bottom:8px;">Puno ime i prezime</label>
+    <input id="consent-name" type="text" placeholder="Ime Prezime" autocomplete="name" spellcheck="false"
+      style="width:100%;box-sizing:border-box;background:rgba(255,255,255,0.04);border:1px solid rgba(255,255,255,0.1);border-radius:8px;padding:11px 14px;color:rgba(255,255,255,0.88);font-family:var(--font-brand,'Jura',sans-serif);font-size:0.85rem;outline:none;transition:border-color 0.2s,box-shadow 0.2s;margin-bottom:10px;display:block;">
+    <div id="consent-err" style="font-size:0.7rem;color:rgba(255,80,80,0.8);min-height:1rem;margin-bottom:8px;font-family:var(--font-brand,'Jura',sans-serif);"></div>
+    <button id="consent-submit"
+      style="width:100%;padding:13px 20px;background:rgba(4,255,255,0.08);border:1px solid rgba(4,255,255,0.35);border-radius:8px;color:#04ffff;font-family:var(--font-brand,'Jura',sans-serif);font-size:0.78rem;letter-spacing:0.1em;cursor:pointer;transition:all 0.2s;display:block;">
+      Razumijem i prihvaćam →
+    </button>
+  `;
+
+  // ── Složi hijerarhiju ─────────────────────────────────────
+  dialog.appendChild(closeBtn);
+  dialog.appendChild(header);
+  dialog.appendChild(scroll);
+  dialog.appendChild(footer);
+  el.appendChild(dialog);
   document.body.appendChild(el);
 
   // Zatvaranje
