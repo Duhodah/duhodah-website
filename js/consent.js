@@ -54,11 +54,11 @@ vlastitu odgovornost.</p>
 </ul>
 
 <h4>Pravna napomena</h4>
-<p>Ovo nije medicinska terapija niti tretman. Ernest Madun nije medicinski radnik.
+<p>Ovo nije medicinska terapija niti tretman. Ernest Madunović nije medicinski radnik.
 Kupnjom i upisom punog imena potvrđuješ da si pročitao/la i razumio/la sve
 navedeno, da nemaš nijednu od apsolutnih kontraindikacija, te da Duhodah i
-Ernesta Maduna oslobađaš odgovornosti za posljedice nastale zbog netočnih ili
-nepotpunih zdravstvenih informacija koje si naveo/la.</p>
+Ernesta Madunovića oslobađaš odgovornosti za sve nastale posljedice, te posljedice
+nastale zbog netočnih ili nepotpunih zdravstvenih informacija koje si naveo/la.</p>
 `;
 
 // ── Interni state ────────────────────────────────────────────
@@ -138,7 +138,8 @@ function _buildModal() {
       #consent-scroll {
         overflow-y:auto;
         padding:0 28px;
-        flex:1;
+        flex:1 1 0;
+        min-height:0;
         -webkit-mask-image:linear-gradient(to bottom,#000 80%,transparent 100%);
         mask-image:linear-gradient(to bottom,#000 80%,transparent 100%);
       }
