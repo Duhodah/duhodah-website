@@ -30,6 +30,9 @@ export const AUTOSKOLA_LINKS = {
   uhoda: 'https://buy.stripe.com/14AfZhfls51Q5JP8ozdby08',  // UHODA — 299€ + 2 mj. Online gratis
 };
 
+// ---- Individualna sesija ----
+export const INDIVIDUALNO_LINK = 'https://buy.stripe.com/28EeVd3CK0LAgotgV5dby09';  // 1 na 1 — 70€ / 120 min
+
 // ---- Karte za događaje ----
 // Ako događaj nema postavljen stripe_link, koristi ove generičke linkove.
 export const KARTE_LINKS = {
