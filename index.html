@@ -3342,7 +3342,7 @@
               <span style="font-size:0.75rem; color:rgba(255,255,255,0.3); font-family:var(--font-brand);">/ mj</span>
             </div>
             <p style="font-size:0.7rem; color:rgba(4,255,255,0.5); margin-bottom:1.8rem; font-family:var(--font-brand); letter-spacing:0.05em;">≈ 8.75€ po sesiji · ušteda 60%</p>
-            <a href="https://buy.stripe.com/fZu14na18cui5JPdITdby00" target="_blank" rel="noopener" style="
+            <a href="#" onclick="openConsentModal('https://buy.stripe.com/fZu14na18cui5JPdITdby00','pretplata_online_35');return false;" style="
               display:block; text-align:center;
               padding:11px 20px;
               border:1px solid rgba(4,255,255,0.35);
@@ -3378,7 +3378,7 @@
               <span style="font-size:0.75rem; color:rgba(255,255,255,0.3); font-family:var(--font-brand);">/ mj</span>
             </div>
             <p style="font-size:0.7rem; color:rgba(4,255,255,0.5); margin-bottom:1.8rem; font-family:var(--font-brand); letter-spacing:0.05em;">vrijednost 110€ · ušteda 55%</p>
-            <a href="https://buy.stripe.com/9B67sLflseCqa056grdby01" target="_blank" rel="noopener" style="
+            <a href="#" onclick="openConsentModal('https://buy.stripe.com/9B67sLflseCqa056grdby01','pretplata_optimum_50');return false;" style="
               display:block; text-align:center;
               padding:12px 20px;
               background: linear-gradient(90deg, rgba(4,255,255,0.2), rgba(215,2,241,0.2));
@@ -3411,7 +3411,7 @@
               <span style="font-size:0.75rem; color:rgba(255,255,255,0.3); font-family:var(--font-brand);">/ mj</span>
             </div>
             <p style="font-size:0.7rem; color:rgba(215,2,241,0.6); margin-bottom:1.8rem; font-family:var(--font-brand); letter-spacing:0.05em;">vrijednost 140€ · ušteda 57%</p>
-            <a href="https://buy.stripe.com/aFabJ13CKama4FLdITdby02" target="_blank" rel="noopener" style="
+            <a href="#" onclick="openConsentModal('https://buy.stripe.com/aFabJ13CKama4FLdITdby02','pretplata_premium_60');return false;" style="
               display:block; text-align:center;
               padding:11px 20px;
               border:1px solid rgba(215,2,241,0.4);
@@ -3475,7 +3475,7 @@
               <span style="font-family:var(--font-head); font-size:2.8rem; font-weight:700; color:var(--periwinkle); line-height:1;">149€</span>
               <span style="font-size:0.75rem; color:rgba(255,255,255,0.3); font-family:var(--font-brand);">jednokratno</span>
             </div>
-            <a href="https://buy.stripe.com/5kQ00j0qygKyc8d0W7dby07" target="_blank" rel="noopener" style="
+            <a href="#" onclick="openConsentModal('https://buy.stripe.com/5kQ00j0qygKyc8d0W7dby07','autoskola_hod');return false;" style="
               display:block; text-align:center;
               padding:13px 20px;
               border:1px solid rgba(154,171,216,0.4);
@@ -3531,7 +3531,7 @@
               <span style="font-family:var(--font-head); font-size:2.8rem; font-weight:700; color:var(--periwinkle); line-height:1;">299€</span>
               <span style="font-size:0.75rem; color:rgba(255,255,255,0.3); font-family:var(--font-brand);">jednokratno</span>
             </div>
-            <a href="https://buy.stripe.com/14AfZhfls51Q5JP8ozdby08" target="_blank" rel="noopener" style="
+            <a href="#" onclick="openConsentModal('https://buy.stripe.com/14AfZhfls51Q5JP8ozdby08','autoskola_uhoda');return false;" style="
               display:block; text-align:center;
               padding:13px 20px;
               background: rgba(154,171,216,0.08);
@@ -3621,7 +3621,7 @@
               <li style="font-size:0.82rem; color:rgba(255,255,255,0.55); display:flex; gap:0.6rem;"><span style="color:var(--cyan);">✓</span> Rad na specifičnim osobnim izazovima</li>
               <li style="font-size:0.82rem; color:rgba(255,255,255,0.55); display:flex; gap:0.6rem;"><span style="color:var(--cyan);">✓</span> Studio Shine, Osijek · 90–120 minuta</li>
             </ul>
-            <a href="https://buy.stripe.com/28EeVd3CK0LAgotgV5dby09" target="_blank" rel="noopener" style="
+            <a href="#" onclick="openConsentModal('https://buy.stripe.com/28EeVd3CK0LAgotgV5dby09','individualno_uzivo');return false;" style="
               display:block; text-align:center;
               padding:13px 20px;
               background: rgba(4,255,255,0.08);
@@ -4787,6 +4787,7 @@
     import { initAuth, signOut } from './js/auth.js?v=5';
     import { trackInteraction } from './js/db.js?v=6';
     import { getCurrentUser } from './js/auth.js?v=5';
+    import './js/consent.js';
 
     // Renderaj widget odmah
     renderEventsWidget('events-widget-container');

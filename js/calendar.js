@@ -158,7 +158,7 @@ async function buildEventButton(event, authState, availability) {
         Prijavi se besplatno →
       </button>`;
     } else {
-      // Prijavljeni korisnik bez pretplate — Stripe link s kontekstom
+      // Prijavljeni korisnik bez pretplate — Stripe link s kontekstom (kroz consent modal)
       const stripeUrl = buildStripeUrl(resolveStripeLink(event), {
         userId:  user.id,
         email:   user.email,
@@ -166,18 +166,20 @@ async function buildEventButton(event, authState, availability) {
       });
       const ctaLabel = resolveCTALabel(event, event.cijena_eur);
       return `<div class="cal-btn-group cal-btn-group--stacked">
-        <a class="cal-btn cal-btn--pay" href="${stripeUrl}" target="_blank" rel="noopener">
+        <a class="cal-btn cal-btn--pay" href="#"
+           onclick="window.openConsentModal('${stripeUrl.replace(/'/g,"\\'")}','event:${event.id}');return false;">
           ${ctaLabel}
         </a>
         <span class="cal-member-hint">Ili <a href="zajednica.html">postani pretplatnik</a> i dođi besplatno</span>
       </div>`;
     }
   } else {
-    // Anonimni posjetitelj — Stripe link bez konteksta
+    // Anonimni posjetitelj — Stripe link (kroz consent modal)
     const stripeUrl = resolveStripeLink(event);
     const ctaLabel = resolveCTALabel(event, event.cijena_eur);
     return `<div class="cal-btn-group cal-btn-group--stacked">
-      <a class="cal-btn cal-btn--pay" href="${stripeUrl}" target="_blank" rel="noopener">
+      <a class="cal-btn cal-btn--pay" href="#"
+         onclick="window.openConsentModal('${stripeUrl.replace(/'/g,"\\'")}','event:${event.id}');return false;">
         ${ctaLabel}
       </a>
       <span class="cal-member-hint">Pretplatnik? <a href="#" onclick="showLoginModal('${event.id}');return false;">Prijavi se za besplatnu opciju</a></span>
