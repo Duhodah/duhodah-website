@@ -3697,9 +3697,34 @@
     <div style="position:absolute; top:50%; left:30%; transform:translate(-50%,-50%); width:600px; height:400px; background:radial-gradient(ellipse at center, rgba(4,255,255,0.05) 0%, transparent 70%); pointer-events:none;"></div>
 
     <div class="container" style="position:relative; z-index:1;">
-      <div style="display:grid; grid-template-columns:1fr 1fr; gap:80px; align-items:center;" class="prir-inner-grid">
+      <div style="display:grid; grid-template-columns:1fr 1fr; gap:72px; align-items:start;" class="prir-inner-grid">
 
-        <!-- Lijevo — opis -->
+        <!-- Lijevo — slika + event info -->
+        <div class="reveal" style="position:relative;">
+          <!-- Slika -->
+          <div style="position:relative; overflow:hidden; border:1px solid rgba(4,255,255,0.12);">
+            <img src="assets/social/post_pozivnica_disajno-putovanje.png"
+                 alt="Besplatno Disajno Putovanje"
+                 style="width:100%; display:block; aspect-ratio:16/9; object-fit:cover;">
+            <!-- Gradient overlay na dnu za prijelaz u event info -->
+            <div style="position:absolute; bottom:0; left:0; right:0; height:40%; background:linear-gradient(0deg, rgba(8,8,26,0.95) 0%, transparent 100%); pointer-events:none;"></div>
+          </div>
+
+          <!-- Event info — dinamičan, prikazuje se ispod slike -->
+          <div id="besplatno-event-inner" style="
+            border: 1px solid rgba(4,255,255,0.12);
+            border-top: none;
+            background: rgba(4,255,255,0.02);
+            padding: 1.8rem 2rem;
+          ">
+            <div style="color:var(--steel); font-size:0.85rem;">Učitavam termin…</div>
+          </div>
+
+          <!-- Glow ispod slike -->
+          <div style="position:absolute; inset:-20px; background:radial-gradient(ellipse at center, rgba(4,255,255,0.05) 0%, transparent 70%); pointer-events:none; z-index:-1;"></div>
+        </div>
+
+        <!-- Desno — opis -->
         <div>
           <p class="section-label reveal" style="color:var(--cyan);">Bez iskustva. Bez uvjeta. Besplatno.</p>
           <h2 class="section-title reveal" style="font-size:clamp(1.8rem,4vw,3rem);">
@@ -3721,28 +3746,9 @@
               <span style="color:var(--cyan); flex-shrink:0;">✦</span>Osjećaj koji niste imali dugo — prisutnost
             </li>
           </ul>
-          <p class="reveal" style="font-size:0.82rem; color:var(--steel); font-style:italic;">
+          <p class="reveal" style="font-size:0.82rem; color:var(--steel); font-style:italic; margin-bottom:0;">
             Vodim ja, Erni — svaki put živo, svaki put drugačije, uvijek sigurno.
           </p>
-        </div>
-
-        <!-- Desno — sljedeći besplatni event -->
-        <div class="reveal reveal-delay-2">
-          <div id="besplatno-event-card" style="
-            border: 1px solid rgba(4,255,255,0.15);
-            background: rgba(4,255,255,0.03);
-            padding: 2.5rem;
-            position: relative;
-            overflow: hidden;
-          ">
-            <!-- Glow corner -->
-            <div style="position:absolute; top:0; right:0; width:120px; height:120px; background:radial-gradient(circle at top right, rgba(4,255,255,0.1) 0%, transparent 70%); pointer-events:none;"></div>
-
-            <div id="besplatno-event-inner">
-              <div style="font-family:var(--font-brand); font-size:0.62rem; letter-spacing:0.3em; text-transform:uppercase; color:var(--cyan); margin-bottom:1.2rem;">Sljedeći termin</div>
-              <div class="cal-loading" style="color:var(--steel); font-size:0.9rem;">Učitavam termin…</div>
-            </div>
-          </div>
         </div>
 
       </div>
