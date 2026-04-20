@@ -1123,10 +1123,22 @@ function showScreen(id) {
   el.style.animation = '';
 }
 
+let shuffledOrders = [];
+
+function _shuffle(arr) {
+  const a = [...arr];
+  for (let i = a.length - 1; i > 0; i--) {
+    const j = Math.floor(Math.random() * (i + 1));
+    [a[i], a[j]] = [a[j], a[i]];
+  }
+  return a;
+}
+
 function startQuiz() {
   current = 0;
   answers.fill(null);
   Object.keys(scores).forEach(k => scores[k] = 0);
+  shuffledOrders = QUESTIONS.map(q => _shuffle(q.options.map((_, i) => i)));
   renderQuestion();
   showScreen('screen-quiz');
 }
@@ -1149,8 +1161,9 @@ function renderQuestion() {
   nextBtn.disabled = answers[current] === null;
   nextBtn.textContent = current === total - 1 ? 'Vidi rezultate →' : 'Dalje →';
 
-  // Shuffle options deterministically per question (keep same order per visit)
-  const shuffled = q.options.map((o, i) => ({ ...o, origIdx: i }));
+  // Koristi raspored izmiješan pri startQuiz — stabilan pri povratku na pitanje
+  const order = shuffledOrders[current] || q.options.map((_, i) => i);
+  const shuffled = order.map(i => q.options[i]);
 
   const area = document.getElementById('question-area');
   area.innerHTML = `
