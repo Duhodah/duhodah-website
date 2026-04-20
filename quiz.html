@@ -1138,7 +1138,11 @@ function startQuiz() {
   current = 0;
   answers.fill(null);
   Object.keys(scores).forEach(k => scores[k] = 0);
-  shuffledOrders = QUESTIONS.map(q => _shuffle(q.options.map((_, i) => i)));
+  shuffledOrders = QUESTIONS.map(q => {
+    const nIdx = q.options.findIndex(o => o.type === 'N');
+    const rest = q.options.map((_, i) => i).filter(i => i !== nIdx);
+    return [..._shuffle(rest), nIdx]; // N uvijek zadnja
+  });
   renderQuestion();
   showScreen('screen-quiz');
 }
