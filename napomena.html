@@ -1,0 +1,598 @@
+<!DOCTYPE html>
+<html lang="hr">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Zdravstvena napomena — Duhodah</title>
+  <meta name="robots" content="noindex, nofollow">
+  <link rel="icon" type="image/jpeg" href="images/duhodah-logo.jpg">
+
+  <!-- Fonts -->
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Jura:wght@400;500;600;700&family=Inter:wght@300;400;500&family=Cormorant+Garamond:ital,wght@0,400;0,500;0,600;1,400;1,500&display=swap" rel="stylesheet">
+
+  <style>
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+    :root {
+      --cyan: rgba(4, 255, 255, 1);
+      --cyan-dim: rgba(4, 255, 255, 0.08);
+      --cyan-mid: rgba(4, 255, 255, 0.35);
+      --magenta: rgba(215, 2, 241, 1);
+      --bg: #0a0a0a;
+      --card: #111;
+      --border: rgba(255, 255, 255, 0.07);
+      --text: rgba(255, 255, 255, 0.85);
+      --muted: rgba(255, 255, 255, 0.42);
+      --faint: rgba(255, 255, 255, 0.18);
+    }
+
+    html { scroll-behavior: smooth; }
+
+    body {
+      background: var(--bg);
+      color: var(--text);
+      font-family: 'Inter', sans-serif;
+      line-height: 1.7;
+      min-height: 100vh;
+    }
+
+    /* ── NAV ─────────────────────────────────────────────────── */
+    .nav {
+      position: fixed; top: 0; left: 0; right: 0; z-index: 50;
+      padding: 16px 40px;
+      display: flex; align-items: center; justify-content: space-between;
+      background: rgba(10,10,10,0.9);
+      backdrop-filter: blur(14px);
+      border-bottom: 1px solid var(--border);
+    }
+    .nav__logo { height: 17px; opacity: 0.85; }
+    .nav__back {
+      font-family: 'Jura', sans-serif;
+      font-size: 0.72rem; letter-spacing: 0.1em; text-transform: uppercase;
+      color: var(--muted); text-decoration: none;
+      transition: color 0.2s;
+    }
+    .nav__back:hover { color: var(--cyan); }
+
+    /* ── HERO ────────────────────────────────────────────────── */
+    .hero {
+      padding: 120px 40px 56px;
+      max-width: 980px; margin: 0 auto;
+      border-bottom: 1px solid var(--border);
+    }
+    .hero__eyebrow {
+      font-family: 'Jura', sans-serif;
+      font-size: 0.65rem; letter-spacing: 0.3em; text-transform: uppercase;
+      color: rgba(4,255,255,0.5); margin-bottom: 16px; display: block;
+    }
+    .hero__title {
+      font-family: 'Cormorant Garamond', serif;
+      font-size: clamp(2.4rem, 5vw, 3.8rem);
+      font-weight: 500; color: rgba(255,255,255,0.95);
+      letter-spacing: 0.01em; line-height: 1.1;
+      margin-bottom: 14px;
+    }
+    .hero__sub {
+      font-size: 0.95rem; color: var(--muted);
+      max-width: 500px; margin-bottom: 28px;
+    }
+    .hero__product {
+      display: inline-flex; align-items: center; gap: 10px;
+      background: rgba(4,255,255,0.05);
+      border: 1px solid rgba(4,255,255,0.18);
+      border-radius: 24px; padding: 7px 18px;
+      font-family: 'Jura', sans-serif;
+      font-size: 0.72rem; letter-spacing: 0.1em; text-transform: uppercase;
+      color: rgba(4,255,255,0.8);
+    }
+    .hero__product-dot {
+      width: 6px; height: 6px; border-radius: 50%;
+      background: var(--cyan);
+      box-shadow: 0 0 8px rgba(4,255,255,0.8);
+      flex-shrink: 0;
+    }
+
+    /* Event card u hero-u */
+    .hero__event {
+      margin-top: 24px;
+      display: inline-block;
+      background: rgba(255,255,255,0.03);
+      border: 1px solid rgba(255,255,255,0.1);
+      border-left: 3px solid rgba(4,255,255,0.5);
+      border-radius: 10px;
+      padding: 16px 20px;
+    }
+    .hero__event-label {
+      font-family: 'Jura', sans-serif;
+      font-size: 0.58rem; letter-spacing: 0.2em; text-transform: uppercase;
+      color: rgba(4,255,255,0.5); margin-bottom: 6px;
+    }
+    .hero__event-naziv {
+      font-family: 'Cormorant Garamond', serif;
+      font-size: 1.3rem; font-weight: 500;
+      color: rgba(255,255,255,0.92); margin-bottom: 6px;
+    }
+    .hero__event-meta {
+      font-size: 0.8rem; color: rgba(255,255,255,0.4);
+      display: flex; align-items: center; gap: 8px; flex-wrap: wrap;
+    }
+    .hero__event-sep { color: rgba(255,255,255,0.2); }
+
+    /* ── LAYOUT ──────────────────────────────────────────────── */
+    .layout {
+      max-width: 980px; margin: 0 auto;
+      padding: 56px 40px 100px;
+      display: grid;
+      grid-template-columns: 1fr 320px;
+      gap: 56px;
+      align-items: start;
+    }
+
+    /* ── DISCLAIMER CONTENT ──────────────────────────────────── */
+    .disclaimer__intro {
+      font-size: 1rem; color: rgba(255,255,255,0.6);
+      line-height: 1.8; margin-bottom: 48px;
+      padding-bottom: 40px;
+      border-bottom: 1px solid var(--border);
+    }
+    .disclaimer__intro strong { color: rgba(255,255,255,0.88); }
+
+    .dis-section { margin-bottom: 44px; }
+    .dis-section:last-child { margin-bottom: 0; }
+
+    .dis-section__label {
+      font-family: 'Jura', sans-serif;
+      font-size: 0.58rem; letter-spacing: 0.28em; text-transform: uppercase;
+      margin-bottom: 18px; display: flex; align-items: center; gap: 12px;
+    }
+    .dis-section__label::after {
+      content: ''; flex: 1;
+      height: 1px; background: var(--border);
+    }
+
+    .dis-section--info    .dis-section__label { color: rgba(4,255,255,0.6); }
+    .dis-section--warning .dis-section__label { color: rgba(255,80,80,0.8); }
+    .dis-section--caution .dis-section__label { color: rgba(255,160,50,0.8); }
+    .dis-section--legal   .dis-section__label { color: var(--muted); }
+
+    .dis-section ul { list-style: none; display: flex; flex-direction: column; gap: 10px; }
+    .dis-section li {
+      display: flex; align-items: flex-start; gap: 12px;
+      font-size: 0.88rem; color: rgba(255,255,255,0.55); line-height: 1.65;
+    }
+    .dis-section li::before {
+      content: '';
+      width: 5px; height: 5px; border-radius: 50%;
+      margin-top: 8px; flex-shrink: 0;
+    }
+    .dis-section--info    li::before { background: rgba(4,255,255,0.5); }
+    .dis-section--warning li::before { background: rgba(255,80,80,0.7); }
+    .dis-section--caution li::before { background: rgba(255,160,50,0.7); }
+
+    .dis-section li strong { color: rgba(255,255,255,0.78); font-weight: 500; }
+
+    .dis-section--warning {
+      background: rgba(255,50,50,0.03);
+      border: 1px solid rgba(255,80,80,0.1);
+      border-radius: 12px; padding: 24px 24px 24px 24px;
+    }
+    .dis-section--caution {
+      background: rgba(255,140,0,0.03);
+      border: 1px solid rgba(255,160,50,0.1);
+      border-radius: 12px; padding: 24px;
+    }
+
+    .dis-section--legal {
+      padding: 24px;
+      background: rgba(255,255,255,0.02);
+      border-radius: 12px;
+      border: 1px solid var(--border);
+    }
+    .dis-section--legal p {
+      font-size: 0.82rem; color: var(--muted); line-height: 1.75;
+      font-style: italic;
+    }
+
+    /* ── CONFIRM PANEL ───────────────────────────────────────── */
+    .confirm-wrap { }
+
+    .confirm-panel {
+      position: sticky; top: 90px;
+      background: #0d0d0d;
+      border: 1px solid rgba(4,255,255,0.15);
+      border-radius: 16px;
+      padding: 28px;
+      box-shadow: 0 0 60px rgba(4,255,255,0.04), 0 24px 60px rgba(0,0,0,0.5);
+    }
+
+    .confirm-panel__title {
+      font-family: 'Jura', sans-serif;
+      font-size: 0.58rem; letter-spacing: 0.3em; text-transform: uppercase;
+      color: rgba(4,255,255,0.5); margin-bottom: 16px; display: block;
+    }
+    .confirm-panel__heading {
+      font-family: 'Cormorant Garamond', serif;
+      font-size: 1.45rem; font-weight: 500;
+      color: rgba(255,255,255,0.92); line-height: 1.2;
+      margin-bottom: 12px;
+    }
+    .confirm-panel__text {
+      font-size: 0.78rem; color: var(--muted);
+      line-height: 1.65; margin-bottom: 24px;
+      padding-bottom: 24px;
+      border-bottom: 1px solid var(--border);
+    }
+
+    .confirm-panel label {
+      display: block;
+      font-family: 'Jura', sans-serif;
+      font-size: 0.58rem; letter-spacing: 0.2em; text-transform: uppercase;
+      color: rgba(255,255,255,0.35); margin-bottom: 8px;
+    }
+    .confirm-panel input[type="text"] {
+      width: 100%; background: rgba(255,255,255,0.04);
+      border: 1px solid rgba(255,255,255,0.1); border-radius: 8px;
+      padding: 12px 14px; color: rgba(255,255,255,0.88);
+      font-family: 'Jura', sans-serif; font-size: 0.88rem;
+      outline: none; display: block; margin-bottom: 8px;
+      transition: border-color 0.2s, box-shadow 0.2s;
+    }
+    .confirm-panel input[type="text"]:focus {
+      border-color: rgba(4,255,255,0.45);
+      box-shadow: 0 0 0 3px rgba(4,255,255,0.08);
+    }
+    .confirm-panel input[type="text"].err {
+      border-color: rgba(255,80,80,0.55);
+    }
+
+    #name-err {
+      font-size: 0.72rem; color: rgba(255,80,80,0.85);
+      min-height: 1.1rem; margin-bottom: 12px;
+      font-family: 'Jura', sans-serif;
+    }
+
+    #confirm-btn {
+      width: 100%; padding: 15px 20px;
+      background: rgba(4,255,255,0.08);
+      border: 1px solid rgba(4,255,255,0.35); border-radius: 10px;
+      color: #04ffff;
+      font-family: 'Jura', sans-serif;
+      font-size: 0.82rem; letter-spacing: 0.1em;
+      cursor: pointer; transition: all 0.2s;
+      display: block; margin-bottom: 14px;
+    }
+    #confirm-btn:hover:not(:disabled) {
+      background: rgba(4,255,255,0.15);
+      box-shadow: 0 0 28px rgba(4,255,255,0.12);
+    }
+    #confirm-btn:disabled { opacity: 0.4; cursor: not-allowed; }
+
+    .confirm-panel__back {
+      display: block; text-align: center;
+      font-family: 'Jura', sans-serif;
+      font-size: 0.65rem; letter-spacing: 0.1em;
+      color: var(--faint); text-decoration: none;
+      transition: color 0.2s;
+    }
+    .confirm-panel__back:hover { color: var(--muted); }
+
+    /* ── CHECKLIST ───────────────────────────────────────────── */
+    .confirm-panel__checks {
+      margin: 16px 0 20px;
+      display: flex; flex-direction: column; gap: 8px;
+    }
+    .confirm-panel__check {
+      display: flex; align-items: flex-start; gap: 10px;
+      font-size: 0.73rem; color: var(--muted); line-height: 1.5;
+    }
+    .confirm-panel__check-icon {
+      font-size: 0.7rem; color: rgba(4,255,255,0.5);
+      margin-top: 2px; flex-shrink: 0;
+    }
+
+    /* ── MOBILE ──────────────────────────────────────────────── */
+    @media (max-width: 768px) {
+      .nav { padding: 14px 20px; }
+      .hero { padding: 90px 20px 40px; }
+      .layout {
+        grid-template-columns: 1fr;
+        padding: 32px 20px 80px;
+        gap: 40px;
+      }
+      .confirm-panel { position: static; }
+      .hero__title { font-size: 2.2rem; }
+    }
+
+    /* ── ERROR STATE ─────────────────────────────────────────── */
+    .page-error {
+      min-height: 60vh;
+      display: flex; flex-direction: column;
+      align-items: center; justify-content: center;
+      text-align: center; padding: 40px;
+      color: var(--muted);
+    }
+    .page-error h2 {
+      font-family: 'Jura', sans-serif;
+      font-size: 1.2rem; color: rgba(255,255,255,0.6);
+      margin-bottom: 12px;
+    }
+  </style>
+</head>
+<body>
+
+  <!-- NAV -->
+  <nav class="nav">
+    <a href="index.html">
+      <img src="images/duhodah-logo.jpg" alt="Duhodah" class="nav__logo">
+    </a>
+    <a href="javascript:history.back()" class="nav__back">← Natrag</a>
+  </nav>
+
+  <!-- HERO -->
+  <section class="hero">
+    <span class="hero__eyebrow">Duhodah · Breathwork · Sigurnost</span>
+    <h1 class="hero__title">Zdravstvena napomena</h1>
+    <p class="hero__sub">Svjesno disanje je snažna i sigurna praksa — uz jednu preduvjet: znati s čime dolaziš.</p>
+    <div class="hero__product" id="product-badge" style="display:none;">
+      <span class="hero__product-dot"></span>
+      <span id="product-name"></span>
+    </div>
+
+    <!-- Detalji događaja (punjeni async) -->
+    <div class="hero__event" id="event-card" style="display:none;">
+      <div class="hero__event-label">Kupuješ kartu za</div>
+      <div class="hero__event-naziv" id="event-naziv"></div>
+      <div class="hero__event-meta">
+        <span id="event-datum"></span>
+        <span class="hero__event-sep">·</span>
+        <span id="event-lokacija"></span>
+      </div>
+    </div>
+  </section>
+
+  <!-- MAIN LAYOUT -->
+  <div class="layout" id="page-content">
+
+    <!-- DISCLAIMER -->
+    <div class="disclaimer">
+
+      <p class="disclaimer__intro">
+        Ovo nije obični trening disanja. <strong>Svjesno povezano disanje</strong>
+        namjerno mijenja fiziologiju i stanje svijesti kroz kontinuiran, ubrzani obrazac
+        disanja koji snižava razinu CO₂ u krvi. Ovo je namjerna promjena stanja
+        — i upravo tu leži njezina moć, ali i potreba za odgovornošću.<br><br>
+        Pročitaj sljedeće pažljivo. Sve navedeno je dio odgovornog pristupa koji
+        Duhodah primjenjuje sa svakim polaznikom.
+      </p>
+
+      <!-- BODY REACTIONS -->
+      <div class="dis-section dis-section--info">
+        <p class="dis-section__label">Što se može dogoditi u tijelu</p>
+        <ul>
+          <li><strong>Trnci i obamrlost</strong> — u rukama, stopalima, licu i oko usta. Normalno, prolazno, bezopasno.</li>
+          <li><strong>Tetanija</strong> — nevoljni grčevi ili "kočenje" prstiju i ruku. Iskusi 70–80% sudionika. Prolazi čim se vrati normalno disanje — nije opasno.</li>
+          <li><strong>Vrtoglavica i osjećaj lagane glave</strong> — zbog promjene ravnoteže CO₂ i O₂.</li>
+          <li><strong>Ubrzani rad srca i palpitacije</strong> — prolazna reakcija živčanog sustava.</li>
+          <li><strong>Intenzivno emocionalno iskustvo</strong> — plač, smijeh, katarza, osjećaji koji isplivaju.</li>
+          <li><strong>Izmijenjeno stanje svijesti</strong> — namjerno, srž je prakse. Prolazi po završetku.</li>
+        </ul>
+      </div>
+
+      <!-- ABSOLUTE CONTRAINDICATIONS -->
+      <div class="dis-section dis-section--warning">
+        <p class="dis-section__label">Ne sudjeluj ako imaš</p>
+        <ul>
+          <li>Srčane bolesti, nereguliran visoki krvni tlak ili infarkt u anamnezi</li>
+          <li>Aneurizmu — moždanu ili trbušne aorte</li>
+          <li>Epilepsiju ili bilo koji poremećaj s napadajima</li>
+          <li>Glaukom ili odignuće mrežnice</li>
+          <li>Tešku, nekontroliranu astmu</li>
+          <li>Aktivnu psihozu ili shizofreniju</li>
+          <li>Bipolarni poremećaj — bez prethodne konzultacije s psihijatrom</li>
+          <li>Trudnoću u bilo kojoj fazi</li>
+          <li>Pacemaker ili drugi srčani uređaj</li>
+          <li>Nedavno otpuštanje iz programa liječenja ovisnosti (manje od godinu dana)</li>
+        </ul>
+      </div>
+
+      <!-- RELATIVE CONTRAINDICATIONS -->
+      <div class="dis-section dis-section--caution">
+        <p class="dis-section__label">Konzultiraj se s liječnikom ako imaš</p>
+        <ul>
+          <li>Kronično visok krvni tlak — i pod kontrolom lijekova</li>
+          <li>Dijabetes ili bolesti štitnjače</li>
+          <li>PTSP, tešku neprocesuiranu traumu ili panični poremećaj</li>
+          <li>Disocijativne poremećaje ili tešku anksioznost</li>
+          <li>Redovitu upotrebu psihofarmaka — antidepresivi, anksiolitici, antipsihotici</li>
+          <li>Nedavnu operaciju ili ozbiljnu ozljedu</li>
+        </ul>
+      </div>
+
+      <!-- LEGAL -->
+      <div class="dis-section dis-section--legal">
+        <p class="dis-section__label">Pravna napomena</p>
+        <p>
+          Ovo nije medicinska terapija niti tretman. Ernest Madunović nije medicinski radnik.
+          Kupnjom i upisom punog imena potvrđuješ da si pročitao/la i razumio/la sve
+          navedeno, da nemaš nijednu od apsolutnih kontraindikacija, te da Duhodah i
+          Ernesta Madunovića oslobađaš odgovornosti za sve nastale posljedice, uključujući
+          i one nastale zbog netočnih ili nepotpunih zdravstvenih informacija.
+        </p>
+      </div>
+
+    </div><!-- /disclaimer -->
+
+    <!-- CONFIRM PANEL -->
+    <div class="confirm-wrap">
+      <div class="confirm-panel">
+        <span class="confirm-panel__title">Potvrda suglasnosti</span>
+        <h2 class="confirm-panel__heading">Razumijem i nastavljam</h2>
+        <p class="confirm-panel__text">
+          Upisom punog imena potvrđuješ da si pročitao/la sve navedeno
+          i da svjesno i dobrovoljno pristaješ na sudjelovanje.
+        </p>
+
+        <div class="confirm-panel__checks">
+          <div class="confirm-panel__check">
+            <span class="confirm-panel__check-icon">✓</span>
+            <span>Nemam nijednu apsolutnu kontraindikaciju</span>
+          </div>
+          <div class="confirm-panel__check">
+            <span class="confirm-panel__check-icon">✓</span>
+            <span>Sudjelujem dobrovoljno i na vlastitu odgovornost</span>
+          </div>
+          <div class="confirm-panel__check">
+            <span class="confirm-panel__check-icon">✓</span>
+            <span>Razumijem prirodu prakse svjesnog disanja</span>
+          </div>
+        </div>
+
+        <label for="name-input">Puno ime i prezime</label>
+        <input id="name-input" type="text" placeholder="Ime Prezime" autocomplete="name" spellcheck="false">
+        <div id="name-err"></div>
+        <button id="confirm-btn">Razumijem i prihvaćam →</button>
+        <a href="javascript:history.back()" class="confirm-panel__back">← Natrag</a>
+      </div>
+    </div>
+
+  </div><!-- /layout -->
+
+  <script type="module">
+    import { createClient } from 'https://cdn.jsdelivr.net/npm/@supabase/supabase-js/+esm';
+    import { SUPABASE_URL, SUPABASE_ANON_KEY } from './js/supabase-config.js?v=2';
+
+    const supabase = createClient(SUPABASE_URL, SUPABASE_ANON_KEY);
+
+    // ── URL params ─────────────────────────────────────────────
+    const params    = new URLSearchParams(window.location.search);
+    const stripeUrl = params.get('go');
+    const tip       = params.get('tip') || 'nepoznato';
+
+    const PRODUCT_NAMES = {
+      'pretplata_online_35':  'Zajednica — Online · 35 €/mj',
+      'pretplata_optimum_50': 'Zajednica — Optimum · 50 €/mj',
+      'pretplata_premium_60': 'Zajednica — Premium · 60 €/mj',
+      'autoskola_hod':        'Autoškola za živčani sustav — HOD',
+      'autoskola_uhoda':      'Autoškola za živčani sustav — UHODA',
+      'individualno_uzivo':   'Individualna sesija — Uživo · 70 €',
+    };
+
+    const DANI  = ['ned','pon','uto','sri','čet','pet','sub'];
+    const MJES  = ['siječnja','veljače','ožujka','travnja','svibnja','lipnja',
+                   'srpnja','kolovoza','rujna','listopada','studenoga','prosinca'];
+
+    function formatDatum(iso) {
+      const d = new Date(iso);
+      const dan  = DANI[d.getDay()];
+      const sat  = String(d.getHours()).padStart(2,'0');
+      const min  = String(d.getMinutes()).padStart(2,'0');
+      return `${dan}, ${d.getDate()}. ${MJES[d.getMonth()]} ${d.getFullYear()} · ${sat}:${min}h`;
+    }
+
+    // ── Prikaz: event ili produkt ──────────────────────────────
+    if (tip.startsWith('event:')) {
+      const eventId = tip.slice(6);
+      // Fetch event async — prikaži dok čekamo
+      (async () => {
+        try {
+          const { data: ev } = await supabase
+            .from('dogadjaji')
+            .select('naziv,datum,lokacija,tip')
+            .eq('id', eventId)
+            .maybeSingle();
+          if (ev) {
+            document.getElementById('event-naziv').textContent    = ev.naziv;
+            document.getElementById('event-datum').textContent    = formatDatum(ev.datum);
+            document.getElementById('event-lokacija').textContent = ev.lokacija || 'Studio Shine, Osijek';
+            document.getElementById('event-card').style.display   = 'inline-block';
+          }
+        } catch (_) {}
+      })();
+    } else {
+      const productName = PRODUCT_NAMES[tip];
+      if (productName) {
+        document.getElementById('product-name').textContent        = productName;
+        document.getElementById('product-badge').style.display     = 'inline-flex';
+      }
+    }
+
+    // ── Predpopuni ime iz localStorage ────────────────────────
+    const LS = 'dh_consent_ime';
+    const input = document.getElementById('name-input');
+    const errEl = document.getElementById('name-err');
+    const btn   = document.getElementById('confirm-btn');
+
+    try {
+      const saved = localStorage.getItem(LS);
+      if (saved) input.value = saved;
+    } catch (_) {}
+
+    // Async: predpopuni iz Supabase profila
+    (async () => {
+      try {
+        const { data: { user } } = await supabase.auth.getUser();
+        if (user && !input.value) {
+          const { data: p } = await supabase
+            .from('profiles')
+            .select('ime')
+            .eq('id', user.id)
+            .maybeSingle();
+          if (p?.ime) {
+            input.value = p.ime;
+            try { localStorage.setItem(LS, p.ime); } catch (_) {}
+          }
+        }
+      } catch (_) {}
+    })();
+
+    // Input: reset greške
+    input.addEventListener('input', () => {
+      input.classList.remove('err');
+      errEl.textContent = '';
+    });
+
+    // ── Submit ─────────────────────────────────────────────────
+    btn.addEventListener('click', async () => {
+      const name = input.value.trim();
+
+      if (!name || name.split(/\s+/).filter(Boolean).length < 2) {
+        input.classList.add('err');
+        errEl.textContent = 'Upiši puno ime i prezime.';
+        input.focus();
+        return;
+      }
+
+      btn.disabled    = true;
+      btn.textContent = 'Spremam...';
+
+      try { localStorage.setItem(LS, name); } catch (_) {}
+
+      try {
+        const { data: { user } } = await supabase.auth.getUser();
+        await supabase.from('suglasnosti').insert({
+          user_id:       user?.id    ?? null,
+          ime_prezime:   name,
+          email:         user?.email ?? null,
+          tip_proizvoda: tip,
+          stripe_url:    stripeUrl,
+        });
+      } catch (_) {}
+
+      // Redirect na Stripe
+      if (stripeUrl) {
+        window.location.href = stripeUrl;
+      } else {
+        window.location.href = 'index.html';
+      }
+    });
+
+    // Enter tipka
+    input.addEventListener('keydown', e => {
+      if (e.key === 'Enter') btn.click();
+    });
+  </script>
+
+</body>
+</html>

@@ -166,8 +166,7 @@ async function buildEventButton(event, authState, availability) {
       });
       const ctaLabel = resolveCTALabel(event, event.cijena_eur);
       return `<div class="cal-btn-group cal-btn-group--stacked">
-        <a class="cal-btn cal-btn--pay" href="#"
-           onclick="window.openConsentModal('${stripeUrl.replace(/'/g,"\\'")}','event:${event.id}');return false;">
+        <a class="cal-btn cal-btn--pay" href="napomena.html?go=${encodeURIComponent(stripeUrl)}&tip=${encodeURIComponent('event:' + event.id)}">
           ${ctaLabel}
         </a>
         <span class="cal-member-hint">Ili <a href="zajednica.html">postani pretplatnik</a> i dođi besplatno</span>
@@ -178,8 +177,7 @@ async function buildEventButton(event, authState, availability) {
     const stripeUrl = resolveStripeLink(event);
     const ctaLabel = resolveCTALabel(event, event.cijena_eur);
     return `<div class="cal-btn-group cal-btn-group--stacked">
-      <a class="cal-btn cal-btn--pay" href="#"
-         onclick="window.openConsentModal('${stripeUrl.replace(/'/g,"\\'")}','event:${event.id}');return false;">
+      <a class="cal-btn cal-btn--pay" href="napomena.html?go=${encodeURIComponent(stripeUrl)}&tip=${encodeURIComponent('event:' + event.id)}">
         ${ctaLabel}
       </a>
       <span class="cal-member-hint">Pretplatnik? <a href="#" onclick="showLoginModal('${event.id}');return false;">Prijavi se za besplatnu opciju</a></span>
