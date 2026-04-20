@@ -3685,6 +3685,71 @@
   </section>
 
   <!-- ═══════════════════════════════════
+       BESPLATNO DISAJNO PUTOVANJE
+  ═══════════════════════════════════ -->
+  <section id="besplatno-putovanje" style="
+    padding: 100px 0;
+    background: linear-gradient(180deg, var(--black) 0%, rgba(4,255,255,0.03) 50%, var(--black) 100%);
+    border-top: 1px solid rgba(4,255,255,0.08);
+    position: relative;
+    overflow: hidden;
+  ">
+    <div style="position:absolute; top:50%; left:30%; transform:translate(-50%,-50%); width:600px; height:400px; background:radial-gradient(ellipse at center, rgba(4,255,255,0.05) 0%, transparent 70%); pointer-events:none;"></div>
+
+    <div class="container" style="position:relative; z-index:1;">
+      <div style="display:grid; grid-template-columns:1fr 1fr; gap:80px; align-items:center;" class="prir-inner-grid">
+
+        <!-- Lijevo — opis -->
+        <div>
+          <p class="section-label reveal" style="color:var(--cyan);">Bez iskustva. Bez uvjeta. Besplatno.</p>
+          <h2 class="section-title reveal" style="font-size:clamp(1.8rem,4vw,3rem);">
+            Besplatno<br>
+            <em style="font-style:normal; background:linear-gradient(90deg,var(--cyan),var(--magenta)); -webkit-background-clip:text; -webkit-text-fill-color:transparent; background-clip:text;">Disajno putovanje</em>
+          </h2>
+          <div class="divider reveal"></div>
+          <p class="section-subtitle reveal" style="margin-bottom:1.8rem;">
+            Što bi se dogodilo kad bi sat vremena radili samo jedno — disali? Ne razmišljali. Ne planirali. Samo disali. Svjesno. Vođeno. Zajedno.
+          </p>
+          <ul class="reveal" style="list-style:none; margin-bottom:2rem; display:flex; flex-direction:column; gap:0.7rem;">
+            <li style="display:flex; gap:0.8rem; align-items:flex-start; font-size:0.88rem; color:var(--steel);">
+              <span style="color:var(--cyan); flex-shrink:0;">✦</span>Tijelo koje je tjednima napeto — otpusti
+            </li>
+            <li style="display:flex; gap:0.8rem; align-items:flex-start; font-size:0.88rem; color:var(--steel);">
+              <span style="color:var(--cyan); flex-shrink:0;">✦</span>Misli koje kruže u krug — utihnu
+            </li>
+            <li style="display:flex; gap:0.8rem; align-items:flex-start; font-size:0.88rem; color:var(--steel);">
+              <span style="color:var(--cyan); flex-shrink:0;">✦</span>Osjećaj koji niste imali dugo — prisutnost
+            </li>
+          </ul>
+          <p class="reveal" style="font-size:0.82rem; color:var(--steel); font-style:italic;">
+            Vodim ja, Erni — svaki put živo, svaki put drugačije, uvijek sigurno.
+          </p>
+        </div>
+
+        <!-- Desno — sljedeći besplatni event -->
+        <div class="reveal reveal-delay-2">
+          <div id="besplatno-event-card" style="
+            border: 1px solid rgba(4,255,255,0.15);
+            background: rgba(4,255,255,0.03);
+            padding: 2.5rem;
+            position: relative;
+            overflow: hidden;
+          ">
+            <!-- Glow corner -->
+            <div style="position:absolute; top:0; right:0; width:120px; height:120px; background:radial-gradient(circle at top right, rgba(4,255,255,0.1) 0%, transparent 70%); pointer-events:none;"></div>
+
+            <div id="besplatno-event-inner">
+              <div style="font-family:var(--font-brand); font-size:0.62rem; letter-spacing:0.3em; text-transform:uppercase; color:var(--cyan); margin-bottom:1.2rem;">Sljedeći termin</div>
+              <div class="cal-loading" style="color:var(--steel); font-size:0.9rem;">Učitavam termin…</div>
+            </div>
+          </div>
+        </div>
+
+      </div>
+    </div>
+  </section>
+
+  <!-- ═══════════════════════════════════
        ZNANOST — TEASER
   ═══════════════════════════════════ -->
   <section id="priručnik" style="padding: 100px 0; border-top: 1px solid rgba(4,255,255,0.06);">
@@ -4789,6 +4854,71 @@
     import { getCurrentUser } from './js/auth.js?v=5';
     // Renderaj widget odmah
     renderEventsWidget('events-widget-container');
+
+    // ── Besplatno putovanje: sljedeći besplatni event ──────────────────────────
+    (async () => {
+      try {
+        const hdrs = { 'apikey': SUPABASE_ANON_KEY, 'Authorization': `Bearer ${SUPABASE_ANON_KEY}` };
+        const cutoff = encodeURIComponent(new Date(Date.now() - 2 * 60 * 60 * 1000).toISOString());
+        const res = await fetch(
+          `${SUPABASE_URL}/rest/v1/dogadjaji?aktivan=eq.true&datum=gt.${cutoff}&cijena_eur=eq.0&order=datum.asc&limit=1&select=*`,
+          { headers: hdrs }
+        );
+        const inner = document.getElementById('besplatno-event-inner');
+        if (!res.ok || !inner) return;
+        const evts = await res.json();
+
+        const DANI = ['Nedjelja','Ponedjeljak','Utorak','Srijeda','Četvrtak','Petak','Subota'];
+        const MJ   = ['siječnja','veljače','ožujka','travnja','svibnja','lipnja','srpnja','kolovoza','rujna','listopada','studenoga','prosinca'];
+
+        if (!evts.length) {
+          inner.innerHTML = `
+            <div style="font-family:var(--font-brand); font-size:0.62rem; letter-spacing:0.3em; text-transform:uppercase; color:var(--cyan); margin-bottom:1.2rem;">Sljedeći termin</div>
+            <p style="color:var(--steel); font-size:0.9rem; margin-bottom:1.5rem;">Trenutno nema zakazanog termina. Javi se i dogovorimo.</p>
+            <a href="index.html#kontakt" style="display:inline-block; font-family:var(--font-brand); font-size:0.65rem; font-weight:600; letter-spacing:0.2em; text-transform:uppercase; color:var(--black); background:var(--cyan); padding:0.9rem 2rem;">
+              Kontaktiraj Ernija →
+            </a>`;
+          return;
+        }
+
+        const ev = evts[0];
+        const d = new Date(ev.datum);
+        const vrijemeStr = `${String(d.getHours()).padStart(2,'0')}:${String(d.getMinutes()).padStart(2,'0')}`;
+        const datumStr = `${DANI[d.getDay()]}, ${d.getDate()}. ${MJ[d.getMonth()]}`;
+        const lokacija = ev.lokacija || 'Online';
+
+        // Slobodna mjesta
+        let slobodna = ev.kapacitet || 15;
+        try {
+          const regRes = await fetch(
+            `${SUPABASE_URL}/rest/v1/registracije?dogadjaj_id=eq.${ev.id}&status=in.(potvrdjena,cekanje)`,
+            { method: 'HEAD', headers: { ...hdrs, 'Prefer': 'count=exact' } }
+          );
+          const cr = regRes.headers.get('Content-Range');
+          const prijavljeni = parseInt(cr?.split('/')[1] ?? '0') || 0;
+          slobodna = Math.max(0, (ev.kapacitet || 15) - prijavljeni);
+        } catch(e) {}
+
+        const stripeUrl = ev.stripe_link || 'index.html#kontakt';
+        const ctaHref = `napomena.html?go=${encodeURIComponent(stripeUrl)}&tip=${encodeURIComponent('event:' + ev.id)}`;
+
+        inner.innerHTML = `
+          <div style="font-family:var(--font-brand); font-size:0.62rem; letter-spacing:0.3em; text-transform:uppercase; color:var(--cyan); margin-bottom:1.2rem;">Sljedeći termin</div>
+          <div style="font-size:1.4rem; font-family:var(--font-head); color:var(--white); margin-bottom:0.5rem; line-height:1.3;">${ev.naziv}</div>
+          <div style="font-size:0.85rem; color:var(--steel); margin-bottom:0.3rem;">📅 ${datumStr} · ${vrijemeStr}</div>
+          <div style="font-size:0.85rem; color:var(--steel); margin-bottom:1.5rem;">📍 ${lokacija}</div>
+          <div style="display:flex; align-items:center; gap:1rem; margin-bottom:1.8rem; flex-wrap:wrap;">
+            <span style="font-family:var(--font-brand); font-size:0.7rem; font-weight:700; letter-spacing:0.15em; color:var(--cyan); text-transform:uppercase;">Besplatno</span>
+            <span style="font-size:0.78rem; color:${slobodna <= 3 ? 'var(--magenta)' : 'var(--steel)'};">
+              ${slobodna === 0 ? 'Popunjeno' : `${slobodna} ${slobodna === 1 ? 'mjesto' : slobodna < 5 ? 'mjesta' : 'mjesta'} slobodno`}
+            </span>
+          </div>
+          ${slobodna > 0
+            ? `<a href="${ctaHref}" style="display:inline-block; font-family:var(--font-brand); font-size:0.65rem; font-weight:600; letter-spacing:0.2em; text-transform:uppercase; color:var(--black); background:var(--cyan); padding:0.9rem 2.2rem; transition:box-shadow 0.3s;" onmouseover="this.style.boxShadow='0 0 24px rgba(4,255,255,0.4)'" onmouseout="this.style.boxShadow=''">Prijavi se besplatno →</a>`
+            : `<span style="font-family:var(--font-brand); font-size:0.65rem; letter-spacing:0.2em; text-transform:uppercase; color:var(--steel); padding:0.9rem 0;">Popunjeno — javi se za čekaonicu</span>`
+          }`;
+      } catch(e) { console.error('[besplatno-putovanje]', e); }
+    })();
 
     // ── Hero: sljedeći događaj — čisti fetch, bez GoTrueClient/lock-a ──────────
     (async () => {
