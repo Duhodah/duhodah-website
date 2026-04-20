@@ -697,13 +697,15 @@
         12 pitanja. 4 minute. Otkrit ćeš koji tip disača si i dobiti
         prvu vježbu posebno za tebe.
       </p>
-      <div class="intro-types">
-        <div class="intro-type-pill">Kronični Plitki Disač</div>
+      <div class="intro-types" style="grid-template-columns:1fr 1fr 1fr;">
+        <div class="intro-type-pill">Prirodni Disač</div>
+        <div class="intro-type-pill">Svjesni Upravljač</div>
+        <div class="intro-type-pill">Plitki Disač</div>
         <div class="intro-type-pill">Hiperventilator</div>
         <div class="intro-type-pill">Zadržavač</div>
         <div class="intro-type-pill">Kaotični Disač</div>
       </div>
-      <p class="intro-meta">12 pitanja · bez točnih ili krivih odgovora · 100% anonimno</p>
+      <p class="intro-meta">12 pitanja · 7 opcija · bez točnih ili krivih odgovora · 100% anonimno</p>
       <button class="btn-start" onclick="startQuiz()">KRENI →</button>
 
       <div class="quiz-footer">
@@ -786,7 +788,10 @@ const QUESTIONS = [
       { text: "Postaje plitko i jedva ga primjećujem — kao da se smanji", type: "P" },
       { text: "Ubrzava i osjećam da ne mogu dovoljno udahnuti", type: "H" },
       { text: "Zaustavim se — doslovno zaboravim disati", type: "Z" },
-      { text: "Svaki put je drugačije, ovisi o situaciji", type: "K" },
+      { text: "Svaki put je drugačije, nepredvidivo", type: "K" },
+      { text: "Promijeni se malo, ali brzo se vrati na normalu — ne remeti me previše", type: "D" },
+      { text: "Primijetim da mu se mijenja ritam i tada svjesno pokušam usporiti", type: "O" },
+      { text: "Ništa od navedenog ne opisuje moje iskustvo", type: "N" },
     ]
   },
   {
@@ -795,7 +800,10 @@ const QUESTIONS = [
       { text: "Plitko, samo gornji dio prsa — trbuh gotovo ne sudjeluje", type: "P" },
       { text: "Brzo, odmah u pogonu, srce već radi", type: "H" },
       { text: "Duboko ali tijelo teško — kao da se motor polako pali", type: "Z" },
-      { text: "Nisam nikad obratio/la pažnju na to", type: "K" },
+      { text: "Nikad nisam obratio/la pažnju na to", type: "K" },
+      { text: "Mirno i prirodno — tijelo se polako probudi bez napora", type: "D" },
+      { text: "Primijetim ga i ponekad namjerno malo produbim kao jutarnji ritual", type: "O" },
+      { text: "Ništa od navedenog ne opisuje moje iskustvo", type: "N" },
     ]
   },
   {
@@ -803,8 +811,11 @@ const QUESTIONS = [
     options: [
       { text: "Postaje sporiji i plići, gotovo nevidljiv", type: "P" },
       { text: "Ubrzava, ponekad se i znojim ili pocrvenim", type: "H" },
-      { text: "Zadržim ga bez da to primijetim — budem pa ga otpustim", type: "Z" },
-      { text: "Ovisi o zadatku i mom raspoloženju", type: "K" },
+      { text: "Zadržim ga bez da to primijetim — budem svjestan/na tek kad ga otpustim", type: "Z" },
+      { text: "Ovisi o zadatku i mom raspoloženju tog dana", type: "K" },
+      { text: "Ne primjećujem nikakve probleme — dah jednostavno teče u pozadini", type: "D" },
+      { text: "Znam da ga ponekad zadržim, ali primijetim to i ispravim", type: "O" },
+      { text: "Ništa od navedenog ne opisuje moje iskustvo", type: "N" },
     ]
   },
   {
@@ -814,6 +825,9 @@ const QUESTIONS = [
       { text: "Odmah mi je malo bolje, ali efekt brzo prođe", type: "H" },
       { text: "Olakšanje — kao da sam napokon dobio/la dozvolu da dišem", type: "Z" },
       { text: "Ponekad pomaže, ponekad ne — nepredvidivo", type: "K" },
+      { text: "Lagano i prirodno — tijelo samo zna kako to napraviti", type: "D" },
+      { text: "Odmah prebacim na svjesno disanje i znam točno što radim", type: "O" },
+      { text: "Ništa od navedenog ne opisuje moje iskustvo", type: "N" },
     ]
   },
   {
@@ -823,6 +837,9 @@ const QUESTIONS = [
       { text: "Teško se smirim, misli mi jure, ne mogu se \"ugasiti\"", type: "H" },
       { text: "Osjetim veliku napetost tek kad legnem — tad svega ima", type: "Z" },
       { text: "Svake večeri je drugačije — nekad OK, nekad kaos", type: "K" },
+      { text: "Polako se smiri prirodno — zaspim bez posebnih problema", type: "D" },
+      { text: "Ponekad trebam svjesno dišem malo da se smirim, ali kada to uradim, uspije", type: "O" },
+      { text: "Ništa od navedenog ne opisuje moje iskustvo", type: "N" },
     ]
   },
   {
@@ -832,6 +849,9 @@ const QUESTIONS = [
       { text: "Srce mi ubrza, dišem brže, možda pocrvenim ili se zagrijem", type: "H" },
       { text: "Zamrznem — i doslovno zaustavim dah na par sekundi", type: "Z" },
       { text: "Eksplodiram ili se povučem — ovisi o danu i osobi", type: "K" },
+      { text: "Reakcija postoji, ali ne traje dugo — tijelo se brzo vrati u balans", type: "D" },
+      { text: "Primijetim i namjerno usporim dah — to mi pomogne da se reguliram", type: "O" },
+      { text: "Ništa od navedenog ne opisuje moje iskustvo", type: "N" },
     ]
   },
   {
@@ -841,6 +861,9 @@ const QUESTIONS = [
       { text: "Dosta često, posebno kad sam pod pritiskom", type: "H" },
       { text: "Ponekad, uglavnom nakon dugog perioda napetosti", type: "Z" },
       { text: "Da, ali ne znam kad ni zašto — dolazi i odlazi", type: "K" },
+      { text: "Gotovo nikad — fizički se uglavnom osjećam stabilno i uzemljeno", type: "D" },
+      { text: "Ponekad, posebno kad zaboravim na disanje dulje vrijeme", type: "O" },
+      { text: "Ništa od navedenog ne opisuje moje iskustvo", type: "N" },
     ]
   },
   {
@@ -848,17 +871,23 @@ const QUESTIONS = [
     options: [
       { text: "Brzo mi ponestane daha, osjećam se slabo brže nego što bih trebao/la", type: "P" },
       { text: "Odmah mi srce poludi i počnem ubrzano disati", type: "H" },
-      { text: "Sve OK dok traje, ali poslije osjetim val napetosti", type: "Z" },
+      { text: "Sve OK dok traje, ali poslije osjetim val napetosti ili ukočenosti", type: "Z" },
       { text: "Nepredvidivo — ponekad idem jako dobro, ponekad jako loše", type: "K" },
+      { text: "Prilagodi se bez problema — dah prati napor i brzo se oporavim", type: "D" },
+      { text: "Svjesno kontroliram dah pri naporu i to mi dosta pomaže", type: "O" },
+      { text: "Ništa od navedenog ne opisuje moje iskustvo", type: "N" },
     ]
   },
   {
     text: "Kad si tužan/na ili emotivan/na — što se dogodi s dahom?",
     options: [
       { text: "Postaje jako tih i sitan — kao da emocija \"pojede\" dah", type: "P" },
-      { text: "Počnem jecati ili hvatati zrak — emocija i dah idu zajedno", type: "H" },
+      { text: "Počnem jecati ili hvatati zrak — emocija i dah idu zajedno u valu", type: "H" },
       { text: "Stisnem ga — kao da zadržavam i emociju i dah istovremeno", type: "Z" },
       { text: "Svaki put drugačije — nikad ne znam kako ću reagirati", type: "K" },
+      { text: "Malo se promijeni, ali ne remeti me i relativno brzo prođe", type: "D" },
+      { text: "Primijetim promjenu i svjesno dišem kroz emociju — to mi pomaže", type: "O" },
+      { text: "Ništa od navedenog ne opisuje moje iskustvo", type: "N" },
     ]
   },
   {
@@ -868,6 +897,9 @@ const QUESTIONS = [
       { text: "Da, i obično ide s tjeskobom i ubrzanim razmišljanjem", type: "H" },
       { text: "Stalno — kao da nosim nešto teško, uvijek", type: "Z" },
       { text: "Dolazi i odlazi bez uzorka", type: "K" },
+      { text: "Rijetko — i kad se pojavi, brzo prođe ili znam što ga je uzrokovalo", type: "D" },
+      { text: "Ponekad, i tada svjesnim disanjem pokušam otpustiti — i uspije", type: "O" },
+      { text: "Ništa od navedenog ne opisuje moje iskustvo", type: "N" },
     ]
   },
   {
@@ -877,6 +909,9 @@ const QUESTIONS = [
       { text: "Teško zaspim, budem se u noći, misli mi ne prestaju", type: "H" },
       { text: "Spavam OK, ali jutro je teško — kao da treba dugo da se pokrenem", type: "Z" },
       { text: "Varira jako — dobar tjedan, pa loš tjedan, bez uzorka", type: "K" },
+      { text: "Relativno dobro — zaspim bez problema i budem se odmorno", type: "D" },
+      { text: "Ponekad trebam mali ritual (disanje, promatranje) da lakše zaspim", type: "O" },
+      { text: "Ništa od navedenog ne opisuje moje iskustvo", type: "N" },
     ]
   },
   {
@@ -886,6 +921,9 @@ const QUESTIONS = [
       { text: "Anksioznost i briga — misli ne prestaju, uvijek čekam nešto loše", type: "H" },
       { text: "Napetost u tijelu — stisnutost, bol, osjećaj da sam uvijek na rubu", type: "Z" },
       { text: "Nepredvidivost — ne znam što da očekujem od sebe ni od dana", type: "K" },
+      { text: "Uglavnom se snalazim — zanima me kako unaprijediti ono što već radi", type: "D" },
+      { text: "Nedosljednost — znam što trebam raditi, ali ne primjenjujem to uvijek", type: "O" },
+      { text: "Ništa od navedenog ne odgovara mojoj situaciji", type: "N" },
     ]
   },
 ];
@@ -990,6 +1028,79 @@ const RESULT_TYPES = {
         "Cilj nije savršenstvo. Cilj je dolaziti na isto mjesto, svaki dan."
       ]
     }
+  },
+  D: {
+    name: "Prirodni Disač",
+    sub: "Tijelo zna što radi",
+    emoji: "🌿",
+    color: "#00e676",
+    accentRgb: "0,230,118",
+    tagline: "Tvoje tijelo je sačuvalo ono što većina odraslih izgubi — prirodan, funkcionalan dah.",
+    description: "Tvoje nesvjesno, automatsko disanje funkcionira relativno dobro. Dijafragma je aktivna, ritam je miran, živčani sustav se bez velikog napora vraća u balans. To nije nešto za podcijeniti — velika većina odraslih izgubi ovaj kapacitet negdje između djetinjstva i odrastanja, između stresa i sjedilačkog načina života. Ti ga imaš. To je solidan temelj.",
+    strengths: ["Stabilan energetski baseline", "Brz oporavak od stresa", "Dobra fizička tolerancija"],
+    challenges: ["Svjesno upravljanje dahom neistraženo", "Možda nisi svjestan/a svog potencijala", "Nema jasnog 'problema' koji bi motivirao rad na disanju"],
+    insight: "Kad tijelo dobro funkcionira nesvjesno, lako zaboravimo da postoji sljedeća razina. Razlika između dobrog prirodnog disanja i svjesno uvježbanog jest razlika između auto-pilota i pilota — u kriznoj situaciji, tko bolje prolazi? Tvoj temelj je već tu. Ono što nedostaje je svjesna nadogradnja.",
+    exercise: {
+      name: "CO₂ tolerancija — Bohr efekt",
+      pattern: "5·0·5·0",
+      desc: "Spori, tihi udasi i izdasi kroz nos. Cilj je osjećaj blagog glada za zrakom — to znači da tijelo uči bolje koristiti kisik koji već ima.",
+      steps: [
+        "Sjedni udobno. Zatvori usta, dišu samo kroz nos.",
+        "Udahni tiho 5 sekundi — manje nego što bi inače uzeo/la.",
+        "Izdahni tiho 5 sekundi — potpuno, bez forsiranja.",
+        "Nastavi 10 minuta. Blagi osjećaj glada za zrakom je željeni signal — ne borba.",
+        "Radi jednom dnevno, 2 tjedna. Primijetit ćeš razliku u fizičkom naporu i fokusiranosti."
+      ]
+    }
+  },
+  O: {
+    name: "Svjesni Disač",
+    sub: "Znaš alat, trebaš uvježbanost",
+    emoji: "🎯",
+    color: "#ffd54f",
+    accentRgb: "255,213,79",
+    tagline: "Kad se sjetiš — možeš regulirati sebe dahom. Problem je što te tijelo ne pita kad bi trebalo.",
+    description: "Imaš znanje i iskustvo — možda yoga, meditacija, box breathing, neke tehnike disanja koje si naučio/la. Kad se namjerno usredotočiš, možeš promijeniti svoje stanje dahom. Ali automatski, u trenutku stresa, napetosti ili emotivne reakcije — sustav još uvijek ne reagira uvježbano. Svjesno znaš; tijelo još ne zna samo.",
+    strengths: ["Već imaš alate i znanje", "Osnovna tjelesna svjesnost", "Motivan/a za rad na sebi"],
+    challenges: ["Nedosljedna primjena u stresnim trenucima", "Automatski odgovor još nije formiran", "Znanje bez integracije u tijelo"],
+    insight: "Tehnika bez integracije ostaje samo informacija. Tvoj sustav još nije 'ugurao' svjesno disanje u automatski pilot. To je normalna faza — i premoščuje se specifičnim treningom u okidačkim situacijama, ne samo uvježbavanjem u miru. Sljedeći korak nije nova tehnika — nego jedna tehnika, u pravom trenutku, svaki put.",
+    exercise: {
+      name: "Okidački trenutak",
+      pattern: "4·4·8·0",
+      desc: "Odaberi jedan svakodnevni okidač — jutarnja kava, crveno svjetlo, otvaranje laptopa. Svaki put kad se to dogodi: tri ciklusa svjesnog disanja. Nije o savršenstvu — o konzistentnosti.",
+      steps: [
+        "Odaberi jedan okidač koji se događa svaki dan (kava, alarm, otvaranje maila).",
+        "Čim se okidač dogodi: udahni 4 sekunde — nos, trbuh.",
+        "Zadrži 4 sekunde.",
+        "Izdahni polako 8 sekundi — kompletno, bez sile.",
+        "Tri puta. Svaki dan. Isto mjesto, isti okidač.",
+        "Za 3 tjedna sustav će početi sam — bez da se moraš sjetiti."
+      ]
+    }
+  },
+  N: {
+    name: "Nedefinirani Profil",
+    sub: "Uzorak nije jasno vidljiv",
+    emoji: "❓",
+    color: "#6b7494",
+    accentRgb: "107,116,148",
+    tagline: "Tvoje iskustvo ne uklapa se jasno ni u jedan prepoznatljiv obrazac disanja.",
+    description: "Ponekad je disanje toliko individualno da standardni profili jednostavno ne hvataju ono što se stvarno događa. To ne znači da nema uzorka — samo da ga je teže imenovati kroz serijsko pitanje. Može znači da si kompleksniji slučaj koji zaslužuje direktnu pažnju, ili da tvoji obrasci tek čekaju da ih primijetiš.",
+    strengths: ["Ne uklapljaš se u kalupe", "Vjerojatno složenija unutarnja dinamika", "Otvoren/a za otkrivanje"],
+    challenges: ["Teže se prepoznati u opisima", "Nema jasne polazišne točke za samostalni rad", "Standardni programi možda ne odgovaraju"],
+    insight: "Kviz je dobar alat za prepoznatljive obrasce — ali nije sveobuhvatan. Ako se nisi prepoznao/la ni u jednom profilu, najvrijednija sljedeća stvar je osobna procjena. Erni radi individualne konzultacije upravo za ovakve situacije — gdje jedan razgovor vrijedi više od deset kvizova.",
+    exercise: {
+      name: "Promatranje bez mijenjanja",
+      pattern: "5 min · neutralno",
+      desc: "Postavi jednu ruku na trbuh, drugu na prsa. Dišu 5 minuta bez ikakvog namjernog mijenjanja. Samo primijetiti što se događa. To je polazišna točka.",
+      steps: [
+        "Lezi ili sjedni. Jedna ruka na trbuh, druga na prsa.",
+        "Postavi timer na 5 minuta.",
+        "Dišu onako kako tijelo samo diše — bez namjernog mijenjanja.",
+        "Primijetiti: koje ruke se miče više? Koji dijelovi prsa? Kakav je ritam?",
+        "Zapiši što si primijetio/la. Donesi to na osobnu konzultaciju."
+      ]
+    }
   }
 };
 
@@ -998,9 +1109,9 @@ const RESULT_TYPES = {
 // ════════════════════════════════════════════════════════════
 let current = 0;
 let answers = new Array(QUESTIONS.length).fill(null);
-const scores = { P: 0, H: 0, Z: 0, K: 0 };
+const scores = { P: 0, H: 0, Z: 0, K: 0, D: 0, O: 0, N: 0 };
 
-const LETTERS = ['A', 'B', 'C', 'D'];
+const LETTERS = ['A', 'B', 'C', 'D', 'E', 'F', 'G'];
 
 function showScreen(id) {
   document.querySelectorAll('.screen').forEach(s => s.classList.remove('active'));
@@ -1088,8 +1199,12 @@ function computeAndShowResult() {
   Object.keys(scores).forEach(k => scores[k] = 0);
   answers.forEach(a => { if (a) scores[a]++; });
 
-  // Winner
-  const winner = Object.entries(scores).sort((a, b) => b[1] - a[1])[0][0];
+  // Winner — ako N dijeli prvo mjesto s tipiziranim tipom, preferiraj tipizirani
+  const sorted = Object.entries(scores).sort((a, b) => b[1] - a[1]);
+  let winner = sorted[0][0];
+  if (winner === 'N' && sorted.length > 1 && sorted[1][1] === sorted[0][1]) {
+    winner = sorted[1][0]; // preferiraj tipizirani tip u slučaju izjednačenja
+  }
   window._lastQuizWinner = winner; // expose za Supabase tracking
   const type = RESULT_TYPES[winner];
 
@@ -1129,19 +1244,19 @@ function computeAndShowResult() {
       <p class="result-section-body">${type.insight}</p>
     </div>
 
-    <!-- Score breakdown -->
+    <!-- Score breakdown — svi tipovi -->
     <div class="result-section" style="--section-accent: rgba(107,116,148,0.6)">
-      <p class="result-section-title">Raspodjela odgovora</p>
-      <div class="score-breakdown">
+      <p class="result-section-title">Raspodjela odgovora — svi tipovi</p>
+      <div class="score-breakdown" style="grid-template-columns:1fr 1fr;">
         ${Object.entries(RESULT_TYPES).map(([key, t]) => `
           <div class="score-bar-item">
             <div class="score-bar-label">
-              <span>${t.name.split(' ')[0]} ${t.name.split(' ')[1] || ''}</span>
-              <span style="color:${t.color}">${pct(key)}%</span>
+              <span style="${key === winner ? 'color:rgba(255,255,255,0.85);font-weight:600;' : ''}">${t.name}</span>
+              <span style="color:${t.color};font-weight:${key === winner ? '700' : '400'}">${pct(key)}%</span>
             </div>
             <div class="score-bar-track">
               <div class="score-bar-fill" data-pct="${pct(key)}"
-                   style="background: ${t.color}; width:0%"></div>
+                   style="background: ${t.color}; width:0%; ${key === winner ? 'box-shadow:0 0 6px '+t.color+'80;' : ''}"></div>
             </div>
           </div>
         `).join('')}
@@ -1160,11 +1275,14 @@ function computeAndShowResult() {
 
     <!-- CTA -->
     <div class="result-cta">
-      <h3 class="result-cta-title">Ovo je tek početak.</h3>
+      <h3 class="result-cta-title">${winner === 'N' ? 'Hajde da to istražimo zajedno.' : 'Ovo je tek početak.'}</h3>
       <p class="result-cta-desc">
-        Autoškola za živčani sustav je 4-tjedni program koji ide dublje —
-        razumijevanje svog sustava, konkretni protokoli, i trajna promjena.
-        Idući termin u Osijeku.
+        ${winner === 'N'
+          ? 'Ako se nisi prepoznao/la ni u jednom profilu, najkorisniji sljedeći korak je osobni razgovor. Erni radi individualne konzultacije — jedan sat koji vrijedi više od deset kvizova.'
+          : winner === 'D'
+            ? 'Imaš dobar temelj — sada je pitanje što s njim. Autoškola za živčani sustav je 4-tjedni program koji nadograđuje ono što već funkcionira, i uvodi svjesno upravljanje dahom kao precizan alat.'
+            : 'Autoškola za živčani sustav je 4-tjedni program koji ide dublje — razumijevanje svog sustava, konkretni protokoli, i trajna promjena. Idući termin u Osijeku.'
+        }
       </p>
 
       <!-- Email capture — spremi rezultate -->
@@ -1213,7 +1331,7 @@ function computeAndShowResult() {
 
       <div class="result-actions">
         <a href="index.html#kontakt" class="btn-primary" style="display:inline-block; text-decoration:none; text-align:center;">
-          Zanima me Autoškola →
+          ${winner === 'N' ? 'Kontaktiraj Ernesta →' : 'Zanima me Autoškola →'}
         </a>
         <button class="btn-share" onclick="shareResult('${winner}', '${type.name}')">
           Podijeli rezultat
