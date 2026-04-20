@@ -33,7 +33,13 @@ async function pgCount(query) {
 // ============================================================
 
 export async function getUpcomingEvents(limit = 20) {
-  return pgGet(`dogadjaji?aktivan=eq.true&order=datum.asc&limit=${limit}&select=*`);
+  const cutoff = encodeURIComponent(new Date(Date.now() - 2 * 60 * 60 * 1000).toISOString());
+  return pgGet(`dogadjaji?aktivan=eq.true&datum=gt.${cutoff}&order=datum.asc&limit=${limit}&select=*`);
+}
+
+export async function getPastEvents(limit = 30) {
+  const cutoff = encodeURIComponent(new Date(Date.now() - 2 * 60 * 60 * 1000).toISOString());
+  return pgGet(`dogadjaji?aktivan=eq.true&datum=lte.${cutoff}&order=datum.desc&limit=${limit}&select=*`);
 }
 
 export async function getEventsByMonth(year, month) {

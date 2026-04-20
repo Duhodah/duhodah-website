@@ -847,21 +847,23 @@ async function loadEvents() {
   renderEvStats(); renderEvents();
 }
 
+function evCutoff() { return new Date(Date.now() - 2 * 60 * 60 * 1000); }
+
 function renderEvStats() {
-  const now = new Date();
+  const cutoff = evCutoff();
   document.getElementById('ev-stats').innerHTML = `
     <div class="stat-card"><div class="stat-label">Ukupno</div><div class="stat-val c">${allEvents.length}</div></div>
-    <div class="stat-card"><div class="stat-label">Nadolazeći</div><div class="stat-val">${allEvents.filter(e=>new Date(e.datum)>=now).length}</div></div>
+    <div class="stat-card"><div class="stat-label">Nadolazeći</div><div class="stat-val">${allEvents.filter(e=>new Date(e.datum)>cutoff).length}</div></div>
     <div class="stat-card"><div class="stat-label">Aktivni</div><div class="stat-val">${allEvents.filter(e=>e.aktivan).length}</div></div>
     <div class="stat-card"><div class="stat-label">Skriveni</div><div class="stat-val m">${allEvents.filter(e=>!e.aktivan).length}</div></div>`;
 }
 
 function renderEvents() {
   const container = document.getElementById('events-list');
-  const now = new Date();
+  const cutoff = evCutoff();
   let list = allEvents;
-  if      (evFilter === 'nadolazeci')       list = allEvents.filter(e => new Date(e.datum) >= now);
-  else if (evFilter === 'prosli')           list = allEvents.filter(e => new Date(e.datum) <  now);
+  if      (evFilter === 'nadolazeci')       list = allEvents.filter(e => new Date(e.datum) > cutoff);
+  else if (evFilter === 'prosli')           list = allEvents.filter(e => new Date(e.datum) <= cutoff);
   else if (evFilter === 'autoskola')        list = allEvents.filter(e => e.tip?.startsWith('autoskola'));
   else if (evFilter !== 'sve')              list = allEvents.filter(e => e.tip === evFilter);
   if (!list.length) { container.innerHTML = '<div class="empty-state">Nema događaja.</div>'; return; }
@@ -871,7 +873,7 @@ function renderEvents() {
     return `<div class="card ${e.aktivan?'':'inactive'}">
       <div style="display:flex;align-items:flex-start;justify-content:space-between;gap:.6rem;margin-bottom:.4rem;">
         <div style="flex:1">${renderCardTags(e.tagovi)}</div>
-        ${new Date(e.datum)<new Date()?'<span style="font-size:.6rem;color:rgba(255,255,255,.22);font-family:var(--fb);letter-spacing:.1em;white-space:nowrap">PROŠLO</span>':''}
+        ${new Date(e.datum)<=cutoff?'<span style="font-size:.6rem;color:rgba(255,255,255,.22);font-family:var(--fb);letter-spacing:.1em;white-space:nowrap">PROŠLO</span>':''}
       </div>
       <div style="font-family:var(--fh);font-size:.95rem;color:rgba(255,255,255,.88);margin-bottom:.4rem;">${e.naziv}</div>
       <div class="card-meta">

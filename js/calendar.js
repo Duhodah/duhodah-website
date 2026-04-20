@@ -2,7 +2,7 @@
 // CALENDAR.JS — Duhodah Calendar Render Engine
 // ============================================================
 
-import { getUpcomingEvents, getEventsByMonth, getEventAvailability, registerForEvent, registerAnonymous, isUserRegistered, cancelRegistration } from './db.js?v=6';
+import { getUpcomingEvents, getPastEvents, getEventsByMonth, getEventAvailability, registerForEvent, registerAnonymous, isUserRegistered, cancelRegistration } from './db.js?v=7';
 import { getAuthState, signInWithEmail } from './auth.js?v=5';
 import { buildStripeUrl, KARTE_LINKS, AUTOSKOLA_LINKS } from './stripe.js?v=4';
 
@@ -248,6 +248,68 @@ async function buildEventCardHTML(ev, curAuthState) {
             <button class="cal-ev-details-link" style="--link-color:${tipColor}" onclick="showEventModal('${ev.id}')">Više o događaju →</button>
           </div>
           ${btn}
+        </div>
+      </div>
+    </article>`;
+}
+
+// ============================================================
+// ARHIVA CARD (prošli događaji — bez CTA, dimmed)
+// ============================================================
+
+function buildArchiveCardHTML(ev) {
+  const tipCfg     = TIP_CONFIG[ev.tip] || { label: ev.tip, color: 'cyan' };
+  const d          = new Date(ev.datum);
+  const dayNum     = d.getDate();
+  const monthAbbr  = MJESECI[d.getMonth()].slice(0, 3).toUpperCase();
+  const dayName    = DANI_PUNI[d.getDay()];
+
+  const tagovi       = ev.tagovi || [];
+  const resolvedTags = tagovi.map(k => TAG_DEFS.find(t => t.key === k)).filter(Boolean);
+  const tipTagObj    = resolvedTags.find(t => t.group === 'tip');
+  const tipColor     = tipTagObj?.color || (tipCfg.color === 'cyan' ? '#04e8ff' : '#d702f1');
+  const accentBg     = `linear-gradient(90deg, ${tipColor}, transparent)`;
+  const primaryLabel = tipTagObj?.label || tipCfg.label;
+  const tagChipsHtml = resolvedTags.map(t => t.group === 'format'
+    ? `<span class="cwt" style="color:#08081a;border-color:${t.color};background:${t.color};">${t.label}</span>`
+    : `<span class="cwt" style="color:${t.color};border-color:${t.color}38;background:${t.color}14;">${t.label}</span>`
+  ).join('');
+
+  const imgPos   = ev.slika_pos || '50%';
+  const heroHtml = ev.slika_url
+    ? `<div class="cal-widget-card__hero">
+        <img src="${ev.slika_url}" alt="${ev.naziv}" class="cal-widget-card__hero-img" loading="lazy" style="--img-pos:${imgPos}">
+        <div class="cal-widget-card__hero-fade"></div>
+        <div class="cal-widget-card__hero-line"></div>
+      </div>`
+    : `<div class="cal-widget-card__accent" style="background:${accentBg};"></div>`;
+
+  return `
+    <article class="cal-widget-card cal-widget-card--past" data-event-id="${ev.id}" style="--c-border:${tipColor}28;--c-glow:${tipColor}08;--tip-color:${tipColor};">
+      ${heroHtml}
+      <div class="cal-widget-card__inner">
+        <div class="cal-widget-card__top">
+          <div class="cal-widget-card__date-block">
+            <span class="cal-widget-card__day-num" style="color:${tipColor};">${dayNum}</span>
+            <span class="cal-widget-card__month-abbr">${monthAbbr}</span>
+            <span class="cal-widget-card__day-name">${dayName}</span>
+          </div>
+          <div class="cal-widget-card__badges">
+            <span class="cal-badge" style="color:${tipColor};background:${tipColor}12;border-color:${tipColor}35;">${primaryLabel}</span>
+            <span class="cal-badge cal-badge--past">Završeno</span>
+          </div>
+        </div>
+        <h3 class="cal-widget-card__naziv">${ev.naziv}</h3>
+        <div class="cal-widget-card__meta-row">
+          <span>🕐 ${formatVrijeme(ev.datum)} · ${ev.trajanje_min} min</span>
+          <span>📍 ${ev.lokacija?.split(',')[0] || '—'}</span>
+        </div>
+        ${tagChipsHtml ? `<div class="cal-widget-card__tags">${tagChipsHtml}</div>` : ''}
+        ${ev.opis_kratki ? `<p class="cal-widget-card__opis">${ev.opis_kratki}</p>` : ''}
+        <div class="cal-widget-card__footer">
+          <div class="cal-widget-card__footer-info" style="justify-content:flex-end;">
+            <button class="cal-ev-details-link" style="--link-color:${tipColor}" onclick="showEventModal('${ev.id}')">Više o događaju →</button>
+          </div>
         </div>
       </div>
     </article>`;
@@ -595,6 +657,7 @@ let currentView = 'list'; // 'list' | 'month'
 let currentYear = new Date().getFullYear();
 let currentMonth = new Date().getMonth() + 1;
 let allEvents = [];
+let allPastEvents = [];
 let authState = {};
 let activePanel = null;
 let activeFilters = new Set(); // prazan Set = sve
@@ -646,8 +709,11 @@ function initTagFilters() {
 
 export async function initFullCalendar() {
   try {
-    // 1. Dohvati događaje odmah — čisti fetch, nema lock-a
-    allEvents = await getUpcomingEvents(200);
+    // 1. Dohvati nadolazeće i prošle događaje paralelno
+    [allEvents, allPastEvents] = await Promise.all([
+      getUpcomingEvents(200),
+      getPastEvents(50),
+    ]);
     authState = { user: null, profile: null, pretplata: null };
 
     initTagFilters();
@@ -684,27 +750,46 @@ async function renderListView() {
   if (!container) return;
   container.innerHTML = '<div class="cal-loading">Učitavam...</div>';
 
-  if (!allEvents.length) {
-    container.innerHTML = `<p class="cal-empty">Nema nadolazećih događaja.<br>Provjeri uskoro ili <a href="index.html#kontakt">kontaktiraj Ernesta</a>.</p>`;
-    return;
-  }
-
   // Spremi sve u cache da showEventModal radi
   allEvents.forEach(ev => { eventsCache[ev.id] = ev; });
+  allPastEvents.forEach(ev => { eventsCache[ev.id] = ev; });
 
-  // Filtriraj — OR logika: prikaži ako događaj ima BILO KOJI od aktivnih tagova
+  // Filtriraj — OR logika
   const filtered = activeFilters.size > 0
     ? allEvents.filter(ev => (ev.tagovi || []).some(t => activeFilters.has(t)))
     : allEvents;
+  const filteredPast = activeFilters.size > 0
+    ? allPastEvents.filter(ev => (ev.tagovi || []).some(t => activeFilters.has(t)))
+    : allPastEvents;
 
-  if (!filtered.length) {
+  if (!filtered.length && !filteredPast.length) {
     container.innerHTML = `<p class="cal-empty">Nema događaja za odabrani filter.</p>`;
     return;
   }
 
-  const cards = await Promise.all(filtered.map(ev => buildEventCardHTML(ev, authState)));
+  let html = '';
 
-  container.innerHTML = `<div class="cal-events-grid">${cards.join('')}</div>`;
+  if (filtered.length) {
+    const cards = await Promise.all(filtered.map(ev => buildEventCardHTML(ev, authState)));
+    html += `<div class="cal-events-grid">${cards.join('')}</div>`;
+  } else {
+    html += `<p class="cal-empty">Nema nadolazećih događaja.<br>Provjeri uskoro ili <a href="index.html#kontakt">kontaktiraj Ernesta</a>.</p>`;
+  }
+
+  if (filteredPast.length) {
+    const archiveCards = filteredPast.map(ev => buildArchiveCardHTML(ev));
+    html += `
+      <div class="cal-archive-section">
+        <div class="cal-archive-header">
+          <div class="cal-archive-line"></div>
+          <span class="cal-archive-label">Arhiva</span>
+          <div class="cal-archive-line"></div>
+        </div>
+        <div class="cal-events-grid">${archiveCards.join('')}</div>
+      </div>`;
+  }
+
+  container.innerHTML = html;
 
   requestAnimationFrame(() => {
     container.querySelectorAll('.cal-widget-card').forEach((el, i) => {
