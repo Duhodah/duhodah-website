@@ -304,15 +304,11 @@
   </nav>
 
   <main class="page" id="page-main">
-    <div class="page-loading" id="loading-state">Učitavam termin…</div>
+    <div class="page-loading" id="loading-state">Učitavam</div>
   </main>
 
   <script type="module">
-    import { createClient }          from 'https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2/+esm';
-    import { SUPABASE_URL, SUPABASE_ANON_KEY } from './js/supabase-config.js?v=2';
-    import { registerAnonymous, registerForEvent } from './js/db.js?v=7';
-
-    const supabase = createClient(SUPABASE_URL, SUPABASE_ANON_KEY);
+    import { supabase, SUPABASE_URL, SUPABASE_ANON_KEY } from './js/supabase-config.js?v=2';
 
     const DANI = ['Nedjelja','Ponedjeljak','Utorak','Srijeda','Četvrtak','Petak','Subota'];
     const MJ   = ['siječnja','veljače','ožujka','travnja','svibnja','lipnja',
@@ -327,257 +323,255 @@
       return `${String(d.getHours()).padStart(2,'0')}:${String(d.getMinutes()).padStart(2,'0')}`;
     }
 
-    // ── Dohvati nadolazeći besplatni event ─────────────────────
-    const cutoff = encodeURIComponent(new Date(Date.now() - 2 * 60 * 60 * 1000).toISOString());
-    const hdrs   = { 'apikey': SUPABASE_ANON_KEY, 'Authorization': `Bearer ${SUPABASE_ANON_KEY}` };
+    const main = document.getElementById('page-main');
 
-    let ev = null;
+    // Timeout failsafe — ako fetch ne vrati ništa za 12s, pokaži grešku
+    const failTimer = setTimeout(() => {
+      const ls = document.getElementById('loading-state');
+      if (ls) ls.textContent = 'Nije moguće učitati termin. Pokušaj osvježiti stranicu.';
+    }, 12000);
+
     try {
+      // ── Dohvati event ─────────────────────────────────────────
+      const cutoff = encodeURIComponent(new Date(Date.now() - 2 * 60 * 60 * 1000).toISOString());
+      const hdrs   = { 'apikey': SUPABASE_ANON_KEY, 'Authorization': `Bearer ${SUPABASE_ANON_KEY}` };
+
       const res  = await fetch(
         `${SUPABASE_URL}/rest/v1/dogadjaji?aktivan=eq.true&datum=gt.${cutoff}&cijena_eur=eq.0&order=datum.asc&limit=1&select=*`,
         { headers: hdrs }
       );
       const list = await res.json();
-      ev = list[0] ?? null;
-    } catch(e) { console.error('[prijava-besplatno] fetch:', e); }
+      const ev   = list[0] ?? null;
 
-    const main = document.getElementById('page-main');
+      clearTimeout(failTimer);
 
-    // ── Nema eventa ─────────────────────────────────────────────
-    if (!ev) {
-      main.innerHTML = `
-        <div class="no-event">
-          <h2>Trenutno nema zakazanog termina</h2>
-          <p>Sljedeće besplatno putovanje uskoro će biti zakazano.<br>Javi se i bit ćeš prvi/a obaviješten/a.</p>
-          <a href="index.html#kontakt">Kontaktiraj Ernija →</a>
-        </div>`;
-      return;
-    }
-
-    // ── Provjeri je li korisnik već prijavljen ──────────────────
-    let currentUser = null;
-    let vecPrijavljen = false;
-    try {
-      const { data: { user } } = await supabase.auth.getUser();
-      currentUser = user;
-      if (user) {
-        const chkRes = await fetch(
-          `${SUPABASE_URL}/rest/v1/registracije?user_id=eq.${user.id}&dogadjaj_id=eq.${ev.id}&status=eq.potvrdjena`,
-          { headers: hdrs }
-        );
-        const chk = await chkRes.json();
-        vecPrijavljen = chk.length > 0;
+      // ── Nema eventa ────────────────────────────────────────────
+      if (!ev) {
+        main.innerHTML = `
+          <div class="no-event">
+            <h2>Trenutno nema zakazanog termina</h2>
+            <p>Sljedeće besplatno putovanje uskoro će biti zakazano.<br>Javi se i bit ćeš prvi/a obaviješten/a.</p>
+            <a href="index.html#kontakt">Kontaktiraj Ernija →</a>
+          </div>`;
+        return;
       }
-    } catch(_) {}
 
-    // ── Prebaci slobodna mjesta (samo offline) ──────────────────
-    const jeOnline = (ev.tagovi || []).some(t => t.toLowerCase() === 'online')
-                  || (ev.lokacija || '').toLowerCase().includes('online');
-    let slobodna = ev.kapacitet || 999;
-    if (!jeOnline) {
+      // ── Provjeri je li korisnik već prijavljen ─────────────────
+      let currentUser = null;
+      let vecPrijavljen = false;
       try {
-        const regRes = await fetch(
-          `${SUPABASE_URL}/rest/v1/registracije?dogadjaj_id=eq.${ev.id}&status=in.(potvrdjena,cekanje)`,
-          { method: 'HEAD', headers: { ...hdrs, 'Prefer': 'count=exact' } }
-        );
-        const cr = regRes.headers.get('Content-Range');
-        const prijavljeni = parseInt(cr?.split('/')[1] ?? '0') || 0;
-        slobodna = Math.max(0, (ev.kapacitet || 15) - prijavljeni);
+        const { data: { user } } = await supabase.auth.getUser();
+        currentUser = user;
+        if (user) {
+          const chkRes = await fetch(
+            `${SUPABASE_URL}/rest/v1/registracije?user_id=eq.${user.id}&dogadjaj_id=eq.${ev.id}&status=eq.potvrdjena`,
+            { headers: hdrs }
+          );
+          const chk = await chkRes.json();
+          vecPrijavljen = chk.length > 0;
+        }
       } catch(_) {}
-    }
 
-    const popunjeno = !jeOnline && slobodna === 0;
-
-    // ── Predpopuni ime iz napomena.html localStorage ────────────
-    let savedName  = '';
-    let savedEmail = '';
-    try { savedName  = localStorage.getItem('dh_consent_ime') || ''; } catch(_) {}
-    if (currentUser) {
-      savedEmail = currentUser.email || '';
-      if (!savedName) {
+      // ── Online / slobodna mjesta ───────────────────────────────
+      const jeOnline = (ev.tagovi || []).some(t => t.toLowerCase() === 'online')
+                    || (ev.lokacija || '').toLowerCase().includes('online');
+      let slobodna = ev.kapacitet || 999;
+      if (!jeOnline) {
         try {
-          const { data: p } = await supabase.from('profiles').select('ime').eq('id', currentUser.id).maybeSingle();
-          if (p?.ime) savedName = p.ime;
+          const regRes = await fetch(
+            `${SUPABASE_URL}/rest/v1/registracije?dogadjaj_id=eq.${ev.id}&status=in.(potvrdjena,cekanje)`,
+            { method: 'HEAD', headers: { ...hdrs, 'Prefer': 'count=exact' } }
+          );
+          const cr = regRes.headers.get('Content-Range');
+          slobodna = Math.max(0, (ev.kapacitet || 15) - (parseInt(cr?.split('/')[1] ?? '0') || 0));
         } catch(_) {}
       }
-    }
+      const popunjeno = !jeOnline && slobodna === 0;
 
-    const slikaUrl = ev.slika_url || 'assets/social/post_pozivnica_disajno-putovanje.png';
-    const opis     = ev.opis || ev.opis_kratki || '';
-    const lokacija = ev.lokacija || 'Online';
-    const datumStr = fmtDatum(ev.datum);
-    const vrijemeStr = fmtVrijeme(ev.datum);
-
-    // ── Render ──────────────────────────────────────────────────
-    main.innerHTML = `
-      <!-- Lijevo: event info -->
-      <div class="event-col">
-        <div class="event-image">
-          <img src="${slikaUrl}" alt="${ev.naziv}" onerror="this.src='assets/social/post_pozivnica_disajno-putovanje.png'">
-          <div class="event-image__fade"></div>
-        </div>
-        <div class="event-meta-block">
-          <span class="event-eyebrow">Duhodah · Breathwork · Online</span>
-          <span class="badge-free">Besplatno</span>
-          <h1 class="event-naziv">${ev.naziv}</h1>
-          <div class="event-details">
-            <div class="event-detail">📅 <strong>${datumStr}</strong> · ${vrijemeStr}h</div>
-            <div class="event-detail">📍 <strong>${lokacija}</strong></div>
-            ${!jeOnline && slobodna > 0
-              ? `<div class="event-detail" style="color:${slobodna <= 3 ? 'rgba(215,2,241,0.85)' : 'var(--steel)'};">
-                   🪑 ${slobodna} ${slobodna === 1 ? 'slobodno mjesto' : 'slobodna mjesta'}
-                 </div>`
-              : ''
-            }
-          </div>
-          <div class="event-countdown" id="ev-countdown">⏱ …</div>
-          ${opis ? `<div class="event-opis">${opis}</div>` : ''}
-        </div>
-      </div>
-
-      <!-- Desno: forma -->
-      <div class="form-col">
-        <div class="form-card" id="form-card">
-          ${vecPrijavljen ? `
-            <div class="success-state" style="display:block;">
-              <span class="success-state__icon">✓</span>
-              <div class="success-state__title">Već si prijavljen/a</div>
-              <p class="success-state__msg">Tvoje mjesto je rezervirano.<br>Vidimo se!</p>
-              <a href="index.html" class="success-state__home">Natrag na početnu →</a>
-            </div>
-          ` : popunjeno ? `
-            <span class="form-card__eyebrow">Popunjeno</span>
-            <h2 class="form-card__title">Nema slobodnih mjesta</h2>
-            <p class="form-card__sub">Javi se Erniju — stavi te na listu čekanja.</p>
-            <a href="index.html#kontakt" style="display:inline-block; font-family:var(--font-brand); font-size:0.65rem; font-weight:600; letter-spacing:0.2em; text-transform:uppercase; color:#0a0a0a; background:var(--cyan); padding:0.9rem 2rem; text-decoration:none;">Kontaktiraj Ernija →</a>
-          ` : `
-            <span class="form-card__eyebrow">Prijava · Besplatno</span>
-            <h2 class="form-card__title">Rezerviraj svoje mjesto</h2>
-            <p class="form-card__sub">Bez kartice. Bez obaveza.<br>Samo ti i tvoj dah.</p>
-
-            <form id="reg-form" novalidate>
-              <div class="form-field">
-                <label for="rf-ime">Ime i prezime *</label>
-                <input type="text" id="rf-ime" class="form-input" placeholder="Ana Anić" value="${savedName}" required autocomplete="name">
-                <div class="form-err" id="rf-ime-err"></div>
-              </div>
-              <div class="form-field">
-                <label for="rf-email">Email adresa *</label>
-                <input type="email" id="rf-email" class="form-input" placeholder="ana@email.com" value="${savedEmail}" required autocomplete="email">
-                <div class="form-err" id="rf-email-err"></div>
-              </div>
-              <div class="form-field">
-                <label for="rf-poruka">Napomena <span style="opacity:.5;">(opcionalno)</span></label>
-                <textarea id="rf-poruka" class="form-input" placeholder="Pitanje, napomena…"></textarea>
-              </div>
-              <button type="submit" class="form-submit" id="rf-submit">Prijavi se besplatno →</button>
-              <div class="form-err" id="rf-global-err" style="margin-top:.6rem;"></div>
-            </form>
-
-            <div class="success-state" id="reg-success">
-              <span class="success-state__icon">🫁</span>
-              <div class="success-state__title">Prijavljen/a si!</div>
-              <p class="success-state__msg" id="reg-success-msg">Vidimo se.</p>
-              <a href="index.html" class="success-state__home">Natrag na početnu →</a>
-            </div>
-
-            <div class="form-note">
-              Prijavom prihvaćaš da tvoje podatke koristimo isključivo za potvrdu mjesta na ovom događaju.
-              Nema newslettera, nema spam-a.
-            </div>
-          `}
-        </div>
-      </div>`;
-
-    // ── Odbrojavanje ────────────────────────────────────────────
-    const _target = new Date(ev.datum).getTime();
-    const _cntEl  = document.getElementById('ev-countdown');
-    function tick() {
-      if (!_cntEl) return;
-      const diff = _target - Date.now();
-      if (diff <= 0) { _cntEl.textContent = '⏱ Upravo počinje!'; return; }
-      const dd = Math.floor(diff / 86400000);
-      const hh = Math.floor((diff % 86400000) / 3600000);
-      const mm = Math.floor((diff % 3600000) / 60000);
-      const ss = Math.floor((diff % 60000) / 1000);
-      const parts = [];
-      if (dd)       parts.push(`${dd}d`);
-      if (dd || hh) parts.push(`${hh}h`);
-      parts.push(`${String(mm).padStart(2,'0')}m`);
-      parts.push(`${String(ss).padStart(2,'0')}s`);
-      _cntEl.textContent = `⏱ ${parts.join(' ')}`;
-    }
-    tick();
-    setInterval(tick, 1000);
-
-    // ── Form submit ──────────────────────────────────────────────
-    const form = document.getElementById('reg-form');
-    if (!form) return;
-
-    form.addEventListener('submit', async (e) => {
-      e.preventDefault();
-
-      const imeEl    = document.getElementById('rf-ime');
-      const emailEl  = document.getElementById('rf-email');
-      const porEl    = document.getElementById('rf-poruka');
-      const submitBtn = document.getElementById('rf-submit');
-      const globalErr = document.getElementById('rf-global-err');
-      const imeErr   = document.getElementById('rf-ime-err');
-      const emailErr = document.getElementById('rf-email-err');
-
-      // Reset
-      [imeEl, emailEl].forEach(el => el.classList.remove('err'));
-      imeErr.textContent = '';
-      emailErr.textContent = '';
-      globalErr.textContent = '';
-
-      const ime   = imeEl.value.trim();
-      const email = emailEl.value.trim();
-      const por   = porEl ? porEl.value.trim() : '';
-      let ok = true;
-
-      if (!ime || ime.split(/\s+/).filter(Boolean).length < 2) {
-        imeEl.classList.add('err');
-        imeErr.textContent = 'Upiši puno ime i prezime.';
-        imeEl.focus(); ok = false;
-      }
-      if (!email || !/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email)) {
-        emailEl.classList.add('err');
-        emailErr.textContent = 'Upiši ispravnu email adresu.';
-        if (ok) { emailEl.focus(); ok = false; }
-      }
-      if (!ok) return;
-
-      submitBtn.disabled = true;
-      submitBtn.textContent = 'Prijavljujem…';
-
-      try {
-        if (currentUser) {
-          // Prijavljen korisnik — direktna registracija
-          await registerForEvent(currentUser.id, ev.id, 'besplatno', por);
-        } else {
-          await registerAnonymous(ime, email, ev.id, por);
+      // ── Predpopuni ime / email ─────────────────────────────────
+      let savedName = '', savedEmail = '';
+      try { savedName = localStorage.getItem('dh_consent_ime') || ''; } catch(_) {}
+      if (currentUser) {
+        savedEmail = currentUser.email || '';
+        if (!savedName) {
+          try {
+            const { data: p } = await supabase.from('profiles').select('ime').eq('id', currentUser.id).maybeSingle();
+            if (p?.ime) savedName = p.ime;
+          } catch(_) {}
         }
-
-        // Spremi ime za buduće sessione
-        try { localStorage.setItem('dh_consent_ime', ime); } catch(_) {}
-
-        // Prikaži success
-        form.style.display = 'none';
-        const succ = document.getElementById('reg-success');
-        const succMsg = document.getElementById('reg-success-msg');
-        if (succMsg) succMsg.innerHTML = `<strong style="color:rgba(4,232,255,.85)">${ime}</strong>, vidimo se ${datumStr}.<br><span style="font-size:.78rem;opacity:.6">Potvrda stiže na ${email}</span>`;
-        if (succ) succ.style.display = 'block';
-
-      } catch(err) {
-        submitBtn.disabled = false;
-        submitBtn.textContent = 'Prijavi se besplatno →';
-        const isDup = err.message?.toLowerCase().includes('duplicate') || err.code === '23505';
-        globalErr.textContent = isDup
-          ? 'Ta email adresa je već prijavljena za ovaj događaj.'
-          : 'Greška pri prijavi. Pokušaj ponovo.';
       }
-    });
+
+      const slikaUrl   = ev.slika_url || 'assets/social/post_pozivnica_disajno-putovanje.png';
+      const opis       = ev.opis || ev.opis_kratki || '';
+      const lokacija   = ev.lokacija || 'Online';
+      const datumStr   = fmtDatum(ev.datum);
+      const vrijemeStr = fmtVrijeme(ev.datum);
+
+      // ── Render stranice ────────────────────────────────────────
+      main.innerHTML = `
+        <div class="event-col">
+          <div class="event-image">
+            <img src="${slikaUrl}" alt="${ev.naziv}" onerror="this.src='assets/social/post_pozivnica_disajno-putovanje.png'">
+            <div class="event-image__fade"></div>
+          </div>
+          <div class="event-meta-block">
+            <span class="event-eyebrow">Duhodah · Breathwork</span>
+            <span class="badge-free">Besplatno</span>
+            <h1 class="event-naziv">${ev.naziv}</h1>
+            <div class="event-details">
+              <div class="event-detail">📅 <strong>${datumStr}</strong> · ${vrijemeStr}h</div>
+              <div class="event-detail">📍 <strong>${lokacija}</strong></div>
+              ${!jeOnline && slobodna > 0
+                ? `<div class="event-detail" style="color:${slobodna <= 3 ? 'rgba(215,2,241,0.85)' : 'var(--steel)'};">
+                     🪑 ${slobodna} ${slobodna === 1 ? 'slobodno mjesto' : 'slobodna mjesta'}
+                   </div>` : ''}
+            </div>
+            <div class="event-countdown" id="ev-countdown">⏱ …</div>
+            ${opis ? `<div class="event-opis">${opis}</div>` : ''}
+          </div>
+        </div>
+
+        <div class="form-col">
+          <div class="form-card" id="form-card">
+            ${vecPrijavljen ? `
+              <div class="success-state" style="display:block;">
+                <span class="success-state__icon">✓</span>
+                <div class="success-state__title">Već si prijavljen/a</div>
+                <p class="success-state__msg">Tvoje mjesto je rezervirano. Vidimo se!</p>
+                <a href="index.html" class="success-state__home">Natrag na početnu →</a>
+              </div>
+            ` : popunjeno ? `
+              <span class="form-card__eyebrow">Popunjeno</span>
+              <h2 class="form-card__title">Nema slobodnih mjesta</h2>
+              <p class="form-card__sub">Javi se Erniju — stavi te na listu čekanja.</p>
+              <a href="index.html#kontakt" style="display:inline-block;font-family:var(--font-brand);font-size:0.65rem;font-weight:600;letter-spacing:0.2em;text-transform:uppercase;color:#0a0a0a;background:var(--cyan);padding:0.9rem 2rem;text-decoration:none;">Kontaktiraj Ernija →</a>
+            ` : `
+              <span class="form-card__eyebrow">Prijava · Besplatno</span>
+              <h2 class="form-card__title">Rezerviraj svoje mjesto</h2>
+              <p class="form-card__sub">Bez kartice. Bez obaveza.<br>Samo ti i tvoj dah.</p>
+              <form id="reg-form" novalidate>
+                <div class="form-field">
+                  <label for="rf-ime">Ime i prezime *</label>
+                  <input type="text" id="rf-ime" class="form-input" placeholder="Ana Anić" value="${savedName}" required autocomplete="name">
+                  <div class="form-err" id="rf-ime-err"></div>
+                </div>
+                <div class="form-field">
+                  <label for="rf-email">Email adresa *</label>
+                  <input type="email" id="rf-email" class="form-input" placeholder="ana@email.com" value="${savedEmail}" required autocomplete="email">
+                  <div class="form-err" id="rf-email-err"></div>
+                </div>
+                <div class="form-field">
+                  <label for="rf-poruka">Napomena <span style="opacity:.5;">(opcionalno)</span></label>
+                  <textarea id="rf-poruka" class="form-input" placeholder="Pitanje, napomena…"></textarea>
+                </div>
+                <button type="submit" class="form-submit" id="rf-submit">Prijavi se besplatno →</button>
+                <div class="form-err" id="rf-global-err" style="margin-top:.6rem;"></div>
+              </form>
+              <div class="success-state" id="reg-success">
+                <span class="success-state__icon">🫁</span>
+                <div class="success-state__title">Prijavljen/a si!</div>
+                <p class="success-state__msg" id="reg-success-msg">Vidimo se.</p>
+                <a href="index.html" class="success-state__home">Natrag na početnu →</a>
+              </div>
+              <div class="form-note">
+                Prijavom prihvaćaš da tvoje podatke koristimo isključivo za potvrdu mjesta na ovom događaju.
+              </div>
+            `}
+          </div>
+        </div>`;
+
+      // ── Odbrojavanje ───────────────────────────────────────────
+      const _target = new Date(ev.datum).getTime();
+      const _cntEl  = document.getElementById('ev-countdown');
+      function tick() {
+        if (!_cntEl) return;
+        const diff = _target - Date.now();
+        if (diff <= 0) { _cntEl.textContent = '⏱ Upravo počinje!'; return; }
+        const dd = Math.floor(diff / 86400000);
+        const hh = Math.floor((diff % 86400000) / 3600000);
+        const mm = Math.floor((diff % 3600000) / 60000);
+        const ss = Math.floor((diff % 60000) / 1000);
+        const parts = [];
+        if (dd)       parts.push(`${dd}d`);
+        if (dd || hh) parts.push(`${hh}h`);
+        parts.push(`${String(mm).padStart(2,'0')}m`);
+        parts.push(`${String(ss).padStart(2,'0')}s`);
+        _cntEl.textContent = `⏱ ${parts.join(' ')}`;
+      }
+      tick();
+      setInterval(tick, 1000);
+
+      // ── Form submit ────────────────────────────────────────────
+      const form = document.getElementById('reg-form');
+      if (!form) return;
+
+      form.addEventListener('submit', async (e) => {
+        e.preventDefault();
+        const imeEl     = document.getElementById('rf-ime');
+        const emailEl   = document.getElementById('rf-email');
+        const porEl     = document.getElementById('rf-poruka');
+        const submitBtn = document.getElementById('rf-submit');
+        const globalErr = document.getElementById('rf-global-err');
+        const imeErr    = document.getElementById('rf-ime-err');
+        const emailErr  = document.getElementById('rf-email-err');
+
+        [imeEl, emailEl].forEach(el => el.classList.remove('err'));
+        imeErr.textContent = ''; emailErr.textContent = ''; globalErr.textContent = '';
+
+        const ime   = imeEl.value.trim();
+        const email = emailEl.value.trim();
+        const por   = porEl?.value.trim() || '';
+        let ok = true;
+
+        if (!ime || ime.split(/\s+/).filter(Boolean).length < 2) {
+          imeEl.classList.add('err'); imeErr.textContent = 'Upiši puno ime i prezime.'; imeEl.focus(); ok = false;
+        }
+        if (!email || !/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email)) {
+          emailEl.classList.add('err'); emailErr.textContent = 'Upiši ispravnu email adresu.';
+          if (ok) { emailEl.focus(); ok = false; }
+        }
+        if (!ok) return;
+
+        submitBtn.disabled = true;
+        submitBtn.textContent = 'Prijavljujem…';
+
+        try {
+          if (currentUser) {
+            const { error } = await supabase
+              .from('registracije')
+              .insert({ user_id: currentUser.id, dogadjaj_id: ev.id, tip_placanja: 'besplatno', status: 'potvrdjena', poruka: por });
+            if (error) throw error;
+          } else {
+            const { error } = await supabase
+              .from('registracije')
+              .insert({ user_id: null, ime: ime, email: email.toLowerCase(), dogadjaj_id: ev.id, tip_placanja: 'besplatno', status: 'potvrdjena', poruka: por });
+            if (error) throw error;
+          }
+
+          try { localStorage.setItem('dh_consent_ime', ime); } catch(_) {}
+
+          form.style.display = 'none';
+          const succ    = document.getElementById('reg-success');
+          const succMsg = document.getElementById('reg-success-msg');
+          if (succMsg) succMsg.innerHTML = `<strong style="color:rgba(4,232,255,.85)">${ime}</strong>, vidimo se ${datumStr}.<br><span style="font-size:.78rem;opacity:.6">Potvrda stiže na ${email}</span>`;
+          if (succ) succ.style.display = 'block';
+
+        } catch(err) {
+          submitBtn.disabled = false;
+          submitBtn.textContent = 'Prijavi se besplatno →';
+          const isDup = err.message?.toLowerCase().includes('duplicate') || err.code === '23505';
+          globalErr.textContent = isDup
+            ? 'Ta email adresa je već prijavljena za ovaj događaj.'
+            : 'Greška pri prijavi. Pokušaj ponovo.';
+        }
+      });
+
+    } catch(err) {
+      clearTimeout(failTimer);
+      console.error('[prijava-besplatno]', err);
+      const ls = document.getElementById('loading-state');
+      if (ls) ls.textContent = 'Nije moguće učitati termin. Pokušaj osvježiti stranicu.';
+    }
   </script>
 </body>
 </html>
