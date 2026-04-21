@@ -484,7 +484,7 @@
                   <th>Ime</th>
                   <th>Email</th>
                   <th>Događaj</th>
-                  <th>Datum dod.</th>
+                  <th>Status</th>
                   <th>Prijavljeno</th>
                   <th>Plaćanje</th>
                   <th>Napomena</th>
@@ -857,7 +857,7 @@ function renderEvStats() {
   document.getElementById('ev-stats').innerHTML = `
     <div class="stat-card"><div class="stat-label">Ukupno</div><div class="stat-val c">${allEvents.length}</div></div>
     <div class="stat-card"><div class="stat-label">Nadolazeći</div><div class="stat-val">${allEvents.filter(e=>new Date(e.datum)>cutoff).length}</div></div>
-    <div class="stat-card"><div class="stat-label">Aktivni</div><div class="stat-val">${allEvents.filter(e=>e.aktivan).length}</div></div>
+    <div class="stat-card"><div class="stat-label">Prošli</div><div class="stat-val">${allEvents.filter(e=>new Date(e.datum)<=cutoff).length}</div></div>
     <div class="stat-card"><div class="stat-label">Skriveni</div><div class="stat-val m">${allEvents.filter(e=>!e.aktivan).length}</div></div>`;
 }
 
@@ -1156,7 +1156,7 @@ function renderPrijavljeni() {
         <div style="color:rgba(255,255,255,.7);font-size:.8rem;">${ev?.naziv||'—'}</div>
         <div style="color:rgba(255,255,255,.28);font-size:.68rem;">${evDatum}</div>
       </td>
-      <td style="font-size:.72rem;color:rgba(255,255,255,.28);">${evDatum}</td>
+      <td><span style="font-size:.58rem;font-family:var(--fb);letter-spacing:.08em;text-transform:uppercase;color:${r.status==='potvrdjena'?'#00e676':r.status==='cekanje'?'#ffd54f':'rgba(255,255,255,.3)'};">${r.status||'—'}</span></td>
       <td style="font-size:.72rem;color:rgba(255,255,255,.35);">${regStr}</td>
       <td><span style="font-size:.58rem;font-family:var(--fb);letter-spacing:.08em;text-transform:uppercase;color:${color};">${label}</span></td>
       <td style="font-size:.72rem;color:rgba(255,255,255,.28);max-width:140px;word-break:break-word;">${r.poruka||''}</td>
