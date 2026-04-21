@@ -116,8 +116,12 @@ function buildEmailBody(
     string $lokacija,
     string $kartaLabel
 ): string {
-    $pozdrav = $ime ? "Čestitamo, {$ime}!" : "Čestitamo!";
+    $naslov = $ime
+        ? "{$ime}, tvoje mjesto te čeka."
+        : "Tvoje mjesto te čeka.";
+    $podNaslov = "Vidimo se " . strtolower(explode(',', $datum)[0]) . ". Do tada — udiši polako.";
     $lokacijaLine = htmlspecialchars($lokacija);
+    $logoUrl = 'https://duhodah.com/images/duhodah-logo.jpg';
 
     return <<<HTML
 <!DOCTYPE html>
@@ -125,86 +129,121 @@ function buildEmailBody(
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width,initial-scale=1.0">
-<title>Rezervacija potvrđena</title>
+<title>Rezervacija potvrđena — Duhodah</title>
 </head>
-<body style="margin:0;padding:0;background:#08081a;font-family:'Inter',Arial,sans-serif;">
-  <table width="100%" cellpadding="0" cellspacing="0" style="background:#08081a;padding:40px 16px;">
-    <tr><td align="center">
-      <table width="100%" cellpadding="0" cellspacing="0" style="max-width:520px;">
+<body style="margin:0;padding:0;background:#0e0718;font-family:'Inter',Arial,sans-serif;">
+<table width="100%" cellpadding="0" cellspacing="0" style="background:#0e0718;padding:48px 16px 64px;">
+  <tr><td align="center">
+    <table width="100%" cellpadding="0" cellspacing="0" style="max-width:540px;">
 
-        <!-- Logo -->
-        <tr><td style="padding-bottom:32px;text-align:center;">
-          <span style="font-family:Georgia,serif;font-size:11px;font-weight:700;letter-spacing:0.4em;text-transform:uppercase;color:#04ffff;opacity:0.7;">DUHODAH</span>
-        </td></tr>
+      <!-- WORDMARK -->
+      <tr><td style="padding-bottom:36px;text-align:center;">
+        <img src="{$logoUrl}" alt="Duhodah" width="56" height="56"
+             style="border-radius:50%;object-fit:cover;display:inline-block;
+                    border:1px solid rgba(215,2,241,0.3);
+                    box-shadow:0 0 24px rgba(215,2,241,0.2),0 0 48px rgba(4,255,255,0.08);">
+        <div style="margin-top:12px;font-size:10px;font-weight:700;letter-spacing:0.45em;
+                    text-transform:uppercase;color:rgba(4,255,255,0.65);">DUHODAH</div>
+      </td></tr>
 
-        <!-- Card -->
-        <tr><td style="background:#0d0d22;border:1px solid rgba(4,255,255,0.12);border-radius:12px;padding:40px 36px;">
+      <!-- CARD -->
+      <tr><td style="background:#160b28;
+                     border:1px solid rgba(215,2,241,0.18);
+                     border-top:3px solid #d702f1;
+                     border-radius:0 0 12px 12px;
+                     padding:0;">
 
-          <!-- Check icon -->
-          <table width="100%" cellpadding="0" cellspacing="0" style="margin-bottom:24px;">
-            <tr><td align="center">
-              <div style="width:56px;height:56px;border-radius:50%;border:1px solid rgba(4,255,255,0.25);background:rgba(4,255,255,0.06);display:inline-flex;align-items:center;justify-content:center;font-size:22px;line-height:56px;text-align:center;">✓</div>
-            </td></tr>
-          </table>
+        <!-- Magenta top accent bar -->
+        <div style="height:3px;background:linear-gradient(90deg,#d702f1 0%,rgba(4,255,255,0.6) 100%);
+                    border-radius:0;margin-bottom:0;"></div>
 
-          <!-- Heading -->
-          <h1 style="margin:0 0 8px;font-size:22px;font-weight:300;letter-spacing:0.04em;color:#f0f0f8;text-align:center;">{$pozdrav}</h1>
-          <p style="margin:0 0 32px;font-size:14px;color:rgba(255,255,255,0.45);text-align:center;">Tvoje mjesto je rezervirano.</p>
+        <table width="100%" cellpadding="0" cellspacing="0" style="padding:40px 36px 36px;">
+          <tr><td>
 
-          <!-- Divider -->
-          <div style="height:1px;background:rgba(4,255,255,0.1);margin-bottom:28px;"></div>
+            <!-- Heading -->
+            <h1 style="margin:0 0 10px;font-size:21px;font-weight:400;letter-spacing:0.02em;
+                        color:#f0e8ff;text-align:center;line-height:1.3;">{$naslov}</h1>
+            <p style="margin:0 0 36px;font-size:13px;color:rgba(240,232,255,0.45);
+                       text-align:center;line-height:1.6;">{$podNaslov}</p>
 
-          <!-- Event details -->
-          <table width="100%" cellpadding="0" cellspacing="0">
-            <tr>
-              <td style="padding:10px 0;border-bottom:1px solid rgba(255,255,255,0.05);">
-                <span style="font-size:11px;letter-spacing:0.12em;text-transform:uppercase;color:rgba(255,255,255,0.35);font-family:Arial,sans-serif;">Događaj</span><br>
-                <span style="font-size:15px;color:#f0f0f8;font-weight:500;">{$nazivEventa}</span>
-              </td>
-            </tr>
-            <tr>
-              <td style="padding:10px 0;border-bottom:1px solid rgba(255,255,255,0.05);">
-                <span style="font-size:11px;letter-spacing:0.12em;text-transform:uppercase;color:rgba(255,255,255,0.35);font-family:Arial,sans-serif;">Datum</span><br>
-                <span style="font-size:15px;color:#f0f0f8;">{$datum}</span>
-              </td>
-            </tr>
-            <tr>
-              <td style="padding:10px 0;border-bottom:1px solid rgba(255,255,255,0.05);">
-                <span style="font-size:11px;letter-spacing:0.12em;text-transform:uppercase;color:rgba(255,255,255,0.35);font-family:Arial,sans-serif;">Lokacija</span><br>
-                <span style="font-size:15px;color:#f0f0f8;">{$lokacijaLine}</span>
-              </td>
-            </tr>
-            <tr>
-              <td style="padding:10px 0;">
-                <span style="font-size:11px;letter-spacing:0.12em;text-transform:uppercase;color:rgba(255,255,255,0.35);font-family:Arial,sans-serif;">Karta</span><br>
-                <span style="font-size:15px;color:#04ffff;">{$kartaLabel}</span>
-              </td>
-            </tr>
-          </table>
+            <!-- Divider -->
+            <div style="height:1px;background:rgba(215,2,241,0.15);margin-bottom:28px;"></div>
 
-          <!-- Divider -->
-          <div style="height:1px;background:rgba(4,255,255,0.1);margin:28px 0;"></div>
+            <!-- Event details -->
+            <table width="100%" cellpadding="0" cellspacing="0">
+              <tr>
+                <td style="padding:11px 0;border-bottom:1px solid rgba(255,255,255,0.05);">
+                  <span style="font-size:10px;letter-spacing:0.18em;text-transform:uppercase;
+                               color:#d702f1;font-family:Arial;">DOGAĐAJ</span><br>
+                  <span style="font-size:15px;color:#f0e8ff;font-weight:500;
+                               letter-spacing:0.01em;">{$nazivEventa}</span>
+                </td>
+              </tr>
+              <tr>
+                <td style="padding:11px 0;border-bottom:1px solid rgba(255,255,255,0.05);">
+                  <span style="font-size:10px;letter-spacing:0.18em;text-transform:uppercase;
+                               color:#d702f1;font-family:Arial;">DATUM</span><br>
+                  <span style="font-size:15px;color:#f0e8ff;">{$datum}</span>
+                </td>
+              </tr>
+              <tr>
+                <td style="padding:11px 0;border-bottom:1px solid rgba(255,255,255,0.05);">
+                  <span style="font-size:10px;letter-spacing:0.18em;text-transform:uppercase;
+                               color:#d702f1;font-family:Arial;">LOKACIJA</span><br>
+                  <span style="font-size:15px;color:#f0e8ff;">{$lokacijaLine}</span>
+                </td>
+              </tr>
+              <tr>
+                <td style="padding:11px 0;">
+                  <span style="font-size:10px;letter-spacing:0.18em;text-transform:uppercase;
+                               color:#d702f1;font-family:Arial;">KARTA</span><br>
+                  <span style="font-size:15px;color:#04ffff;">{$kartaLabel}</span>
+                </td>
+              </tr>
+            </table>
 
-          <!-- Info -->
-          <p style="margin:0 0 8px;font-size:13px;color:rgba(255,255,255,0.55);line-height:1.6;">
-            Dođi 5 minuta ranije. Udobna odjeća, maska za spavanje, voda.
-          </p>
+            <!-- Divider -->
+            <div style="height:1px;background:rgba(215,2,241,0.15);margin:28px 0 24px;"></div>
 
-          <!-- Footer note -->
-          <p style="margin:24px 0 0;font-size:12px;color:rgba(255,255,255,0.25);line-height:1.6;text-align:center;font-style:italic;">
-            Hvala ti što brineš o sebi.
-          </p>
+            <!-- Priprema -->
+            <table width="100%" cellpadding="0" cellspacing="0"
+                   style="background:rgba(215,2,241,0.05);
+                          border-left:2px solid rgba(215,2,241,0.5);
+                          padding:16px 18px;">
+              <tr><td>
+                <p style="margin:0 0 8px;font-size:10px;letter-spacing:0.18em;text-transform:uppercase;
+                           color:#d702f1;font-family:Arial;">PRIPREMI SE</p>
+                <p style="margin:0;font-size:13px;color:rgba(240,232,255,0.6);line-height:1.8;">
+                  Dođi 5 minuta ranije &nbsp;·&nbsp; Udobna odjeća<br>
+                  Maska za spavanje ako imaš &nbsp;·&nbsp; Čaša vode<br>
+                  Mirno mjesto gdje možeš leći ili sjesti
+                </p>
+              </td></tr>
+            </table>
 
-        </td></tr>
+            <!-- Osobna nota -->
+            <p style="margin:28px 0 0;font-size:13px;color:rgba(240,232,255,0.38);
+                       line-height:1.8;text-align:center;font-style:italic;">
+              Napravio/la si nešto dobro za sebe.<br>
+              Jedva čekam da te upoznam.
+            </p>
+            <p style="margin:12px 0 0;font-size:12px;color:rgba(215,2,241,0.6);
+                       text-align:center;letter-spacing:0.05em;">Erni · Duhodah</p>
 
-        <!-- Footer -->
-        <tr><td style="padding-top:24px;text-align:center;">
-          <span style="font-size:11px;color:rgba(255,255,255,0.2);">duhodah.com · Osijek, Hrvatska</span>
-        </td></tr>
+          </td></tr>
+        </table>
+      </td></tr>
 
-      </table>
-    </td></tr>
-  </table>
+      <!-- Footer -->
+      <tr><td style="padding-top:28px;text-align:center;">
+        <span style="font-size:11px;color:rgba(255,255,255,0.18);letter-spacing:0.06em;">
+          duhodah.com &nbsp;·&nbsp; Osijek, Hrvatska
+        </span>
+      </td></tr>
+
+    </table>
+  </td></tr>
+</table>
 </body>
 </html>
 HTML;
