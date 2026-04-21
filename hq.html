@@ -426,7 +426,7 @@
               <thead>
                 <tr>
                   <th>ID</th><th>Ime</th><th>Email</th><th>Izvor</th>
-                  <th>Status</th><th>Priručnik</th><th>Quiz</th><th>Upisan</th>
+                  <th>Status</th><th>Priručnik</th><th>Quiz</th><th>Upisan</th><th></th>
                 </tr>
               </thead>
               <tbody id="clients-tbody"></tbody>
@@ -1400,33 +1400,73 @@ window.toggleUs = async (id, val) => {
 };
 
 // ════ CLIENTS ══════════════════════════════════════
+let allClients = [];
+
+function renderClients(list) {
+  const tbody = document.getElementById('clients-tbody');
+  tbody.innerHTML = list.map(c => `<tr>
+    <td style="color:rgba(255,255,255,.3);font-size:.72rem;">${c.id?.slice(0,8)}…</td>
+    <td>${c.ime||'—'}</td>
+    <td style="color:rgba(255,255,255,.45);">${c.email||'—'}</td>
+    <td><span class="badge badge-bw" style="font-size:.56rem;">${c.izvor||'—'}</span></td>
+    <td>${c.pretplata_status||'—'}</td>
+    <td>${c.priručnik_preuzet?'✓':''}</td>
+    <td style="color:var(--periwinkle);">${c.kviz_tip||''}</td>
+    <td style="color:rgba(255,255,255,.3);font-size:.72rem;">${c.created_at?new Date(c.created_at).toLocaleDateString('hr-HR'):''}</td>
+    <td id="del-cl-${c.id}"><button onclick="deleteClientAsk('${c.id}')" style="background:none;border:1px solid rgba(215,2,241,0.2);border-radius:5px;color:rgba(215,2,241,0.5);font-size:.65rem;font-family:var(--fb);letter-spacing:.06em;padding:.25rem .5rem;cursor:pointer;white-space:nowrap;">Ukloni</button></td>
+  </tr>`).join('');
+}
+
+function renderClientStats() {
+  document.getElementById('cl-stats').innerHTML = `
+    <div class="stat-card"><div class="stat-label">Ukupno</div><div class="stat-val c">${allClients.length}</div></div>
+    <div class="stat-card"><div class="stat-label">S priručnikom</div><div class="stat-val">${allClients.filter(c=>c.priručnik_preuzet).length}</div></div>
+    <div class="stat-card"><div class="stat-label">S kvizom</div><div class="stat-val p">${allClients.filter(c=>c.kviz_tip).length}</div></div>`;
+}
+
 async function loadClients() {
   const { data } = await sb.from('profiles').select('*').order('created_at', { ascending: false });
-  const clients = data || [];
-  const tbody = document.getElementById('clients-tbody');
-  document.getElementById('cl-stats').innerHTML = `
-    <div class="stat-card"><div class="stat-label">Ukupno</div><div class="stat-val c">${clients.length}</div></div>
-    <div class="stat-card"><div class="stat-label">S priručnikom</div><div class="stat-val">${clients.filter(c=>c.priručnik_preuzet).length}</div></div>
-    <div class="stat-card"><div class="stat-label">S kvizom</div><div class="stat-val p">${clients.filter(c=>c.kviz_tip).length}</div></div>`;
-
-  const render = (list) => {
-    tbody.innerHTML = list.map(c => `<tr>
-      <td style="color:rgba(255,255,255,.3);font-size:.72rem;">${c.id?.slice(0,8)}…</td>
-      <td>${c.ime||'—'}</td>
-      <td style="color:rgba(255,255,255,.45);">${c.email||'—'}</td>
-      <td><span class="badge badge-bw" style="font-size:.56rem;">${c.izvor||'—'}</span></td>
-      <td>${c.pretplata_status||'—'}</td>
-      <td>${c.priručnik_preuzet?'✓':''}</td>
-      <td style="color:var(--periwinkle);">${c.kviz_tip||''}</td>
-      <td style="color:rgba(255,255,255,.3);font-size:.72rem;">${c.created_at?new Date(c.created_at).toLocaleDateString('hr-HR'):''}</td>
-    </tr>`).join('');
-  };
-  render(clients);
-  document.getElementById('cl-search').addEventListener('input', e => {
-    const q = e.target.value.toLowerCase();
-    render(clients.filter(c => (c.ime||'').toLowerCase().includes(q) || (c.email||'').toLowerCase().includes(q)));
-  });
+  allClients = data || [];
+  renderClientStats();
+  renderClients(allClients);
+  const search = document.getElementById('cl-search');
+  if (!search.dataset.bound) {
+    search.dataset.bound = '1';
+    search.addEventListener('input', e => {
+      const q = e.target.value.toLowerCase();
+      renderClients(allClients.filter(c => (c.ime||'').toLowerCase().includes(q) || (c.email||'').toLowerCase().includes(q)));
+    });
+  }
 }
+
+window.deleteClientAsk = function(id) {
+  const cell = document.getElementById('del-cl-' + id);
+  if (!cell) return;
+  cell.innerHTML = `
+    <span style="font-size:.65rem;color:rgba(255,255,255,.45);font-family:var(--fb);">Sigurno?</span>
+    <button onclick="deleteClientConfirm('${id}')" style="margin-left:.35rem;background:rgba(215,2,241,0.15);border:1px solid rgba(215,2,241,0.5);border-radius:4px;color:#d702f1;font-size:.62rem;font-family:var(--fb);padding:.2rem .45rem;cursor:pointer;">Da</button>
+    <button onclick="deleteClientCancel('${id}')" style="margin-left:.2rem;background:none;border:1px solid rgba(255,255,255,.15);border-radius:4px;color:rgba(255,255,255,.35);font-size:.62rem;font-family:var(--fb);padding:.2rem .45rem;cursor:pointer;">Ne</button>`;
+};
+
+window.deleteClientCancel = function(id) {
+  const cell = document.getElementById('del-cl-' + id);
+  if (!cell) return;
+  cell.innerHTML = `<button onclick="deleteClientAsk('${id}')" style="background:none;border:1px solid rgba(215,2,241,0.2);border-radius:5px;color:rgba(215,2,241,0.5);font-size:.65rem;font-family:var(--fb);letter-spacing:.06em;padding:.25rem .5rem;cursor:pointer;white-space:nowrap;">Ukloni</button>`;
+};
+
+window.deleteClientConfirm = async function(id) {
+  const cell = document.getElementById('del-cl-' + id);
+  if (cell) cell.innerHTML = `<span style="font-size:.65rem;color:rgba(255,255,255,.25);font-family:var(--fb);">Brišem...</span>`;
+  const { error } = await sb.from('profiles').delete().eq('id', id);
+  if (error) {
+    if (cell) cell.innerHTML = `<span style="font-size:.62rem;color:#d702f1;font-family:var(--fb);">Greška</span>`;
+    console.error('[deleteClient]', error);
+    return;
+  }
+  cell?.closest('tr')?.remove();
+  allClients = allClients.filter(c => c.id !== id);
+  renderClientStats();
+};
 
 // ════ FINANCIJE ════════════════════════════════════
 async function loadFinancije() {
