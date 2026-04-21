@@ -825,6 +825,25 @@
         padding: 0.6rem 1rem;
       }
     }
+    .nav-links {
+      display: flex;
+      gap: 2.5rem;
+      list-style: none;
+      align-items: center;
+    }
+    .nav-links a {
+      font-family: var(--font-brand);
+      font-size: 0.7rem;
+      font-weight: 500;
+      letter-spacing: 0.2em;
+      text-transform: uppercase;
+      color: var(--steel);
+      transition: color 0.3s;
+    }
+    .nav-links a:hover { color: var(--cyan); }
+    @media (max-width: 768px) {
+      .nav-links { display: none; }
+    }
   </style>
 </head>
 
@@ -837,7 +856,14 @@
         <source src="video/Duhodah_Anim_12sec_1280x720.mp4" type="video/mp4">
       </video>
     </a>
-    <a href="index.html" class="nav-back">← Natrag na Duhodah</a>
+    <ul class="nav-links">
+      <li><a href="index.html">Početna</a></li>
+      <li><a href="index.html#usluge">Programi / Usluge</a></li>
+      <li><a href="events.html">Termini</a></li>
+      <li><a href="znanje.html">Znanje</a></li>
+      <li><a href="priručnik.html" style="color: var(--cyan);">Priručnik</a></li>
+      <li><a href="index.html#kontakt">Kontakt</a></li>
+    </ul>
   </nav>
 
   <!-- HERO -->

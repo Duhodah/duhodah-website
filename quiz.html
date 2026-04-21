@@ -673,6 +673,27 @@
       .score-breakdown { grid-template-columns: 1fr; }
       .result-actions { flex-direction: column; align-items: center; }
     }
+    .nav-links {
+      display: flex;
+      gap: 2.5rem;
+      list-style: none;
+      align-items: center;
+      margin: 0;
+      padding: 0;
+    }
+    .nav-links a {
+      font-family: var(--font-brand);
+      font-size: 0.7rem;
+      font-weight: 500;
+      letter-spacing: 0.2em;
+      text-transform: uppercase;
+      color: var(--steel);
+      transition: color 0.3s;
+    }
+    .nav-links a:hover { color: var(--cyan); }
+    @media (max-width: 768px) {
+      .nav-links { display: none; }
+    }
   </style>
 </head>
 <body>
@@ -681,7 +702,14 @@
 
 <nav>
   <a href="index.html" class="nav-logo">DUH<span>O</span>DAH</a>
-  <a href="index.html" class="nav-back">← Natrag na stranicu</a>
+  <ul class="nav-links">
+    <li><a href="index.html">Početna</a></li>
+    <li><a href="index.html#usluge">Programi / Usluge</a></li>
+    <li><a href="events.html">Termini</a></li>
+    <li><a href="znanje.html">Znanje</a></li>
+    <li><a href="priručnik.html">Priručnik</a></li>
+    <li><a href="index.html#kontakt">Kontakt</a></li>
+  </ul>
 </nav>
 
 <main>
