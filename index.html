@@ -5203,7 +5203,8 @@
     });
 
     // ── Admin: password login ──
-    document.getElementById('adm-btn').addEventListener('click', async () => {
+    document.getElementById('adm-form').addEventListener('submit', async (e) => {
+      e.preventDefault();
       const email = document.getElementById('adm-email').value.trim();
       const pass  = document.getElementById('adm-pass').value;
       document.getElementById('adm-ok').textContent  = '';
@@ -5223,9 +5224,6 @@
           setTimeout(() => { window.location.href = '/hq.html'; }, 700);
         }
       }
-    });
-    document.getElementById('adm-pass').addEventListener('keydown', e => {
-      if (e.key === 'Enter') document.getElementById('adm-btn').click();
     });
 
     // ── Forgot password ──
@@ -5344,13 +5342,15 @@
 
       <!-- Admin: password -->
       <div class="auth-panel" id="panel-admin">
-        <label class="auth-lbl">Email</label>
-        <input type="email" class="auth-inp" id="adm-email" value="duhodah@duhodah.com" autocomplete="email">
-        <label class="auth-lbl">Lozinka</label>
-        <input type="password" class="auth-inp" id="adm-pass" placeholder="••••••••" autocomplete="current-password">
-        <button class="auth-submit" id="adm-btn">Prijava →</button>
-        <div class="auth-ok"  id="adm-ok"></div>
-        <div class="auth-err" id="adm-err"></div>
+        <form id="adm-form" autocomplete="on">
+          <label class="auth-lbl">Email</label>
+          <input type="email" class="auth-inp" id="adm-email" name="email" value="duhodah@duhodah.com" autocomplete="email">
+          <label class="auth-lbl">Lozinka</label>
+          <input type="password" class="auth-inp" id="adm-pass" name="password" placeholder="••••••••" autocomplete="current-password">
+          <button type="submit" class="auth-submit" id="adm-btn">Prijava →</button>
+          <div class="auth-ok"  id="adm-ok"></div>
+          <div class="auth-err" id="adm-err"></div>
+        </form>
         <div class="auth-hint">
           <button id="adm-forgot">Zaboravljena lozinka? Pošalji reset link</button>
         </div>

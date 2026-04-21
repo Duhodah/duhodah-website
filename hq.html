@@ -309,13 +309,15 @@
   <div class="login-box">
     <div class="login-logo">DUHODAH</div>
     <div class="login-tag">Mission Control</div>
-    <label class="f-label">Email</label>
-    <input type="email" class="f-input" id="l-email" value="duhodah@duhodah.com" autocomplete="email">
-    <label class="f-label">Lozinka</label>
-    <input type="password" class="f-input" id="l-pass" autocomplete="current-password" placeholder="••••••••">
-    <button class="login-btn" id="l-btn">Prijava →</button>
-    <div class="login-err" id="l-err"></div>
-    <div class="login-hint">Zaboravljena lozinka? Supabase → Users → duhodah@duhodah.com → Send password recovery</div>
+    <form id="login-form" autocomplete="on">
+      <label class="f-label">Email</label>
+      <input type="email" class="f-input" id="l-email" name="email" value="duhodah@duhodah.com" autocomplete="email">
+      <label class="f-label">Lozinka</label>
+      <input type="password" class="f-input" id="l-pass" name="password" autocomplete="current-password" placeholder="••••••••">
+      <button type="submit" class="login-btn" id="l-btn">Prijava →</button>
+      <div class="login-err" id="l-err"></div>
+      <div class="login-hint">Zaboravljena lozinka? Supabase → Users → duhodah@duhodah.com → Send password recovery</div>
+    </form>
   </div>
 </div>
 
@@ -768,7 +770,8 @@ document.getElementById('r-btn').addEventListener('click', async () => {
   }
 });
 
-document.getElementById('l-btn').addEventListener('click', async () => {
+document.getElementById('login-form').addEventListener('submit', async (e) => {
+  e.preventDefault();
   const email = document.getElementById('l-email').value.trim();
   const pass  = document.getElementById('l-pass').value;
   const btn   = document.getElementById('l-btn');
