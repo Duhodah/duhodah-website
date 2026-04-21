@@ -488,6 +488,7 @@
                   <th>Prijavljeno</th>
                   <th>Plaćanje</th>
                   <th>Napomena</th>
+                  <th></th>
                 </tr>
               </thead>
               <tbody id="reg-master-tbody"></tbody>
@@ -1160,8 +1161,19 @@ function renderPrijavljeni() {
       <td style="font-size:.72rem;color:rgba(255,255,255,.35);">${regStr}</td>
       <td><span style="font-size:.58rem;font-family:var(--fb);letter-spacing:.08em;text-transform:uppercase;color:${color};">${label}</span></td>
       <td style="font-size:.72rem;color:rgba(255,255,255,.28);max-width:140px;word-break:break-word;">${r.poruka||''}</td>
+      <td><button onclick="deleteReg('${r.id}','${(getRegIme(r)).replace(/'/g,"\\'")}',this)" style="background:none;border:1px solid rgba(215,2,241,0.2);border-radius:5px;color:rgba(215,2,241,0.5);font-size:.65rem;font-family:var(--fb);letter-spacing:.06em;padding:.25rem .5rem;cursor:pointer;white-space:nowrap;" onmouseover="this.style.borderColor='rgba(215,2,241,0.6)';this.style.color='rgba(215,2,241,0.9)'" onmouseout="this.style.borderColor='rgba(215,2,241,0.2)';this.style.color='rgba(215,2,241,0.5)'">Ukloni</button></td>
     </tr>`;
   }).join('');
+}
+
+async function deleteReg(id, ime, btn) {
+  if (!confirm(`Ukloni prijavu od "${ime}"?`)) return;
+  btn.disabled = true; btn.textContent = '...';
+  const { error } = await sb.from('registracije').delete().eq('id', id);
+  if (error) { alert('Greška: ' + error.message); btn.disabled = false; btn.textContent = 'Ukloni'; return; }
+  btn.closest('tr').remove();
+  allRegistrations = allRegistrations.filter(r => r.id !== id);
+  renderPrijavljeniStats();
 }
 
 function bindPrijavljeniFilters() {
