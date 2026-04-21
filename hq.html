@@ -1166,7 +1166,7 @@ function renderPrijavljeni() {
   }).join('');
 }
 
-function deleteRegAsk(id) {
+window.deleteRegAsk = function deleteRegAsk(id) {
   const cell = document.getElementById('del-cell-' + id);
   if (!cell) return;
   cell.innerHTML = `
@@ -1175,13 +1175,13 @@ function deleteRegAsk(id) {
     <button onclick="deleteRegCancel('${id}')" style="margin-left:.2rem;background:none;border:1px solid rgba(255,255,255,.15);border-radius:4px;color:rgba(255,255,255,.35);font-size:.62rem;font-family:var(--fb);padding:.2rem .45rem;cursor:pointer;">Ne</button>`;
 }
 
-function deleteRegCancel(id) {
+window.deleteRegCancel = function deleteRegCancel(id) {
   const cell = document.getElementById('del-cell-' + id);
   if (!cell) return;
   cell.innerHTML = `<button onclick="deleteRegAsk('${id}')" style="background:none;border:1px solid rgba(215,2,241,0.2);border-radius:5px;color:rgba(215,2,241,0.5);font-size:.65rem;font-family:var(--fb);letter-spacing:.06em;padding:.25rem .5rem;cursor:pointer;white-space:nowrap;">Ukloni</button>`;
 }
 
-async function deleteRegConfirm(id) {
+window.deleteRegConfirm = async function deleteRegConfirm(id) {
   const cell = document.getElementById('del-cell-' + id);
   if (cell) cell.innerHTML = `<span style="font-size:.65rem;color:rgba(255,255,255,.25);font-family:var(--fb);">Brišem...</span>`;
   const { error } = await sb.from('registracije').delete().eq('id', id);
