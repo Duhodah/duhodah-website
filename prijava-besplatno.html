@@ -485,13 +485,15 @@
         btn.disabled=true; btn.textContent='Prijavljujem…';
 
         try {
+          // Koristi session JWT kad je korisnik prijavljen — anon key ne prolazi RLS za auth usere
+          const insertToken = (userId && session && session.access_token) ? session.access_token : SB_KEY;
           const body = userId
             ? { user_id: userId, dogadjaj_id: ev.id, tip_placanja: 'besplatno', status: 'potvrdjena', poruka: por }
             : { ime: ime, email: email.toLowerCase(), dogadjaj_id: ev.id, tip_placanja: 'besplatno', status: 'potvrdjena', poruka: por };
 
           const ins = await fetch(SB_URL + '/rest/v1/registracije', {
             method: 'POST',
-            headers: { ...H, 'Prefer': 'return=minimal' },
+            headers: { ...H, 'Authorization': 'Bearer ' + insertToken, 'Prefer': 'return=minimal' },
             body: JSON.stringify(body)
           });
           if (!ins.ok) {
@@ -509,7 +511,7 @@
         } catch(err) {
           btn.disabled=false; btn.textContent='Prijavi se besplatno →';
           const isDup = (err.message||'').includes('duplicate') || (err.message||'').includes('23505');
-          gErr.textContent = isDup ? 'Ta email adresa je već prijavljena za ovaj događaj.' : ('Greška: ' + (err.message || err.status || JSON.stringify(err)));
+          gErr.textContent = isDup ? 'Ta email adresa je već prijavljena za ovaj događaj.' : 'Greška pri prijavi. Pokušaj ponovo.';
         }
       });
     }
