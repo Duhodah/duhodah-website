@@ -1,0 +1,583 @@
+<!DOCTYPE html>
+<html lang="hr">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Prijava — Besplatno Disajno Putovanje · Duhodah</title>
+  <meta name="robots" content="noindex, nofollow">
+  <link rel="icon" type="image/jpeg" href="images/duhodah-logo.jpg">
+
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Jura:wght@400;500;600;700&family=Inter:wght@300;400;500&family=Cormorant+Garamond:ital,wght@0,400;0,500;0,600;1,400;1,500&display=swap" rel="stylesheet">
+
+  <style>
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+    :root {
+      --cyan:      rgba(4, 255, 255, 1);
+      --cyan-dim:  rgba(4, 255, 255, 0.07);
+      --cyan-mid:  rgba(4, 255, 255, 0.35);
+      --magenta:   rgba(215, 2, 241, 1);
+      --bg:        #0a0a0a;
+      --card:      #111;
+      --border:    rgba(255, 255, 255, 0.07);
+      --text:      rgba(255, 255, 255, 0.85);
+      --muted:     rgba(255, 255, 255, 0.42);
+      --steel:     rgba(180, 200, 210, 0.55);
+      --faint:     rgba(255, 255, 255, 0.10);
+      --font-brand: 'Jura', sans-serif;
+      --font-body:  'Inter', sans-serif;
+      --font-head:  'Cormorant Garamond', serif;
+    }
+
+    html { scroll-behavior: smooth; }
+    body {
+      background: var(--bg);
+      color: var(--text);
+      font-family: var(--font-body);
+      line-height: 1.7;
+      min-height: 100vh;
+    }
+
+    /* ── NAV ───────────────────────────────────────────────── */
+    .nav {
+      position: fixed; top: 0; left: 0; right: 0; z-index: 50;
+      padding: 16px 40px;
+      display: flex; align-items: center; justify-content: space-between;
+      background: rgba(10,10,10,0.9);
+      backdrop-filter: blur(14px);
+      border-bottom: 1px solid var(--border);
+    }
+    .nav__logo { height: 17px; opacity: 0.85; }
+    .nav__back {
+      font-family: var(--font-brand);
+      font-size: 0.72rem; letter-spacing: 0.1em; text-transform: uppercase;
+      color: var(--muted); text-decoration: none;
+      transition: color 0.2s;
+    }
+    .nav__back:hover { color: var(--cyan); }
+
+    /* ── PAGE WRAP ─────────────────────────────────────────── */
+    .page {
+      max-width: 1100px; margin: 0 auto;
+      padding: 100px 40px 100px;
+      display: grid;
+      grid-template-columns: 1fr 420px;
+      gap: 72px;
+      align-items: start;
+    }
+
+    /* ── EVENT INFO (left) ─────────────────────────────────── */
+    .event-col {}
+
+    .event-image {
+      position: relative;
+      overflow: hidden;
+      border: 1px solid rgba(4,255,255,0.12);
+      margin-bottom: 0;
+    }
+    .event-image img {
+      width: 100%; display: block;
+      aspect-ratio: 16/9; object-fit: cover;
+    }
+    .event-image__fade {
+      position: absolute; bottom: 0; left: 0; right: 0; height: 45%;
+      background: linear-gradient(0deg, rgba(10,10,10,0.98) 0%, transparent 100%);
+      pointer-events: none;
+    }
+
+    .event-meta-block {
+      border: 1px solid rgba(4,255,255,0.12);
+      border-top: none;
+      background: rgba(4,255,255,0.02);
+      padding: 2rem 2.2rem 2.2rem;
+    }
+
+    .event-eyebrow {
+      font-family: var(--font-brand);
+      font-size: 0.6rem; letter-spacing: 0.3em; text-transform: uppercase;
+      color: rgba(4,255,255,0.5); margin-bottom: 1rem; display: block;
+    }
+
+    .event-naziv {
+      font-family: var(--font-head);
+      font-size: clamp(1.8rem, 3.5vw, 2.6rem);
+      font-weight: 500; color: rgba(255,255,255,0.95);
+      line-height: 1.15; margin-bottom: 1.2rem;
+    }
+
+    .event-details {
+      display: flex; flex-direction: column; gap: 0.5rem;
+      margin-bottom: 1.4rem;
+    }
+    .event-detail {
+      font-size: 0.85rem; color: var(--steel);
+      display: flex; align-items: center; gap: 0.6rem;
+    }
+    .event-detail strong { color: rgba(255,255,255,0.75); font-weight: 400; }
+
+    .event-countdown {
+      font-family: var(--font-brand);
+      font-size: 0.8rem; letter-spacing: 0.1em;
+      color: var(--cyan); margin-bottom: 1.4rem;
+      opacity: 0.85;
+    }
+
+    .event-opis {
+      font-size: 0.9rem; color: var(--muted);
+      line-height: 1.75; border-top: 1px solid var(--faint);
+      padding-top: 1.4rem; margin-top: 0.2rem;
+    }
+
+    /* ── FORM (right) ──────────────────────────────────────── */
+    .form-col {
+      position: sticky; top: 90px;
+    }
+
+    .form-card {
+      background: rgba(255,255,255,0.025);
+      border: 1px solid rgba(4,255,255,0.14);
+      padding: 2.6rem 2.4rem;
+      position: relative; overflow: hidden;
+    }
+    .form-card::before {
+      content: '';
+      position: absolute; top: 0; right: 0;
+      width: 180px; height: 180px;
+      background: radial-gradient(circle at top right, rgba(4,255,255,0.07) 0%, transparent 70%);
+      pointer-events: none;
+    }
+
+    .form-card__eyebrow {
+      font-family: var(--font-brand);
+      font-size: 0.6rem; letter-spacing: 0.3em; text-transform: uppercase;
+      color: rgba(4,255,255,0.5); margin-bottom: 0.7rem; display: block;
+    }
+    .form-card__title {
+      font-family: var(--font-head);
+      font-size: 1.6rem; font-weight: 500;
+      color: rgba(255,255,255,0.92); line-height: 1.2;
+      margin-bottom: 0.5rem;
+    }
+    .form-card__sub {
+      font-size: 0.82rem; color: var(--muted);
+      margin-bottom: 2rem; line-height: 1.6;
+    }
+
+    .form-field { margin-bottom: 1rem; }
+    .form-field label {
+      display: block;
+      font-family: var(--font-brand);
+      font-size: 0.58rem; letter-spacing: 0.2em; text-transform: uppercase;
+      color: var(--steel); margin-bottom: 0.4rem;
+    }
+    .form-input {
+      width: 100%;
+      background: rgba(255,255,255,0.04);
+      border: 1px solid rgba(255,255,255,0.1);
+      color: var(--text);
+      font-family: var(--font-body); font-size: 0.9rem;
+      padding: 0.75rem 1rem;
+      outline: none;
+      transition: border-color 0.2s, background 0.2s;
+    }
+    .form-input::placeholder { color: var(--muted); }
+    .form-input:focus {
+      border-color: rgba(4,255,255,0.35);
+      background: rgba(4,255,255,0.03);
+    }
+    .form-input.err { border-color: rgba(215,2,241,0.6); }
+    textarea.form-input { resize: vertical; min-height: 72px; }
+
+    .form-err {
+      font-size: 0.75rem; color: rgba(215,2,241,0.85);
+      margin-top: 0.3rem; min-height: 1.1rem;
+    }
+
+    .form-submit {
+      width: 100%;
+      font-family: var(--font-brand);
+      font-size: 0.68rem; font-weight: 600; letter-spacing: 0.2em;
+      text-transform: uppercase;
+      color: #0a0a0a; background: var(--cyan);
+      border: none; cursor: pointer;
+      padding: 1rem 2rem;
+      margin-top: 0.5rem;
+      transition: box-shadow 0.3s, opacity 0.2s;
+    }
+    .form-submit:hover:not(:disabled) {
+      box-shadow: 0 0 28px rgba(4,255,255,0.35);
+    }
+    .form-submit:disabled { opacity: 0.5; cursor: not-allowed; }
+
+    .form-note {
+      font-size: 0.72rem; color: var(--muted);
+      margin-top: 1rem; line-height: 1.6;
+      border-top: 1px solid var(--faint); padding-top: 1rem;
+    }
+
+    /* ── SUCCESS STATE ─────────────────────────────────────── */
+    .success-state {
+      display: none;
+      text-align: center;
+      padding: 1rem 0;
+    }
+    .success-state__icon {
+      font-size: 2.4rem; margin-bottom: 1.2rem; display: block;
+    }
+    .success-state__title {
+      font-family: var(--font-head);
+      font-size: 1.5rem; font-weight: 500;
+      color: rgba(255,255,255,0.92); margin-bottom: 0.6rem;
+    }
+    .success-state__msg {
+      font-size: 0.85rem; color: var(--muted); line-height: 1.7;
+    }
+    .success-state__home {
+      display: inline-block; margin-top: 1.8rem;
+      font-family: var(--font-brand);
+      font-size: 0.62rem; letter-spacing: 0.2em; text-transform: uppercase;
+      color: var(--cyan); text-decoration: none;
+      border-bottom: 1px solid rgba(4,255,255,0.3);
+      padding-bottom: 2px;
+    }
+
+    /* ── LOADING / NO EVENT ────────────────────────────────── */
+    .page-loading {
+      grid-column: 1 / -1;
+      min-height: 60vh;
+      display: flex; align-items: center; justify-content: center;
+      color: var(--muted);
+      font-family: var(--font-brand);
+      font-size: 0.75rem; letter-spacing: 0.2em; text-transform: uppercase;
+    }
+    .no-event {
+      grid-column: 1 / -1;
+      text-align: center; padding: 80px 20px;
+    }
+    .no-event h2 {
+      font-family: var(--font-head); font-size: 2rem;
+      color: rgba(255,255,255,0.7); margin-bottom: 1rem;
+    }
+    .no-event p { color: var(--muted); margin-bottom: 2rem; }
+    .no-event a {
+      font-family: var(--font-brand);
+      font-size: 0.65rem; letter-spacing: 0.2em; text-transform: uppercase;
+      color: #0a0a0a; background: var(--cyan);
+      padding: 0.9rem 2rem; text-decoration: none;
+    }
+
+    /* ── BESPLATNO BADGE ───────────────────────────────────── */
+    .badge-free {
+      display: inline-block;
+      font-family: var(--font-brand);
+      font-size: 0.62rem; font-weight: 700; letter-spacing: 0.15em;
+      text-transform: uppercase;
+      color: var(--cyan);
+      border: 1px solid rgba(4,255,255,0.4);
+      padding: 0.2rem 0.65rem;
+      margin-bottom: 1rem;
+    }
+
+    /* ── MOBILE ────────────────────────────────────────────── */
+    @media (max-width: 860px) {
+      .nav { padding: 14px 20px; }
+      .page {
+        grid-template-columns: 1fr;
+        padding: 88px 20px 80px;
+        gap: 0;
+      }
+      .form-col { position: static; margin-top: 0; }
+      .event-meta-block { padding: 1.5rem; }
+      .form-card { padding: 1.8rem; }
+    }
+  </style>
+</head>
+<body>
+
+  <nav class="nav">
+    <a href="index.html">
+      <img src="images/duhodah-logo.jpg" alt="Duhodah" class="nav__logo">
+    </a>
+    <a href="javascript:history.back()" class="nav__back">← Natrag</a>
+  </nav>
+
+  <main class="page" id="page-main">
+    <div class="page-loading" id="loading-state">Učitavam termin…</div>
+  </main>
+
+  <script type="module">
+    import { createClient }          from 'https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2/+esm';
+    import { SUPABASE_URL, SUPABASE_ANON_KEY } from './js/supabase-config.js?v=2';
+    import { registerAnonymous, registerForEvent } from './js/db.js?v=7';
+
+    const supabase = createClient(SUPABASE_URL, SUPABASE_ANON_KEY);
+
+    const DANI = ['Nedjelja','Ponedjeljak','Utorak','Srijeda','Četvrtak','Petak','Subota'];
+    const MJ   = ['siječnja','veljače','ožujka','travnja','svibnja','lipnja',
+                  'srpnja','kolovoza','rujna','listopada','studenoga','prosinca'];
+
+    function fmtDatum(iso) {
+      const d = new Date(iso);
+      return `${DANI[d.getDay()]}, ${d.getDate()}. ${MJ[d.getMonth()]}`;
+    }
+    function fmtVrijeme(iso) {
+      const d = new Date(iso);
+      return `${String(d.getHours()).padStart(2,'0')}:${String(d.getMinutes()).padStart(2,'0')}`;
+    }
+
+    // ── Dohvati nadolazeći besplatni event ─────────────────────
+    const cutoff = encodeURIComponent(new Date(Date.now() - 2 * 60 * 60 * 1000).toISOString());
+    const hdrs   = { 'apikey': SUPABASE_ANON_KEY, 'Authorization': `Bearer ${SUPABASE_ANON_KEY}` };
+
+    let ev = null;
+    try {
+      const res  = await fetch(
+        `${SUPABASE_URL}/rest/v1/dogadjaji?aktivan=eq.true&datum=gt.${cutoff}&cijena_eur=eq.0&order=datum.asc&limit=1&select=*`,
+        { headers: hdrs }
+      );
+      const list = await res.json();
+      ev = list[0] ?? null;
+    } catch(e) { console.error('[prijava-besplatno] fetch:', e); }
+
+    const main = document.getElementById('page-main');
+
+    // ── Nema eventa ─────────────────────────────────────────────
+    if (!ev) {
+      main.innerHTML = `
+        <div class="no-event">
+          <h2>Trenutno nema zakazanog termina</h2>
+          <p>Sljedeće besplatno putovanje uskoro će biti zakazano.<br>Javi se i bit ćeš prvi/a obaviješten/a.</p>
+          <a href="index.html#kontakt">Kontaktiraj Ernija →</a>
+        </div>`;
+      return;
+    }
+
+    // ── Provjeri je li korisnik već prijavljen ──────────────────
+    let currentUser = null;
+    let vecPrijavljen = false;
+    try {
+      const { data: { user } } = await supabase.auth.getUser();
+      currentUser = user;
+      if (user) {
+        const chkRes = await fetch(
+          `${SUPABASE_URL}/rest/v1/registracije?user_id=eq.${user.id}&dogadjaj_id=eq.${ev.id}&status=eq.potvrdjena`,
+          { headers: hdrs }
+        );
+        const chk = await chkRes.json();
+        vecPrijavljen = chk.length > 0;
+      }
+    } catch(_) {}
+
+    // ── Prebaci slobodna mjesta (samo offline) ──────────────────
+    const jeOnline = (ev.tagovi || []).some(t => t.toLowerCase() === 'online')
+                  || (ev.lokacija || '').toLowerCase().includes('online');
+    let slobodna = ev.kapacitet || 999;
+    if (!jeOnline) {
+      try {
+        const regRes = await fetch(
+          `${SUPABASE_URL}/rest/v1/registracije?dogadjaj_id=eq.${ev.id}&status=in.(potvrdjena,cekanje)`,
+          { method: 'HEAD', headers: { ...hdrs, 'Prefer': 'count=exact' } }
+        );
+        const cr = regRes.headers.get('Content-Range');
+        const prijavljeni = parseInt(cr?.split('/')[1] ?? '0') || 0;
+        slobodna = Math.max(0, (ev.kapacitet || 15) - prijavljeni);
+      } catch(_) {}
+    }
+
+    const popunjeno = !jeOnline && slobodna === 0;
+
+    // ── Predpopuni ime iz napomena.html localStorage ────────────
+    let savedName  = '';
+    let savedEmail = '';
+    try { savedName  = localStorage.getItem('dh_consent_ime') || ''; } catch(_) {}
+    if (currentUser) {
+      savedEmail = currentUser.email || '';
+      if (!savedName) {
+        try {
+          const { data: p } = await supabase.from('profiles').select('ime').eq('id', currentUser.id).maybeSingle();
+          if (p?.ime) savedName = p.ime;
+        } catch(_) {}
+      }
+    }
+
+    const slikaUrl = ev.slika_url || 'assets/social/post_pozivnica_disajno-putovanje.png';
+    const opis     = ev.opis || ev.opis_kratki || '';
+    const lokacija = ev.lokacija || 'Online';
+    const datumStr = fmtDatum(ev.datum);
+    const vrijemeStr = fmtVrijeme(ev.datum);
+
+    // ── Render ──────────────────────────────────────────────────
+    main.innerHTML = `
+      <!-- Lijevo: event info -->
+      <div class="event-col">
+        <div class="event-image">
+          <img src="${slikaUrl}" alt="${ev.naziv}" onerror="this.src='assets/social/post_pozivnica_disajno-putovanje.png'">
+          <div class="event-image__fade"></div>
+        </div>
+        <div class="event-meta-block">
+          <span class="event-eyebrow">Duhodah · Breathwork · Online</span>
+          <span class="badge-free">Besplatno</span>
+          <h1 class="event-naziv">${ev.naziv}</h1>
+          <div class="event-details">
+            <div class="event-detail">📅 <strong>${datumStr}</strong> · ${vrijemeStr}h</div>
+            <div class="event-detail">📍 <strong>${lokacija}</strong></div>
+            ${!jeOnline && slobodna > 0
+              ? `<div class="event-detail" style="color:${slobodna <= 3 ? 'rgba(215,2,241,0.85)' : 'var(--steel)'};">
+                   🪑 ${slobodna} ${slobodna === 1 ? 'slobodno mjesto' : 'slobodna mjesta'}
+                 </div>`
+              : ''
+            }
+          </div>
+          <div class="event-countdown" id="ev-countdown">⏱ …</div>
+          ${opis ? `<div class="event-opis">${opis}</div>` : ''}
+        </div>
+      </div>
+
+      <!-- Desno: forma -->
+      <div class="form-col">
+        <div class="form-card" id="form-card">
+          ${vecPrijavljen ? `
+            <div class="success-state" style="display:block;">
+              <span class="success-state__icon">✓</span>
+              <div class="success-state__title">Već si prijavljen/a</div>
+              <p class="success-state__msg">Tvoje mjesto je rezervirano.<br>Vidimo se!</p>
+              <a href="index.html" class="success-state__home">Natrag na početnu →</a>
+            </div>
+          ` : popunjeno ? `
+            <span class="form-card__eyebrow">Popunjeno</span>
+            <h2 class="form-card__title">Nema slobodnih mjesta</h2>
+            <p class="form-card__sub">Javi se Erniju — stavi te na listu čekanja.</p>
+            <a href="index.html#kontakt" style="display:inline-block; font-family:var(--font-brand); font-size:0.65rem; font-weight:600; letter-spacing:0.2em; text-transform:uppercase; color:#0a0a0a; background:var(--cyan); padding:0.9rem 2rem; text-decoration:none;">Kontaktiraj Ernija →</a>
+          ` : `
+            <span class="form-card__eyebrow">Prijava · Besplatno</span>
+            <h2 class="form-card__title">Rezerviraj svoje mjesto</h2>
+            <p class="form-card__sub">Bez kartice. Bez obaveza.<br>Samo ti i tvoj dah.</p>
+
+            <form id="reg-form" novalidate>
+              <div class="form-field">
+                <label for="rf-ime">Ime i prezime *</label>
+                <input type="text" id="rf-ime" class="form-input" placeholder="Ana Anić" value="${savedName}" required autocomplete="name">
+                <div class="form-err" id="rf-ime-err"></div>
+              </div>
+              <div class="form-field">
+                <label for="rf-email">Email adresa *</label>
+                <input type="email" id="rf-email" class="form-input" placeholder="ana@email.com" value="${savedEmail}" required autocomplete="email">
+                <div class="form-err" id="rf-email-err"></div>
+              </div>
+              <div class="form-field">
+                <label for="rf-poruka">Napomena <span style="opacity:.5;">(opcionalno)</span></label>
+                <textarea id="rf-poruka" class="form-input" placeholder="Pitanje, napomena…"></textarea>
+              </div>
+              <button type="submit" class="form-submit" id="rf-submit">Prijavi se besplatno →</button>
+              <div class="form-err" id="rf-global-err" style="margin-top:.6rem;"></div>
+            </form>
+
+            <div class="success-state" id="reg-success">
+              <span class="success-state__icon">🫁</span>
+              <div class="success-state__title">Prijavljen/a si!</div>
+              <p class="success-state__msg" id="reg-success-msg">Vidimo se.</p>
+              <a href="index.html" class="success-state__home">Natrag na početnu →</a>
+            </div>
+
+            <div class="form-note">
+              Prijavom prihvaćaš da tvoje podatke koristimo isključivo za potvrdu mjesta na ovom događaju.
+              Nema newslettera, nema spam-a.
+            </div>
+          `}
+        </div>
+      </div>`;
+
+    // ── Odbrojavanje ────────────────────────────────────────────
+    const _target = new Date(ev.datum).getTime();
+    const _cntEl  = document.getElementById('ev-countdown');
+    function tick() {
+      if (!_cntEl) return;
+      const diff = _target - Date.now();
+      if (diff <= 0) { _cntEl.textContent = '⏱ Upravo počinje!'; return; }
+      const dd = Math.floor(diff / 86400000);
+      const hh = Math.floor((diff % 86400000) / 3600000);
+      const mm = Math.floor((diff % 3600000) / 60000);
+      const ss = Math.floor((diff % 60000) / 1000);
+      const parts = [];
+      if (dd)       parts.push(`${dd}d`);
+      if (dd || hh) parts.push(`${hh}h`);
+      parts.push(`${String(mm).padStart(2,'0')}m`);
+      parts.push(`${String(ss).padStart(2,'0')}s`);
+      _cntEl.textContent = `⏱ ${parts.join(' ')}`;
+    }
+    tick();
+    setInterval(tick, 1000);
+
+    // ── Form submit ──────────────────────────────────────────────
+    const form = document.getElementById('reg-form');
+    if (!form) return;
+
+    form.addEventListener('submit', async (e) => {
+      e.preventDefault();
+
+      const imeEl    = document.getElementById('rf-ime');
+      const emailEl  = document.getElementById('rf-email');
+      const porEl    = document.getElementById('rf-poruka');
+      const submitBtn = document.getElementById('rf-submit');
+      const globalErr = document.getElementById('rf-global-err');
+      const imeErr   = document.getElementById('rf-ime-err');
+      const emailErr = document.getElementById('rf-email-err');
+
+      // Reset
+      [imeEl, emailEl].forEach(el => el.classList.remove('err'));
+      imeErr.textContent = '';
+      emailErr.textContent = '';
+      globalErr.textContent = '';
+
+      const ime   = imeEl.value.trim();
+      const email = emailEl.value.trim();
+      const por   = porEl ? porEl.value.trim() : '';
+      let ok = true;
+
+      if (!ime || ime.split(/\s+/).filter(Boolean).length < 2) {
+        imeEl.classList.add('err');
+        imeErr.textContent = 'Upiši puno ime i prezime.';
+        imeEl.focus(); ok = false;
+      }
+      if (!email || !/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email)) {
+        emailEl.classList.add('err');
+        emailErr.textContent = 'Upiši ispravnu email adresu.';
+        if (ok) { emailEl.focus(); ok = false; }
+      }
+      if (!ok) return;
+
+      submitBtn.disabled = true;
+      submitBtn.textContent = 'Prijavljujem…';
+
+      try {
+        if (currentUser) {
+          // Prijavljen korisnik — direktna registracija
+          await registerForEvent(currentUser.id, ev.id, 'besplatno', por);
+        } else {
+          await registerAnonymous(ime, email, ev.id, por);
+        }
+
+        // Spremi ime za buduće sessione
+        try { localStorage.setItem('dh_consent_ime', ime); } catch(_) {}
+
+        // Prikaži success
+        form.style.display = 'none';
+        const succ = document.getElementById('reg-success');
+        const succMsg = document.getElementById('reg-success-msg');
+        if (succMsg) succMsg.innerHTML = `<strong style="color:rgba(4,232,255,.85)">${ime}</strong>, vidimo se ${datumStr}.<br><span style="font-size:.78rem;opacity:.6">Potvrda stiže na ${email}</span>`;
+        if (succ) succ.style.display = 'block';
+
+      } catch(err) {
+        submitBtn.disabled = false;
+        submitBtn.textContent = 'Prijavi se besplatno →';
+        const isDup = err.message?.toLowerCase().includes('duplicate') || err.code === '23505';
+        globalErr.textContent = isDup
+          ? 'Ta email adresa je već prijavljena za ovaj događaj.'
+          : 'Greška pri prijavi. Pokušaj ponovo.';
+      }
+    });
+  </script>
+</body>
+</html>

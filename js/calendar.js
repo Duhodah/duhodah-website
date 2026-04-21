@@ -135,7 +135,7 @@ async function buildEventButton(event, authState, availability) {
       }
     }
     // I prijavljen i neprijavljen — kroz napomena.html → index.html?reg_event=ID
-    const napoUrl = `napomena.html?go=${encodeURIComponent('index.html?reg_event=' + event.id)}&tip=${encodeURIComponent('event:' + event.id)}`;
+    const napoUrl = `napomena.html?go=${encodeURIComponent('prijava-besplatno.html')}&tip=${encodeURIComponent('event:' + event.id)}`;
     return `<button class="cal-btn cal-btn--free" data-reg="${event.id}" onclick="location.href='${napoUrl}'">
       Prijavi se →
     </button>`;
