@@ -4861,6 +4861,39 @@
     // Renderaj widget odmah
     renderEventsWidget('events-widget-container');
 
+    // ── reg_event: povratak s napomena.html za besplatne evente ──────────────
+    (async () => {
+      const params = new URLSearchParams(window.location.search);
+      const regEventId = params.get('reg_event');
+      if (!regEventId) return;
+      // Očisti URL odmah
+      history.replaceState(null, '', window.location.pathname + (window.location.hash || ''));
+      // Scroll do sekcije besplatno-putovanje
+      const sek = document.getElementById('besplatno-putovanje');
+      if (sek) sek.scrollIntoView({ behavior: 'smooth', block: 'start' });
+      // Čekaj da calendar.js postavi window funkcije (max 4s)
+      let t = 0;
+      while (!window.showRegFormModal && t < 40) { await new Promise(r => setTimeout(r, 100)); t++; }
+      try {
+        const { data: { user } } = await supabase.auth.getUser();
+        if (user && window.registerFree) {
+          await window.registerFree(regEventId, 'besplatno');
+        } else if (window.showRegFormModal) {
+          window.showRegFormModal(regEventId);
+          // Predpopuni ime iz localStorage (napomena.html ga tamo sprema pod 'dh_consent_ime')
+          try {
+            const saved = localStorage.getItem('dh_consent_ime');
+            if (saved) {
+              // Modal se rendira async pa čekamo malo
+              await new Promise(r => setTimeout(r, 80));
+              const inp = document.getElementById('cal-rf-ime');
+              if (inp && !inp.value) inp.value = saved;
+            }
+          } catch(_) {}
+        }
+      } catch(e) { console.error('[reg_event]', e); }
+    })();
+
     // ── Besplatno putovanje: sljedeći besplatni event ──────────────────────────
     (async () => {
       try {
@@ -4912,8 +4945,7 @@
           } catch(e) {}
         }
 
-        const stripeUrl = ev.stripe_link || 'index.html#kontakt';
-        const ctaHref = `napomena.html?go=${encodeURIComponent(stripeUrl)}&tip=${encodeURIComponent('event:' + ev.id)}`;
+        const ctaHref = `napomena.html?go=${encodeURIComponent('index.html?reg_event=' + ev.id)}&tip=${encodeURIComponent('event:' + ev.id)}`;
         window._bpEventId = ev.id;
         const viseHref = `events.html#${ev.slug || ev.id}`;
 

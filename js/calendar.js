@@ -123,7 +123,7 @@ async function buildEventButton(event, authState, availability) {
     return `<button class="cal-btn cal-btn--disabled" disabled>Popunjeno</button>`;
   }
 
-  // Besplatni događaji — svi se mogu prijaviti, bez plaćanja
+  // Besplatni događaji — idu kroz disclaimer (napomena.html) pa na reg formu
   if (isBesplatno) {
     if (user) {
       const regStatus = await isUserRegistered(user.id, event.id);
@@ -133,14 +133,12 @@ async function buildEventButton(event, authState, availability) {
           <button class="cal-btn cal-btn--cancel" onclick="cancelReg('${event.id}')">Otkaži</button>
         </div>`;
       }
-      return `<button class="cal-btn cal-btn--free" data-reg="${event.id}" onclick="registerFree('${event.id}','besplatno')">
-        Prijavi se →
-      </button>`;
-    } else {
-      return `<button class="cal-btn cal-btn--free" onclick="showRegFormModal('${event.id}')">
-        Prijavi se →
-      </button>`;
     }
+    // I prijavljen i neprijavljen — kroz napomena.html → index.html?reg_event=ID
+    const napoUrl = `napomena.html?go=${encodeURIComponent('index.html?reg_event=' + event.id)}&tip=${encodeURIComponent('event:' + event.id)}`;
+    return `<button class="cal-btn cal-btn--free" data-reg="${event.id}" onclick="location.href='${napoUrl}'">
+      Prijavi se →
+    </button>`;
   }
 
   if (user) {
