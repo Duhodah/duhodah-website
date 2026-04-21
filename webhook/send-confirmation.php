@@ -119,7 +119,7 @@ function buildEmailBody(
     $naslov = $ime
         ? "{$ime}, tvoje mjesto te čeka."
         : "Tvoje mjesto te čeka.";
-    $podNaslov = "Vidimo se " . strtolower(explode(',', $datum)[0]) . ". Do tada — udiši polako.";
+    $podNaslov = "Vidimo se pred putovanje. Do tada — sjeti se, tu i tamo, primjetiti - kako dišeš.";
     $lokacijaLine = htmlspecialchars($lokacija);
     $logoUrl = 'https://duhodah.com/images/duhodah-cover.png';
 
@@ -209,10 +209,11 @@ function buildEmailBody(
               <tr><td>
                 <p style="margin:0 0 8px;font-size:10px;letter-spacing:0.18em;text-transform:uppercase;
                            color:#d702f1;font-family:Arial;">PRIPREMI SE</p>
-                <p style="margin:0;font-size:13px;color:rgba(240,232,255,0.6);line-height:1.8;">
-                  Dođi 5 minuta ranije &nbsp;·&nbsp; Udobna odjeća<br>
-                  Maska za spavanje ako imaš &nbsp;·&nbsp; Čaša vode<br>
-                  Mirno mjesto gdje možeš leći ili sjesti
+                <p style="margin:0;font-size:13px;color:rgba(240,232,255,0.6);line-height:1.9;">
+                  Osiguraj 2 sata gdje nećeš biti ometan/a &nbsp;·&nbsp; najavi ukućanima<br>
+                  Dođi 5 minuta ranije &nbsp;·&nbsp; Udobna odjeća &nbsp;·&nbsp; Deka<br>
+                  Maska za spavanje (preporučena opcija) &nbsp;·&nbsp; Voda &nbsp;·&nbsp; Slušalice<br>
+                  Mirno mjesto gdje možeš leći ili sjesti (preporučeno leći)
                 </p>
               </td></tr>
             </table>
@@ -220,11 +221,11 @@ function buildEmailBody(
             <!-- Osobna nota -->
             <p style="margin:28px 0 0;font-size:13px;color:rgba(240,232,255,0.38);
                        line-height:1.8;text-align:center;font-style:italic;">
-              Napravio/la si nešto dobro za sebe.<br>
-              Jedva čekam da te upoznam.
+              Bravo! Napravio/la si nešto dobro za sebe!<br>
+              Radujem se skorom susretu...
             </p>
             <p style="margin:12px 0 0;font-size:12px;color:rgba(215,2,241,0.6);
-                       text-align:center;letter-spacing:0.05em;">Erni · Duhodah</p>
+                       text-align:center;letter-spacing:0.05em;">Ernest · Duhodah</p>
 
           </td></tr>
         </table>
@@ -266,7 +267,7 @@ function formatDatumHR(string $isoStr): string {
 function formatTipPlacanja(string $tip, ?float $cijena): string {
     return match(true) {
         str_contains($tip, 'besplatno'),
-        str_contains($tip, 'pretplatnik') => 'Besplatno (pretplatnik)',
+        str_contains($tip, 'pretplatnik') => 'Besplatno',
         $tip === 'stripe'                 => $cijena ? number_format($cijena, 0) . ' € (plaćeno)' : 'Plaćeno',
         $tip === 'gotovina'               => 'Gotovina na ulazu',
         default                           => ucfirst($tip),
