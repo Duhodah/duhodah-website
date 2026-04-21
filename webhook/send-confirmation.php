@@ -121,7 +121,7 @@ function buildEmailBody(
         : "Tvoje mjesto te čeka.";
     $podNaslov = "Vidimo se " . strtolower(explode(',', $datum)[0]) . ". Do tada — udiši polako.";
     $lokacijaLine = htmlspecialchars($lokacija);
-    $logoUrl = 'https://duhodah.com/images/duhodah-logo.jpg';
+    $logoUrl = 'https://duhodah.com/images/duhodah-cover.png';
 
     return <<<HTML
 <!DOCTYPE html>
@@ -136,14 +136,10 @@ function buildEmailBody(
   <tr><td align="center">
     <table width="100%" cellpadding="0" cellspacing="0" style="max-width:540px;">
 
-      <!-- WORDMARK -->
-      <tr><td style="padding-bottom:36px;text-align:center;">
-        <img src="{$logoUrl}" alt="Duhodah" width="56" height="56"
-             style="border-radius:50%;object-fit:cover;display:inline-block;
-                    border:1px solid rgba(215,2,241,0.3);
-                    box-shadow:0 0 24px rgba(215,2,241,0.2),0 0 48px rgba(4,255,255,0.08);">
-        <div style="margin-top:12px;font-size:10px;font-weight:700;letter-spacing:0.45em;
-                    text-transform:uppercase;color:rgba(4,255,255,0.65);">DUHODAH</div>
+      <!-- LOGO -->
+      <tr><td style="padding-bottom:28px;text-align:center;">
+        <img src="{$logoUrl}" alt="Duhodah" width="200" height="200"
+             style="display:inline-block;object-fit:contain;">
       </td></tr>
 
       <!-- CARD -->
