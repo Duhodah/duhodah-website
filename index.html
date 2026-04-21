@@ -4914,6 +4914,7 @@
 
         const stripeUrl = ev.stripe_link || 'index.html#kontakt';
         const ctaHref = `napomena.html?go=${encodeURIComponent(stripeUrl)}&tip=${encodeURIComponent('event:' + ev.id)}`;
+        window._bpEventId = ev.id;
         const viseHref = `events.html#${ev.slug || ev.id}`;
 
         inner.innerHTML = `
@@ -4945,8 +4946,9 @@
                     onmouseover="this.style.boxShadow='0 0 24px rgba(4,255,255,0.4)'"
                     onmouseout="this.style.boxShadow=''">Prijavi se besplatno →</a>`
             }
-            <a href="${viseHref}"
-               style="display:inline-block; font-family:var(--font-brand); font-size:0.65rem; font-weight:500; letter-spacing:0.2em; text-transform:uppercase; color:var(--steel); border-bottom:1px solid rgba(180,180,200,0.25); padding-bottom:2px; transition:color 0.2s, border-color 0.2s;"
+            <a href="#"
+               onclick="event.preventDefault();event.stopPropagation();if(window.openEventPanel&&window._bpEventId)window.openEventPanel(window._bpEventId);else location.href='events.html'"
+               style="display:inline-block; font-family:var(--font-brand); font-size:0.65rem; font-weight:500; letter-spacing:0.2em; text-transform:uppercase; color:var(--steel); border-bottom:1px solid rgba(180,180,200,0.25); padding-bottom:2px; transition:color 0.2s, border-color 0.2s; cursor:pointer;"
                onmouseover="this.style.color='var(--white)'; this.style.borderColor='rgba(4,255,255,0.5)'"
                onmouseout="this.style.color='var(--steel)'; this.style.borderColor='rgba(180,180,200,0.25)'">Više o događaju</a>
           </div>`;
