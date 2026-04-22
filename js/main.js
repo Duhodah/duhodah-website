@@ -842,3 +842,20 @@ document.addEventListener('DOMContentLoaded', function() {
       });
     });
 
+\nvar navLinks = document.querySelector('.nav-links') || document.querySelector('.nav__links');
+      var burger   = document.getElementById('hamburger');
+
+      if (burger && navLinks) {
+        burger.addEventListener('click', function() {
+          navLinks.classList.toggle('mobile-open');
+          burger.classList.toggle('active');
+        });
+
+        var links = navLinks.querySelectorAll('a');
+        links.forEach(function(l){
+          l.addEventListener('click', function() {
+            navLinks.classList.remove('mobile-open');
+            burger.classList.remove('active');
+          });
+        });
+      }
