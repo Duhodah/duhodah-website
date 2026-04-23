@@ -748,7 +748,7 @@
             </div>
             <div class="info-row">
               <span class="info-label">Sljedeća grupa</span>
-              <a href="#urgencija" class="info-value highlight" style="text-decoration:none; cursor:pointer;">SLJEDEĆI TERMIN ↓</a>
+              <span id="autoskola-hod-termin" class="info-value highlight">…</span>
             </div>
           </div>
         </div>
@@ -2039,6 +2039,11 @@
         const vrijemeStr = `${String(d.getHours()).padStart(2,'0')}:${String(d.getMinutes()).padStart(2,'0')}`;
         const datumStr = `${d.getDate()}. ${MJ[d.getMonth()]}`;
         const cijenaStr = ev.cijena_eur != null ? `${Math.round(ev.cijena_eur)}€` : '149€';
+
+        // Popuni termin u autoskola sekciji
+        const terminEl = document.getElementById('autoskola-hod-termin');
+        if (terminEl) terminEl.textContent = `${datumStr} · ${vrijemeStr}h`;
+
         const stripeHref = ev.stripe_link
           ? `napomena.html?go=${encodeURIComponent(ev.stripe_link)}&tip=autoskola_hod`
           : `napomena.html?go=https%3A%2F%2Fbuy.stripe.com%2F5kQ00j0qygKyc8d0W7dby07&tip=autoskola_hod`;
