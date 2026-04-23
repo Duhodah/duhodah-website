@@ -2487,3 +2487,15 @@
         .prog-weeks    { grid-template-columns: 1fr 1fr; }
       }
 
+      /* ── FAQ accordion ── */
+      #faq details summary::-webkit-details-marker { display: none; }
+      #faq details summary { user-select: none; }
+      #faq details[open] summary > span:last-child {
+        transform: rotate(45deg);
+        display: inline-block;
+        transition: transform 0.2s;
+      }
+      #faq details summary > span:last-child {
+        transition: transform 0.2s;
+      }
+
