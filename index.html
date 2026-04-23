@@ -889,44 +889,9 @@
   <section id="urgencija" style="padding: 90px 0; background: linear-gradient(180deg, transparent 0%, rgba(154,171,216,0.06) 50%, transparent 100%); border-top: 1px solid rgba(154,171,216,0.08); border-bottom: 1px solid rgba(154,171,216,0.08);">
     <div class="container">
       <div style="max-width:760px; margin:0 auto; text-align:center;">
-
-        <div class="reveal" style="display:inline-block; margin-bottom:2.5rem; padding:0.5rem 1.8rem; border:1px solid rgba(215,2,241,0.4); background:rgba(215,2,241,0.05);">
-          <span style="font-family:var(--font-brand); font-size:0.65rem; letter-spacing:0.25em; text-transform:uppercase; color:var(--magenta);">Sljedeća Autoškola HOD</span>
-          <span style="font-family:var(--font-brand); font-size:0.65rem; color:rgba(255,255,255,0.3); margin:0 0.8rem;">·</span>
-          <span style="font-family:var(--font-brand); font-size:0.65rem; letter-spacing:0.1em; color:rgba(255,255,255,0.7);">15. svibnja · 17:00h</span>
+        <div id="urgencija-inner">
+          <p style="font-family:var(--font-brand); font-size:0.7rem; letter-spacing:0.2em; color:rgba(154,171,216,0.35);">Učitavam termine...</p>
         </div>
-
-        <h2 class="section-title reveal" style="font-size:clamp(1.8rem,4vw,3rem); text-transform:none; line-height:1.25;">Sljedeća grupa počinje<br><span style="color:var(--periwinkle);">15. svibnja u 17:00h</span></h2>
-        <div class="divider divider-center reveal"></div>
-
-        <div class="reveal" style="display:flex; gap:1.2rem; justify-content:center; margin-bottom:2.5rem; flex-wrap:wrap;">
-          <div style="padding:0.8rem 1.8rem; border:1px solid rgba(154,171,216,0.3); background:rgba(154,171,216,0.06); border-radius:6px; text-align:center;">
-            <div style="font-family:var(--font-brand); font-size:0.58rem; letter-spacing:0.2em; text-transform:uppercase; color:rgba(154,171,216,0.6); margin-bottom:0.3rem;">Online mjesta</div>
-            <div style="font-family:var(--font-head); font-size:2rem; color:var(--periwinkle); line-height:1;">10</div>
-          </div>
-          <div style="padding:0.8rem 1.8rem; border:1px solid rgba(154,171,216,0.3); background:rgba(154,171,216,0.06); border-radius:6px; text-align:center;">
-            <div style="font-family:var(--font-brand); font-size:0.58rem; letter-spacing:0.2em; text-transform:uppercase; color:rgba(154,171,216,0.6); margin-bottom:0.3rem;">Uživo mjesta</div>
-            <div style="font-family:var(--font-head); font-size:2rem; color:var(--periwinkle); line-height:1;">10</div>
-          </div>
-          <div style="padding:0.8rem 1.8rem; border:1px solid rgba(154,171,216,0.3); background:rgba(154,171,216,0.06); border-radius:6px; text-align:center;">
-            <div style="font-family:var(--font-brand); font-size:0.58rem; letter-spacing:0.2em; text-transform:uppercase; color:rgba(154,171,216,0.6); margin-bottom:0.3rem;">Investicija</div>
-            <div style="font-family:var(--font-head); font-size:2rem; color:var(--periwinkle); line-height:1;">149€</div>
-          </div>
-        </div>
-
-        <p class="reveal" style="font-size:0.9rem; color:rgba(255,255,255,0.55); line-height:1.7; margin-bottom:2.5rem; max-width:600px; margin-left:auto; margin-right:auto;">
-          Jednom kad se popuni — sljedeća grupa nije pred kraj tjedna. Ako se prepoznaješ u onome što si pročitao/la gore, ovo je logičan sljedeći korak.
-        </p>
-
-        <div class="reveal" style="display:flex; gap:1rem; justify-content:center; flex-wrap:wrap; align-items:center;">
-          <a href="napomena.html?go=https%3A%2F%2Fbuy.stripe.com%2F5kQ00j0qygKyc8d0W7dby07&tip=autoskola_hod" style="display:inline-block; font-family:var(--font-brand); font-size:0.75rem; font-weight:600; letter-spacing:0.25em; text-transform:uppercase; color:var(--black); background:var(--periwinkle); padding:1.1rem 3rem; transition:box-shadow 0.3s, transform 0.3s;" onmouseover="this.style.boxShadow='0 0 30px rgba(154,171,216,0.4)'; this.style.transform='translateY(-2px)';" onmouseout="this.style.boxShadow=''; this.style.transform='';">
-            Rezerviraj mjesto — 149€ →
-          </a>
-          <a href="#autoskola" style="font-family:var(--font-brand); font-size:0.7rem; letter-spacing:0.18em; text-transform:uppercase; color:rgba(255,255,255,0.45); border-bottom:1px solid rgba(255,255,255,0.15); padding-bottom:2px; transition:color 0.2s, border-color 0.2s;" onmouseover="this.style.color='rgba(255,255,255,0.8)'; this.style.borderColor='rgba(255,255,255,0.4)'" onmouseout="this.style.color='rgba(255,255,255,0.45)'; this.style.borderColor='rgba(255,255,255,0.15)'">
-            Pročitaj više o programu
-          </a>
-        </div>
-
       </div>
     </div>
   </section>
@@ -2039,6 +2004,105 @@
         setInterval(_bpTick, 1000);
 
       } catch(e) { console.error('[besplatno-putovanje]', e); }
+    })();
+
+    // ── Urgencija — sljedeća Autoškola HOD ──────────────────────────────────
+    (async () => {
+      const inner = document.getElementById('urgencija-inner');
+      if (!inner) return;
+      try {
+        const hdrs = { 'apikey': SUPABASE_ANON_KEY, 'Authorization': `Bearer ${SUPABASE_ANON_KEY}` };
+        const cutoff = encodeURIComponent(new Date(Date.now() - 2 * 60 * 60 * 1000).toISOString());
+        const res = await fetch(
+          `${SUPABASE_URL}/rest/v1/dogadjaji?aktivan=eq.true&datum=gt.${cutoff}&tagovi=cs.{as_hod}&order=datum.asc&limit=1&select=*`,
+          { headers: hdrs }
+        );
+        if (!res.ok) { inner.style.display = 'none'; return; }
+        const evts = await res.json();
+        if (!evts.length) { inner.style.display = 'none'; return; }
+        const ev = evts[0];
+
+        // Broj registracija
+        let prijavljeni = 0;
+        try {
+          const regRes = await fetch(
+            `${SUPABASE_URL}/rest/v1/registracije?dogadjaj_id=eq.${ev.id}&status=in.(potvrdjena,cekanje)`,
+            { method: 'HEAD', headers: { ...hdrs, 'Prefer': 'count=exact' } }
+          );
+          const cr = regRes.headers.get('Content-Range');
+          prijavljeni = parseInt(cr?.split('/')[1] ?? '0') || 0;
+        } catch(_) {}
+
+        const slobodna = Math.max(0, (ev.kapacitet || 20) - prijavljeni);
+        const MJ = ['siječnja','veljače','ožujka','travnja','svibnja','lipnja','srpnja','kolovoza','rujna','listopada','studenoga','prosinca'];
+        const d = new Date(ev.datum);
+        const vrijemeStr = `${String(d.getHours()).padStart(2,'0')}:${String(d.getMinutes()).padStart(2,'0')}`;
+        const datumStr = `${d.getDate()}. ${MJ[d.getMonth()]}`;
+        const cijenaStr = ev.cijena_eur != null ? `${Math.round(ev.cijena_eur)}€` : '149€';
+        const stripeHref = ev.stripe_link
+          ? `napomena.html?go=${encodeURIComponent(ev.stripe_link)}&tip=autoskola_hod`
+          : `napomena.html?go=https%3A%2F%2Fbuy.stripe.com%2F5kQ00j0qygKyc8d0W7dby07&tip=autoskola_hod`;
+
+        inner.innerHTML = `
+          <div style="display:inline-block; margin-bottom:2.5rem; padding:0.5rem 1.8rem; border:1px solid rgba(215,2,241,0.4); background:rgba(215,2,241,0.05);">
+            <span style="font-family:var(--font-brand); font-size:0.65rem; letter-spacing:0.25em; text-transform:uppercase; color:var(--magenta);">Sljedeća Autoškola HOD</span>
+            <span style="font-family:var(--font-brand); font-size:0.65rem; color:rgba(255,255,255,0.3); margin:0 0.8rem;">·</span>
+            <span style="font-family:var(--font-brand); font-size:0.65rem; letter-spacing:0.1em; color:rgba(255,255,255,0.7);">${datumStr} · ${vrijemeStr}h</span>
+          </div>
+
+          <h2 style="font-family:var(--font-head); font-size:clamp(1.8rem,4vw,3rem); line-height:1.25; color:var(--white); margin-bottom:1rem; letter-spacing:0.04em;">Sljedeća grupa počinje<br><span style="color:var(--periwinkle);">${datumStr} u ${vrijemeStr}h</span></h2>
+          <div style="width:40px; height:2px; background:linear-gradient(90deg,var(--cyan),var(--magenta)); margin:0 auto 1.8rem;"></div>
+
+          <div id="urgencija-countdown" style="font-family:var(--font-brand); font-size:0.82rem; letter-spacing:0.15em; color:var(--cyan); margin-bottom:2.5rem; opacity:0.85;">⏱ …</div>
+
+          <div style="display:flex; gap:1.2rem; justify-content:center; margin-bottom:2.5rem; flex-wrap:wrap;">
+            <div style="padding:0.8rem 1.8rem; border:1px solid rgba(154,171,216,0.3); background:rgba(154,171,216,0.06); border-radius:6px; text-align:center;">
+              <div style="font-family:var(--font-brand); font-size:0.58rem; letter-spacing:0.2em; text-transform:uppercase; color:rgba(154,171,216,0.6); margin-bottom:0.3rem;">Slobodnih mjesta</div>
+              <div style="font-family:var(--font-head); font-size:2rem; color:${slobodna <= 3 ? 'var(--magenta)' : 'var(--periwinkle)'}; line-height:1;">${slobodna}</div>
+            </div>
+            <div style="padding:0.8rem 1.8rem; border:1px solid rgba(154,171,216,0.3); background:rgba(154,171,216,0.06); border-radius:6px; text-align:center;">
+              <div style="font-family:var(--font-brand); font-size:0.58rem; letter-spacing:0.2em; text-transform:uppercase; color:rgba(154,171,216,0.6); margin-bottom:0.3rem;">Investicija</div>
+              <div style="font-family:var(--font-head); font-size:2rem; color:var(--periwinkle); line-height:1;">${cijenaStr}</div>
+            </div>
+          </div>
+
+          <p style="font-size:0.9rem; color:rgba(255,255,255,0.55); line-height:1.7; margin-bottom:2.5rem; max-width:600px; margin-left:auto; margin-right:auto;">
+            Jednom kad se popuni — sljedeća grupa nije pred kraj tjedna. Ako se prepoznaješ u onome što si pročitao/la gore, ovo je logičan sljedeći korak.
+          </p>
+
+          <div style="display:flex; gap:1rem; justify-content:center; flex-wrap:wrap; align-items:center;">
+            ${slobodna === 0
+              ? `<span style="font-family:var(--font-brand); font-size:0.72rem; letter-spacing:0.2em; text-transform:uppercase; color:var(--steel);">Popunjeno — javi se za čekaonicu</span>`
+              : `<a href="${stripeHref}" style="display:inline-block; font-family:var(--font-brand); font-size:0.75rem; font-weight:600; letter-spacing:0.25em; text-transform:uppercase; color:var(--black); background:var(--periwinkle); padding:1.1rem 3rem; transition:box-shadow 0.3s, transform 0.3s;" onmouseover="this.style.boxShadow='0 0 30px rgba(154,171,216,0.4)'; this.style.transform='translateY(-2px)';" onmouseout="this.style.boxShadow=''; this.style.transform='';">Rezerviraj mjesto — ${cijenaStr} →</a>`
+            }
+            <a href="#autoskola" style="font-family:var(--font-brand); font-size:0.7rem; letter-spacing:0.18em; text-transform:uppercase; color:rgba(255,255,255,0.45); border-bottom:1px solid rgba(255,255,255,0.15); padding-bottom:2px; transition:color 0.2s, border-color 0.2s;" onmouseover="this.style.color='rgba(255,255,255,0.8)'; this.style.borderColor='rgba(255,255,255,0.4)'" onmouseout="this.style.color='rgba(255,255,255,0.45)'; this.style.borderColor='rgba(255,255,255,0.15)'">
+              Pročitaj više o programu
+            </a>
+          </div>
+        `;
+
+        // Odbrojavanje
+        const _target = new Date(ev.datum).getTime();
+        const _cntEl = document.getElementById('urgencija-countdown');
+        function _urgTick() {
+          if (!_cntEl) return;
+          const diff = _target - Date.now();
+          if (diff <= 0) { _cntEl.textContent = '⏱ Upravo počinje!'; return; }
+          const dd = Math.floor(diff / 86400000);
+          const hh = Math.floor((diff % 86400000) / 3600000);
+          const mm = Math.floor((diff % 3600000) / 60000);
+          const ss = Math.floor((diff % 60000) / 1000);
+          const parts = [];
+          if (dd)       parts.push(`${dd}d`);
+          if (dd || hh) parts.push(`${hh}h`);
+          parts.push(`${String(mm).padStart(2,'0')}m`);
+          parts.push(`${String(ss).padStart(2,'0')}s`);
+          _cntEl.textContent = `⏱ ${parts.join(' ')}`;
+        }
+        _urgTick();
+        setInterval(_urgTick, 1000);
+
+      } catch(e) { console.error('[urgencija]', e); }
     })();
 
     // ── Hero: sljedeći događaj — čisti fetch, bez GoTrueClient/lock-a ──────────
