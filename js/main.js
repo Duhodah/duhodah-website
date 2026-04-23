@@ -1,21 +1,4 @@
-document.addEventListener('DOMContentLoaded', function() {
-      var mnav     = document.getElementById('mobile-nav');
-      var burger   = document.getElementById('hamburger');
-      var closeBtn = document.getElementById('mobile-nav-close');
-
-      function openMenu()  { mnav.style.display = 'flex'; }
-      function closeMenu() { mnav.style.display = 'none'; }
-
-      burger.addEventListener('click',   openMenu);
-      burger.addEventListener('touchend', function(e){ e.preventDefault(); openMenu(); });
-
-      closeBtn.addEventListener('click',   closeMenu);
-      closeBtn.addEventListener('touchend', function(e){ e.preventDefault(); closeMenu(); });
-
-      document.querySelectorAll('.mnav-link').forEach(function(link) {
-        link.addEventListener('click', closeMenu);
-      });
-    });
+// Mobile nav — handled by unified nav toggle at bottom of file
 
 (function(){
         var v = document.getElementById('vortex-bg');
@@ -842,7 +825,8 @@ document.addEventListener('DOMContentLoaded', function() {
       });
     });
 
-\nvar navLinks = document.querySelector('.nav-links') || document.querySelector('.nav__links');
+
+var navLinks = document.querySelector('.nav-links') || document.querySelector('.nav__links');
       var burger   = document.getElementById('hamburger');
 
       if (burger && navLinks) {
