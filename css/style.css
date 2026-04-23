@@ -2487,6 +2487,17 @@
         .prog-weeks    { grid-template-columns: 1fr 1fr; }
       }
 
+      /* ── Nove sekcije — centrirani podnaslovi ── */
+      #jesi-li-ovo-ti .section-subtitle,
+      #zasto-nije-radilo .section-subtitle,
+      #za-koga .section-subtitle,
+      #urgencija .section-subtitle,
+      #faq .section-subtitle {
+        text-align: center;
+        margin-left: auto;
+        margin-right: auto;
+      }
+
       /* ── FAQ accordion ── */
       #faq details summary::-webkit-details-marker { display: none; }
       #faq details summary { user-select: none; }
