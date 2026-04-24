@@ -134,12 +134,12 @@ function HeroSection({ variant, onCTA }) {
 // ─── PREPOZNAJ SE (pain grid) ─────────────────────────────
 function PainSection() {
   const pains = [
-    { code: "01:14", title: "Padaš bez trunke energije. Mozak se pali.", body: "01:14... 02:47... 04:22. Poznaješ te brojeve. Svaku noć." },
-    { code: "02:03", title: "Ramena kao beton. Čeljust u grču.", body: "Masaža pomogne dva dana. Treći dan — sve isto." },
-    { code: "03:21", title: "Tijelo reagira prije uma.", body: "Eksplodiraš zbog sitnice, pa ti je žao. I ne znaš kako to zaustaviti." },
-    { code: "04:07", title: "Kava da se pokreneš. Vino da se ugasiš.", body: "Stimulans da kreneš. Depresant da staneš." },
-    { code: "05:18", title: "Izvana funkcioniraš. Iznutra goriš.", body: "Pišeš, radiš, ideš na sastanke. Nitko ne vidi." },
-    { code: "06:44", title: "Razumiješ da je stres — tijelo ne sluša.", body: "Svjesnost nije dovoljna. Tijelo ignorira tvoje mentalne upute za smirenje." },
+    { code: "01:14", title: "Padaš bez trunke energije. Mozak se pali.", body: "01:14... 02:47... 04:22. Poznaješ te brojeve. Lebiš između umora i budnosti — tijelo je iscrpljeno, ali živčani sustav ne daje dozvolu za san." },
+    { code: "02:03", title: "Ramena kao beton. Čeljust u grču.", body: "Masaža pomogne dva-tri dana. Četvrti dan — sve isto. Jer napetost nije samo u mišiću. Napetost je naredba koju mozak stalno šalje tijelu." },
+    { code: "03:21", title: "Tijelo reagira prije uma.", body: "Eksplodiraš zbog sitnice, pa ti je žao. Ili se potpuno zamrzneš kad bi trebao reagirati. I ne znaš kako to zaustaviti — jer okidač nije misao, nego signal u tijelu." },
+    { code: "04:07", title: "Kava da se pokreneš. Vino da se ugasiš.", body: "Stimulans da kreneš. Depresant da staneš. Dva kemijska haka za sustav koji sam po sebi ne zna prebaciti brzinu. Nije navika — to je kompenzacija." },
+    { code: "05:18", title: "Izvana funkcioniraš. Iznutra goriš.", body: "Pišeš, radiš, ideš na sastanke. Nitko ne vidi. Ali ti znaš da negdje ispod površine gori nešto što ne bi trebalo. I svaki dan malo više." },
+    { code: "06:44", title: "Razumiješ da je stres — tijelo ne sluša.", body: "Svjesnost nije dovoljna. Čitaš knjige, znaš teoriju, razumiješ okidače. Tijelo i dalje radi svoje — jer informacija ne putuje od uma prema živcima. Putuje obrnuto." },
   ];
 
   return (
