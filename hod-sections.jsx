@@ -136,10 +136,10 @@ function PainSection() {
   const pains = [
     { code: "01:14", title: "Padaš bez trunke energije. Mozak se pali.", body: "01:14... 02:47... 04:22. Poznaješ te brojeve. Svaku noć." },
     { code: "02:03", title: "Ramena kao beton. Čeljust u grču.", body: "Masaža pomogne dva dana. Treći dan — sve isto." },
-    { code: "03:21", title: "Tijelo reagira prije uma.", body: "Eksplodiraš zbog sitnice, pa ti je žao. I ne znaš kako ga zaustaviti." },
-    { code: "04:07", title: "Kava da se pokreneš. Vino da se ugasiš.", body: "Stimulans da uspeš. Depresant da staneš." },
+    { code: "03:21", title: "Tijelo reagira prije uma.", body: "Eksplodiraš zbog sitnice, pa ti je žao. I ne znaš kako to zaustaviti." },
+    { code: "04:07", title: "Kava da se pokreneš. Vino da se ugasiš.", body: "Stimulans da kreneš. Depresant da staneš." },
     { code: "05:18", title: "Izvana funkcioniraš. Iznutra goriš.", body: "Pišeš, radiš, ideš na sastanke. Nitko ne vidi." },
-    { code: "06:44", title: "Razumiješ da je stres — tijelo ne sluša.", body: "Svjesnost nije dovoljno. Tijelo ignorira informaciju." },
+    { code: "06:44", title: "Razumiješ da je stres — tijelo ne sluša.", body: "Svjesnost nije dovoljna. Tijelo ignorira tvoje mentalne upute za smirenje." },
   ];
 
   return (
