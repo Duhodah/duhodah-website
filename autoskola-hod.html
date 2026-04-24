@@ -115,50 +115,6 @@ function App() {
       <FaqSection />
       <FooterSection />
 
-      <TweaksPanel title="Tweaks — HOD">
-        <TweakSection label="Hero" />
-        <TweakRadio label="Hero varijanta" value={t.heroVariant}
-          options={[
-            { value: 'gauge', label: 'Brzinomjer (ANS)' },
-            { value: 'circle', label: 'Breathing cycle' },
-            { value: 'vitals', label: 'Vitals · 02:47' },
-          ]}
-          onChange={(v) => setTweak('heroVariant', v)} />
-
-        <TweakSection label="Paleta" />
-        <TweakRadio label="Akcenti" value={t.accentPair}
-          options={[
-            { value: 'fire-ice', label: 'Fire · Ice' },
-            { value: 'brand', label: 'Brand (Duhodah)' },
-            { value: 'ember', label: 'Ember' },
-            { value: 'monochrome', label: 'Monochrome' },
-            { value: 'electric', label: 'Electric' },
-          ]}
-          onChange={(v) => setTweak('accentPair', v)} />
-        <TweakRadio label="Mode" value={t.mode}
-          options={['dark', 'light']}
-          onChange={(v) => setTweak('mode', v)} />
-
-        <TweakSection label="Tipografija" />
-        <TweakRadio label="Font pairing" value={t.fontPair}
-          options={[
-            { value: 'duhodah', label: 'Duhodah (Jura + Montserrat)' },
-            { value: 'grotesk-mono', label: 'Grotesk + Mono' },
-            { value: 'editorial', label: 'Editorial (Fraunces)' },
-            { value: 'serif-mix', label: 'Instrument Serif' },
-            { value: 'mono-heavy', label: 'Mono heavy' },
-          ]}
-          onChange={(v) => setTweak('fontPair', v)} />
-
-        <TweakSection label="Intensity metafore" />
-        <TweakRadio label="HUD chrome" value={t.intensity}
-          options={[
-            { value: 'subtle', label: 'Suptilno' },
-            { value: 'med', label: 'Srednje' },
-            { value: 'all-in', label: 'All-in' },
-          ]}
-          onChange={(v) => setTweak('intensity', v)} />
-      </TweaksPanel>
     </>
   );
 }
