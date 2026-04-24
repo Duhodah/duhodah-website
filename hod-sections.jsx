@@ -404,7 +404,7 @@ function FitSection() {
   ];
   const notFor = [
     'Tražiš brzi fix, bez ikakve prakse',
-    'Svjesno disanje je woo-woo — i zatvorenost za dokaze vlastite fiziologije',
+    'Svjesno disanje je woo-woo — ne želiš čak ni dokaze vlastite fiziologije',
     'Čekaš da netko drugi odradi posao za tebe',
     'U aktivnoj psihijatrijskoj krizi — ovo nije klinička zamjena',
     'Tražiš instant rezultate — promjene se grade 4 tjedna, ne 4 minute',
