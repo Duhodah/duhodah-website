@@ -173,11 +173,11 @@ function PainSection() {
 // ─── ALTERNATIVES ─────────────────────────────────
 function AlternativesSection() {
   const alts = [
-    { label: "MEDITACIJA", sign: "✕", body: "Radi odozgo prema dolje. Um pokušava smiriti tijelo. Ali misli su simptom — ne uzrok. Frustracija na vrhu anksioznosti." },
-    { label: "MASAŽA", sign: "✕", body: "Opušta mišić. Ne gasi signal koji ga steže. Dok je simpatikus ON, tijelo se automatski steže — bez tvog znanja." },
-    { label: "MELATONIN · CBD · Mg", sign: "✕", body: "Flaster, ne lijek. Pomognu na sat. Ne rješavaju korijen: tvoj simpatikus je zaglavio na ON. Sutra — isti dan." },
-    { label: "VJEŽBANJE", sign: "✕", body: "Simpatikus na vrh simpatikusa. Tijelo u 'borbi' dobiva još adrenalina. Ako si stalno u pogonu — pogoršava." },
-    { label: "TERAPIJA", sign: "✕", body: "Liječi priču. Razumiješ odakle stres — a tijelo i dalje reagira isto. Priča i tijelo su dvije adrese." },
+    { label: "MEDITACIJA", sign: "✕", body: "Radi odozgo prema dolje — um pokušava smiriti tijelo. Ali anksioznost nije misao koja se pojavila. To je signal koji je tijelo poslalo mozgu. Smiriš misao, signal ostaje. Frustracija na vrhu anksioznosti." },
+    { label: "MASAŽA", sign: "✕", body: "Opušta mišiće — ali ne gasi signal koji ga steže. Dok je simpatikus zaglavio na ON, tijelo se automatski vraća u napetost. Ne zato što nešto radiš krivo. Već zato što noga još uvijek stišće papučicu gasa." },
+    { label: "MELATONIN · CBD · Mg", sign: "✕", body: "Flaster, ne lijek. Pomognu večeras. Ne dotaknu korijen: živčani sustav koji ne zna kako sam sebe isključiti. Sutra ujutro — isti dan, iste reakcije, isti umor." },
+    { label: "VJEŽBANJE", sign: "✕", body: "Za nekoga tko je u deficitu — spas. Za nekoga tko je stalno u pogonu — dolivanje ulja na vatru. Vježbanje aktivira simpatikus. Ako on već gori 16 sati na dan, trening ga ne gasi. Još ga više opterećuje." },
+    { label: "TERAPIJA", sign: "✕", body: "Liječi priču — i to vrijedi. Razumiješ odakle stres dolazi, što ga hrani, zašto traje. Ali razumijevanje ne putuje do amigdale. Tijelo i dalje reagira kao da priča nije ispričana. Dvije različite adrese." },
   ];
 
   return (
