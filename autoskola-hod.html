@@ -1,0 +1,169 @@
+<!DOCTYPE html>
+<html lang="hr">
+<head>
+  <script id="Cookiebot" src="https://consent.cookiebot.com/uc.js" data-cbid="05070cb6-6bf0-4a0c-843c-820c4f32a338" type="text/javascript" async></script>
+  <!-- Google tag (gtag.js) -->
+  <script async src="https://www.googletagmanager.com/gtag/js?id=G-HSNH9D1DM2"></script>
+  <script>
+    window.dataLayer = window.dataLayer || [];
+    function gtag(){dataLayer.push(arguments);}
+    gtag('js', new Date());
+    gtag('config', 'G-HSNH9D1DM2');
+  </script>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Autoškola HOD — Reguliraj živčani sustav dahom | Duhodah</title>
+<meta name="description" content="4-tjedni program svjesnog disanja za regulaciju živčanog sustava. Bez meditacije, tableta ili beskrajnih terapija.">
+<link rel="icon" type="image/jpeg" href="images/duhodah-logo.jpg">
+<meta property="og:type" content="website">
+<meta property="og:url" content="https://duhodah.com/autoskola-hod.html">
+<meta property="og:title" content="Autoškola HOD — Reguliraj živčani sustav dahom">
+<meta property="og:description" content="4-tjedni program svjesnog disanja. Nauči isključiti stres, zaustaviti anksioznost i vratiti energiju — samo dahom.">
+<meta property="og:image" content="https://duhodah.com/images/duhodah-logo.jpg">
+<meta property="og:locale" content="hr_HR">
+
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@400;500;600;700&family=Inter:wght@300;400;500;600&family=JetBrains+Mono:wght@400;500;600&family=Instrument+Serif:ital@0;1&family=Fraunces:ital,wght@0,400;0,500;1,400&family=Jura:wght@300;400;500;600;700&family=Montserrat:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+
+<link rel="stylesheet" href="css/hod-styles.css">
+
+<script src="https://unpkg.com/react@18.3.1/umd/react.development.js" integrity="sha384-hD6/rw4ppMLGNu3tX5cjIb+uRZ7UkRJ6BPkLpg4hAu/6onKUg4lLsHAs9EBPT82L" crossorigin="anonymous"></script>
+<script src="https://unpkg.com/react-dom@18.3.1/umd/react-dom.development.js" integrity="sha384-u6aeetuaXnQ38mYT8rp6sbXaQe3NL9t+IBXmnYxwkUI2Hw4bsp2Wvmx4yRQF1uAm" crossorigin="anonymous"></script>
+<script src="https://unpkg.com/@babel/standalone@7.29.0/babel.min.js" integrity="sha384-m08KidiNqLdpJqLq95G/LEi8Qvjl/xUYll3QILypMoQ65QorJ9Lvtp2RXYGBFj1y" crossorigin="anonymous"></script>
+</head>
+<body>
+
+<nav id="hod-nav">
+  <a href="#" class="nav-brand">
+    <span class="nav-brand-mark"></span>
+    <span>DUHODAH · HOD</span>
+  </a>
+  <div class="nav-meta">
+    <span>MOD 01/04</span>
+    <span>ŽIVČANI SUSTAV</span>
+    <span>OSIJEK · HR</span>
+  </div>
+  <a href="#hod-upisi" class="nav-cta">Rezerviraj →</a>
+</nav>
+
+<div id="root"></div>
+
+<script type="text/babel" src="tweaks-panel.jsx"></script>
+<script type="text/babel" src="hod-components.jsx"></script>
+<script type="text/babel" src="hod-sections.jsx"></script>
+<script type="text/babel">
+const TWEAK_DEFAULTS = /*EDITMODE-BEGIN*/{
+  "mode": "dark",
+  "accentPair": "brand",
+  "fontPair": "duhodah",
+  "intensity": "all-in",
+  "heroVariant": "gauge"
+}/*EDITMODE-END*/;
+
+const ACCENT_PAIRS = {
+  'fire-ice':    { hot: '#ff5a3a', mid: '#f2b441', cool: '#6bdcff', soft: '#b5a8ff' },
+  'brand':       { hot: '#d702f1', mid: '#9aabd8', cool: '#04ffff', soft: '#9aabd8' },
+  'ember':       { hot: '#ff7849', mid: '#ffbe55', cool: '#8de0a8', soft: '#c9b18c' },
+  'monochrome':  { hot: '#e8e6dc', mid: '#bfbdb4', cool: '#8d8b84', soft: '#5a5852' },
+  'electric':    { hot: '#ff2e88', mid: '#f0ec3b', cool: '#3bf0e0', soft: '#a86bff' },
+};
+
+const FONT_PAIRS = {
+  'duhodah':      { display: "'Jura', system-ui, sans-serif", body: "'Inter', system-ui, sans-serif", mono: "'Montserrat', system-ui, sans-serif" },
+  'grotesk-mono': { display: "'Space Grotesk', system-ui, sans-serif", body: "'Inter', system-ui, sans-serif", mono: "'JetBrains Mono', ui-monospace, monospace" },
+  'editorial':    { display: "'Fraunces', 'Instrument Serif', Georgia, serif", body: "'Inter', system-ui, sans-serif", mono: "'JetBrains Mono', ui-monospace, monospace" },
+  'serif-mix':    { display: "'Instrument Serif', Georgia, serif", body: "'Inter', system-ui, sans-serif", mono: "'JetBrains Mono', ui-monospace, monospace" },
+  'mono-heavy':   { display: "'JetBrains Mono', ui-monospace, monospace", body: "'Inter', system-ui, sans-serif", mono: "'JetBrains Mono', ui-monospace, monospace" },
+};
+
+function App() {
+  const [t, setTweak] = useTweaks(TWEAK_DEFAULTS);
+
+  React.useEffect(() => {
+    const root = document.documentElement;
+    const a = ACCENT_PAIRS[t.accentPair] || ACCENT_PAIRS['fire-ice'];
+    root.style.setProperty('--hod-accent-hot', a.hot);
+    root.style.setProperty('--hod-accent-mid', a.mid);
+    root.style.setProperty('--hod-accent-cool', a.cool);
+    root.style.setProperty('--hod-accent-soft', a.soft);
+
+    const f = FONT_PAIRS[t.fontPair] || FONT_PAIRS['grotesk-mono'];
+    root.style.setProperty('--hod-font-display', f.display);
+    root.style.setProperty('--hod-font-body', f.body);
+    root.style.setProperty('--hod-font-mono', f.mono);
+
+    document.body.classList.toggle('mode-light', t.mode === 'light');
+    document.body.classList.remove('intensity-subtle', 'intensity-med', 'intensity-all');
+    document.body.classList.add('intensity-' + (t.intensity === 'all-in' ? 'all' : t.intensity));
+  }, [t.accentPair, t.fontPair, t.mode, t.intensity]);
+
+  return (
+    <>
+      <HeroSection variant={t.heroVariant} />
+      <PainSection />
+      <AlternativesSection />
+      <EpiphanySection />
+      <FascinationsSection />
+      <ProgramIntroSection />
+      <CurriculumSection />
+      <FitSection />
+      <TestimonialsSection />
+      <GuaranteeSection />
+      <UpisiSection />
+      <InactionSection />
+      <FaqSection />
+      <FooterSection />
+
+      <TweaksPanel title="Tweaks — HOD">
+        <TweakSection label="Hero" />
+        <TweakRadio label="Hero varijanta" value={t.heroVariant}
+          options={[
+            { value: 'gauge', label: 'Brzinomjer (ANS)' },
+            { value: 'circle', label: 'Breathing cycle' },
+            { value: 'vitals', label: 'Vitals · 02:47' },
+          ]}
+          onChange={(v) => setTweak('heroVariant', v)} />
+
+        <TweakSection label="Paleta" />
+        <TweakRadio label="Akcenti" value={t.accentPair}
+          options={[
+            { value: 'fire-ice', label: 'Fire · Ice' },
+            { value: 'brand', label: 'Brand (Duhodah)' },
+            { value: 'ember', label: 'Ember' },
+            { value: 'monochrome', label: 'Monochrome' },
+            { value: 'electric', label: 'Electric' },
+          ]}
+          onChange={(v) => setTweak('accentPair', v)} />
+        <TweakRadio label="Mode" value={t.mode}
+          options={['dark', 'light']}
+          onChange={(v) => setTweak('mode', v)} />
+
+        <TweakSection label="Tipografija" />
+        <TweakRadio label="Font pairing" value={t.fontPair}
+          options={[
+            { value: 'duhodah', label: 'Duhodah (Jura + Montserrat)' },
+            { value: 'grotesk-mono', label: 'Grotesk + Mono' },
+            { value: 'editorial', label: 'Editorial (Fraunces)' },
+            { value: 'serif-mix', label: 'Instrument Serif' },
+            { value: 'mono-heavy', label: 'Mono heavy' },
+          ]}
+          onChange={(v) => setTweak('fontPair', v)} />
+
+        <TweakSection label="Intensity metafore" />
+        <TweakRadio label="HUD chrome" value={t.intensity}
+          options={[
+            { value: 'subtle', label: 'Suptilno' },
+            { value: 'med', label: 'Srednje' },
+            { value: 'all-in', label: 'All-in' },
+          ]}
+          onChange={(v) => setTweak('intensity', v)} />
+      </TweaksPanel>
+    </>
+  );
+}
+
+ReactDOM.createRoot(document.getElementById('root')).render(<App />);
+</script>
+</body>
+</html>
