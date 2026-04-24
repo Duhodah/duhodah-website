@@ -24,7 +24,7 @@ function HeroSection({ variant, onCTA }) {
             <span className="hod-h1-accent">Nauči gdje je — i kako ga koristiti.</span>
           </h1>
           <p className="hero-sub">
-            4-tjedni operativni priručnik za tvoje tijelo. Bez meditacije,
+            4-tjedni operativni priručnik za tvoj živčani sustav. Bez meditacije,
             bez tableta, bez duhovnosti kojoj moraš vjerovati.
             Samo fiziologija. Samo dah.
           </p>
@@ -314,7 +314,7 @@ function ProgramIntroSection() {
         Nema duhovnosti kojoj moraš vjerovati.
       </p>
       <p className="hod-p">
-        Ovo je <strong>4-tjedni operativni priručnik za tvoje tijelo</strong> —
+        Ovo je <strong>4-tjedni operativni priručnik za tvoj živčani sustav</strong> —
         utemeljen na neuroznanosti autonomnog živčanog sustava, primijenjen
         na tvoj svakodnevni život.
       </p>
@@ -329,7 +329,7 @@ function ProgramIntroSection() {
         <div className="author-text">
           <p>
             Ja sam <strong>Ernest (Erni)</strong>, osnivač Duhodaha.
-            Jedini dediciran breathwork instruktor u Slavoniji. Nisam ovdje
+            Dedicirani i certificirani breathwork instruktor u Slavoniji. Nisam ovdje
             da ti prodam zen. Ovdje sam da ti dam alat koji radi — i koji
             možeš koristiti u autu, na poslu, u krevetu u 02:47.
           </p>
@@ -395,18 +395,18 @@ function CurriculumSection() {
 function FitSection() {
   const isFor = [
     'Pod kroničnim stresom si — i hoćeš promjenu od korijena',
-    'Dosta ti je kave da uspeš i vina da se ugasiš',
-    'Eksplodiraš ili zamrzavaš — tijelo reagira prije uma',
+    'Dosta ti je kave da uspiješ probuditi i vina da se ugasiš',
+    'Eksplodiraš, ili se smrzneš — tijelo reagira prije uma',
     'Uložit ćeš 10 min dnevno i 4 × 120 min u alat koji nosiš zauvijek',
-    'Skepticizam je dobrodošao — ne trebaš vjerovati, treba testirati',
+    'Skepticizam je dobrodošao — ne trebaš vjerovati, testiraj!',
     'Živiš u Osijeku ili online — svugdje',
   ];
   const notFor = [
-    'Tražiš brzu tabletu bez prakse',
-    'Misliš da je svjesno disanje woo-woo — bez otvorenosti za fiziologiju',
+    'Tražiš brzi fix, bez ikakve prakse',
+    'Svjesno disanje je woo-woo — i zatvorenost za dokaze vlastite fiziologije',
     'Čekaš da netko drugi odradi posao za tebe',
     'U aktivnoj psihijatrijskoj krizi — ovo nije klinička zamjena',
-    'Tražiš instant rezultate — promjena uzima 4 tjedna, ne 4 minute',
+    'Tražiš instant rezultate — promjene se grade 4 tjedna, ne 4 minute',
   ];
 
   return (
