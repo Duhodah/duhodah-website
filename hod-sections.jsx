@@ -269,16 +269,16 @@ function EpiphanySection() {
 // ─── FASCINATIONS (što ćeš naučiti) ─────────────────
 function FascinationsSection() {
   const items = [
-    ['◉', 'Zašto "duboko udahni" zapravo pogoršava anksioznost — i što raditi umjesto toga.'],
-    ['◉', '90-sekundni obrazac koji prebacuje tijelo iz panike u sigurnost — isti koji koriste psiholozi u kriznim intervencijama.'],
-    ['◉', 'Zašto nema energije cijeli dan, a noću ne možeš zaspati — i to nema veze s ekranima ni kavom.'],
-    ['◉', 'Kako preživjeti pad energije u 14h bez treće kave — 3-minutni aktivacijski obrazac koji djeluje odmah.'],
-    ['◉', 'Obrazac koji za 27% podiže GABA-u — tvar za smirenje i anti-anksioznost.'],
-    ['◉', 'Tvoj mozak troši 20% kisika — a možda dišeš na 40% kapaciteta. Matematika ne laže.'],
-    ['◉', 'Zašto masaža drži 2 dana — i što zapravo drži tvoje mišiće u grču bez tvog znanja.'],
-    ['◉', 'Točna veza između stisnute čeljusti i živčanog sustava — i zašto udica nije u čeljusti.'],
-    ['◉', 'Zašto se razboljavaš baš kad "staneš" — godišnji, vikend — i to nije slučajnost.'],
-    ['◉', 'Jedna stvar koju rade svi koji zaspe lako — a ni ne znaju da je rade.'],
+    ['◉', 'Zašto "duboko udahni" zapravo pogoršava anksioznost u trenutku panike — i koji obrazac radi umjesto toga.'],
+    ['◉', '90-sekundni obrazac koji fiziološki — ne psihološki — prebacuje tijelo iz panike u sigurnost. Isti protokol koji psiholozi koriste u kriznim intervencijama.'],
+    ['◉', 'Zašto nemaš energije cijeli dan, a noću ne možeš zaspati — i zašto rješenje nije ni manje ekrana, ni manje kave, nego nešto što radiš 23 000 puta dnevno.'],
+    ['◉', 'Kako prekinuti pad energije u 14h bez kave — 3-minutni aktivacijski obrazac koji radi direktno na živčani sustav, a ne na kortizol.'],
+    ['◉', 'Jedan obrazac disanja koji u jednoj sesiji podiže GABA-u za 27% — neurotransmiter koji tvoj mozak koristi za prirodno smirenje i blokadu anksioznosti. (Streeter, 2010)'],
+    ['◉', 'Tvoj mozak troši 20% ukupnog kisika u tijelu — a prosječna osoba pod kroničnim stresom diše na 40–60% kapaciteta. Matematika nedostatka kisika objašnjava maglu u glavi, umor i nemogućnost fokusa.'],
+    ['◉', 'Zašto učinak masaže popusti za dva do tri dana — i koji signal iz živčanog sustava vraća napetost u mišiće dok spavaš.'],
+    ['◉', 'Točna neurološka veza između stisnute čeljusti, plitkog disanja i kronične aktivacije simpatikusa — i zašto tretiranje čeljusti ne rješava ništa.'],
+    ['◉', 'Zašto se razboliš upravo kad staneš — na godišnjem, vikendu, prvom slobodnom danu — i što se događa u tijelu kad se simpatikus naglo isključi.'],
+    ['◉', 'Jedna nesvjesna stvar koju rade svi koji zaspnu čim legnu — i kako ju namjerno aktivirati ako te živčani sustav drži budnim.'],
   ];
 
   return (
