@@ -223,15 +223,16 @@ function EpiphanySection() {
         code="MOD/03"
         eyebrow="NOVI MEHANIZAM"
         title="Postoji samo jedan backdoor."
-        subtitle="Dok god simpatikus zuji, tijelo ne može spavati, probavljati, fokusirati, smiriti se. Razlog ovakav:"
+        subtitle="Dok god je simpatikus aktiviran — a kod većine ljudi to je gotovo nonstop — tijelo je u modu preživljavanja. U tom modu postoje stvari koje tijelo jednostavno ne može raditi:"
       />
 
       <div className="cannot-grid">
         {[
           ['01', 'spavati duboko'],
-          ['02', 'probavljati'],
-          ['03', 'zadržati fokus'],
-          ['04', 'osjećati mir bez "razloga"'],
+          ['02', 'probavljati normalno'],
+          ['03', 'zadržati fokus dulje od 20 minuta'],
+          ['04', 'osjećati mir bez vidljivog razloga'],
+          ['05', 'obnavljati i regenerirati tijelo'],
         ].map(([n, t], i) => (
           <div key={i} className="cannot-row">
             <span className="cannot-num">{n}</span>
@@ -248,17 +249,17 @@ function EpiphanySection() {
         </div>
         <h3 className="ep-title">Disanje.</h3>
         <p>
-          Jedini sustav u tijelu koji je <strong>automatski</strong>, ali kojim možeš
-          upravljati <strong>voljom</strong>. Jedini direktan ulaz u parasimpatikus.
+          Jedini sustav u tijelu koji radi <strong>automatski</strong> — ali kojim možeš
+          upravljati <strong>voljom</strong>. Srce ne možeš usporiti mišlju. Probavu ne možeš
+          pokrenuti odlukom. Ali disanje možeš. I kroz njega — direktno — dosežeš kočnicu živčanog sustava.
         </p>
         <p>
-          Nije wellness. Nije duhovnost. <strong>Fiziologija</strong> — ista ona iza
-          kliničkih protokola u kriznim intervencijama.
+          Nije wellness. Nije duhovnost kojoj moraš vjerovati. To je <strong>fiziologija</strong> — ista ona koja stoji iza protokola koje koriste psiholozi, hitna medicina i vojni instruktori za regulaciju u kriznim situacijama.
         </p>
         <div className="ep-facts">
-          <div><span>23 000</span>×/dan koristiš ga</div>
-          <div><span>27%</span>rast GABA <em>(Streeter, 2010)</em></div>
-          <div><span>60s</span>do mjerljive promjene u ANS-u</div>
+          <div><span>23 000</span>×/dan dišeš, svjesno ili ne</div>
+          <div><span>27%</span>rast GABA neurotransmitera u jednoj sesiji (za smirivanje) <em>(Streeter, 2010)</em></div>
+          <div><span>60s</span>toliko treba da se ANS mjerljivo promijeni</div>
         </div>
       </div>
     </section>
