@@ -1,0 +1,228 @@
+<!DOCTYPE html>
+<html lang="hr">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>CO₂ tolerancija — zašto je važnija od kisika | Duhodah</title>
+  <meta name="description" content="Što je CO₂ tolerancija i zašto je manje disanja ponekad bolje? Bohr efekt, ugljični dioksid kao regulator — sve što trebate znati o funkcionalnom disanju.">
+  <meta property="og:title" content="CO₂ tolerancija — zašto je važnija od kisika">
+  <meta property="og:description" content="Kisik nije problem. CO₂ je ključ. Otkrijte zašto ugljični dioksid regulira koliko kisika vaše stanice zapravo dobivaju — i što to znači za stres i disanje.">
+  <meta property="og:url" content="https://duhodah.com/articles/co2-tolerancija.html">
+  <link rel="icon" type="image/jpeg" href="../images/duhodah-logo.jpg">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Jura:wght@300;400;500;600;700&family=Montserrat:wght@300;400;500;600;700&family=Inter:wght@300;400;500&display=swap" rel="stylesheet">
+  <style>
+    :root{--black:#08081a;--dark:#0d0d22;--navy:#15154d;--purple:#540280;--cyan:#04ffff;--cyan-soft:#a5ffff;--magenta:#d702f1;--pink:#e488d1;--steel:#aad0e4;--periwinkle:#9aabd8;--white:#ffffff;--white-soft:#e8eeff;--grey:#c8cfe0;--font-brand:'Montserrat',sans-serif;--font-head:'Jura',sans-serif;--font-body:'Inter',sans-serif;--glow-cyan:0 0 30px rgba(4,255,255,0.4),0 0 60px rgba(4,255,255,0.2)}
+    *,*::before,*::after{margin:0;padding:0;box-sizing:border-box}html{scroll-behavior:smooth;font-size:16px}
+    body{background:var(--black);color:var(--white-soft);font-family:var(--font-body);font-weight:300;line-height:1.7;overflow-x:hidden}a{color:inherit;text-decoration:none}
+    nav{position:fixed;top:0;left:0;right:0;z-index:100;padding:1.2rem 5%;display:flex;align-items:center;justify-content:space-between;background:rgba(8,8,26,0.9);backdrop-filter:blur(16px);border-bottom:1px solid rgba(4,255,255,0.07)}
+    .nav-logo{font-family:var(--font-brand);font-size:1rem;font-weight:700;letter-spacing:0.3em;color:var(--white)}.nav-logo span{color:var(--cyan)}
+    .nav-back{font-family:var(--font-brand);font-size:0.62rem;letter-spacing:0.2em;text-transform:uppercase;color:var(--steel);transition:color 0.3s}.nav-back:hover{color:var(--cyan)}
+    main{padding-top:90px;max-width:760px;margin:0 auto;padding-left:5%;padding-right:5%;padding-bottom:5rem}
+    .article-cat{font-family:var(--font-brand);font-size:0.6rem;font-weight:600;letter-spacing:0.4em;text-transform:uppercase;color:var(--cyan);margin-bottom:1rem;display:block;margin-top:2.5rem}
+    h1{font-family:var(--font-head);font-size:clamp(1.8rem,4.5vw,3rem);font-weight:400;color:var(--white);line-height:1.2;margin-bottom:1.2rem}
+    .article-meta{display:flex;gap:1.2rem;flex-wrap:wrap;margin-bottom:2rem;padding-bottom:1.5rem;border-bottom:1px solid rgba(255,255,255,0.07)}
+    .meta-item{font-family:var(--font-brand);font-size:0.58rem;letter-spacing:0.15em;text-transform:uppercase;color:rgba(255,255,255,0.35)}
+    .article-lead{font-size:1.1rem;color:rgba(255,255,255,0.65);line-height:1.8;margin-bottom:2.5rem;font-weight:300}
+    h2{font-family:var(--font-head);font-size:1.5rem;font-weight:400;color:var(--white);margin:2.5rem 0 1rem;line-height:1.3}
+    h3{font-family:var(--font-head);font-size:1.1rem;font-weight:400;color:var(--cyan-soft);margin:1.8rem 0 0.6rem}
+    p{margin-bottom:1.2rem;color:rgba(255,255,255,0.65);font-size:0.97rem;line-height:1.8}
+    strong{color:var(--white-soft);font-weight:500}em{color:var(--steel)}
+    .callout{background:rgba(4,255,255,0.05);border-left:3px solid var(--cyan);padding:1.4rem 1.8rem;margin:2rem 0}
+    .callout p{margin:0;color:rgba(255,255,255,0.75)}.callout-label{font-family:var(--font-brand);font-size:0.55rem;letter-spacing:0.25em;text-transform:uppercase;color:var(--cyan);margin-bottom:0.5rem}
+    .callout-warn{background:rgba(215,2,241,0.05);border-left:3px solid var(--magenta)}
+    .callout-warn .callout-label{color:var(--pink)}.callout-warn p{color:rgba(255,255,255,0.7)}
+    .myth-block{background:rgba(255,255,255,0.02);border:1px solid rgba(255,255,255,0.07);padding:1.5rem;margin:1.2rem 0;display:grid;grid-template-columns:1fr 1fr;gap:1.5rem}
+    @media(max-width:600px){.myth-block{grid-template-columns:1fr}}
+    .myth-col-label{font-family:var(--font-brand);font-size:0.55rem;letter-spacing:0.25em;text-transform:uppercase;margin-bottom:0.5rem}
+    .myth-col-label.red{color:var(--magenta)}.myth-col-label.green{color:var(--cyan)}
+    .myth-text{font-size:0.9rem;color:rgba(255,255,255,0.6);line-height:1.7}
+    .divider{width:1px;background:rgba(255,255,255,0.1)}
+    .bohr-diagram{background:rgba(4,255,255,0.03);border:1px solid rgba(4,255,255,0.12);padding:1.5rem;margin:2rem 0;font-family:var(--font-head);font-size:0.9rem;color:rgba(255,255,255,0.6);line-height:1.9;text-align:center}
+    .bohr-arrow{color:var(--cyan);font-size:1.1rem;margin:0 0.4rem}
+    .score-table{width:100%;border-collapse:collapse;margin:1.5rem 0}
+    .score-table th,.score-table td{padding:0.8rem 1rem;text-align:left;border-bottom:1px solid rgba(255,255,255,0.07);font-size:0.88rem}
+    .score-table th{font-family:var(--font-brand);font-size:0.6rem;letter-spacing:0.2em;text-transform:uppercase;color:var(--grey);background:rgba(255,255,255,0.03)}
+    .score-table td:first-child{font-family:var(--font-head);font-size:1rem;color:var(--cyan)}
+    .ref{font-size:0.8rem;color:rgba(255,255,255,0.3);font-style:italic;margin-top:0.3rem}
+    .article-cta{margin:3rem 0;padding:2.5rem;background:linear-gradient(135deg,rgba(4,255,255,0.05),rgba(84,2,128,0.1));border:1px solid rgba(4,255,255,0.15);text-align:center}
+    .cta-title{font-family:var(--font-head);font-size:1.4rem;color:var(--white);margin-bottom:0.6rem}
+    .cta-sub{font-size:0.9rem;color:rgba(255,255,255,0.5);margin-bottom:1.5rem;line-height:1.7}
+    .btn-cta{display:inline-block;font-family:var(--font-brand);font-size:0.72rem;font-weight:600;letter-spacing:0.2em;text-transform:uppercase;color:var(--black);background:var(--cyan);padding:1rem 2.5rem;transition:box-shadow 0.3s,transform 0.2s;margin-right:0.8rem;margin-bottom:0.5rem}
+    .btn-cta:hover{box-shadow:var(--glow-cyan);transform:translateY(-2px)}
+    .btn-cta-outline{background:transparent;color:var(--cyan);border:1px solid rgba(4,255,255,0.4)}.btn-cta-outline:hover{background:rgba(4,255,255,0.07);box-shadow:none}
+    .breadcrumb{font-family:var(--font-brand);font-size:0.58rem;letter-spacing:0.15em;text-transform:uppercase;color:rgba(255,255,255,0.3);margin-top:2rem;margin-bottom:0.5rem}
+    .breadcrumb a{color:rgba(255,255,255,0.4)}.breadcrumb a:hover{color:var(--cyan)}
+    .related-links{margin:2rem 0}
+    .related-links p{font-family:var(--font-brand);font-size:0.6rem;letter-spacing:0.2em;text-transform:uppercase;color:rgba(255,255,255,0.3);margin-bottom:0.8rem}
+    .related-links a{display:inline-block;margin:0.3rem 0.5rem 0.3rem 0;font-size:0.82rem;color:var(--steel);border-bottom:1px solid rgba(170,208,228,0.2);transition:color 0.3s}.related-links a:hover{color:var(--cyan);border-color:var(--cyan)}
+    footer{border-top:1px solid rgba(255,255,255,0.05);padding:2.5rem 5%;text-align:center;margin-top:5rem}
+    .footer-logo{font-family:var(--font-brand);font-size:0.9rem;font-weight:700;letter-spacing:0.3em;color:rgba(255,255,255,0.6)}.footer-logo span{color:var(--cyan)}
+    .footer-text{font-size:0.75rem;color:rgba(255,255,255,0.2);margin-top:0.5rem}
+  </style>
+</head>
+<body>
+<nav>
+  <a href="../index.html" class="nav-logo">DUH<span>O</span>DAH</a>
+  <a href="../blog.html" class="nav-back">← Svi članci</a>
+</nav>
+
+<main>
+  <p class="breadcrumb"><a href="../index.html">Duhodah</a> › <a href="../blog.html">Blog</a> › CO₂ tolerancija</p>
+  <span class="article-cat">Dokazi · 7 min čitanja</span>
+  <h1>CO₂ tolerancija — zašto je važnija od kisika</h1>
+  <div class="article-meta">
+    <span class="meta-item">Autor: Erni · Duhodah</span>
+    <span class="meta-item">Teme: CO₂ · Buteyko · Bohr efekt · Funkcionalno disanje</span>
+    <span class="meta-item">Izvor: McKeown (2016), Bohr et al. (1904)</span>
+  </div>
+
+  <p class="article-lead">Sve što ste naučili o disanju je vjerojatno djelomično pogrešno. "Diši duboko, unesi više kisika" — to je intuitivan savjet koji biokemija ne podržava. Problem nije nedostatak kisika. Problem je tolerancija na CO₂ — i upravo nju kronični stres i moderno disanje sustavno uništavaju.</p>
+
+  <h2>Paradoks ugljičnog dioksida</h2>
+
+  <p>Ugljični dioksid (CO₂) ima reputaciju otpadnog plina — nusprodukta koji udišemo da bismo izbacili metabolički otpad. To nije točno. CO₂ ima ključnu regulatornu ulogu koja direktno utječe na to koliko kisika vaše stanice zapravo dobivaju.</p>
+
+  <p>Ovo nije teorija. Opisao ga je danski fiziolog <strong>Christian Bohr 1904. godine</strong> — i do danas je jedna od temeljnih činjenica respiratorne fiziologije.</p>
+
+  <div class="callout">
+    <div class="callout-label">Bohr efekt — definicija</div>
+    <p><strong>Bohr efekt:</strong> CO₂ u krvi uzrokuje otpuštanje kisika iz hemoglobina u tkiva. Manji CO₂ = hemoglobin drži kisik tješnje = stanice dobivaju manje kisika, čak i kad ga u krvi ima dovoljno.</p>
+  </div>
+
+  <h2>Bohr efekt: kako to zapravo funkcionira</h2>
+
+  <p>Hemoglobin je protein koji prenosi kisik kroz krv. Njegova sposobnost otpuštanja kisika tkivima ovisi o razini CO₂ u okolnoj sredini. Što više CO₂ — to lakše hemoglobin otpušta kisik. Što manje CO₂ — to tješnje hemoglobin drži kisik, i stanice dobivaju manje.</p>
+
+  <div class="bohr-diagram">
+    Hiperventilacija<br>
+    <span class="bohr-arrow">↓</span><br>
+    Previše CO₂ izbačeno<br>
+    <span class="bohr-arrow">↓</span><br>
+    pH krvi raste (alkaloza)<br>
+    <span class="bohr-arrow">↓</span><br>
+    Hemoglobin drži kisik tješnje (Bohr efekt)<br>
+    <span class="bohr-arrow">↓</span><br>
+    Stanice dobivaju <em>manje</em> kisika — čak i kad ga u plućima ima naizgled dovoljno<br>
+    <span class="bohr-arrow">↓</span><br>
+    Vrtoglavica, trnci, tjeskoba, umor
+  </div>
+
+  <p>Ovo je razlog zašto je klasični savjet "udahni dublje kad se osjećaš loše" često kontraproduktivan — posebno kod anksioznosti i paničnih napada.</p>
+
+  <h2>Zašto je tolerancija na CO₂ ključna</h2>
+
+  <p>CO₂ je primarni <strong>respiratorni stimulans</strong>. Mozak ne mjeri koliko kisika ima u krvi — mjeri razinu CO₂. Kad CO₂ poraste, mozak šalje signal: "Diši." Kad CO₂ padne, signal nestaje.</p>
+
+  <p>Tolerancija na CO₂ opisuje sposobnost živčanog sustava da <strong>podnese privremeni porast CO₂</strong> bez aktiviranja alarm signala. Visoka tolerancija = mirno, funkcionalno disanje. Niska tolerancija = mozak aktivira paniku i ubrzano disanje čak i pri malim fluktuacijama CO₂.</p>
+
+  <div class="myth-block">
+    <div>
+      <div class="myth-col-label red">Niska CO₂ tolerancija</div>
+      <div class="myth-text">
+        — Brzo, plitko disanje kao norma<br>
+        — Disanje na usta, posebno noću<br>
+        — Česta potreba za "dubokim udahom"<br>
+        — Uzdihnute, zijevanje kao signal<br>
+        — Anksioznost koja se pojačava fizičkom aktivnošću<br>
+        — Jutarnji umor unatoč spavanju
+      </div>
+    </div>
+    <div>
+      <div class="myth-col-label green">Visoka CO₂ tolerancija</div>
+      <div class="myth-text">
+        — Tiho, mirno disanje na nos<br>
+        — Sposobnost fizičke aktivnosti bez ubrzanog disanja<br>
+        — Stabilan mir bez potrebe za "dubokim udahom"<br>
+        — Dobra kvaliteta sna<br>
+        — Niska bazalna anksioznost<br>
+        — Brz oporavak od stresa
+      </div>
+    </div>
+  </div>
+
+  <h2>Buteyko metoda i CO₂ tolerancija</h2>
+
+  <p>Konstantin Buteyko, ukrajisnki liječnik, razvio je u 1950-ima terapeutski pristup temeljen na jednoj ključnoj opservaciji: većina kroničnih bolesti (astma, anksioznost, hipertenzija) korelira s kroničnom hiperventilacijom — i pratećim niskim CO₂.</p>
+
+  <p>Patrick McKeown, irski terapeut i autor <em>The Oxygen Advantage</em>, modernizirao je Buteyko pristup i specificirao ga za sportaše i opću populaciju. Njegova ključna teza:</p>
+
+  <div class="callout">
+    <div class="callout-label">McKeown, The Oxygen Advantage (2016)</div>
+    <p><strong>"Zdravo disanje nije o tome koliko udišeš, nego o tome koliko malo daha trebaš za optimalno funkcioniranje."</strong> Smanjenje volumena daha povećava CO₂ toleranciju, poboljšava isporuku kisika tkivima i smanjuje aktivnost simpatičkog živčanog sustava.</p>
+  </div>
+
+  <h2>Mjerenje CO₂ tolerancije: BOLT test</h2>
+
+  <p>Najjednostavniji indikator CO₂ tolerancije je <strong>BOLT score</strong> (Body Oxygen Level Test). Nije test zadržavanja daha — mjeri koliko sekundi možete čekati nakon normalnog izdaha prije nego osjetite prvi jasni impuls za udahom.</p>
+
+  <table class="score-table">
+    <thead>
+      <tr><th>BOLT score</th><th>CO₂ tolerancija</th><th>Što znači</th></tr>
+    </thead>
+    <tbody>
+      <tr><td>&lt;10 sek</td><td>Kritično niska</td><td>Kronična hiperventilacija, moguća anksioznost, loš san</td></tr>
+      <tr><td>10–20 sek</td><td>Niska</td><td>Funkcionalno ograničeno — tipično za odrasle s kroničnim stresom</td></tr>
+      <tr><td>20–30 sek</td><td>Umjerena</td><td>Prosjek — ima prostora za napredak</td></tr>
+      <tr><td>30–40 sek</td><td>Dobra</td><td>Funkcionalno zdravo disanje</td></tr>
+      <tr><td>&gt;40 sek</td><td>Odlična</td><td>Optimalna respiratorna efikasnost</td></tr>
+    </tbody>
+  </table>
+
+  <h2>Kako povećati CO₂ toleranciju</h2>
+
+  <h3>1. Nosno disanje — uvijek</h3>
+  <p>Nos zagrijava, vlači i filtrira zrak te <strong>smanjuje volumen udaha za 10–15%</strong> u odnosu na disanje na usta. Manji volumen = više CO₂ ostaje u tijelu = bolja tolerancija. Ako dišete na usta noću, počnite s tape metodom (lagana traka na usta dok spavate).</p>
+
+  <h3>2. Reducirano disanje (Buteyko metoda)</h3>
+  <p>Tehnika smanjivanja volumena daha: nakon normalnog izdaha, lagano usporite i smanjite sljedeći udah za 20–30%. Trebate osjetiti <strong>laganu žudnju za zrakom</strong> — to je znak da CO₂ raste i tolerancija se gradi. Radi 10–15 min dnevno.</p>
+
+  <h3>3. Breath holds u hodu</h3>
+  <p>Iza normalnog izdaha, zadržite dah i hodajte 10–15 koraka. Udahnite. Normirajte disanje 1–2 minute, zatim ponovite. Počnite s 5 ponavljanja, gradite do 10. Ovo brzo gradi CO₂ toleranciju jer kombinirate fizičku aktivnost (koja podiže CO₂) s voljnim zadržavanjem.</p>
+
+  <h3>4. Koherentno disanje na 5:5</h3>
+  <p>Udah 5 sekundi, izdah 5 sekundi = ~6 udaha u minuti. Smanjen volumen daha po ciklusu, optimizirana izmjena CO₂/O₂, direktna vagalna stimulacija. Radi 5–10 min ujutro.</p>
+
+  <div class="callout callout-warn">
+    <div class="callout-label">Važno upozorenje</div>
+    <p>Vježbe zadržavanja daha <strong>nisu preporučljive</strong> za osobe s nekontroliranom hipertenzijom, trudnice, osobe s epilepsijom ili u stanjima akutne anksioznosti/paničnih napada. Ako imate dvojbu — konzultirajte liječnika ili trenirajte s instruktorom.</p>
+  </div>
+
+  <h2>CO₂ tolerancija i anksioznost</h2>
+
+  <p>Postoji direktna biokemijska veza između CO₂ tolerancije i anksioznosti. Istraživanja pokazuju da su osobe s paničnim poremećajem <strong>4–8 puta osjetljivije na povišeni CO₂</strong> od osoba bez anksioznosti — mozak interpretira normalni porast CO₂ kao prijetnju i aktivira alarm. (Klein, 1993)</p>
+
+  <p>Ovo nije psihološka slabost. To je naučeni obrazac — i može se promijeniti. Sustavno izlaganje laganim povišenjima CO₂ (kroz reducirano disanje i breath holds) postupno resenzitizira sustav. Mozak uči da CO₂ nije prijetnja.</p>
+
+  <p>Ovo je razlog zašto breathwork nije samo relaksacija. To je <strong>terapeutski trening živčanog sustava</strong> s mjerljivim biokemijskim mehanizmom.</p>
+
+  <h2>Zaključak</h2>
+
+  <p>Kisik nije problem. Gotovo nitko u normalnoj atmosferi nema nedostatak kisika u krvi. Problem je tolerancija na CO₂ — i to je nešto što se može trenirati, mjeriti i poboljšati.</p>
+
+  <p>Kad jednom razumijete Bohr efekt i ulogu CO₂, cijela industrija "dišite dublje i bolje ćete se osjećati" dobiva sasvim novu dimenziju. Ponekad je odgovor: dišite <em>manje</em>.</p>
+
+  <p class="ref">Izvori: Bohr, C., Hasselbalch, K., & Krogh, A. (1904). Über einen in biologischer Beziehung wichtigen Einfluss. / McKeown, P. (2016). The Oxygen Advantage. William Morrow. / Klein, D.F. (1993). False suffocation alarms. Archives of General Psychiatry.</p>
+
+  <div class="related-links">
+    <p>Povezano čitanje</p>
+    <a href="bolt-test.html">BOLT test: izmjerite svoju CO₂ toleranciju →</a>
+    <a href="vagusni-zivac.html">Vagusni živac i disanje →</a>
+    <a href="disanje-za-stres.html">5 tehnika za akutni stres →</a>
+  </div>
+
+  <div class="article-cta">
+    <div class="cta-title">Izgradite CO₂ toleranciju uz vođenu praksu</div>
+    <div class="cta-sub">Razumjeti biokemiju je prvi korak. Primijeniti je — to je drugi.<br>Autoškola za živčani sustav vodi vas kroz protokole koji rade.</div>
+    <a href="../quiz.html" class="btn-cta">Otkrij koji tip disača si →</a>
+    <a href="../index.html#autoskola" class="btn-cta btn-cta-outline">Autoškola HOD</a>
+  </div>
+</main>
+
+<footer>
+  <div class="footer-logo">DUH<span>O</span>DAH</div>
+  <div class="footer-text">© 2026 Duhodah · Autoškola za živčani sustav · Osijek, Hrvatska · duhodah.com</div>
+</footer>
+</body>
+</html>

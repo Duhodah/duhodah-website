@@ -1,0 +1,215 @@
+<!DOCTYPE html>
+<html lang="hr">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>BOLT test — izmjerite zdravlje svog disanja za 2 minute | Duhodah</title>
+  <meta name="description" content="Što je BOLT test (Body Oxygen Level Test) i kako ga napraviti? Patrick McKeown razvio ga je kao pouzdan indikator CO₂ tolerancije i funkcionalnog disanja. Napravi ga odmah.">
+  <meta property="og:title" content="BOLT test: izmjerite zdravlje svog disanja za 2 minute">
+  <meta property="og:description" content="Jedan broj koji otkriva koliko je tvoje disanje funkcionalno. Patrick McKeown razvio ga je kao pouzdan indikator CO₂ tolerancije.">
+  <meta property="og:url" content="https://duhodah.com/articles/bolt-test.html">
+  <link rel="icon" type="image/jpeg" href="../images/duhodah-logo.jpg">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Jura:wght@300;400;500;600;700&family=Montserrat:wght@300;400;500;600;700&family=Inter:wght@300;400;500&display=swap" rel="stylesheet">
+  <style>
+    :root{--black:#08081a;--dark:#0d0d22;--navy:#15154d;--purple:#540280;--cyan:#04ffff;--cyan-soft:#a5ffff;--magenta:#d702f1;--pink:#e488d1;--steel:#aad0e4;--periwinkle:#9aabd8;--white:#ffffff;--white-soft:#e8eeff;--grey:#c8cfe0;--font-brand:'Montserrat',sans-serif;--font-head:'Jura',sans-serif;--font-body:'Inter',sans-serif;--glow-cyan:0 0 30px rgba(4,255,255,0.4),0 0 60px rgba(4,255,255,0.2)}
+    *,*::before,*::after{margin:0;padding:0;box-sizing:border-box}html{scroll-behavior:smooth;font-size:16px}
+    body{background:var(--black);color:var(--white-soft);font-family:var(--font-body);font-weight:300;line-height:1.7;overflow-x:hidden}a{color:inherit;text-decoration:none}
+    nav{position:fixed;top:0;left:0;right:0;z-index:100;padding:1.2rem 5%;display:flex;align-items:center;justify-content:space-between;background:rgba(8,8,26,0.9);backdrop-filter:blur(16px);border-bottom:1px solid rgba(4,255,255,0.07)}
+    .nav-logo{font-family:var(--font-brand);font-size:1rem;font-weight:700;letter-spacing:0.3em;color:var(--white)}.nav-logo span{color:var(--cyan)}
+    .nav-back{font-family:var(--font-brand);font-size:0.62rem;letter-spacing:0.2em;text-transform:uppercase;color:var(--steel);transition:color 0.3s}.nav-back:hover{color:var(--cyan)}
+    main{padding-top:90px;max-width:760px;margin:0 auto;padding-left:5%;padding-right:5%;padding-bottom:5rem}
+    .article-cat{font-family:var(--font-brand);font-size:0.6rem;font-weight:600;letter-spacing:0.4em;text-transform:uppercase;color:var(--cyan);margin-bottom:1rem;display:block;margin-top:2.5rem}
+    h1{font-family:var(--font-head);font-size:clamp(1.8rem,4.5vw,3rem);font-weight:400;color:var(--white);line-height:1.2;margin-bottom:1.2rem}
+    .article-meta{display:flex;gap:1.2rem;flex-wrap:wrap;margin-bottom:2rem;padding-bottom:1.5rem;border-bottom:1px solid rgba(255,255,255,0.07)}
+    .meta-item{font-family:var(--font-brand);font-size:0.58rem;letter-spacing:0.15em;text-transform:uppercase;color:rgba(255,255,255,0.35)}
+    .article-lead{font-size:1.1rem;color:rgba(255,255,255,0.65);line-height:1.8;margin-bottom:2.5rem;font-weight:300}
+    h2{font-family:var(--font-head);font-size:1.5rem;font-weight:400;color:var(--white);margin:2.5rem 0 1rem;line-height:1.3}
+    h3{font-family:var(--font-head);font-size:1.1rem;font-weight:400;color:var(--cyan-soft);margin:1.8rem 0 0.6rem}
+    p{margin-bottom:1.2rem;color:rgba(255,255,255,0.65);font-size:0.97rem;line-height:1.8}
+    strong{color:var(--white-soft);font-weight:500}em{color:var(--steel)}
+    .callout{background:rgba(4,255,255,0.05);border-left:3px solid var(--cyan);padding:1.4rem 1.8rem;margin:2rem 0}
+    .callout p{margin:0;color:rgba(255,255,255,0.75)}.callout-label{font-family:var(--font-brand);font-size:0.55rem;letter-spacing:0.25em;text-transform:uppercase;color:var(--cyan);margin-bottom:0.5rem}
+    .steps-list{list-style:none;margin:1.5rem 0;counter-reset:steps}
+    .steps-list li{counter-increment:steps;display:flex;gap:1rem;align-items:flex-start;margin-bottom:1rem;padding:1rem 1.2rem;border:1px solid rgba(4,255,255,0.1);background:rgba(4,255,255,0.02)}
+    .steps-list li::before{content:counter(steps);font-family:var(--font-head);font-size:1.2rem;color:var(--cyan);flex-shrink:0;min-width:24px}
+    .steps-list li p{margin:0;font-size:0.9rem}
+    .score-table{width:100%;border-collapse:collapse;margin:1.5rem 0}
+    .score-table th,.score-table td{padding:0.8rem 1rem;text-align:left;border-bottom:1px solid rgba(255,255,255,0.07);font-size:0.88rem}
+    .score-table th{font-family:var(--font-brand);font-size:0.6rem;letter-spacing:0.2em;text-transform:uppercase;color:var(--grey);background:rgba(255,255,255,0.03)}
+    .score-table td:first-child{font-family:var(--font-head);font-size:1.1rem;color:var(--cyan)}
+    .ref{font-size:0.8rem;color:rgba(255,255,255,0.3);font-style:italic;margin-top:0.3rem}
+    .article-cta{margin:3rem 0;padding:2.5rem;background:linear-gradient(135deg,rgba(4,255,255,0.05),rgba(84,2,128,0.1));border:1px solid rgba(4,255,255,0.15);text-align:center}
+    .cta-title{font-family:var(--font-head);font-size:1.4rem;color:var(--white);margin-bottom:0.6rem}
+    .cta-sub{font-size:0.9rem;color:rgba(255,255,255,0.5);margin-bottom:1.5rem;line-height:1.7}
+    .btn-cta{display:inline-block;font-family:var(--font-brand);font-size:0.72rem;font-weight:600;letter-spacing:0.2em;text-transform:uppercase;color:var(--black);background:var(--cyan);padding:1rem 2.5rem;transition:box-shadow 0.3s,transform 0.2s;margin-right:0.8rem;margin-bottom:0.5rem}
+    .btn-cta:hover{box-shadow:var(--glow-cyan);transform:translateY(-2px)}
+    .breadcrumb{font-family:var(--font-brand);font-size:0.58rem;letter-spacing:0.15em;text-transform:uppercase;color:rgba(255,255,255,0.3);margin-top:2rem;margin-bottom:0.5rem}
+    .breadcrumb a{color:rgba(255,255,255,0.4)}.breadcrumb a:hover{color:var(--cyan)}
+    footer{border-top:1px solid rgba(255,255,255,0.05);padding:2.5rem 5%;text-align:center;margin-top:5rem}
+    /* BOLT interactive */
+    .bolt-timer{text-align:center;padding:2rem;border:1px solid rgba(4,255,255,0.2);background:rgba(4,255,255,0.03);margin:2rem 0}
+    .bolt-score-display{font-family:var(--font-head);font-size:4rem;color:var(--cyan);margin:1rem 0;min-height:64px}
+    .bolt-status{font-family:var(--font-brand);font-size:0.65rem;letter-spacing:0.2em;text-transform:uppercase;color:rgba(255,255,255,0.5);min-height:1.5em}
+    .bolt-btn{font-family:var(--font-brand);font-size:0.72rem;font-weight:600;letter-spacing:0.2em;text-transform:uppercase;border:none;padding:0.9rem 2.5rem;cursor:pointer;transition:all 0.3s;margin:0.3rem}
+    .bolt-btn-start{background:var(--cyan);color:var(--black)}.bolt-btn-start:hover{box-shadow:var(--glow-cyan)}
+    .bolt-btn-stop{background:transparent;color:var(--cyan);border:1px solid rgba(4,255,255,0.4)}.bolt-btn-stop:hover{background:rgba(4,255,255,0.1)}
+    .bolt-btn-reset{background:transparent;color:rgba(255,255,255,0.3);border:1px solid rgba(255,255,255,0.1)}.bolt-btn-reset:hover{color:var(--white-soft)}
+    .bolt-result-msg{font-size:0.9rem;color:var(--cyan-soft);margin-top:1rem;padding:1rem;background:rgba(4,255,255,0.05);display:none;line-height:1.6}
+  </style>
+</head>
+<body>
+<nav>
+  <a href="../index.html" class="nav-logo">DUH<span>O</span>DAH</a>
+  <a href="../blog.html" class="nav-back">← Svi članci</a>
+</nav>
+
+<main>
+  <p class="breadcrumb"><a href="../index.html">Duhodah</a> › <a href="../blog.html">Blog</a> › BOLT test</p>
+  <span class="article-cat">Mehanizam · 5 min čitanja</span>
+  <h1>BOLT test: izmjerite zdravlje svog disanja za 2 minute</h1>
+  <div class="article-meta">
+    <span class="meta-item">Autor: Erni · Duhodah</span>
+    <span class="meta-item">Teme: BOLT · CO₂ tolerancija · Buteyko · McKeown</span>
+    <span class="meta-item">Izvor: McKeown (2016), The Oxygen Advantage</span>
+  </div>
+
+  <p class="article-lead">Postoji jedan broj koji pouzdano govori koliko funkcionalno dišeš — i možeš ga izmjeriti za manje od dvije minute, s jednim prstom na nos. Zove se BOLT score, razvio ga je Patrick McKeown, i ne mjeri koliko dugo možeš zadržati dah. Mjeri nešto važnije: koliko je tvoje tijelo tolerantno na CO₂.</p>
+
+  <h2>Što je BOLT test?</h2>
+  <p>BOLT (Body Oxygen Level Test) je mjera CO₂ tolerancije — ne maksimalnog kapaciteta zadržavanja daha, nego točke pri kojoj tijelo počinje slati signal "trebam disati."</p>
+  <p>Patrick McKeown razvio ga je kao praktični alat u okviru Buteyko metode i popularizirao u knjizi <em>The Oxygen Advantage</em> (2016). Test je jednostavan, neinvazivan, i korelira s nizom zdravstvenih pokazatelja: HRV-om, sportskim performansom, kvalitetom sna i razinom kronične anksioznosti.</p>
+
+  <div class="callout">
+    <p class="callout-label">Važna napomena</p>
+    <p>BOLT test <strong>nije natjecanje</strong>. Cilj nije zadržati što dulje — cilj je zamijetiti prvu nesumnjivu potrebu za udahom. Forsiranje rezultata daje bezvrijedne podatke.</p>
+  </div>
+
+  <h2>Kako napraviti BOLT test — korak po korak</h2>
+
+  <ul class="steps-list">
+    <li><p><strong>Sjedi mirno 5–10 minuta.</strong> Bez razgovora, bez kretanja. Daj tijelu da dosegne normalan, opušten ritam disanja.</p></li>
+    <li><p><strong>Uzmi normalan, tihi izdah kroz nos.</strong> Ne dubok, ne forsiran — onakav izdah kakav bi sam po sebi nastupio. Zatim zatvori nos prstom.</p></li>
+    <li><p><strong>Startaj štopericu.</strong></p></li>
+    <li><p><strong>Zadrži dah do prve jasne potrebe za udahom.</strong> To je trenutak kad osjećaš prvi nelagodni signal u grlu, dijafragmi ili trbuhu — ne maksimalna nelagoda, nego prva. Zaustavi štopericu.</p></li>
+    <li><p><strong>Nastavi normalno disati.</strong> Ako ti je trebao dubok udah, čekao/la si predugo.</p></li>
+  </ul>
+
+  <p>Broj sekundi koji si izmjerio/la — to je tvoj BOLT score.</p>
+
+  <h2>Što tvoj rezultat znači</h2>
+
+  <table class="score-table">
+    <thead>
+      <tr><th>BOLT score</th><th>Interpretacija</th><th>Tipični znaci</th></tr>
+    </thead>
+    <tbody>
+      <tr><td>&lt; 10s</td><td>Kritično nisko</td><td>Kronični umor, česta tjeskoba, loš san, česte infekcije</td></tr>
+      <tr><td>10–20s</td><td>Ispod optimalnog</td><td>Disanje na usta, plitki udasi, umor koji ne prolazi snom</td></tr>
+      <tr><td>20–30s</td><td>Prosječno</td><td>Funkcionira, ali daleko od punog potencijala</td></tr>
+      <tr><td>30–40s</td><td>Dobro</td><td>Dobar fizički kapacitet, stabilan ANS</td></tr>
+      <tr><td>&gt; 40s</td><td>Izvrsno</td><td>Visoka CO₂ tolerancija, optimalna izmjena plinova</td></tr>
+    </tbody>
+  </table>
+
+  <p>Prema McKeownu, <strong>većina odraslih koji pate od kroničnog stresa ima BOLT score ispod 25 sekundi</strong>. Cilj za funkcionalno zdravlje je 40 sekundi.</p>
+  <p class="ref">Referenca: McKeown P. (2016). The Oxygen Advantage. William Morrow Paperbacks. Poglavlja 2–3.</p>
+
+  <h2>Napravi BOLT test odmah — interaktivni timer</h2>
+
+  <div class="bolt-timer">
+    <p style="font-family:var(--font-brand);font-size:0.6rem;letter-spacing:0.3em;text-transform:uppercase;color:var(--cyan);margin-bottom:0.5rem">BOLT Timer</p>
+    <p style="font-size:0.85rem;color:rgba(255,255,255,0.5);margin-bottom:1rem">Sjedi mirno 1 minutu → normalan izdah kroz nos → zatvori nos → klikni Start → zaustavi čim osjećaš prvu potrebu za dahom</p>
+    <div class="bolt-score-display" id="bolt-display">– –</div>
+    <div class="bolt-status" id="bolt-status">Spreman/a?</div>
+    <div style="margin-top:1rem">
+      <button class="bolt-btn bolt-btn-start" id="bolt-start" onclick="boltStart()">▶ Start</button>
+      <button class="bolt-btn bolt-btn-stop" id="bolt-stop" onclick="boltStop()" style="display:none">■ Zaustavi</button>
+      <button class="bolt-btn bolt-btn-reset" id="bolt-reset" onclick="boltReset()" style="display:none">↺ Ponovi</button>
+    </div>
+    <div class="bolt-result-msg" id="bolt-result"></div>
+  </div>
+
+  <h2>Zašto CO₂ tolerancija — a ne kisik?</h2>
+  <p>Intuitivno bi se reklo: "Više kisika = bolje." Ali to je pogrešno razumijevanje fiziologije.</p>
+  <p>CO₂ nije samo "otpadni plin" koji trebamo izbaciti. CO₂ je <strong>primarni trigger za oslobađanje kisika iz hemoglobina prema stanicama</strong> — to je Bohrov efekt, otkriven 1904. Bez dovoljno CO₂, kisik ostaje vezan na hemoglobin i ne ulazi u stanice kojima treba.</p>
+  <p>Kronični hiperventilatori (koji previše brzo i duboko dišu) imaju <strong>nisku razinu CO₂</strong> u krvi — i paradoksalno, unatoč dostatnom kisiku u plućima, njihove stanice dobivaju manje. Otuda: magla, umor, trnci, anksioznost — klasični znaci hiperventilacije koji se pogrešno pripisuju "nedostatku kisika."</p>
+
+  <h2>Kako poboljšati BOLT score</h2>
+  <h3>1. Nasal breathing (disanje na nos) — uvijek</h3>
+  <p>Disanje na usta pri odmoru direktno smanjuje CO₂ toleranciju. Zatvaranje usta tapom za spavanje (medical mouth tape) je McKeownova preporuka za početak navike.</p>
+
+  <h3>2. Reduced breathing vježbe</h3>
+  <p>Dišeš nešto tiše i sporije nego što je tvoj impulz. Cilj je stvoriti blagu "glad za zrakom" — blagu, ugodnu, bez panike. To postepeno podiže toleranciju na CO₂.</p>
+
+  <h3>3. Breath holds pri hodanju</h3>
+  <p>McKeown preporučuje mini breath holds (5–10 sekundi) pri laganom hodanju. Repetitivno i sigurno simulira "altitude training" — stimulira produkciju EPO-a i adaptaciju na veći CO₂.</p>
+
+  <p>Prema McKeownovim podacima, konzistentna Buteyko praksa od 2–4 tjedna može poboljšati BOLT score za <strong>5–10 sekundi</strong>.</p>
+
+  <div class="article-cta">
+    <h2 class="cta-title">Znaš li koji ti je disajni obrazac?</h2>
+    <p class="cta-sub">BOLT test ti govori gdje si. Naš kviz ti otkriva <em>kako</em> dišeš i zašto — i daje ti prvu konkretnu vježbu za tvoj specifičan tip. Besplatno, 4 minute.</p>
+    <a href="../quiz.html" class="btn-cta">Napravi quiz →</a>
+  </div>
+
+  <h2>Daljnje čitanje</h2>
+  <ul style="list-style:none;margin:1rem 0">
+    <li style="margin-bottom:0.7rem"><a href="co2-tolerancija.html" style="color:var(--cyan)">→ CO₂ tolerancija — zašto je važnija od kisika</a></li>
+    <li style="margin-bottom:0.7rem"><a href="polyvagal-teorija.html" style="color:var(--cyan)">→ Polyvagal teorija: tri stanja živčanog sustava</a></li>
+    <li><a href="../znanje.html" style="color:var(--cyan)">→ Kompletna zbirka peer-reviewed istraživanja</a></li>
+  </ul>
+</main>
+
+<footer>
+  <p style="font-family:var(--font-brand);font-size:0.7rem;font-weight:700;letter-spacing:0.3em;color:var(--periwinkle)">DUH<span style="color:var(--cyan)">O</span>DAH</p>
+  <p style="font-family:var(--font-brand);font-size:0.55rem;letter-spacing:0.2em;text-transform:uppercase;color:rgba(255,255,255,0.2);margin-top:0.3rem">Autoškola za živčani sustav · Osijek</p>
+  <p style="margin-top:1rem;font-size:0.78rem;color:rgba(255,255,255,0.2)">© 2025 Duhodah · <a href="../blog.html" style="color:rgba(255,255,255,0.3)">← Svi članci</a></p>
+</footer>
+
+<script>
+let boltInterval, boltSeconds = 0, boltRunning = false;
+function boltStart() {
+  boltRunning = true;
+  boltSeconds = 0;
+  document.getElementById('bolt-display').textContent = '0';
+  document.getElementById('bolt-status').textContent = 'Zadržavaš dah... zaustavi na prvoj potrebi.';
+  document.getElementById('bolt-start').style.display = 'none';
+  document.getElementById('bolt-stop').style.display = 'inline-block';
+  document.getElementById('bolt-result').style.display = 'none';
+  boltInterval = setInterval(() => {
+    boltSeconds++;
+    document.getElementById('bolt-display').textContent = boltSeconds + 's';
+  }, 1000);
+}
+function boltStop() {
+  clearInterval(boltInterval);
+  boltRunning = false;
+  document.getElementById('bolt-stop').style.display = 'none';
+  document.getElementById('bolt-reset').style.display = 'inline-block';
+  const s = boltSeconds;
+  let msg = '';
+  if (s < 10) msg = `<strong>${s} sekundi</strong> — Kritično nisko. Kronična hiperventilacija. Počni s nasal breathing i laganim reduced breathing vježbama svaki dan.`;
+  else if (s < 20) msg = `<strong>${s} sekundi</strong> — Ispod optimalnog. Većina s kroničnim stresom je tu. 2–4 tjedna Buteyko prakse mijenja ovo značajno.`;
+  else if (s < 30) msg = `<strong>${s} sekundi</strong> — Prosječno. Funkcionira, ali nije optimalno. Cilj je 40 sekundi — dostižno u 4–8 tjedana.`;
+  else if (s < 40) msg = `<strong>${s} sekundi</strong> — Dobro. Solidna CO₂ tolerancija. Nastavak prakse vodi prema izvrsnima.`;
+  else msg = `<strong>${s} sekundi</strong> — Izvrsno. Visoka CO₂ tolerancija, optimalna izmjena plinova. Vrhunski sportaši i dugogodišnji meditatori su ovdje.`;
+  const r = document.getElementById('bolt-result');
+  r.innerHTML = msg;
+  r.style.display = 'block';
+  document.getElementById('bolt-status').textContent = 'Rezultat:';
+}
+function boltReset() {
+  clearInterval(boltInterval);
+  boltSeconds = 0; boltRunning = false;
+  document.getElementById('bolt-display').textContent = '– –';
+  document.getElementById('bolt-status').textContent = 'Spreman/a?';
+  document.getElementById('bolt-start').style.display = 'inline-block';
+  document.getElementById('bolt-stop').style.display = 'none';
+  document.getElementById('bolt-reset').style.display = 'none';
+  document.getElementById('bolt-result').style.display = 'none';
+}
+</script>
+</body>
+</html>

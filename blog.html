@@ -1,0 +1,360 @@
+<!DOCTYPE html>
+<html lang="hr">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Blog — Svjesno Disanje, Živčani Sustav, Breathwork | Duhodah</title>
+  <meta name="description" content="Edukativni članci o svjesnom disanju, autonomnom živčanom sustavu, Polyvagal teoriji i breathwork tehnikama. Neuroznanost bez woo-woo.">
+  <meta property="og:title" content="Blog — Duhodah | Svjesno Disanje i Živčani Sustav">
+  <meta property="og:description" content="Edukativni članci o svjesnom disanju, autonomnom živčanom sustavu i breathwork tehnikama.">
+  <meta property="og:url" content="https://duhodah.com/blog.html">
+  <link rel="icon" type="image/jpeg" href="images/duhodah-logo.jpg">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Jura:wght@300;400;500;600;700&family=Montserrat:wght@300;400;500;600;700&family=Inter:wght@300;400;500&display=swap" rel="stylesheet">
+  <style>
+    :root {
+      --black:#08081a; --dark:#0d0d22; --navy:#15154d; --purple:#540280;
+      --cyan:#04ffff; --cyan-soft:#a5ffff; --cyan-dim:rgba(4,255,255,0.1);
+      --magenta:#d702f1; --pink:#e488d1; --steel:#aad0e4; --periwinkle:#9aabd8;
+      --white:#ffffff; --white-soft:#e8eeff; --grey:#c8cfe0;
+      --font-brand:'Montserrat',sans-serif; --font-head:'Jura',sans-serif; --font-body:'Inter',sans-serif;
+      --glow-cyan:0 0 30px rgba(4,255,255,0.4),0 0 60px rgba(4,255,255,0.2);
+    }
+    *,*::before,*::after{margin:0;padding:0;box-sizing:border-box}
+    html{scroll-behavior:smooth;font-size:16px}
+    body{background:var(--black);color:var(--white-soft);font-family:var(--font-body);font-weight:300;line-height:1.7;overflow-x:hidden}
+    a{color:inherit;text-decoration:none}
+
+    nav{position:fixed;top:0;left:0;right:0;z-index:100;padding:1.2rem 5%;display:flex;align-items:center;justify-content:space-between;background:rgba(8,8,26,0.9);backdrop-filter:blur(16px);border-bottom:1px solid rgba(4,255,255,0.07)}
+    .nav-logo{font-family:var(--font-brand);font-size:1rem;font-weight:700;letter-spacing:0.3em;color:var(--white)}
+    .nav-logo span{color:var(--cyan)}
+    .nav-links{display:flex;gap:2rem;list-style:none}
+    .nav-links a{font-family:var(--font-brand);font-size:0.65rem;letter-spacing:0.2em;text-transform:uppercase;color:var(--steel);transition:color 0.3s}
+    .nav-links a:hover,.nav-links a.active{color:var(--cyan)}
+    .nav-cta{color:var(--black)!important;background:var(--cyan);padding:0.5rem 1.4rem;font-weight:600!important}
+
+    main{padding-top:90px}
+    .container{max-width:1100px;margin:0 auto;padding:0 5%}
+
+    /* HERO */
+    .blog-hero{padding:80px 0 60px;text-align:center;border-bottom:1px solid rgba(255,255,255,0.05)}
+    .blog-hero-label{font-family:var(--font-brand);font-size:0.65rem;font-weight:600;letter-spacing:0.4em;text-transform:uppercase;color:var(--cyan);margin-bottom:1rem}
+    .blog-hero-title{font-family:var(--font-head);font-size:clamp(2rem,5vw,3.5rem);color:var(--white);margin-bottom:1rem;line-height:1.2}
+    .blog-hero-sub{font-size:1rem;color:rgba(255,255,255,0.5);max-width:580px;margin:0 auto;line-height:1.8}
+
+    /* FILTER TABS */
+    .filter-wrap{padding:2rem 0;display:flex;gap:0.6rem;flex-wrap:wrap}
+    .filter-btn{font-family:var(--font-brand);font-size:0.6rem;letter-spacing:0.2em;text-transform:uppercase;padding:0.5rem 1.2rem;border:1px solid rgba(255,255,255,0.12);background:transparent;color:var(--grey);cursor:pointer;transition:all 0.25s;border-radius:2px}
+    .filter-btn:hover,.filter-btn.active{border-color:var(--cyan);color:var(--cyan);background:rgba(4,255,255,0.05)}
+
+    /* GRID */
+    .articles-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(320px,1fr));gap:1.5rem;padding:2rem 0 5rem}
+
+    /* CARD */
+    .article-card{background:rgba(13,13,34,0.7);border:1px solid rgba(128,142,193,0.12);padding:0;overflow:hidden;transition:border-color 0.3s,transform 0.3s}
+    .article-card:hover{border-color:rgba(4,255,255,0.3);transform:translateY(-4px)}
+    .article-card.coming-soon{opacity:0.45;pointer-events:none}
+    .card-cat-bar{height:3px;background:var(--bar-color,var(--cyan))}
+    .card-body{padding:1.8rem}
+    .card-meta{display:flex;align-items:center;gap:0.8rem;margin-bottom:1rem}
+    .card-cat{font-family:var(--font-brand);font-size:0.55rem;letter-spacing:0.2em;text-transform:uppercase;color:var(--cat-color,var(--cyan))}
+    .card-dot{width:3px;height:3px;border-radius:50%;background:rgba(255,255,255,0.2);flex-shrink:0}
+    .card-read{font-family:var(--font-brand);font-size:0.55rem;letter-spacing:0.15em;text-transform:uppercase;color:rgba(255,255,255,0.3)}
+    .card-title{font-family:var(--font-head);font-size:1.15rem;color:var(--white);margin-bottom:0.8rem;line-height:1.35}
+    .card-excerpt{font-size:0.85rem;color:rgba(255,255,255,0.45);line-height:1.7;margin-bottom:1.5rem}
+    .card-link{font-family:var(--font-brand);font-size:0.62rem;letter-spacing:0.2em;text-transform:uppercase;color:var(--cyan);transition:opacity 0.2s}
+    .card-link:hover{opacity:0.7}
+    .card-soon-badge{font-family:var(--font-brand);font-size:0.55rem;letter-spacing:0.2em;text-transform:uppercase;color:rgba(255,255,255,0.3);border:1px solid rgba(255,255,255,0.1);padding:0.3rem 0.8rem;display:inline-block}
+
+    /* FEATURED */
+    .articles-grid .article-card.featured{grid-column:1/-1}
+    @media(min-width:700px){.article-card.featured .card-body{display:grid;grid-template-columns:1fr 1fr;gap:2rem;align-items:center}}
+    .article-card.featured .card-title{font-size:1.6rem}
+    .article-card.featured .card-excerpt{font-size:0.92rem}
+
+    /* NEWSLETTER */
+    .nl-banner{margin:0 0 4rem;padding:3rem;background:linear-gradient(135deg,rgba(4,255,255,0.05),rgba(84,2,128,0.1));border:1px solid rgba(4,255,255,0.15);text-align:center}
+    .nl-title{font-family:var(--font-head);font-size:1.5rem;color:var(--white);margin-bottom:0.6rem}
+    .nl-sub{font-size:0.9rem;color:rgba(255,255,255,0.5);margin-bottom:1.5rem}
+    .nl-form{display:flex;gap:0.8rem;justify-content:center;flex-wrap:wrap}
+    .nl-input{flex:1;min-width:220px;max-width:360px;background:rgba(255,255,255,0.05);border:1px solid rgba(255,255,255,0.15);padding:0.85rem 1.2rem;color:var(--white);font-family:var(--font-body);font-size:0.9rem;outline:none}
+    .nl-input::placeholder{color:rgba(255,255,255,0.3)}
+    .nl-btn{font-family:var(--font-brand);font-size:0.7rem;font-weight:600;letter-spacing:0.2em;text-transform:uppercase;background:var(--cyan);color:var(--black);border:none;padding:0.85rem 2rem;cursor:pointer;transition:box-shadow 0.3s}
+    .nl-btn:hover{box-shadow:var(--glow-cyan)}
+
+    @media(max-width:600px){.nav-links{display:none}.articles-grid{grid-template-columns:1fr}}
+  </style>
+</head>
+<body>
+
+<nav>
+  <a href="index.html" class="nav-logo">DUH<span>O</span>DAH</a>
+  <ul class="nav-links">
+    <li><a href="index.html#autoskola">Autoškola</a></li>
+    <li><a href="index.html#cijenik">Cijenik</a></li>
+    <li><a href="quiz.html">Quiz</a></li>
+    <li><a href="znanje.html">Znanost</a></li>
+    <li><a href="blog.html" class="active">Blog</a></li>
+    <li><a href="index.html#events" class="nav-cta">Rezerviraj</a></li>
+  </ul>
+</nav>
+
+<main>
+  <div class="container">
+
+    <div class="blog-hero">
+      <p class="blog-hero-label">Duhodah · Znanje</p>
+      <h1 class="blog-hero-title">Svjesno disanje,<br>neuroznanost, praksa.</h1>
+      <p class="blog-hero-sub">Edukativni članci o autonomnom živčanom sustavu, breathwork tehnikama i fiziologiji stresa. Sve temeljeno na peer-reviewed istraživanjima — bez woo-woo.</p>
+    </div>
+
+    <div class="filter-wrap">
+      <button class="filter-btn active" onclick="filterCards('sve',this)">Sve</button>
+      <button class="filter-btn" onclick="filterCards('mehanizam',this)">Mehanizam</button>
+      <button class="filter-btn" onclick="filterCards('dokazi',this)">Dokazi</button>
+      <button class="filter-btn" onclick="filterCards('praksa',this)">Praksa</button>
+      <button class="filter-btn" onclick="filterCards('situacije',this)">Situacije</button>
+    </div>
+
+    <div class="articles-grid" id="grid">
+
+      <!-- ── FEATURED ── -->
+      <a href="articles/polyvagal-teorija.html" class="article-card featured" data-cat="mehanizam">
+        <div class="card-cat-bar" style="--bar-color:var(--cyan)"></div>
+        <div class="card-body">
+          <div>
+            <div class="card-meta">
+              <span class="card-cat" style="--cat-color:var(--cyan)">Mehanizam</span>
+              <div class="card-dot"></div>
+              <span class="card-read">8 min čitanja</span>
+            </div>
+            <h2 class="card-title">Polyvagal teorija: tri stanja živčanog sustava koja upravljaju vašim životom</h2>
+            <p class="card-excerpt">Zašto u istoj situaciji netko ostaje smiren, netko eksplodira, a netko se potpuno izgubi? Stephen Porges otkrio je da autonomni živčani sustav nema samo dva stanja — nego tri. Razumijevanje ove razlike mijenja sve.</p>
+          </div>
+          <div>
+            <span class="card-link">Pročitaj cijeli članak →</span>
+          </div>
+        </div>
+      </a>
+
+      <!-- ── MEHANIZAM ── -->
+      <a href="articles/bolt-test.html" class="article-card" data-cat="mehanizam">
+        <div class="card-cat-bar" style="--bar-color:var(--cyan)"></div>
+        <div class="card-body">
+          <div class="card-meta">
+            <span class="card-cat" style="--cat-color:var(--cyan)">Mehanizam</span>
+            <div class="card-dot"></div>
+            <span class="card-read">5 min čitanja</span>
+          </div>
+          <h2 class="card-title">BOLT test: izmjerite zdravlje svog disanja za 2 minute</h2>
+          <p class="card-excerpt">Body Oxygen Level Test je jednostavan test koji otkriva koliko je tvoje disanje funkcionalno. Patrick McKeown razvio ga je kao pouzdan indikator CO₂ tolerancije — i možeš ga napraviti odmah.</p>
+          <span class="card-link">Pročitaj →</span>
+        </div>
+      </a>
+
+      <a href="articles/vagusni-zivac.html" class="article-card" data-cat="mehanizam">
+        <div class="card-cat-bar" style="--bar-color:var(--cyan)"></div>
+        <div class="card-body">
+          <div class="card-meta">
+            <span class="card-cat" style="--cat-color:var(--cyan)">Mehanizam</span>
+            <div class="card-dot"></div>
+            <span class="card-read">7 min čitanja</span>
+          </div>
+          <h2 class="card-title">Vagusni živac: što je i kako ga aktivirati svjesnim disanjem</h2>
+          <p class="card-excerpt">Najduži živac u tijelu — i jedini direktni put između mozga i organa. Razumjeti vagusni živac znači razumjeti zašto disanje funkcionira brže od bilo kojeg drugog alata za stres.</p>
+          <span class="card-link">Pročitaj →</span>
+        </div>
+      </a>
+
+      <a href="articles/co2-tolerancija.html" class="article-card" data-cat="mehanizam">
+        <div class="card-cat-bar" style="--bar-color:var(--cyan)"></div>
+        <div class="card-body">
+          <div class="card-meta">
+            <span class="card-cat" style="--cat-color:var(--cyan)">Mehanizam</span>
+            <div class="card-dot"></div>
+            <span class="card-read">6 min čitanja</span>
+          </div>
+          <h2 class="card-title">CO₂ tolerancija — zašto je važnija od kisika</h2>
+          <p class="card-excerpt">Paradoks disanja: možeš imati previše kisika i premalo ga dobivati stanicama. CO₂ nije otpadni plin — to je signal koji kontrolira gdje kisik ide. Buteyko metoda to je znala 60 godina prije mainstream medicine.</p>
+          <span class="card-link">Pročitaj →</span>
+        </div>
+      </a>
+
+      <!-- ── COMING SOON: MEHANIZAM ── -->
+      <div class="article-card coming-soon" data-cat="mehanizam">
+        <div class="card-cat-bar" style="--bar-color:rgba(4,255,255,0.3)"></div>
+        <div class="card-body">
+          <div class="card-meta">
+            <span class="card-cat" style="--cat-color:rgba(4,255,255,0.4)">Mehanizam</span>
+          </div>
+          <h2 class="card-title">Što je živčani sustav i zašto vam to mijenja sve</h2>
+          <p class="card-excerpt">Osnove autonomnog živčanog sustava — simpatikus, parasimpatikus i zašto je homeostaza mit.</p>
+          <span class="card-soon-badge">Uskoro</span>
+        </div>
+      </div>
+
+      <!-- ── PRAKSA ── -->
+      <a href="articles/disanje-za-stres.html" class="article-card" data-cat="praksa">
+        <div class="card-cat-bar" style="--bar-color:var(--magenta)"></div>
+        <div class="card-body">
+          <div class="card-meta">
+            <span class="card-cat" style="--cat-color:var(--magenta)">Praksa</span>
+            <div class="card-dot"></div>
+            <span class="card-read">6 min čitanja</span>
+          </div>
+          <h2 class="card-title">5 tehnika disanja za akutni stres koje djeluju odmah</h2>
+          <p class="card-excerpt">Ne generičko "duboko diši" — konkretni protokoli s trajanjem, omjerima i neurobiološkim mehanizmom. Svaka tehnika rješava drugačiji tip stresne reakcije.</p>
+          <span class="card-link">Pročitaj →</span>
+        </div>
+      </a>
+
+      <!-- ── COMING SOON: PRAKSA ── -->
+      <div class="article-card coming-soon" data-cat="praksa">
+        <div class="card-cat-bar" style="--bar-color:rgba(215,2,241,0.3)"></div>
+        <div class="card-body">
+          <div class="card-meta"><span class="card-cat" style="--cat-color:rgba(215,2,241,0.4)">Praksa</span></div>
+          <h2 class="card-title">Jutarnja rutina disanja: 7 minuta koje mijenjaju dan</h2>
+          <p class="card-excerpt">Protokol koji možeš početi sutra ujutro — bez opreme, bez posebnog mjesta.</p>
+          <span class="card-soon-badge">Uskoro</span>
+        </div>
+      </div>
+
+      <div class="article-card coming-soon" data-cat="praksa">
+        <div class="card-cat-bar" style="--bar-color:rgba(215,2,241,0.3)"></div>
+        <div class="card-body">
+          <div class="card-meta"><span class="card-cat" style="--cat-color:rgba(215,2,241,0.4)">Praksa</span></div>
+          <h2 class="card-title">Box breathing: vojnička tehnika za svakodnevni stres</h2>
+          <p class="card-excerpt">Zašto je 4-4-4-4 ritmom US Navy SEALsi ušli u borbu. I zašto funkcionira u uredu.</p>
+          <span class="card-soon-badge">Uskoro</span>
+        </div>
+      </div>
+
+      <div class="article-card coming-soon" data-cat="praksa">
+        <div class="card-cat-bar" style="--bar-color:rgba(215,2,241,0.3)"></div>
+        <div class="card-body">
+          <div class="card-meta"><span class="card-cat" style="--cat-color:rgba(215,2,241,0.4)">Praksa</span></div>
+          <h2 class="card-title">Disanje za bolji san: protokoli koji funkcioniraju</h2>
+          <p class="card-excerpt">Zašto ne možeš ugasiti misli u krevetu — i što s tim konkretno napraviti dahom.</p>
+          <span class="card-soon-badge">Uskoro</span>
+        </div>
+      </div>
+
+      <!-- ── COMING SOON: DOKAZI ── -->
+      <div class="article-card coming-soon" data-cat="dokazi">
+        <div class="card-cat-bar" style="--bar-color:rgba(154,171,216,0.3)"></div>
+        <div class="card-body">
+          <div class="card-meta"><span class="card-cat" style="--cat-color:rgba(154,171,216,0.5)">Dokazi</span></div>
+          <h2 class="card-title">Koherentno disanje i HRV — mjera stresne otpornosti</h2>
+          <p class="card-excerpt">Što je varijabilnost srčanog ritma i zašto 5.5 udisaja u minuti maksimizira vagalni tonus.</p>
+          <span class="card-soon-badge">Uskoro</span>
+        </div>
+      </div>
+
+      <div class="article-card coming-soon" data-cat="dokazi">
+        <div class="card-cat-bar" style="--bar-color:rgba(154,171,216,0.3)"></div>
+        <div class="card-body">
+          <div class="card-meta"><span class="card-cat" style="--cat-color:rgba(154,171,216,0.5)">Dokazi</span></div>
+          <h2 class="card-title">Neuroznanost stresa: što kortizol radi vašem tijelu godinu dana</h2>
+          <p class="card-excerpt">Kronični kortizol nije stres koji prolazi — to je stres koji mijenja arhitekturu mozga.</p>
+          <span class="card-soon-badge">Uskoro</span>
+        </div>
+      </div>
+
+      <div class="article-card coming-soon" data-cat="dokazi">
+        <div class="card-cat-bar" style="--bar-color:rgba(154,171,216,0.3)"></div>
+        <div class="card-body">
+          <div class="card-meta"><span class="card-cat" style="--cat-color:rgba(154,171,216,0.5)">Dokazi</span></div>
+          <h2 class="card-title">Buteyko metoda: zašto manje disanja znači bolje zdravlje</h2>
+          <p class="card-excerpt">Konstantin Buteyko je 1950ih tvrdio da kronična hiperventilacija uzrokuje astmu, anksioznost i nespavanje. Istraživanja su ga potvrdila.</p>
+          <span class="card-soon-badge">Uskoro</span>
+        </div>
+      </div>
+
+      <div class="article-card coming-soon" data-cat="dokazi">
+        <div class="card-cat-bar" style="--bar-color:rgba(154,171,216,0.3)"></div>
+        <div class="card-body">
+          <div class="card-meta"><span class="card-cat" style="--cat-color:rgba(154,171,216,0.5)">Dokazi</span></div>
+          <h2 class="card-title">Zašto je nasal breathing toliko važan</h2>
+          <p class="card-excerpt">Nosno disanje filtrira, grije, ovlažuje, proizvodi NO — i aktivno regulira aktivnost mozga. 34+ fizioloških prednosti.</p>
+          <span class="card-soon-badge">Uskoro</span>
+        </div>
+      </div>
+
+      <!-- ── COMING SOON: SITUACIJE ── -->
+      <div class="article-card coming-soon" data-cat="situacije">
+        <div class="card-cat-bar" style="--bar-color:rgba(228,136,209,0.3)"></div>
+        <div class="card-body">
+          <div class="card-meta"><span class="card-cat" style="--cat-color:rgba(228,136,209,0.5)">Situacije</span></div>
+          <h2 class="card-title">Breathwork za anksioznost — što radi i što ne radi</h2>
+          <p class="card-excerpt">Nije sve disanje jednako za anksioznost. Neke tehnike pogoršavaju — ovdje je zašto i što napraviti umjesto toga.</p>
+          <span class="card-soon-badge">Uskoro</span>
+        </div>
+      </div>
+
+      <div class="article-card coming-soon" data-cat="situacije">
+        <div class="card-cat-bar" style="--bar-color:rgba(228,136,209,0.3)"></div>
+        <div class="card-body">
+          <div class="card-meta"><span class="card-cat" style="--cat-color:rgba(228,136,209,0.5)">Situacije</span></div>
+          <h2 class="card-title">Disanje na radnom mjestu — što raditi za stolom</h2>
+          <p class="card-excerpt">Diskretne tehnike koje možeš primijeniti u uredu, između meetinga, za laptopom — bez da itko primijeti.</p>
+          <span class="card-soon-badge">Uskoro</span>
+        </div>
+      </div>
+
+      <div class="article-card coming-soon" data-cat="situacije">
+        <div class="card-cat-bar" style="--bar-color:rgba(228,136,209,0.3)"></div>
+        <div class="card-body">
+          <div class="card-meta"><span class="card-cat" style="--cat-color:rgba(228,136,209,0.5)">Situacije</span></div>
+          <h2 class="card-title">Disanje i trauma — što je somatski pristup</h2>
+          <p class="card-excerpt">Peter Levine i Bessel van der Kolk: zašto je trauma pohranjena u tijelu i kako breathwork pomaže osloboditi je sigurno.</p>
+          <span class="card-soon-badge">Uskoro</span>
+        </div>
+      </div>
+
+    </div><!-- /grid -->
+
+    <!-- NEWSLETTER BANNER -->
+    <div class="nl-banner">
+      <h2 class="nl-title">Novi članci svaki tjedan.</h2>
+      <p class="nl-sub">Prijavi se i dobivaj svježe uvide o disanju, živčanom sustavu i praksi — direktno u inbox. Bez spama.</p>
+      <form class="nl-form" onsubmit="submitNL(event)">
+        <input type="email" class="nl-input" placeholder="tvoj@email.com" required id="nl-email">
+        <button type="submit" class="nl-btn">Prijavi se →</button>
+      </form>
+      <p id="nl-msg" style="margin-top:1rem;font-family:var(--font-brand);font-size:0.7rem;letter-spacing:0.15em;color:var(--cyan);display:none">Odlično! Vidimo se u inboxu.</p>
+    </div>
+
+  </div>
+</main>
+
+<footer style="border-top:1px solid rgba(255,255,255,0.05);padding:2.5rem 5%;text-align:center;">
+  <p style="font-family:var(--font-brand);font-size:0.7rem;font-weight:700;letter-spacing:0.3em;color:var(--periwinkle);margin-bottom:0.3rem">DUH<span style="color:var(--cyan)">O</span>DAH</p>
+  <p style="font-family:var(--font-brand);font-size:0.55rem;letter-spacing:0.2em;text-transform:uppercase;color:rgba(255,255,255,0.2)">Autoškola za živčani sustav · Osijek</p>
+  <p style="margin-top:1rem;font-size:0.78rem;color:rgba(255,255,255,0.2)">© 2025 Duhodah · <a href="index.html" style="color:rgba(255,255,255,0.3)">Početna</a> · <a href="quiz.html" style="color:rgba(255,255,255,0.3)">Quiz</a> · <a href="znanje.html" style="color:rgba(255,255,255,0.3)">Znanost</a></p>
+</footer>
+
+<script>
+function filterCards(cat, btn) {
+  document.querySelectorAll('.filter-btn').forEach(b => b.classList.remove('active'));
+  btn.classList.add('active');
+  document.querySelectorAll('.article-card').forEach(card => {
+    if (cat === 'sve' || card.dataset.cat === cat) {
+      card.style.display = '';
+    } else {
+      card.style.display = 'none';
+    }
+  });
+}
+
+function submitNL(e) {
+  e.preventDefault();
+  const email = document.getElementById('nl-email').value;
+  document.getElementById('nl-msg').style.display = 'block';
+  e.target.style.display = 'none';
+  // TODO: connect to Mailchimp/Brevo API
+  console.log('Newsletter signup:', email);
+}
+</script>
+</body>
+</html>

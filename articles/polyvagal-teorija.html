@@ -1,0 +1,175 @@
+<!DOCTYPE html>
+<html lang="hr">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Polyvagal teorija: tri stanja živčanog sustava | Duhodah</title>
+  <meta name="description" content="Što je Polyvagal teorija i zašto mijenja razumijevanje stresa, anksioznosti i sigurnosti. Tri ANS stanja: Ventral Vagal, Simpatikus, Dorsal Vagal — i kako disanje prebacuje između njih.">
+  <meta property="og:title" content="Polyvagal teorija: tri stanja živčanog sustava koja upravljaju vašim životom">
+  <meta property="og:description" content="Stephen Porges otkrio je da autonomni živčani sustav nema dva stanja — nego tri. Razumijevanje ove razlike mijenja sve.">
+  <meta property="og:url" content="https://duhodah.com/articles/polyvagal-teorija.html">
+  <link rel="icon" type="image/jpeg" href="../images/duhodah-logo.jpg">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Jura:wght@300;400;500;600;700&family=Montserrat:wght@300;400;500;600;700&family=Inter:wght@300;400;500&display=swap" rel="stylesheet">
+  <style>
+    :root{--black:#08081a;--dark:#0d0d22;--navy:#15154d;--purple:#540280;--cyan:#04ffff;--cyan-soft:#a5ffff;--magenta:#d702f1;--pink:#e488d1;--steel:#aad0e4;--periwinkle:#9aabd8;--white:#ffffff;--white-soft:#e8eeff;--grey:#c8cfe0;--font-brand:'Montserrat',sans-serif;--font-head:'Jura',sans-serif;--font-body:'Inter',sans-serif;--glow-cyan:0 0 30px rgba(4,255,255,0.4),0 0 60px rgba(4,255,255,0.2)}
+    *,*::before,*::after{margin:0;padding:0;box-sizing:border-box}html{scroll-behavior:smooth;font-size:16px}
+    body{background:var(--black);color:var(--white-soft);font-family:var(--font-body);font-weight:300;line-height:1.7;overflow-x:hidden}
+    a{color:inherit;text-decoration:none}
+    nav{position:fixed;top:0;left:0;right:0;z-index:100;padding:1.2rem 5%;display:flex;align-items:center;justify-content:space-between;background:rgba(8,8,26,0.9);backdrop-filter:blur(16px);border-bottom:1px solid rgba(4,255,255,0.07)}
+    .nav-logo{font-family:var(--font-brand);font-size:1rem;font-weight:700;letter-spacing:0.3em;color:var(--white)}.nav-logo span{color:var(--cyan)}
+    .nav-back{font-family:var(--font-brand);font-size:0.62rem;letter-spacing:0.2em;text-transform:uppercase;color:var(--steel);transition:color 0.3s}.nav-back:hover{color:var(--cyan)}
+    main{padding-top:90px;max-width:760px;margin:0 auto;padding-left:5%;padding-right:5%}
+    .article-cat{font-family:var(--font-brand);font-size:0.6rem;font-weight:600;letter-spacing:0.4em;text-transform:uppercase;color:var(--cyan);margin-bottom:1rem;display:block;margin-top:2.5rem}
+    h1{font-family:var(--font-head);font-size:clamp(1.8rem,4.5vw,3rem);font-weight:400;color:var(--white);line-height:1.2;margin-bottom:1.2rem}
+    .article-meta{display:flex;gap:1.2rem;flex-wrap:wrap;margin-bottom:2rem;padding-bottom:1.5rem;border-bottom:1px solid rgba(255,255,255,0.07)}
+    .meta-item{font-family:var(--font-brand);font-size:0.58rem;letter-spacing:0.15em;text-transform:uppercase;color:rgba(255,255,255,0.35)}
+    .article-lead{font-size:1.1rem;color:rgba(255,255,255,0.65);line-height:1.8;margin-bottom:2.5rem;font-weight:300}
+    h2{font-family:var(--font-head);font-size:1.5rem;font-weight:400;color:var(--white);margin:2.5rem 0 1rem;line-height:1.3}
+    h3{font-family:var(--font-head);font-size:1.1rem;font-weight:400;color:var(--cyan-soft);margin:2rem 0 0.7rem}
+    p{margin-bottom:1.2rem;color:rgba(255,255,255,0.65);font-size:0.97rem;line-height:1.8}
+    strong{color:var(--white-soft);font-weight:500}
+    em{color:var(--steel)}
+    .callout{background:rgba(4,255,255,0.05);border-left:3px solid var(--cyan);padding:1.4rem 1.8rem;margin:2rem 0}
+    .callout p{margin:0;color:rgba(255,255,255,0.75)}
+    .callout-label{font-family:var(--font-brand);font-size:0.55rem;letter-spacing:0.25em;text-transform:uppercase;color:var(--cyan);margin-bottom:0.5rem}
+    .state-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(200px,1fr));gap:1rem;margin:2rem 0}
+    .state-card{padding:1.5rem;border:1px solid;border-radius:2px}
+    .state-card h3{margin:0 0 0.5rem;font-size:1rem}
+    .state-card p{margin:0;font-size:0.85rem;line-height:1.6}
+    .state-v{border-color:rgba(4,255,255,0.25);background:rgba(4,255,255,0.03)}.state-v h3{color:var(--cyan)}
+    .state-s{border-color:rgba(215,2,241,0.25);background:rgba(215,2,241,0.03)}.state-s h3{color:var(--pink)}
+    .state-d{border-color:rgba(154,171,216,0.2);background:rgba(154,171,216,0.02)}.state-d h3{color:var(--periwinkle)}
+    .ref{font-size:0.8rem;color:rgba(255,255,255,0.3);font-style:italic;margin-top:0.3rem}
+    .article-cta{margin:3rem 0;padding:2.5rem;background:linear-gradient(135deg,rgba(4,255,255,0.05),rgba(84,2,128,0.1));border:1px solid rgba(4,255,255,0.15);text-align:center}
+    .cta-title{font-family:var(--font-head);font-size:1.4rem;color:var(--white);margin-bottom:0.6rem}
+    .cta-sub{font-size:0.9rem;color:rgba(255,255,255,0.5);margin-bottom:1.5rem;line-height:1.7}
+    .btn-cta{display:inline-block;font-family:var(--font-brand);font-size:0.72rem;font-weight:600;letter-spacing:0.2em;text-transform:uppercase;color:var(--black);background:var(--cyan);padding:1rem 2.5rem;transition:box-shadow 0.3s,transform 0.2s;margin-right:0.8rem;margin-bottom:0.5rem}
+    .btn-cta:hover{box-shadow:var(--glow-cyan);transform:translateY(-2px)}
+    .btn-secondary-link{display:inline-block;font-family:var(--font-brand);font-size:0.72rem;letter-spacing:0.2em;text-transform:uppercase;color:var(--cyan);border:1px solid rgba(4,255,255,0.3);padding:1rem 2.5rem;transition:border-color 0.3s;margin-bottom:0.5rem}
+    .btn-secondary-link:hover{border-color:var(--cyan)}
+    .breadcrumb{font-family:var(--font-brand);font-size:0.58rem;letter-spacing:0.15em;text-transform:uppercase;color:rgba(255,255,255,0.3);margin-top:2rem;margin-bottom:0.5rem}
+    .breadcrumb a{color:rgba(255,255,255,0.4)}.breadcrumb a:hover{color:var(--cyan)}
+    footer{border-top:1px solid rgba(255,255,255,0.05);padding:2.5rem 5%;text-align:center;margin-top:5rem}
+  </style>
+</head>
+<body>
+<nav>
+  <a href="../index.html" class="nav-logo">DUH<span>O</span>DAH</a>
+  <a href="../blog.html" class="nav-back">← Svi članci</a>
+</nav>
+
+<main>
+  <p class="breadcrumb"><a href="../index.html">Duhodah</a> › <a href="../blog.html">Blog</a> › Polyvagal teorija</p>
+  <span class="article-cat">Mehanizam · 8 min čitanja</span>
+  <h1>Polyvagal teorija: tri stanja živčanog sustava koja upravljaju vašim životom</h1>
+  <div class="article-meta">
+    <span class="meta-item">Autor: Erni · Duhodah</span>
+    <span class="meta-item">Teme: ANS · Stres · Polyvagal · Disanje</span>
+    <span class="meta-item">Izvori: Porges (1994), Dana (2018)</span>
+  </div>
+
+  <p class="article-lead">Zašto u istoj situaciji netko ostaje smiren, netko eksplodira, a netko se potpuno izgubi i ne može ni govoriti? Odgovor nije karakter. Nije snaga volje. To je biologija — i Stephen Porges ju je precizno opisao 1994. godine u teoriji koja je promijenila kliničku psihologiju, terapiju traume i razumijevanje stresa.</p>
+
+  <h2>Što je Polyvagal teorija?</h2>
+  <p>Do 1994. medicina je učila da autonomni živčani sustav (ANS) ima dva stanja: <strong>simpatikus</strong> (gas pedal — borba ili bijeg) i <strong>parasimpatikus</strong> (kočnica — odmor i probava). To je bila cijela priča.</p>
+  <p>Stephen Porges, neurobiolog sa Sveučilišta u Marylandu, otkrio je da priča nije toliko jednostavna. Analizirajući vagusni živac — najduži živac u tijelu koji ide od mozga do svih glavnih organa — otkrio je da vagus ima <strong>dva zasebna ogranka</strong> s potpuno različitim funkcijama.</p>
+  <p>Ta spoznaja je rodila Polyvagal teoriju: ANS nema dva stanja, nego <strong>tri</strong>. I ta tri stanja djeluju kao hijerarhija — jedno iznad drugog, u evolutivnom redoslijedu starosti.</p>
+
+  <div class="callout">
+    <p class="callout-label">Ključna spoznaja</p>
+    <p><em>"Sigurnost nije odsutnost prijetnje. Sigurnost je stanje živčanog sustava."</em> — Deb Dana, terapeutkinja i popularizatorica Polyvagal teorije</p>
+  </div>
+
+  <h2>Tri stanja ANS-a</h2>
+  <p>Polyvagal teorija opisuje tri hijerarhijska stanja kroz koja prolazimo — i u koja možemo zaglaviti:</p>
+
+  <div class="state-grid">
+    <div class="state-card state-v">
+      <h3>1. Ventral Vagal</h3>
+      <p>Socijalna angažiranost, sigurnost, prisutnost, kreativnost, smirenost. Najmlađe evolutivno stanje — specifično za sisavce. Ovdje se učimo, volimo, smijemo.</p>
+    </div>
+    <div class="state-card state-s">
+      <h3>2. Simpatikus</h3>
+      <p>Mobilizacija — borba ili bijeg. Stres, anksioznost, ubrzano srce. Može biti pozitivan (uzbuđenje, motivacija) ili negativan (prijetnja, panika).</p>
+    </div>
+    <div class="state-card state-d">
+      <h3>3. Dorsal Vagal</h3>
+      <p>Zamrzavanje, shut-down, disocijacija. Najstarije evolutivno stanje — reptilsko. Aktivira se kad je prijetnja prevelika za bijeg. Depresija, nemoć, "odsutnost".</p>
+    </div>
+  </div>
+
+  <h2>Hijerarhija stanja</h2>
+  <p>Ključno razumijevanje: ova stanja nisu ravnopravna opcije koje biramo — ona su <strong>hijerarhija</strong>. Tijelo prolazi kroz njih po određenom redoslijedu.</p>
+  <p>Kad je situacija sigurna — Ventral Vagal je aktivan. Kad se pojavi prijetnja — Simpatikus preuzima. Ako je prijetnja prevelika za bijeg ili borbu, ili traje predugo bez rješenja — Dorsal Vagal "ugasi" sustav.</p>
+  <p>Porges ovo zove <strong>neurocepcija</strong>: živčani sustav kontinuirano skenira okolinu za signale sigurnosti ili prijetnje — i to ispod razine svjesne percepcije. Ne odlučuješ svjesno u koje stanje ćeš ući. Tijelo to odlučuje za tebe.</p>
+
+  <div class="callout">
+    <p class="callout-label">Praktični primjer</p>
+    <p>Netko te iznervira na poslu. Tijelo skenira: je li ovo prijetnja? Ako da — Simpatikus aktivira. Ako su reakcije previše intenzivne ili dugotrajne, ili ako dugo nema rješenja — Dorsal Vagal "ugasi" sve. Znaš kako izgleda taj osjećaj: "blokiram se", "ne mogu govoriti", "zamrznem se". To nije slabost. To je biologija.</p>
+  </div>
+
+  <h2>Kako prepoznati u kojemu stanju ste</h2>
+  <h3>Ventral Vagal znaci:</h3>
+  <p>Možeš misliti jasno. Osjećaš se prisutno. Možeš biti s ljudima bez da te iscrpljuje. Tijelo je opušteno ali budno. Možeš se smijati. Kreativnost teče.</p>
+
+  <h3>Simpatički znaci:</h3>
+  <p>Ubrzano srce. Misli koje jure. Teško se smiruješ. Iritabilnost. Osjećaj da trebaš "nešto raditi" ali ne znaš što. Trnci u rukama. Kratko, ubrzano disanje.</p>
+
+  <h3>Dorsal Vagal znaci:</h3>
+  <p>Praznina. Osjećaj da si "van tijela". Teško se motivirati. Disocijacija. Želiš se sakriti ili nestati. Ne osjećaš gotovo ništa — ili osjećaš tešku depresiju i bezvoljnost.</p>
+
+  <h2>Vagalni tonus — sposobnost fleksibilnosti</h2>
+  <p>Porges uvodi pojam <strong>vagalnog tonusa</strong>: kapacitet živčanog sustava da brzo i glatko prelazi između stanja. Visoki vagalni tonus ne znači da si uvijek u Ventral Vagal stanju — znači da možeš brzo <em>iz</em> Simpatikusa ili Dorsal Vagala <em>natrag</em> u sigurnost.</p>
+  <p>Vagalni tonus se mjeri kroz <strong>HRV</strong> (Heart Rate Variability — varijabilnost srčanog ritma). Viši HRV = veći vagalni tonus = veća otpornost na stres.</p>
+  <p class="ref">Referenca: Porges S.W. (1995). Orienting in a defensive world: Mammalian modifications of our evolutionary heritage. Psychophysiology, 32(4), 301–318.</p>
+
+  <h2>Gdje svjesno disanje ulazi u sliku</h2>
+  <p>Ovo je ono što čini Polyvagal teoriju revolucionarnom za breathwork: <strong>vagusni živac je jedini put kojim možemo voljno utjecati na ANS</strong>.</p>
+  <p>Dijafragma je fizički omotana vagusnim vlaknima. Svaki svjestan, produženi izdah mehanički stimulira vagusni živac — koji nosi signal prema mozgu: "Prijetnja je prošla. Možemo se smiriti."</p>
+  <p>Omjer udah:izdah 1:2 (npr. 4 sekunde udah, 8 sekundi izdah) je klinički dokumentiran protokol za prebacivanje iz Simpatikusa u Ventral Vagal za manje od minute.</p>
+  <p>Prema Gerritsenu i Bandu (2018), mjerljiva promjena u ANS aktivnosti nastupa za 60 sekundi svjesne modulacije daha.</p>
+  <p class="ref">Referenca: Gerritsen R.J.S., Band G.P.H. (2018). Breath of Life: The Respiratory Vagal Stimulation Model of Contemplative Activity. Frontiers in Human Neuroscience, 12, 397.</p>
+
+  <h2>Praktična primjena: Polyvagal mapa za svakodnevni život</h2>
+  <p>Deb Dana, klinička terapeutkinja koja je popularizirala Polyvagal teoriju za širu publiku, predlaže jednostavan praktični alat: <strong>Polyvagal ladica</strong>.</p>
+  <p>Jednom dnevno, zastani i pitaj se: u kojemu stanju sam sada?</p>
+  <ul style="margin:1rem 0 1rem 1.5rem;color:rgba(255,255,255,0.65)">
+    <li style="margin-bottom:0.5rem"><strong>Ventral Vagal:</strong> Što trebam da to zaštitim? (ne rasipaj resurse nepotrebno)</li>
+    <li style="margin-bottom:0.5rem"><strong>Simpatikus:</strong> Što tijelo treba da se regulira? (kretanje, produljeni izdah, hladna voda)</li>
+    <li><strong>Dorsal Vagal:</strong> Koji je najmanji siguran korak natrag prema kontaktu? (glas, dodir, lice)</li>
+  </ul>
+  <p>Ova jednostavna svjesnost — samo prepoznavanje stanja bez pokušaja da ga odmah "popravi" — sama po sebi povećava vagalni tonus. Porges zove to "safety awareness".</p>
+
+  <div class="callout">
+    <p class="callout-label">Ključni uvid za Duhodah praksu</p>
+    <p>Autoškola za živčani sustav gradi se oko ovog okvira. Tjedan 1 (Kočnica) uči parasimpatički odgovor. Tjedan 2 (Gas) razumijevanje Simpatikusa. Tjedan 3 (Mjenjač) fleksibilnost između stanja. Tjedan 4 (Tempomat) — visoki vagalni tonus kao novi default.</p>
+  </div>
+
+  <h2>Zaključak</h2>
+  <p>Polyvagal teorija nije apstraktna neurobiologija — to je praktični okvir za razumijevanje zašto se ponašaš onako kako se ponašaš pod pritiskom. Nisi "previše emotivan/na", "slaba/slab" ili "nekontroliran/a". Tvoj živčani sustav reagira onako kako je naučio reagirati, u hijerarhijskom redoslijedu koji je evolucija razvijala milijunima godina.</p>
+  <p>Dobra vijest: taj sustav je plastičan. Može se iznova kalibrirati. I najbrži put do te kalibracije je upravo dah.</p>
+
+  <div class="article-cta">
+    <h2 class="cta-title">Koji si tip disača?</h2>
+    <p class="cta-sub">Naš besplatni quiz od 12 pitanja otkriva tvoj dominantni ANS obrazac — i daje ti prvu konkretnu vježbu za tvoj specifičan tip. Temeljeno na Polyvagal teoriji i Buteyko metodi.</p>
+    <a href="../quiz.html" class="btn-cta">Napravi besplatni quiz →</a>
+    <a href="../index.html#autoskola" class="btn-secondary-link">Autoškola HOD</a>
+  </div>
+
+  <h2>Daljnje čitanje</h2>
+  <ul style="list-style:none;margin:1rem 0">
+    <li style="margin-bottom:0.7rem"><a href="vagusni-zivac.html" style="color:var(--cyan)">→ Vagusni živac: što je i kako ga aktivirati svjesnim disanjem</a></li>
+    <li style="margin-bottom:0.7rem"><a href="disanje-za-stres.html" style="color:var(--cyan)">→ 5 tehnika disanja za akutni stres koje djeluju odmah</a></li>
+    <li><a href="../znanje.html" style="color:var(--cyan)">→ Kompletna zbirka peer-reviewed istraživanja — Duhodah Znanost</a></li>
+  </ul>
+</main>
+
+<footer>
+  <p style="font-family:var(--font-brand);font-size:0.7rem;font-weight:700;letter-spacing:0.3em;color:var(--periwinkle)">DUH<span style="color:var(--cyan)">O</span>DAH</p>
+  <p style="font-family:var(--font-brand);font-size:0.55rem;letter-spacing:0.2em;text-transform:uppercase;color:rgba(255,255,255,0.2);margin-top:0.3rem">Autoškola za živčani sustav · Osijek</p>
+  <p style="margin-top:1rem;font-size:0.78rem;color:rgba(255,255,255,0.2)">© 2025 Duhodah · <a href="../blog.html" style="color:rgba(255,255,255,0.3)">← Svi članci</a></p>
+</footer>
+</body>
+</html>
